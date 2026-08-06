@@ -6,7 +6,10 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  site: "https://dpsszczytno.pl",
+  // SITE/BASE env vars let CI build for the temporary github.io test URL;
+  // the defaults are the production domain.
+  site: process.env.SITE ?? "https://dpsszczytno.pl",
+  base: process.env.BASE,
   trailingSlash: "always",
   build: {
     format: "directory",

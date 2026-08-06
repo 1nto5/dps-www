@@ -30,8 +30,20 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
+      # TEST PHASE ONLY: the site is served from 1nto5.github.io/dps-www, so
+      # build with that base and prefix hand-written absolute URLs. At the
+      # DNS cutover to dpsszczytno.pl: delete the env block and the sed step,
+      # and add a CNAME file.
       - name: Build site
         run: bun run build
+        env:
+          SITE: https://1nto5.github.io
+          BASE: /dps-www
+
+      - name: Prefix hand-written absolute URLs with the base path
+        run: |
+          find dist -name '*.html' -exec sed -i -E \
+            's#(href|src)="/#\1="/dps-www/#g; s#="/dps-www/dps-www/#="/dps-www/#g' {} +
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
