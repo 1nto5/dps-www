@@ -111,7 +111,7 @@ const dateFormat = new Intl.DateTimeFormat("pl-PL", {
     <ul class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3" role="list">
       {
         cards.map((card) => (
-          <li class="relative flex flex-col overflow-hidden rounded-xl border border-line bg-white/60 hover:border-spruce/40 focus-within:border-spruce/40">
+          <li class="relative flex flex-col overflow-hidden rounded-xl border border-line bg-white/60 transition-colors duration-150 hover:border-spruce/40 focus-within:border-spruce/40">
             <Image
               src={card.photo}
               alt={card.alt}
@@ -126,6 +126,7 @@ const dateFormat = new Intl.DateTimeFormat("pl-PL", {
               <p class="mt-4">
                 <a
                   href={card.href}
+                  data-card-link
                   class="font-semibold text-spruce underline underline-offset-4 before:absolute before:inset-0 before:content-[''] hover:text-spruce-deep"
                 >
                   {card.title} — czytaj dalej
@@ -154,7 +155,7 @@ const dateFormat = new Intl.DateTimeFormat("pl-PL", {
         </div>
         <ul class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3" role="list">
           {latest.map((post) => (
-            <li class="relative rounded-xl border border-line bg-white/60 p-5 hover:border-spruce/40 focus-within:border-spruce/40">
+            <li class="relative rounded-xl border border-line bg-white/60 p-5 transition-colors duration-150 hover:border-spruce/40 focus-within:border-spruce/40">
               <p class="text-sm text-muted">
                 <time datetime={post.data.date.toISOString().slice(0, 10)}>
                   {dateFormat.format(post.data.date)}
@@ -163,6 +164,7 @@ const dateFormat = new Intl.DateTimeFormat("pl-PL", {
               <h3 class="mt-2 text-xl">
                 <a
                   href={`/aktualnosci/${post.id}/`}
+                  data-card-link
                   class="text-spruce-deep underline underline-offset-4 before:absolute before:inset-0 before:content-[''] hover:text-spruce"
                 >
                   {post.data.title}

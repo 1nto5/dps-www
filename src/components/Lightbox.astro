@@ -83,8 +83,10 @@
     if (!link) return;
     e.preventDefault();
     if (!dialog) build();
-    const scope = link.closest("[data-lightbox-group]") ?? document;
-    group = [...scope.querySelectorAll(SEL)] as HTMLAnchorElement[];
+    // Only images inside an explicit group navigate with arrows;
+    // a standalone scan opens alone.
+    const scope = link.closest("[data-lightbox-group]");
+    group = scope ? ([...scope.querySelectorAll(SEL)] as HTMLAnchorElement[]) : [link];
     document.documentElement.style.overflow = "hidden";
     show(group.indexOf(link));
     dialog!.showModal();

@@ -31,9 +31,9 @@ const dateFormat = new Intl.DateTimeFormat("pl-PL", {
           Wkrótce pojawią się tu nowe informacje.
         </p>
       ) : (
-        <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3" role="list">
           {entries.map((entry) => (
-            <li class="relative flex transition-colors duration-150 hover:border-spruce/40 focus-within:border-spruce/40">
+            <li class="relative flex">
               <article class="flex flex-col rounded-xl border border-line bg-white/60 p-6 transition-colors duration-150 hover:border-spruce/40 focus-within:border-spruce/40">
                 <p class="text-sm font-medium text-honey">
                   <time datetime={entry.data.date.toISOString().slice(0, 10)}>
@@ -43,6 +43,7 @@ const dateFormat = new Intl.DateTimeFormat("pl-PL", {
                 <h2 class="mt-2 text-xl">
                   <a
                     href={`/aktualnosci/${entry.id}/`}
+                    data-card-link
                     class="text-spruce-deep underline underline-offset-4 before:absolute before:inset-0 before:content-[''] hover:text-spruce"
                   >
                     {entry.data.title}
