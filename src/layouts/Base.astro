@@ -1,0 +1,68 @@
+---
+import "../styles/global.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const fullTitle =
+  Astro.url.pathname === "/"
+    ? "Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie"
+    : `${title} — DPS Szczytno`;
+const desc =
+  description ??
+  "Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie — dom dla osób przewlekle psychicznie chorych. Filia w Spychowie.";
+---
+
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={desc} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="pl_PL" />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "GovernmentOrganization",
+        name: "Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie",
+        url: "https://dpsszczytno.pl/",
+        telephone: "+48 89 624 22 88",
+        email: "sekretariat@dpsszczytno.pl",
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: "ul. Wielbarska 2",
+          postalCode: "12-100",
+          addressLocality: "Szczytno",
+          addressCountry: "PL",
+        },
+      })}
+    />
+  </head>
+  <body class="flex min-h-svh flex-col">
+    <a
+      href="#tresc"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-spruce focus:px-4 focus:py-2 focus:text-white"
+      >Przejdź do treści</a
+    >
+    <Header />
+    <!-- tabindex="-1" lets the skip link move keyboard focus, not just the fragment. -->
+    <main id="tresc" tabindex="-1" class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

@@ -1,0 +1,92 @@
+---
+/**
+ * Click-to-enlarge for images. Include ONCE per page that renders zoomable
+ * images (Gallery and ZoomImage include it themselves; Astro dedupes the
+ * hoisted script, and the dialog is created lazily in JS, so multiple
+ * inclusions stay safe).
+ *
+ * Trigger markup contract: <a href="<full-size url>" data-lightbox
+ * data-caption="..."> around an <img>. Links in the same
+ * [data-lightbox-group] get prev/next navigation. Without JS the link
+ * simply opens the full-size image — progressive enhancement.
+ */
+---
+
+<script>
+  const SEL = "a[data-lightbox]";
+  let dialog: HTMLDialogElement | null = null;
+  let group: HTMLAnchorElement[] = [];
+  let index = 0;
+
+  function build() {
+    dialog = document.createElement("dialog");
+    dialog.className = "lightbox";
+    dialog.setAttribute("aria-label", "Powiększone zdjęcie");
+    dialog.innerHTML = `
+      <button type="button" class="lightbox-close" aria-label="Zamknij powiększenie">
+        <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true" fill="none"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+      <button type="button" class="lightbox-nav lightbox-prev" aria-label="Poprzednie zdjęcie">
+        <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true" fill="none"><path d="M12.5 4L6.5 10l6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <figure>
+        <img alt="" />
+        <figcaption>
+          <span class="lightbox-caption"></span>
+          <span class="lightbox-counter"></span>
+        </figcaption>
+      </figure>
+      <button type="button" class="lightbox-nav lightbox-next" aria-label="Następne zdjęcie">
+        <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true" fill="none"><path d="M7.5 4l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>`;
+    document.body.append(dialog);
+
+    dialog.querySelector(".lightbox-close")!.addEventListener("click", () => dialog!.close());
+    dialog.querySelector(".lightbox-prev")!.addEventListener("click", () => show(index - 1));
+    dialog.querySelector(".lightbox-next")!.addEventListener("click", () => show(index + 1));
+    // Click on the backdrop area (the dialog element itself) closes.
+    dialog.addEventListener("click", (e) => {
+      if (e.target === dialog) dialog!.close();
+    });
+    dialog.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft") show(index - 1);
+      if (e.key === "ArrowRight") show(index + 1);
+    });
+    dialog.addEventListener("close", () => {
+      document.documentElement.style.removeProperty("overflow");
+    });
+  }
+
+  function show(i: number) {
+    if (!dialog || !group.length) return;
+    index = (i + group.length) % group.length;
+    const link = group[index]!;
+    const img = dialog.querySelector("img")!;
+    img.src = link.href;
+    img.alt = link.dataset.caption ?? link.querySelector("img")?.alt ?? "";
+    dialog.querySelector(".lightbox-caption")!.textContent = link.dataset.caption ?? "";
+    const counter = dialog.querySelector(".lightbox-counter")!;
+    counter.textContent = group.length > 1 ? `${index + 1} z ${group.length}` : "";
+    const nav = group.length > 1;
+    (dialog.querySelector(".lightbox-prev") as HTMLElement).hidden = !nav;
+    (dialog.querySelector(".lightbox-next") as HTMLElement).hidden = !nav;
+    // Preload neighbours so arrows feel instant.
+    if (nav) {
+      for (const n of [index + 1, index - 1]) {
+        new Image().src = group[(n + group.length) % group.length]!.href;
+      }
+    }
+  }
+
+  document.addEventListener("click", (e) => {
+    const link = (e.target as Element).closest?.(SEL) as HTMLAnchorElement | null;
+    if (!link) return;
+    e.preventDefault();
+    if (!dialog) build();
+    const scope = link.closest("[data-lightbox-group]") ?? document;
+    group = [...scope.querySelectorAll(SEL)] as HTMLAnchorElement[];
+    document.documentElement.style.overflow = "hidden";
+    show(group.indexOf(link));
+    dialog!.showModal();
+  });
+</script>

@@ -1,0 +1,61 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import PageHeader from "../../components/PageHeader.astro";
+
+const entries = (await getCollection("aktualnosci")).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+
+const dateFormat = new Intl.DateTimeFormat("pl-PL", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+---
+
+<Base
+  title="Aktualności"
+  description="Bieżące informacje z życia Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie."
+>
+  <PageHeader
+    eyebrow="Aktualności"
+    title="Co słychać w naszym Domu"
+    lead="Wydarzenia, komunikaty i podziękowania z życia Domu oraz filii w Spychowie."
+  />
+
+  <div class="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
+    {
+      entries.length === 0 ? (
+        <p class="max-w-2xl rounded-xl border border-line bg-moss px-6 py-8 text-lg text-muted">
+          Wkrótce pojawią się tu nowe informacje.
+        </p>
+      ) : (
+        <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {entries.map((entry) => (
+            <li class="relative flex transition-colors duration-150 hover:border-spruce/40 focus-within:border-spruce/40">
+              <article class="flex flex-col rounded-xl border border-line bg-white/60 p-6 transition-colors duration-150 hover:border-spruce/40 focus-within:border-spruce/40">
+                <p class="text-sm font-medium text-honey">
+                  <time datetime={entry.data.date.toISOString().slice(0, 10)}>
+                    {dateFormat.format(entry.data.date)}
+                  </time>
+                </p>
+                <h2 class="mt-2 text-xl">
+                  <a
+                    href={`/aktualnosci/${entry.id}/`}
+                    class="text-spruce-deep underline underline-offset-4 before:absolute before:inset-0 before:content-[''] hover:text-spruce"
+                  >
+                    {entry.data.title}
+                  </a>
+                </h2>
+                {entry.data.description && (
+                  <p class="mt-3 text-muted">{entry.data.description}</p>
+                )}
+              </article>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </div>
+</Base>

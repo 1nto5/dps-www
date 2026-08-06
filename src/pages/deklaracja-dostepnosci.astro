@@ -1,0 +1,195 @@
+---
+/**
+ * Accessibility statement (Deklaracja dostępności).
+ * Structure follows the official Polish government template — the wrapper
+ * keeps id="a11y-deklaracja" so automated validators can find the statement.
+ *
+ * Dates and the conformance status are carried over verbatim from the Dom's
+ * last signed statement (source page 1328, drafted 23.09.2020). Only the Dom
+ * may change them — a new publication date, a "zgodna" status or a new review
+ * date requires a documented WCAG 2.1 AA audit of the relaunched site and the
+ * Dom's sign-off, not a migration edit.
+ */
+import Base from "../layouts/Base.astro";
+import PageHeader from "../components/PageHeader.astro";
+import DocList from "../components/DocList.astro";
+
+const docs = [
+  {
+    href: "/dokumenty/pliki/2212-deklaracja-dostepnosci.pdf",
+    label: "Raport o stanie zapewniania dostępności podmiotu publicznego (stan na 1 stycznia 2025 r.)",
+    format: "PDF",
+    size: "3,4 MB",
+  },
+];
+---
+
+<Base
+  title="Deklaracja dostępności"
+  description="Deklaracja dostępności strony internetowej Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie — status zgodności, dane kontaktowe, procedura wnioskowa i dostępność architektoniczna."
+>
+  <PageHeader
+    eyebrow="Dostępność"
+    title="Deklaracja dostępności"
+    lead="Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie dba o to, aby z naszej strony mógł swobodnie korzystać każdy."
+  />
+
+  <div class="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
+    <div id="a11y-deklaracja" class="doc">
+      <p>
+        Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie zobowiązuje się zapewnić dostępność
+        swojej strony internetowej zgodnie z ustawą z dnia 4 kwietnia 2019 r. o dostępności cyfrowej
+        stron internetowych i aplikacji mobilnych podmiotów publicznych. Deklaracja dostępności ma
+        zastosowanie do strony internetowej
+        <span class="a11y-url">https://dpsszczytno.pl</span>.
+      </p>
+
+      <ul>
+        <li>
+          Data publikacji strony internetowej:
+          <span class="a11y-data-publikacja">07.10.2008</span>
+        </li>
+        <li>
+          Data ostatniej istotnej aktualizacji:
+          <span class="a11y-data-aktualizacja">07.10.2008</span>
+        </li>
+      </ul>
+
+      <h2>Status pod względem zgodności z ustawą</h2>
+      <p class="a11y-status">
+        Strona internetowa jest częściowo zgodna z ustawą z dnia 4 kwietnia 2019 r. o dostępności
+        cyfrowej stron internetowych i aplikacji mobilnych podmiotów publicznych z powodu
+        niezgodności lub wyłączeń wymienionych poniżej.
+      </p>
+      <ul>
+        <li>część zamieszczonych na stronie zdjęć nie posiada tekstu alternatywnego,</li>
+        <li>część elementów nietekstowych nie posiada opisu,</li>
+        <li>zamieszczone na stronie pliki PDF nie są dostępne cyfrowo,</li>
+        <li>mapy Google są wyłączone z obowiązku zapewniania dostępności.</li>
+      </ul>
+      <p>
+        Na życzenie udostępniamy treść niedostępnych cyfrowo dokumentów w alternatywnej postaci —
+        wystarczy kontakt z koordynatorem do spraw dostępności.
+      </p>
+
+      <h2>Przygotowanie deklaracji dostępności</h2>
+      <ul>
+        <li>
+          Data sporządzenia deklaracji:
+          <span class="a11y-data-sporzadzenie">23.09.2020</span>
+        </li>
+        <li>
+          Data ostatniego przeglądu deklaracji:
+          <span class="a11y-data-przeglad">23.09.2020</span>
+        </li>
+      </ul>
+      <p>
+        Deklarację sporządzono na podstawie samooceny przeprowadzonej przez podmiot publiczny.
+      </p>
+
+      <h2>Skróty klawiaturowe</h2>
+      <p>
+        Na stronie internetowej można używać standardowych skrótów klawiaturowych przeglądarki. Po
+        wszystkich odnośnikach i przyciskach można poruszać się klawiszem Tab, a na początku każdej
+        strony dostępny jest odnośnik pozwalający przejść od razu do treści.
+      </p>
+
+      <h2>Informacje zwrotne i dane kontaktowe</h2>
+      <p>
+        W przypadku problemów z dostępnością strony internetowej prosimy o kontakt. Osobą kontaktową
+        jest <span class="a11y-osoba">Mariusz Dziatkowiak</span>, koordynator do spraw dostępności,
+        <a class="a11y-email" href="mailto:informatyk@dpsszczytno.pl">informatyk@dpsszczytno.pl</a>.
+        Kontaktować można się także dzwoniąc na numer telefonu
+        <a class="a11y-telefon" href="tel:+48896242288">89 624 22 88</a>. Tą samą drogą można składać
+        wnioski o udostępnienie informacji niedostępnej oraz składać skargi na brak zapewnienia
+        dostępności.
+      </p>
+
+      <h2>Informacje na temat procedury</h2>
+      <p class="a11y-procedura">
+        Każdy ma prawo do wystąpienia z żądaniem zapewnienia dostępności cyfrowej strony
+        internetowej, aplikacji mobilnej lub jakiegoś ich elementu. Można także zażądać udostępnienia
+        informacji za pomocą alternatywnego sposobu dostępu, na przykład przez odczytanie
+        niedostępnego cyfrowo dokumentu, opisanie zawartości filmu bez audiodeskrypcji itp. Żądanie
+        powinno zawierać dane osoby zgłaszającej żądanie, wskazanie, o którą stronę internetową lub
+        aplikację mobilną chodzi oraz sposób kontaktu. Jeżeli osoba żądająca zgłasza potrzebę
+        otrzymania informacji za pomocą alternatywnego sposobu dostępu, powinna także określić
+        dogodny dla niej sposób przedstawienia tej informacji. Podmiot publiczny powinien zrealizować
+        żądanie niezwłocznie, nie później niż w ciągu 7 dni od dnia wystąpienia z żądaniem. Jeżeli
+        dotrzymanie tego terminu nie jest możliwe, podmiot publiczny niezwłocznie informuje o tym
+        wnoszącego żądanie, kiedy realizacja żądania będzie możliwa, przy czym termin ten nie może
+        być dłuższy niż 2 miesiące od dnia wystąpienia z żądaniem. Jeżeli zapewnienie dostępności
+        cyfrowej nie jest możliwe, podmiot publiczny może zaproponować alternatywny sposób dostępu do
+        informacji. W przypadku, gdy podmiot publiczny odmówi realizacji żądania zapewnienia
+        dostępności lub alternatywnego sposobu dostępu do informacji, wnoszący żądanie może złożyć
+        skargę w sprawie zapewnienia dostępności cyfrowej strony internetowej, aplikacji mobilnej lub
+        elementu strony internetowej, lub aplikacji mobilnej. Po wyczerpaniu wskazanej wyżej
+        procedury można także złożyć wniosek do Rzecznika Praw Obywatelskich —
+        <a href="https://bip.brpo.gov.pl/">strona Rzecznika Praw Obywatelskich</a>.
+      </p>
+      <p>
+        Wniosek o zapewnienie dostępności architektonicznej lub informacyjno-komunikacyjnej składa
+        się na podstawie ustawy z dnia 19 lipca 2019 r. o zapewnianiu dostępności osobom ze
+        szczególnymi potrzebami. Podmiot publiczny zapewnia dostępność bez zbędnej zwłoki, nie później
+        niż w terminie 14 dni od dnia złożenia wniosku. Jeżeli zapewnienie dostępności w tym terminie
+        nie jest możliwe, podmiot powiadamia wnioskodawcę o przyczynach opóźnienia i wskazuje nowy
+        termin, nie dłuższy niż 2 miesiące od dnia złożenia wniosku. W przypadku odmowy zapewnienia
+        dostępności wnioskodawcy przysługuje skarga na brak dostępności, którą składa się do Prezesa
+        Zarządu Państwowego Funduszu Rehabilitacji Osób Niepełnosprawnych (PFRON) w terminie 30 dni.
+        Od decyzji Prezesa Zarządu PFRON przysługuje skarga do sądu administracyjnego.
+      </p>
+
+      <h2>Dostępność architektoniczna</h2>
+      <p class="a11y-architektura">
+        Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie przeznaczony jest dla osób przewlekle
+        psychicznie chorych. Zapewniamy opiekę całodobową dla 196 osób. W budynku przy ul.
+        Wielbarskiej 2 w Szczytnie (12-100) mieszka 171 osób, a w filii w Spychowie przy ul. Henryka
+        Sienkiewicza 3 (12-150) — 25 osób.
+      </p>
+
+      <h3>Korytarze</h3>
+      <p>
+        Korytarze w budynkach mieszkalnych są dostosowane dla osób z niepełnosprawnością: wejścia są
+        bezprogowe, możliwe jest poruszanie się na wózkach inwalidzkich.
+      </p>
+
+      <h3>Schody</h3>
+      <p>
+        Schody są otwarte i wyposażone w poręcze. Powierzchnia podłóg i stopni ma powłokę
+        antypoślizgową.
+      </p>
+
+      <h3>Winda</h3>
+      <p>Winda jest przystosowana dla osób z niepełnosprawnością.</p>
+
+      <h3>Pochylnia</h3>
+      <p>
+        Wejście do budynku od ul. Sobieszczańskiego jest wyposażone w podjazd, który prowadzi do
+        windy przystosowanej dla osób z niepełnosprawnością.
+      </p>
+
+      <h3>Parking</h3>
+      <p>
+        Na terenie Domu można parkować pojazdy. Nie ma wyznaczonych i oznakowanych miejsc
+        parkingowych dla osób z niepełnosprawnością.
+      </p>
+
+      <h3>Pies asystujący</h3>
+      <p>Osoba z psem asystującym ma prawo wstępu do budynku.</p>
+
+      <h3>Udogodnienia, których nie zapewniamy</h3>
+      <ul>
+        <li>platformy przyschodowe i podnośniki,</li>
+        <li>informacja głosowa,</li>
+        <li>pętle indukcyjne,</li>
+        <li>tłumacz języka migowego.</li>
+      </ul>
+
+      <h2>Raport o stanie zapewniania dostępności</h2>
+    </div>
+
+    <div class="mt-4 max-w-2xl">
+      <DocList docs={docs} />
+    </div>
+  </div>
+</Base>

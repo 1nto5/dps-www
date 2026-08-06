@@ -1,0 +1,94 @@
+---
+import { Image } from "astro:assets";
+import Base from "../../../layouts/Base.astro";
+import PageHeader from "../../../components/PageHeader.astro";
+import DocList from "../../../components/DocList.astro";
+import poster from "../../../assets/media/2059-Screenshot-2024-10-02-at-12.30.49.png";
+
+const docs = [
+  {
+    href: "/dokumenty/pliki/1934-plakat-dodatek-motywacyjny.pdf",
+    label: "Plakat informacyjny — dodatek motywacyjny w roku 2024",
+    format: "PDF",
+    size: "553 KB",
+  },
+];
+---
+
+<Base
+  title="Dotacje 2024"
+  description="Dotacje otrzymane w 2024 roku przez Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie — program dodatku motywacyjnego dla pracowników pomocy społecznej."
+>
+  <PageHeader
+    eyebrow="Dokumenty · Dotacje"
+    eyebrowHref="/dokumenty/dotacje/"
+    title="Dotacje 2024"
+    lead="Środki publiczne otrzymane przez nasz Dom w 2024 roku."
+  />
+
+  <div class="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
+    <div class="doc">
+      <h2>Dofinansowano ze środków budżetu państwa</h2>
+      <p>
+        Program „Dofinansowanie wynagrodzeń pracowników jednostek organizacyjnych pomocy
+        społecznej w postaci dodatku motywacyjnego na lata 2024–2027” w roku 2024.
+      </p>
+      <p>
+        <strong>Dofinansowanie: 994 620,00 zł</strong><br />
+        <strong>Całkowita wartość: 994 620,00 zł</strong>
+      </p>
+
+      <h3>Cel programu</h3>
+      <p>
+        Pomoc w postaci dodatkowych środków na dofinansowanie wynagrodzeń pracowników jednostek
+        organizacyjnych pomocy społecznej.
+      </p>
+
+      <h3>Realizowane zadania</h3>
+      <p>
+        Wypłata dodatków motywacyjnych w wysokości 1000 zł brutto oraz kosztów składek od dodatków
+        w okresie od dnia 1 lipca 2024 r. do dnia 31 grudnia 2027 r. dla pracowników zatrudnionych
+        na umowę o pracę w jednostkach organizacyjnych pomocy społecznej prowadzonych przez
+        jednostki samorządu terytorialnego lub na ich zlecenie.
+      </p>
+
+      <h3>Grupa docelowa</h3>
+      <p>
+        Pracownicy zatrudnieni na umowę o pracę w jednostkach organizacyjnych pomocy społecznej
+        prowadzonych przez jednostki samorządu terytorialnego lub na zlecenie jednostek samorządu
+        terytorialnego.
+      </p>
+
+      <h3>Efekty programu</h3>
+      <p>
+        Wsparcie i poprawa sytuacji finansowej pracowników zatrudnionych w jednostkach
+        organizacyjnych pomocy społecznej oraz utrzymanie wysokiego standardu realizowanych usług
+        w pomocy społecznej.
+      </p>
+
+      <figure class="my-8">
+        <Image
+          src={poster}
+          alt="Plakat informacyjny z flagą i godłem Polski: dofinansowano ze środków budżetu państwa, program dodatku motywacyjnego na lata 2024–2027, dofinansowanie w roku 2024 w kwocie 994 620,00 zł."
+          widths={[480, 800]}
+          sizes="(min-width: 768px) 34rem, 100vw"
+          loading="lazy"
+          class="w-full max-w-[34rem] rounded-lg border border-line bg-white"
+        />
+        <figcaption class="mt-2 text-sm text-muted">
+          Plakat informacyjny programu dodatku motywacyjnego — rok 2024.
+        </figcaption>
+      </figure>
+
+      <h2>Do pobrania</h2>
+    </div>
+
+    <div class="max-w-[46rem]">
+      <DocList docs={docs} />
+    </div>
+
+    <div class="doc mt-8">
+      <p><a href="/dokumenty/dotacje/">Wróć do listy lat</a></p>
+    </div>
+  </div>
+</Base>

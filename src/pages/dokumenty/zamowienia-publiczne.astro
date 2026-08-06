@@ -1,0 +1,59 @@
+---
+/**
+ * Public procurement. The old page (1217) had no content — all proceedings
+ * are published in the BIP, so this page is a signpost to it.
+ */
+import Base from "../../layouts/Base.astro";
+import PageHeader from "../../components/PageHeader.astro";
+
+const bip = "https://dpsszczytno.bip.gov.pl/";
+---
+
+<Base
+  title="Zamówienia publiczne"
+  description="Postępowania o udzielenie zamówienia publicznego prowadzone przez Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie publikowane są w Biuletynie Informacji Publicznej."
+>
+  <PageHeader
+    eyebrow="Dokumenty"
+    eyebrowHref="/dokumenty/"
+    title="Zamówienia publiczne"
+    lead="Wszystkie postępowania o udzielenie zamówienia publicznego prowadzone przez nasz Dom publikujemy w Biuletynie Informacji Publicznej."
+  />
+
+  <div class="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
+    <div class="doc">
+      <p>
+        W Biuletynie Informacji Publicznej znajdą Państwo ogłoszenia o postępowaniach, dokumentację
+        zamówień, odpowiedzi na pytania wykonawców, informacje o wyborze najkorzystniejszej oferty
+        oraz plany postępowań. Biuletyn jest urzędowym miejscem publikacji tych informacji.
+      </p>
+    </div>
+
+    <p class="mt-6">
+      <a
+        href={bip}
+        class="inline-block rounded-lg bg-spruce px-5 py-3 font-medium text-white hover:bg-spruce-deep"
+      >
+        Zamówienia publiczne w Biuletynie Informacji Publicznej
+      </a>
+    </p>
+    <p class="mt-3 text-sm text-muted">Adres Biuletynu: dpsszczytno.bip.gov.pl</p>
+
+    <div class="doc mt-6">
+      <h2>Pytania w sprawie zamówień</h2>
+      <p>
+        W sprawach dotyczących prowadzonych postępowań prosimy o kontakt z sekretariatem Domu:
+        telefon <a href="tel:+48896242288">89 624 22 88</a>, e-mail
+        <a href="mailto:sekretariat@dpsszczytno.pl">sekretariat@dpsszczytno.pl</a>.
+      </p>
+    </div>
+
+    <p class="mt-14">
+      <a
+        href="/dokumenty/"
+        class="text-spruce underline underline-offset-4 hover:text-spruce-deep"
+        >Wróć do Dokumentów</a
+      >
+    </p>
+  </div>
+</Base>

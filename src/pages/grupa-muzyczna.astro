@@ -1,0 +1,180 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHeader from "../components/PageHeader.astro";
+import ArchImage from "../components/ArchImage.astro";
+import ZoomImage from "../components/ZoomImage.astro";
+import groupOnStage from "../assets/media/1168-christopherGroup.jpg";
+import pressMuzyka from "../assets/media/1169-christopher680.jpg";
+import pressSeniorska from "../assets/media/1170-gazeta680.jpg";
+
+const members = [
+  "Władysław Drozdowski",
+  "Waldemar Szmul",
+  "Jan Pieryni",
+  "Ryszard Haftkowski",
+];
+---
+
+<Base
+  title="Grupa wokalna „Christopher”"
+  description="Grupa wokalna „Christopher” działa w Domu Pomocy Społecznej w Szczytnie od 2005 roku. Powstała przy pracowni muzykoterapii i występuje na festynach oraz przeglądach w regionie."
+>
+  <PageHeader
+    eyebrow="Nasze zajęcia"
+    title="Grupa wokalna „Christopher”"
+    lead="Śpiewamy razem od 2005 roku — dla siebie, dla sąsiadów i dla każdego, kto ma ochotę posłuchać."
+  />
+
+  <div class="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
+    <div class="grid items-start gap-10 md:grid-cols-2">
+      <div class="doc">
+        <h2>Jak powstała grupa</h2>
+        <p>
+          Grupa wokalna „Christopher” działa w Domu Pomocy Społecznej w Szczytnie od 2005
+          roku. Została stworzona w ramach zajęć pracowni muzykoterapii. Podstawowym celem
+          istnienia grupy jest budowanie wiary w siebie i we własne możliwości, rozwijanie
+          zainteresowań muzycznych oraz integracja osób z niepełnosprawnościami ze środowiskiem
+          lokalnym.
+        </p>
+        <p>
+          Członkowie grupy postawili sobie też za cel propagowanie piosenek Krzysztofa
+          Klenczona i „Czerwonych Gitar”. Wraz z rozwojem wokalnym w repertuarze pojawiły
+          się piosenki biesiadne oraz disco polo.
+        </p>
+      </div>
+
+      <div class="mx-auto w-full max-w-md">
+        <ArchImage
+          src={groupOnStage}
+          alt="Pięciu członków grupy „Christopher” śpiewa na plenerowej scenie pod żółtym namiotem, jeden z nich gra na keyboardzie."
+          loading="eager"
+        />
+      </div>
+    </div>
+
+    <section class="mt-14 border-t border-line pt-10" aria-labelledby="wystepy">
+      <div class="doc">
+        <h2 id="wystepy" class="mt-0!">Gdzie występujemy</h2>
+        <p>
+          Grupa wystąpiła na wielu znaczących imprezach — Festiwalach Małych Form
+          Artystycznych, majówkach, festynach rodzinnych, festynach Kół Gospodyń Wiejskich
+          czy spartakiadach sportowych — wszędzie tam, gdzie uczestnicy spotkań chcą się
+          dobrze i wesoło bawić.
+        </p>
+        <h3>Skład zespołu</h3>
+        <ul>
+          {members.map((name) => <li>{name}</li>)}
+        </ul>
+        <p>Opiekunem i założycielem zespołu jest Krzysztof Fuks.</p>
+      </div>
+    </section>
+
+    <section class="mt-14 border-t border-line pt-10" aria-labelledby="media">
+      <h2 id="media" class="text-2xl">O nas w mediach</h2>
+      <p class="mt-3 max-w-2xl text-muted">
+        Wycinki prasowe o zespole. Treść każdego artykułu przytaczamy poniżej, a skan
+        jest dodatkiem.
+      </p>
+
+      <div class="mt-8 grid gap-10 md:grid-cols-2">
+        <article aria-labelledby="media-muzyka">
+          <div class="doc">
+            <h3 id="media-muzyka" class="mt-0!">„Muzyka z naszych stron”</h3>
+            <p>
+              Reportaż Katarzyny Mikulak z wizyty u członków zespołu „Christopher”,
+              opatrzony nadtytułem „Prezentacje”. Autorka pisze, że muzyka legendarnych
+              „Czerwonych Gitar” może bawić i leczyć, a przykładem tego jest zespół
+              działający przy Domu Pomocy Społecznej w Szczytnie.
+            </p>
+            <p>
+              W ówczesnym składzie zespołu wystąpili mieszkańcy Domu: Jan Pieryni, Marek
+              Lachowicz, Grzegorz Leśnik, Władysław Drozdowski i Miron Prusaczyk. Grupę
+              prowadził muzykoterapeuta Krzysztof Fuks, a pomysł jej stworzenia
+              podpowiedział mu ówczesny dyrektor Domu Henryk Wilga. Zespół powstał niecały
+              rok przed publikacją artykułu; próby zaczęły się od pracy nad zgraniem głosów
+              i doborem repertuaru.
+            </p>
+            <p>
+              O wyborze repertuaru zadecydowała miłość do muzyki „Czerwonych Gitar” —
+              rok 2006 ogłoszono rokiem Krzysztofa Klenczona — ale nie tylko. „To melodyjne,
+              wpadające w ucho piosenki, wszystkim się podobają. Naszą ulubioną jest »Niebo
+              z moich stron«” — mówili zgodnie członkowie zespołu. W repertuarze znalazło
+              się wtedy siedemnaście piosenek.
+            </p>
+            <p>
+              Artykuł opisuje też, co śpiewanie dało samym wykonawcom: spotkania na próbach
+              codziennie, praca nad własnym talentem, pierwsza w życiu przygoda z muzyką
+              dla trzech z nich. Pan Grzegorz grał w wojsku na trąbce i perkusji, a teraz
+              gra na organach i komponuje uspokajające melodie. Pan Jan często grywał na
+              weselach i innych imprezach. Najmłodszy z grupy, pan Marek, na co dzień słucha
+              punk rocka, ale przyznaje, że nuty Klenczona też mu się bardzo podobają.
+            </p>
+            <p>
+              Zespół zaczynał od występów przed szczycieńską publicznością — pierwszy debiut
+              miał miejsce w amfiteatrze przy Miejskim Domu Kultury w Szczytnie. Śpiewał także
+              w kościele, wystąpił rok wcześniej na Festiwalu Małych Form Artystycznych dla
+              osób niepełnosprawnych, a na początku czerwca miał zaprezentować się na
+              festiwalu w Olsztynie. Członkowie zespołu deklarowali w rozmowie, że chcieliby
+              grać dla wszystkich, którzy lubią muzykę Klenczona.
+            </p>
+          </div>
+          <figure class="mt-6">
+            <ZoomImage
+              src={pressMuzyka}
+              alt="Skan artykułu prasowego „Muzyka z naszych stron” ze zdjęciem pięciu członków zespołu „Christopher” stojących obok siebie. Treść artykułu przytoczona powyżej."
+              caption="Skan artykułu „Muzyka z naszych stron”"
+              widths={[400, 680]}
+              sizes="(min-width: 768px) 50vw, 100vw"
+              class="bg-white"
+            />
+            <figcaption class="mt-2 text-sm text-muted">
+              „Muzyka z naszych stron” — reportaż o zespole, autorka Katarzyna Mikulak.
+              Podpis pod zdjęciem: zespół „Christopher” tworzą (od lewej) Władysław
+              Drozdowski, Marek Lachowicz, Miron Prusaczyk, prowadzący zespół Krzysztof
+              Fuks, Grzegorz Leśnik, Jan Pieryni. Fot. Katarzyna Mikulak.
+            </figcaption>
+          </figure>
+        </article>
+
+        <article aria-labelledby="media-seniorska">
+          <div class="doc">
+            <h3 id="media-seniorska" class="mt-0!">„Seniorska impreza”, 13 lipca 2006</h3>
+            <p>
+              Notatka o Powiatowym Dniu Emeryta i Rencisty, który odbył się w siedzibie
+              Polskiego Związku Emerytów, Rencistów i Inwalidów w Szczytnie.
+            </p>
+            <p>
+              W uroczystości uczestniczyli między innymi starosta szczycieński Andrzej
+              Kijewski, wicestarosta Wiesław Szubka, naczelnik wydziału w starostwie
+              powiatowym Stefan Januszczyk oraz dyrektor Domu Pomocy Społecznej w Szczytnie
+              Henryk Wilga. Uroczystość miała charakter festynu, podczas którego nie mogło
+              zabraknąć konkursów, loterii fantowej oraz smacznej grochówki.
+            </p>
+            <p>
+              W czasie zabawy zaprezentowały się zespoły śpiewacze i wokalne: Babskie Olekanie
+              z Rozóg, „Christopher” działający przy Domu Pomocy Społecznej w Szczytnie oraz
+              Echo z Pasymia. Organizatorem Powiatowego Dnia Emeryta i Rencisty był Polski
+              Związek Emerytów, Rencistów i Inwalidów w Szczytnie wraz ze starostwem
+              powiatowym.
+            </p>
+          </div>
+          <figure class="mt-6">
+            <ZoomImage
+              src={pressSeniorska}
+              alt="Skan artykułu prasowego „Seniorska impreza” z 13 lipca 2006 roku ze zdjęciem plenerowego występu przed siedzącą w ogrodzie publicznością. Treść artykułu przytoczona powyżej."
+              caption="Skan artykułu „Seniorska impreza”, 13 lipca 2006"
+              widths={[400, 680]}
+              sizes="(min-width: 768px) 50vw, 100vw"
+              class="bg-white"
+            />
+            <figcaption class="mt-2 text-sm text-muted">
+              „Seniorska impreza”, 13 lipca 2006 — występ na Powiatowym Dniu Emeryta i
+              Rencisty. Podpis pod zdjęciem: wszyscy zaproszeni goście bawili się
+              wyśmienicie podczas występów.
+            </figcaption>
+          </figure>
+        </article>
+      </div>
+    </section>
+  </div>
+</Base>

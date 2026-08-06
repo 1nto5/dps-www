@@ -1,0 +1,88 @@
+---
+const nav = [
+  { href: "/o-nas/", label: "O nas" },
+  { href: "/oferta/", label: "Oferta" },
+  { href: "/filia-w-spychowie/", label: "Filia w Spychowie" },
+  { href: "/aktualnosci/", label: "Aktualności" },
+  { href: "/galeria/", label: "Galeria" },
+  { href: "/dokumenty/", label: "Dokumenty" },
+  { href: "/kontakt/", label: "Kontakt" },
+];
+const path = Astro.url.pathname;
+const isActive = (href: string) => path === href || (href !== "/" && path.startsWith(href));
+---
+
+<header class="border-b border-line bg-paper">
+  <div class="mx-auto flex max-w-6xl items-center justify-between gap-6 px-4 py-4 sm:px-6">
+    <a href="/" class="flex items-center gap-3 no-underline">
+      <span
+        aria-hidden="true"
+        class="flex h-11 w-9 items-end justify-center rounded-t-full bg-spruce pb-1 font-display text-lg font-semibold text-white"
+        >D</span
+      >
+      <span class="leading-tight">
+        <span class="block font-display text-lg font-semibold">Dom Pomocy Społecznej</span>
+        <span class="block text-sm text-muted">im. Jana Pawła II w Szczytnie</span>
+      </span>
+    </a>
+
+    <nav aria-label="Nawigacja główna" class="hidden lg:block">
+      <ul class="flex items-center gap-1">
+        {
+          nav.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={isActive(item.href) ? "page" : undefined}
+                class:list={[
+                  "rounded px-3 py-2 text-base font-medium hover:bg-moss-deep hover:text-spruce-deep",
+                  isActive(item.href)
+                    ? "bg-moss-deep font-semibold text-spruce-deep shadow-[inset_0_-3px_0_var(--color-spruce)]"
+                    : "text-ink",
+                ]}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <details class="relative lg:hidden">
+      <summary
+        class="flex cursor-pointer list-none items-center gap-2 rounded border border-line px-3 py-2 font-medium [&::-webkit-details-marker]:hidden [[open]>&]:bg-moss-deep [[open]>&]:text-spruce-deep"
+      >
+        Menu
+        <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" fill="none">
+          <path d="M2 4h10M2 7h10M2 10h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+        </svg>
+      </summary>
+      <nav
+        aria-label="Nawigacja główna"
+        class="absolute right-0 top-full z-40 mt-2 w-56 rounded-lg border border-line bg-paper p-2 shadow-lg"
+      >
+        <ul>
+          {
+            nav.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  aria-current={isActive(item.href) ? "page" : undefined}
+                  class:list={[
+                    "block rounded px-3 py-2 font-medium hover:bg-moss-deep hover:text-spruce-deep",
+                    isActive(item.href)
+                      ? "bg-moss-deep font-semibold text-spruce-deep shadow-[inset_0_-3px_0_var(--color-spruce)]"
+                      : "text-ink",
+                  ]}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </details>
+  </div>
+</header>

@@ -1,0 +1,75 @@
+---
+import Base from "../../../layouts/Base.astro";
+import PageHeader from "../../../components/PageHeader.astro";
+
+/** Year index for grant-funding disclosures. Newest year first. */
+const years = [
+  {
+    href: "/dokumenty/dotacje/2025/",
+    label: "Dotacje 2025",
+    text: "Dodatek motywacyjny dla pracowników oraz dotacja celowa na wyposażenie Domu.",
+  },
+  {
+    href: "/dokumenty/dotacje/2024/",
+    label: "Dotacje 2024",
+    text: "Pierwszy rok programu dofinansowania wynagrodzeń w postaci dodatku motywacyjnego.",
+  },
+  {
+    href: "/dokumenty/dotacje/2023/",
+    label: "Dotacje 2023",
+    text: "Dofinansowanie ze środków rezerwy celowej budżetu państwa na dodatki dla pracowników.",
+  },
+  {
+    href: "/dokumenty/dotacje/2022/",
+    label: "Dotacje 2022",
+    text: "Środki z Funduszu Przeciwdziałania COVID-19 na dyżury pielęgniarskie.",
+  },
+  {
+    href: "/dokumenty/dotacje/2021/",
+    label: "Dotacje 2021",
+    text: "Dotacje wojewody i środki covidowe na wyposażenie, kadrę oraz ochronę mieszkańców.",
+  },
+  {
+    href: "/dokumenty/dotacje/2020/",
+    label: "Dotacje 2020",
+    text: "Środki na ochronę osobistą, opiekę pielęgniarską i wynagrodzenia w czasie epidemii.",
+  },
+  {
+    href: "/dokumenty/dotacje/2019-2018-2016/",
+    label: "Dotacje 2019, 2018 i 2016",
+    text: "Wcześniejsze dotacje wojewody na utrzymanie standardów i zakupy inwestycyjne.",
+  },
+];
+---
+
+<Base
+  title="Dotacje"
+  description="Dotacje i dofinansowania otrzymane przez Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie — informacje z lat 2016–2025."
+>
+  <PageHeader
+    eyebrow="Dokumenty"
+    eyebrowHref="/dokumenty/"
+    title="Dotacje"
+    lead="Informujemy o środkach publicznych, które otrzymuje nasz Dom. Poniżej znajdą Państwo informacje o dotacjach z podziałem na lata."
+  />
+
+  <div class="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
+    <ul class="grid gap-4 sm:grid-cols-2" role="list">
+      {
+        years.map((y) => (
+          <li>
+            <a
+              href={y.href}
+              class="flex h-full flex-col gap-2 rounded-xl border border-line bg-white/60 p-5 no-underline hover:bg-moss"
+            >
+              <span class="font-display text-xl font-semibold text-spruce-deep underline underline-offset-4">
+                {y.label}
+              </span>
+              <span class="text-muted">{y.text}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</Base>

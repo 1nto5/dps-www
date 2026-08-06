@@ -1,0 +1,157 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHeader from "../components/PageHeader.astro";
+import ArchImage from "../components/ArchImage.astro";
+import Gallery from "../components/Gallery.astro";
+
+import nursingRoom from "../assets/media/1182-2012-07-25-at-10-20-35.jpg";
+import library from "../assets/media/1188-2012-07-25-at-10-18-46-1-1.jpg";
+import twinRoom from "../assets/media/1185-2012-07-25-at-10-40-40.jpg";
+import diningRoom from "../assets/media/1187-2012-07-25-at-10-46-26.jpg";
+import singleRoom from "../assets/media/1186-2012-07-25-at-10-43-511.jpg";
+
+const galleryPhotos = [
+  {
+    src: diningRoom,
+    alt: "Jadalnia Domu z drewnianymi stołami nakrytymi kolorowymi obrusami.",
+  },
+  {
+    src: singleRoom,
+    alt: "Pokój jednoosobowy Mieszkańca z tapczanem, telewizorem i widokiem przez okno.",
+  },
+  {
+    src: library,
+    alt: "Mieszkańcy przy stole w bibliotece, wokół regały z książkami.",
+  },
+];
+---
+
+<Base
+  title="Oferta"
+  description="Opieka całodobowa, usługi opiekuńcze i pielęgnacyjne, terapia zajęciowa oraz warunki bytowe w Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie."
+>
+  <PageHeader
+    eyebrow="Oferta"
+    title="Co zapewniamy naszym Mieszkańcom"
+    lead="Nasz Dom przeznaczony jest dla osób przewlekle psychicznie chorych. Zapewniamy opiekę całodobową dla 196 osób — 171 Mieszkańców w Szczytnie i 25 Mieszkańców w filii w Spychowie."
+  />
+
+  <div class="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
+    <section aria-labelledby="dom" class="grid gap-8 border-t border-line pt-10 md:grid-cols-2 md:gap-12">
+      <div class="doc">
+        <h2 id="dom">Dom, w którym czuć troskę</h2>
+        <p>
+          Mieszkańcy znajdują u nas wykwalifikowaną, całodobową opiekę i własny kąt. Troszczymy się
+          o ich dobre samopoczucie, nie zapominając o indywidualności każdej osoby.
+        </p>
+        <p>
+          Zapewniamy wsparcie terapeutów, którzy dbają o to, aby Mieszkańcy aktywnie spędzali czas i
+          rozwijali swoje zainteresowania. Podejmujemy działania zmierzające do integracji osób
+          chorujących psychicznie ze środowiskiem lokalnym: nasi Mieszkańcy bywają w kawiarniach,
+          korzystają z plaży miejskiej, należą do Klubu Miłośników Kina. Współpracujemy również z
+          uczniami lokalnych szkół.
+        </p>
+        <p>
+          Wszechstronna opieka terapeutyczna i medyczna oraz zaangażowanie pracowników w tworzenie
+          jak najlepszej atmosfery zapewniają godne warunki życia, ze szczególnym poszanowaniem
+          prawa do wolności, intymności i poczucia bezpieczeństwa.
+        </p>
+        <p>
+          <strong>
+            Nasi Mieszkańcy objęci są opieką lekarza psychiatry. Korzystają z usług psychologa i
+            rehabilitanta zatrudnionych w naszym Domu.
+          </strong>
+        </p>
+      </div>
+
+      <div class="md:pt-2">
+        <ArchImage
+          src={nursingRoom}
+          alt="Gabinet pielęgniarski w Domu — pielęgniarka przy biurku, przeszklone szafy z lekami."
+          loading="eager"
+        />
+      </div>
+    </section>
+
+    <section aria-labelledby="opieka" class="mt-14 border-t border-line pt-10">
+      <div class="doc">
+        <h2 id="opieka">Usługi opiekuńcze i pielęgnacyjne</h2>
+        <ul>
+          <li>pomagamy w utrzymaniu higieny osobistej,</li>
+          <li>udzielamy pomocy we wszystkich czynnościach dnia codziennego,</li>
+          <li>zapewniamy całodobową opiekę pielęgniarską.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section aria-labelledby="wspomagajace" class="mt-14 grid gap-8 border-t border-line pt-10 md:grid-cols-2 md:gap-12">
+      <div class="doc">
+        <h2 id="wspomagajace">Usługi wspomagające</h2>
+        <p>Prowadzimy zajęcia terapeutyczne w pracowniach:</p>
+        <ul>
+          <li>arteterapia,</li>
+          <li>wsparcie duchowe,</li>
+          <li>aktywizacja społeczna,</li>
+          <li>pracownia multimedialna,</li>
+          <li>pracownia kulturalno-oświatowa,</li>
+          <li>pracownia rękodzieła artystycznego,</li>
+          <li>ergoterapia.</li>
+        </ul>
+        <p>
+          Umożliwiamy Mieszkańcom korzystanie z codziennej prasy i biblioteki, dbamy o poprawę ich
+          sprawności fizycznej, zapewniamy wsparcie kapłana oraz współpracujemy z rodzinami
+          Mieszkańców i z jednostkami pomocy społecznej.
+        </p>
+      </div>
+
+      <div class="md:pt-2">
+        <ArchImage
+          src={library}
+          alt="Mieszkańcy i terapeutka przy wspólnym stole w bibliotece Domu."
+        />
+      </div>
+    </section>
+
+    <section aria-labelledby="bytowe" class="mt-14 grid gap-8 border-t border-line pt-10 md:grid-cols-2 md:gap-12">
+      <div class="doc">
+        <h2 id="bytowe">Potrzeby bytowe</h2>
+        <ul>
+          <li>
+            dysponujemy pokojami jedno-, dwu- i trzyosobowymi oraz pokojami czteroosobowymi dla osób
+            leżących,
+          </li>
+          <li>zapewniamy urozmaicone posiłki, zgodne z dietą zaleconą przez lekarza,</li>
+          <li>pomagamy w zakupie odzieży i obuwia,</li>
+          <li>zapewniamy bezpieczne przechowywanie środków finansowych i przedmiotów wartościowych.</li>
+        </ul>
+      </div>
+
+      <div class="md:pt-2">
+        <ArchImage
+          src={twinRoom}
+          alt="Pokój dwuosobowy — dwie Mieszkanki siedzą w fotelach przy stoliku."
+        />
+      </div>
+    </section>
+
+    <section aria-labelledby="zdjecia" class="mt-14 border-t border-line pt-10">
+      <h2 id="zdjecia" class="mb-5 text-2xl">Nasz Dom w obiektywie</h2>
+      <Gallery photos={galleryPhotos} />
+    </section>
+
+    <section aria-labelledby="regulamin" class="mt-14 border-t border-line pt-10">
+      <div class="doc">
+        <h2 id="regulamin">Imprezy okolicznościowe</h2>
+        <p>
+          Uroczystości i spotkania organizowane w naszym Domu odbywają się według ustalonych zasad
+          porządku, bezpieczeństwa oraz utrwalania i rozpowszechniania wizerunku uczestników.
+        </p>
+        <p>
+          <a href="/oferta/regulamin-imprez-okolicznosciowych/">
+            Przeczytaj regulamin imprez okolicznościowych
+          </a>
+        </p>
+      </div>
+    </section>
+  </div>
+</Base>

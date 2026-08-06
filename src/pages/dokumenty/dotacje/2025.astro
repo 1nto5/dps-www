@@ -1,0 +1,107 @@
+---
+import { Image } from "astro:assets";
+import Base from "../../../layouts/Base.astro";
+import PageHeader from "../../../components/PageHeader.astro";
+import posterMotywacyjny from "../../../assets/media/2471-plakat-dodatek-motywacyjny-2025-scaled.png";
+import posterCelowa from "../../../assets/media/2422-dotacje-2025.png";
+---
+
+<Base
+  title="Dotacje 2025"
+  description="Dotacje otrzymane w 2025 roku przez Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie: dodatek motywacyjny dla pracowników oraz dotacja celowa na wyposażenie."
+>
+  <PageHeader
+    eyebrow="Dokumenty · Dotacje"
+    eyebrowHref="/dokumenty/dotacje/"
+    title="Dotacje 2025"
+    lead="Środki publiczne otrzymane przez nasz Dom w 2025 roku."
+  />
+
+  <div class="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
+    <div class="doc">
+      <h2>Dofinansowano ze środków budżetu państwa</h2>
+      <p>
+        Program „Dofinansowanie wynagrodzeń pracowników jednostek organizacyjnych pomocy
+        społecznej w postaci dodatku motywacyjnego na lata 2024–2027” w roku 2025.
+      </p>
+      <p>
+        <strong>Dofinansowanie: 1 730 105,53 zł</strong><br />
+        <strong>Całkowita wartość: 1 730 105,53 zł</strong>
+      </p>
+
+      <h3>Cel programu</h3>
+      <p>
+        Pomoc w postaci dodatkowych środków na dofinansowanie wynagrodzeń pracowników jednostek
+        organizacyjnych pomocy społecznej.
+      </p>
+
+      <h3>Realizowane zadania</h3>
+      <p>
+        Wypłata dodatków motywacyjnych w wysokości 1000 zł brutto oraz kosztów składek od dodatków
+        w okresie od dnia 1 lipca 2024 r. do dnia 31 grudnia 2027 r. dla pracowników zatrudnionych
+        na umowę o pracę w jednostkach organizacyjnych pomocy społecznej prowadzonych przez
+        jednostki samorządu terytorialnego lub na ich zlecenie.
+      </p>
+
+      <h3>Grupa docelowa</h3>
+      <p>
+        Pracownicy zatrudnieni na umowę o pracę w jednostkach organizacyjnych pomocy społecznej
+        prowadzonych przez jednostki samorządu terytorialnego lub na zlecenie jednostek samorządu
+        terytorialnego.
+      </p>
+
+      <h3>Efekty programu</h3>
+      <p>
+        Wsparcie i poprawa sytuacji finansowej pracowników zatrudnionych w jednostkach
+        organizacyjnych pomocy społecznej oraz utrzymanie wysokiego standardu realizowanych usług
+        w pomocy społecznej.
+      </p>
+
+      <figure class="my-8">
+        <Image
+          src={posterMotywacyjny}
+          alt="Plakat informacyjny z flagą i godłem Polski: dofinansowano ze środków budżetu państwa, program dodatku motywacyjnego na lata 2024–2027, dofinansowanie w roku 2025 w kwocie 1 730 105,53 zł."
+          widths={[480, 800]}
+          sizes="(min-width: 768px) 34rem, 100vw"
+          loading="lazy"
+          class="w-full max-w-[34rem] rounded-lg border border-line bg-white"
+        />
+        <figcaption class="mt-2 text-sm text-muted">
+          Plakat informacyjny programu dodatku motywacyjnego — rok 2025.
+        </figcaption>
+      </figure>
+
+      <h2>Dotacja celowa na zadania własne powiatu</h2>
+      <p>
+        Dotacja udzielona w 2025 roku na dofinansowanie realizacji zadań własnych powiatów,
+        związanych z działalnością Domu Pomocy Społecznej w Szczytnie.
+      </p>
+      <p>
+        <strong>Dofinansowanie: 87 908,00 zł</strong><br />
+        <strong>Całkowita wartość zadania: 109 987,99 zł</strong>
+      </p>
+      <p>
+        Dotacja celowa udzielona w 2025 roku z budżetu Wojewody Warmińsko-Mazurskiego na realizację
+        zadań własnych w rozdziale 85202 § 2130 z przeznaczeniem na dofinansowanie wydatków na
+        zakup wyposażenia i doposażenia obiektu, w którym przebywają mieszkańcy umieszczeni w Domu
+        Pomocy Społecznej w Szczytnie.
+      </p>
+
+      <figure class="my-8">
+        <Image
+          src={posterCelowa}
+          alt="Plakat informacyjny z flagą i godłem Polski: dotacja udzielona w 2025 roku na zadania własne powiatów związane z działalnością Domu Pomocy Społecznej w Szczytnie, dofinansowanie 87 908,00 zł, całkowita wartość zadania 109 987,99 zł."
+          widths={[480, 800]}
+          sizes="(min-width: 768px) 34rem, 100vw"
+          loading="lazy"
+          class="w-full max-w-[34rem] rounded-lg border border-line bg-white"
+        />
+        <figcaption class="mt-2 text-sm text-muted">
+          Plakat informacyjny dotacji celowej Wojewody Warmińsko-Mazurskiego — rok 2025.
+        </figcaption>
+      </figure>
+
+      <p><a href="/dokumenty/dotacje/">Wróć do listy lat</a></p>
+    </div>
+  </div>
+</Base>

@@ -1,0 +1,81 @@
+---
+/**
+ * Whistleblower section landing page. Source page 1938 had no body content —
+ * this page introduces the section and links to its four subpages.
+ */
+import Base from "../../../layouts/Base.astro";
+import PageHeader from "../../../components/PageHeader.astro";
+
+const subpages = [
+  {
+    href: "/dokumenty/sygnalista/wewnetrzna-procedura/",
+    title: "Wewnętrzna procedura",
+    desc: "Zasady dokonywania zgłoszeń naruszeń prawa i podejmowania działań następczych.",
+  },
+  {
+    href: "/dokumenty/sygnalista/osoba-upowazniona/",
+    title: "Osoba upoważniona",
+    desc: "Kto przyjmuje i weryfikuje zgłoszenia wewnętrzne oraz pod jakim numerem telefonu.",
+  },
+  {
+    href: "/dokumenty/sygnalista/klauzula-informacyjna/",
+    title: "Klauzula informacyjna",
+    desc: "Informacja o przetwarzaniu danych osobowych sygnalisty.",
+  },
+  {
+    href: "/dokumenty/sygnalista/zalaczniki/",
+    title: "Załączniki",
+    desc: "Wzory dokumentów do pobrania: oświadczenie, zgłoszenie, protokół, potwierdzenie, rejestr.",
+  },
+];
+---
+
+<Base
+  title="Sygnalista"
+  description="Zgłaszanie naruszeń prawa w Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie — wewnętrzna procedura, osoba upoważniona, klauzula informacyjna i wzory dokumentów."
+>
+  <PageHeader
+    eyebrow="Dokumenty"
+    eyebrowHref="/dokumenty/"
+    title="Sygnalista"
+    lead="Zgłaszanie naruszeń prawa w Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie."
+  />
+
+  <div class="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
+    <div class="doc">
+      <p>
+        Na podstawie ustawy z dnia 14 czerwca 2024 r. o ochronie sygnalistów w naszym Domu obowiązuje
+        wewnętrzna procedura dokonywania zgłoszeń naruszeń prawa i podejmowania działań następczych.
+        Poniżej znajdą Państwo treść procedury, dane osoby upoważnionej do przyjmowania zgłoszeń,
+        klauzulę informacyjną oraz wzory dokumentów.
+      </p>
+      <p>
+        Zgłoszenia wewnętrzne można przekazać pocztą elektroniczną na adres
+        <a href="mailto:sygnalista@dpsszczytno.pl">sygnalista@dpsszczytno.pl</a>, pisemnie na adres
+        Domu (ul. Wielbarska 2, 12-100 Szczytno) w zamkniętej kopercie opatrzonej napisem „Zgłoszenie
+        naruszenia”, a także ustnie — telefonicznie lub podczas bezpośredniego spotkania. Zgłoszenia
+        anonimowe nie są rozpatrywane.
+      </p>
+    </div>
+
+    <nav aria-label="Strony w dziale Sygnalista" class="mt-8">
+      <ul class="grid gap-4 sm:grid-cols-2">
+        {
+          subpages.map((p) => (
+            <li>
+              <a
+                href={p.href}
+                class="block h-full rounded-lg border border-line bg-white/60 p-5 hover:bg-moss"
+              >
+                <span class="block font-display text-lg font-semibold text-spruce-deep underline underline-offset-2">
+                  {p.title}
+                </span>
+                <span class="mt-1 block text-muted">{p.desc}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</Base>

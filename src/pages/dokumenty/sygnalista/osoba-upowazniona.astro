@@ -1,0 +1,74 @@
+---
+/**
+ * Person authorised to receive internal reports (source page 2000).
+ * The old page showed only a scan; the notice is reproduced here as text
+ * so it is readable by screen readers, with the scan linked as PDF.
+ */
+import { Image } from "astro:assets";
+import Base from "../../../layouts/Base.astro";
+import PageHeader from "../../../components/PageHeader.astro";
+import DocList from "../../../components/DocList.astro";
+
+import scan from "../../../assets/media/2065-Screenshot-2024-10-02-at-13.03.49.png";
+
+const docs = [
+  {
+    href: "/dokumenty/pliki/2004-SKM_224e24092412491-1.pdf",
+    label: "Informacja o osobie upoważnionej do przyjmowania zgłoszeń wewnętrznych — skan",
+    format: "PDF",
+    size: "148 KB",
+  },
+];
+---
+
+<Base
+  title="Osoba upoważniona"
+  description="Osoba upoważniona do przyjmowania i weryfikacji zgłoszeń wewnętrznych w Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie."
+>
+  <PageHeader
+    eyebrow="Sygnalista"
+    eyebrowHref="/dokumenty/sygnalista/"
+    title="Osoba upoważniona"
+    lead="Kto przyjmuje i weryfikuje zgłoszenia wewnętrzne w naszym Domu."
+  />
+
+  <div class="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
+    <div class="doc">
+      <p>
+        Osobą upoważnioną do przyjmowania i weryfikacji zgłoszeń wewnętrznych w Domu Pomocy Społecznej
+        im. Jana Pawła II w Szczytnie jest <strong>Pani Marta Czestkowska</strong>, podczas
+        nieobecności zastępstwo pełni <strong>Pani Dorota Kocot</strong>.
+      </p>
+      <p>
+        Zgłoszeń należy dokonywać pod numerem telefonu
+        <a href="tel:+48896242288">89 624 22 88</a>.
+      </p>
+      <p>Informację podpisała Dyrektor Domu Pomocy Społecznej w Szczytnie, mgr Dorota Sędzińska-Bruździak.</p>
+
+      <h2>Skan informacji</h2>
+    </div>
+
+    <div class="mt-4 max-w-3xl">
+      <Image
+        src={scan}
+        alt="Skan informacji Dyrektora Domu Pomocy Społecznej w Szczytnie o osobie upoważnionej do przyjmowania i weryfikacji zgłoszeń wewnętrznych — treść przytoczona powyżej."
+        widths={[600, 1024]}
+        sizes="(min-width: 768px) 720px, 100vw"
+        class="h-auto w-full rounded-lg border border-line"
+        loading="lazy"
+      />
+    </div>
+
+    <div class="mt-6 max-w-2xl">
+      <DocList docs={docs} />
+    </div>
+
+    <p class="mt-14">
+      <a
+        href="/dokumenty/sygnalista/"
+        class="text-spruce underline underline-offset-4 hover:text-spruce-deep"
+        >Wróć do działu Sygnalista</a
+      >
+    </p>
+  </div>
+</Base>

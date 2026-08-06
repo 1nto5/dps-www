@@ -1,0 +1,39 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHeader from "../components/PageHeader.astro";
+
+const links = [
+  { href: "/", label: "Strona główna" },
+  { href: "/o-nas/", label: "O nas" },
+  { href: "/aktualnosci/", label: "Aktualności" },
+  { href: "/dokumenty/", label: "Dokumenty" },
+  { href: "/kontakt/", label: "Kontakt i dojazd" },
+];
+---
+
+<Base
+  title="Nie znaleziono strony"
+  description="Pod tym adresem nie ma strony. Skorzystaj z odnośników, aby wrócić na stronę główną lub do kontaktu."
+>
+  <PageHeader
+    eyebrow="Błąd 404"
+    title="Nie znaleziono tej strony"
+    lead="Adres mógł się zmienić przy przenosinach naszej strony albo zawiera literówkę. Nic straconego — poniżej znajdziesz drogę dalej."
+  />
+
+  <div class="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
+    <div class="doc">
+      <p>
+        Jeśli szukasz konkretnej informacji i nie możesz jej znaleźć, chętnie pomożemy. Zadzwoń pod
+        numer <a href="tel:+48896242288">89 624 22 88</a> lub napisz na adres
+        <a href="mailto:sekretariat@dpsszczytno.pl">sekretariat@dpsszczytno.pl</a>.
+      </p>
+
+      <nav aria-label="Najczęściej odwiedzane strony">
+        <ul>
+          {links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+        </ul>
+      </nav>
+    </div>
+  </div>
+</Base>

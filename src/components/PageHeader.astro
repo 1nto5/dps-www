@@ -1,0 +1,52 @@
+---
+interface Props {
+  eyebrow?: string;
+  /** When the eyebrow names a parent section, link it there — wayfinding, not decoration. */
+  eyebrowHref?: string;
+  title: string;
+  lead?: string;
+  /** "hero" is the larger homepage scale; every other page uses the default. */
+  size?: "default" | "hero";
+  /** Drop the page-width wrapper when the header already sits inside a layout column. */
+  bare?: boolean;
+  /** Id for the h1, for sections that reference it with aria-labelledby. */
+  titleId?: string;
+}
+const {
+  eyebrow,
+  eyebrowHref,
+  title,
+  lead,
+  size = "default",
+  bare = false,
+  titleId,
+} = Astro.props;
+
+const hero = size === "hero";
+const eyebrowClass = hero
+  ? "mb-3 text-sm font-semibold uppercase tracking-[0.12em] text-honey"
+  : "mb-2 text-sm font-semibold uppercase tracking-[0.12em] text-honey";
+const titleClass = hero ? "text-4xl md:text-5xl" : "text-3xl md:text-4xl";
+const leadClass = hero
+  ? "mt-5 max-w-xl text-lg leading-relaxed text-ink/85 text-pretty"
+  : "mt-4 max-w-2xl text-lg leading-relaxed text-ink/85 text-pretty";
+---
+
+<div class:list={[!bare && "mx-auto max-w-6xl px-4 pb-8 pt-10 sm:px-6 md:pb-10 md:pt-14"]}>
+  {
+    eyebrow && (
+      <p class={eyebrowClass}>
+        {eyebrowHref ? (
+          <a href={eyebrowHref} class="underline underline-offset-4 hover:text-ink">
+            {eyebrow}
+          </a>
+        ) : (
+          eyebrow
+        )}
+      </p>
+    )
+  }
+  <h1 id={titleId} class={titleClass}>{title}</h1>
+  {lead && <p class={leadClass}>{lead}</p>}
+  <slot />
+</div>

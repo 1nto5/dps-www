@@ -1,0 +1,133 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHeader from "../components/PageHeader.astro";
+import Gallery from "../components/Gallery.astro";
+import ZoomImage from "../components/ZoomImage.astro";
+
+import buildingGarden from "../assets/media/1377-1-1.jpg";
+import buildingMonument from "../assets/media/1375-2-1.jpg";
+import buildingPorch from "../assets/media/1376-3.jpg";
+import courtyard from "../assets/media/1369-680-00298.jpg";
+import complexView from "../assets/media/1362-680-00296.jpg";
+import solarCanopy from "../assets/media/1357-680-00166.jpg";
+
+import roomSingle from "../assets/media/1186-2012-07-25-at-10-43-511.jpg";
+import roomShared from "../assets/media/1185-2012-07-25-at-10-40-40.jpg";
+import commonRoom from "../assets/media/1188-2012-07-25-at-10-18-46-1-1.jpg";
+import diningRoom from "../assets/media/1187-2012-07-25-at-10-46-26.jpg";
+import treatmentRoom from "../assets/media/1182-2012-07-25-at-10-20-35.jpg";
+
+import choirOnStage from "../assets/media/1168-christopherGroup.jpg";
+
+const buildings = [
+  {
+    src: buildingGarden,
+    alt: "Główny budynek Domu z czerwonym dachem, widziany zza kwitnących hortensji przy wjeździe",
+  },
+  {
+    src: buildingMonument,
+    alt: "Ogród przed Domem z pomnikiem świętego Jana Pawła II, ławkami i strzyżonymi krzewami",
+  },
+  {
+    src: buildingPorch,
+    alt: "Biały budynek Domu z drewnianym gankiem, otoczony trawnikiem i drzewami",
+  },
+  {
+    src: courtyard,
+    alt: "Wewnętrzny dziedziniec Domu z brukowanym parkingiem i głównym budynkiem w tle",
+  },
+  {
+    src: complexView,
+    alt: "Widok z góry na zabudowania Domu: budynek mieszkalny z czerwonym dachem i wiata z panelami słonecznymi",
+  },
+  {
+    src: solarCanopy,
+    alt: "Wiata parkingowa z panelami fotowoltaicznymi na terenie Domu, wśród zieleni",
+  },
+];
+
+const interiors = [
+  {
+    src: roomSingle,
+    alt: "Pokój jednoosobowy Mieszkańca z tapczanem, telewizorem i biurkiem przy oknie",
+  },
+  {
+    src: roomShared,
+    alt: "Pokój dwuosobowy z fotelami, stolikiem i kwiatami na komodzie",
+  },
+  {
+    src: commonRoom,
+    alt: "Mieszkańcy rozmawiają przy stole w świetlicy, w tle regały pełne książek",
+  },
+  {
+    src: diningRoom,
+    alt: "Jasna jadalnia z drewnianymi krzesłami i stołami nakrytymi obrusami",
+  },
+  {
+    src: treatmentRoom,
+    alt: "Gabinet zabiegowy, w którym pielęgniarka przygotowuje leki przy stole",
+  },
+];
+
+const events = [
+  {
+    src: choirOnStage,
+    alt: "Grupa wokalna „Christopher” śpiewa na plenerowej scenie pod żółto-czerwonym namiotem",
+  },
+];
+---
+
+<Base
+  title="Galeria"
+  description="Zdjęcia Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie: budynki i ogród, wnętrza mieszkań oraz występy grupy wokalnej Christopher."
+>
+  <PageHeader
+    eyebrow="Nasz dom"
+    title="Galeria"
+    lead="Kilka zdjęć naszego Domu: budynki i ogród, w którym Mieszkańcy spędzają czas, wnętrza mieszkań oraz występy grupy wokalnej „Christopher”."
+  />
+
+  <section class="mx-auto max-w-6xl px-4 sm:px-6" aria-labelledby="budynki">
+    <div class="doc">
+      <h2 id="budynki">Budynki i otoczenie</h2>
+      <p>
+        Dom stoi przy ulicy Wielbarskiej w Szczytnie, w otoczeniu ogrodu z alejkami, ławkami
+        i pomnikiem patrona.
+      </p>
+    </div>
+    <div class="mt-6">
+      <Gallery photos={buildings} />
+    </div>
+  </section>
+
+  <section class="mx-auto mt-14 max-w-6xl px-4 sm:px-6" aria-labelledby="wnetrza">
+    <div class="doc">
+      <h2 id="wnetrza">Wnętrza i życie codzienne</h2>
+      <p>
+        Pokoje Mieszkańców, świetlice, jadalnia i gabinety zabiegowe — miejsca, w których toczy się
+        zwykły dzień w naszym Domu.
+      </p>
+    </div>
+    <div class="mt-6">
+      <Gallery photos={interiors} />
+    </div>
+  </section>
+
+  <section class="mx-auto mt-14 max-w-6xl px-4 sm:px-6" aria-labelledby="wystepy">
+    <div class="doc">
+      <h2 id="wystepy">Zajęcia i występy</h2>
+      <p>
+        Nasi Mieszkańcy występują na festynach i festiwalach w regionie. Więcej o zespole piszemy
+        na stronie <a href="/grupa-muzyczna/">Grupa muzyczna „Christopher”</a>.
+      </p>
+    </div>
+    <div class="mt-6 max-w-2xl">
+      <ZoomImage
+        src={events[0]!.src}
+        alt={events[0]!.alt}
+        widths={[480, 680]}
+        sizes="(min-width: 768px) 42rem, 100vw"
+      />
+    </div>
+  </section>
+</Base>

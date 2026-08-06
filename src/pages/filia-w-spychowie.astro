@@ -1,0 +1,112 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHeader from "../components/PageHeader.astro";
+import ArchImage from "../components/ArchImage.astro";
+
+import twinRoom from "../assets/media/1185-2012-07-25-at-10-40-40.jpg";
+
+const therapies = [
+  "zajęcia plastyczne",
+  "robótki ręczne",
+  "zajęcia świetlicowe",
+  "czytelnictwo i twórczość literacka",
+  "muzykoterapia",
+  "prace ogrodnicze, wycieczki i spacery",
+];
+
+const rooms = [
+  "gabinet zabiegowy",
+  "świetlica",
+  "kaplica",
+  "stołówka",
+  "palarnia",
+  "pracownia terapeutyczna",
+];
+---
+
+<Base
+  title="Filia w Spychowie"
+  description="Filia Domu Pomocy Społecznej im. Jana Pawła II w Spychowie — 25 miejsc, opieka pielęgnacyjna i zajęcia terapeutyczne. Spychowo, ul. Sienkiewicza 3, tel. 89 622 50 30."
+>
+  <PageHeader
+    eyebrow="Nasz dom"
+    title="Filia w Spychowie"
+    lead="Mniejszy dom pośród mazurskich lasów. Od 2001 roku mieszka tu 25 osób, otoczonych opieką i codziennym rytmem zajęć."
+  />
+
+  <div class="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
+    <div class="grid gap-10 md:grid-cols-[minmax(0,1fr)_18rem]">
+      <div class="doc">
+        <h2>O filii</h2>
+        <p>
+          Filia w Spychowie istnieje od 2001 roku i jest domem dla 25 Mieszkańców. Opieka
+          pielęgniarska jest tu przez całą dobę, a dzień ma swój rytm: wspólne posiłki w
+          stołówce, zajęcia w pracowni terapeutycznej, msza w kaplicy i czas dla siebie we
+          własnym pokoju. Pomagamy w codziennych czynnościach tyle, ile potrzeba — i tak,
+          żeby każdy zachował swoje przyzwyczajenia.
+        </p>
+        <p>
+          Zakres usług pielęgnacyjnych, opiekuńczych i wspomagających oraz warunki bytowe
+          określa Regulamin Organizacyjny Domu.
+        </p>
+
+        <h2>Wspólne pomieszczenia</h2>
+        <p>
+          Oprócz własnych pokoi Mieszkańcy korzystają także z pozostałych pomieszczeń domu:
+        </p>
+        <ul>
+          {rooms.map((room) => <li>{room}</li>)}
+        </ul>
+        <p>Wsparcie duchowe zapewnia kapłan z tutejszej parafii.</p>
+
+        <h2>Zajęcia terapeutyczne</h2>
+        <ul>
+          {therapies.map((item) => <li>{item}</li>)}
+        </ul>
+
+        <h2>Życie ze społecznością lokalną</h2>
+        <p>
+          Pracownicy domu i Mieszkańcy dokładają starań, by utrzymywać dobre kontakty ze
+          środowiskiem lokalnym, szczególnie ze szkołą i miejscowymi zakładami pracy. Dom
+          odwiedzają różne zespoły muzyczne i rozrywkowe — między innymi aktorzy Teatru
+          ArtRe z Krakowa — a także dzieci i młodzież z okolicznościowymi przedstawieniami
+          oraz Mieszkańcy i uczestnicy placówek o podobnym profilu działalności.
+        </p>
+      </div>
+
+      <div class="space-y-8 self-start">
+        <ArchImage
+          src={twinRoom}
+          alt="Dwie Mieszkanki rozmawiające przy stoliku w swoim pokoju."
+          loading="eager"
+          class="aspect-[3/4]"
+        />
+
+        <aside
+          class="h-fit rounded-xl border border-line bg-moss/60 p-5"
+          aria-labelledby="kontakt-filia"
+        >
+          <h2 id="kontakt-filia" class="text-xl">Kontakt do filii</h2>
+          <address class="mt-3 not-italic leading-relaxed">
+            Filia Domu Pomocy Społecznej<br />
+            ul. Sienkiewicza 3<br />
+            Spychowo
+          </address>
+          <p class="mt-4">
+            <a
+              href="tel:+48896225030"
+              class="font-medium text-spruce-deep underline underline-offset-4 hover:text-spruce"
+              >Telefon: 89 622 50 30</a
+            >
+          </p>
+          <p class="mt-4 text-sm text-muted">
+            Sprawy formalne prowadzi <a
+              href="/kontakt/"
+              class="text-spruce-deep underline underline-offset-4">sekretariat domu w Szczytnie</a
+            >.
+          </p>
+        </aside>
+      </div>
+    </div>
+  </div>
+</Base>

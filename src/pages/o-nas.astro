@@ -1,0 +1,237 @@
+---
+import Base from "../layouts/Base.astro";
+import ZoomImage from "../components/ZoomImage.astro";
+import PageHeader from "../components/PageHeader.astro";
+import ArchImage from "../components/ArchImage.astro";
+import Gallery from "../components/Gallery.astro";
+import DocList from "../components/DocList.astro";
+
+import buildingGarden from "../assets/media/1377-1-1.jpg";
+import buildingMonument from "../assets/media/1375-2-1.jpg";
+import roomSingle from "../assets/media/1186-2012-07-25-at-10-43-511.jpg";
+import roomShared from "../assets/media/1185-2012-07-25-at-10-40-40.jpg";
+import commonRoom from "../assets/media/1188-2012-07-25-at-10-18-46-1-1.jpg";
+import diningRoom from "../assets/media/1187-2012-07-25-at-10-46-26.jpg";
+import treatmentRoom from "../assets/media/1182-2012-07-25-at-10-20-35.jpg";
+import choirOnStage from "../assets/media/1168-christopherGroup.jpg";
+import choirInPress from "../assets/media/1169-christopher680.jpg";
+
+const management = [
+  { role: "Dyrektor", name: "mgr Dorota Sędzińska-Bruździak" },
+  { role: "Główna księgowa", name: "Beata Brzózy" },
+  { role: "Kierownik Działu Administracyjno-Usługowego", name: "Dorota Kocot" },
+  { role: "Kierownik Mieszkania I", name: "Barbara Suprynowicz" },
+  { role: "Kierownik Mieszkania II", name: "Dariusz Jasiński" },
+  { role: "Kierownik Mieszkania III", name: "Marta Deptuła" },
+];
+
+const legalBasis = [
+  "Ustawy o finansach publicznych (t.j. Dz. U. z 2019 r., poz. 869)",
+  "Ustawy o samorządzie powiatowym (t.j. Dz. U. z 2019 r., poz. 511)",
+  "Ustawy o pracownikach samorządowych (t.j. Dz. U. z 2019 r., poz. 1282)",
+  "Ustawy o pomocy społecznej (t.j. Dz. U. z 2018 r., poz. 1508)",
+  "Rozporządzenia w sprawie domów pomocy społecznej (t.j. Dz. U. z 2018 r., poz. 734)",
+  "Decyzji nr PS.II.UR.3013-19.06 Wojewody Warmińsko-Mazurskiego z 13 lutego 2007 r. w sprawie zezwolenia na prowadzenie domu pomocy społecznej dla osób przewlekle psychicznie chorych",
+];
+
+const docs = [
+  {
+    href: "/dokumenty/pliki/1744-Regulamin-Organizacyjny-DPS-Szczytno.doc",
+    label: "Regulamin organizacyjny",
+    format: "DOC",
+    size: "133 KB",
+  },
+  {
+    href: "/dokumenty/pliki/1741-Statut-DPS-Szczytno.pdf",
+    label: "Statut Domu",
+    format: "PDF",
+    size: "699 KB",
+  },
+  {
+    href: "/dokumenty/pliki/1771-schemat-organizacyjny.pdf",
+    label: "Schemat organizacyjny",
+    format: "PDF",
+    size: "204 KB",
+  },
+];
+
+const interiors = [
+  { src: roomSingle, alt: "Pokój jednoosobowy Mieszkańca z tapczanem, telewizorem i biurkiem" },
+  { src: roomShared, alt: "Pokój dwuosobowy z fotelami, stolikiem i kwiatami na komodzie" },
+  { src: commonRoom, alt: "Mieszkańcy przy stole w świetlicy z regałami pełnymi książek" },
+  { src: diningRoom, alt: "Jasna jadalnia z drewnianymi krzesłami i stołami nakrytymi obrusami" },
+  { src: treatmentRoom, alt: "Gabinet zabiegowy, w którym pielęgniarka przygotowuje leki" },
+];
+---
+
+<Base
+  title="O nas"
+  description="Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie — dom dla osób przewlekle psychicznie chorych. Kim jesteśmy, jak mieszkamy, kto nami kieruje i na jakiej podstawie działamy."
+>
+  <PageHeader
+    eyebrow="Nasz dom"
+    title="O nas"
+    lead="Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie jest domem dla osób przewlekle psychicznie chorych. Razem z filią w Spychowie zapewniamy całodobową opiekę 196 Mieszkańcom."
+  />
+
+  <section class="mx-auto max-w-6xl px-4 sm:px-6" aria-labelledby="nasz-dom">
+    <div class="grid items-start gap-8 md:grid-cols-2 md:gap-12">
+      <div class="doc">
+        <h2 id="nasz-dom">Nasz dom</h2>
+        <p>
+          Jesteśmy jednostką organizacyjną Powiatu Szczycieńskiego. Nasz Dom stoi przy ulicy
+          Wielbarskiej w Szczytnie, w otoczeniu ogrodu, a od 2001 roku prowadzimy także filię
+          w Spychowie.
+        </p>
+        <p>
+          Troszczymy się o dobre samopoczucie naszych podopiecznych, nie zapominając
+          o indywidualności każdego z nich. Wszechstronna opieka terapeutyczna i medyczna oraz
+          zaangażowanie pracowników zapewniają godne warunki życia, ze szczególnym poszanowaniem
+          prawa do wolności, intymności i poczucia bezpieczeństwa.
+        </p>
+        <p>
+          Podejmujemy działania zmierzające do integracji osób chorujących psychicznie ze
+          środowiskiem lokalnym. Nasi Mieszkańcy bywają gośćmi kawiarni, korzystają z plaży
+          miejskiej i należą do Klubu Miłośników Kina. Współpracujemy również z uczniami
+          okolicznych szkół.
+        </p>
+      </div>
+      <div class="max-w-md md:justify-self-end">
+        <ArchImage
+          src={buildingGarden}
+          alt="Budynek Domu Pomocy Społecznej w Szczytnie z czerwonym dachem, widziany od strony ogrodu z kwitnącymi hortensjami"
+          loading="eager"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto mt-14 max-w-6xl px-4 sm:px-6" aria-labelledby="dla-kogo">
+    <div class="doc">
+      <h2 id="dla-kogo">Dla kogo jest nasz dom</h2>
+      <p>
+        Nasz Dom przeznaczony jest dla osób przewlekle psychicznie chorych. Zapewniamy opiekę
+        całodobową dla 196 osób: 171 Mieszkańców mieszka w Szczytnie, a 25 osób w filii
+        w Spychowie.
+      </p>
+      <p>
+        Mieszkańcy objęci są opieką lekarza psychiatry oraz korzystają z usług psychologa
+        i rehabilitanta zatrudnionych w placówce. Zapewniamy wsparcie wykwalifikowanych
+        terapeutów, którzy dbają o to, aby Mieszkańcy aktywnie spędzali czas i rozwijali swoje
+        zainteresowania.
+      </p>
+      <p>
+        Szczegółowy zakres usług opiekuńczych, pielęgnacyjnych i wspomagających opisujemy na
+        stronie <a href="/oferta/">Oferta</a>. O życiu codziennym w Spychowie piszemy na stronie
+        <a href="/filia-w-spychowie/">Filia w Spychowie</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="mx-auto mt-14 max-w-6xl px-4 sm:px-6" aria-labelledby="mieszkania">
+    <div class="doc">
+      <h2 id="mieszkania">Mieszkania i budynki</h2>
+      <p>
+        Dom w Szczytnie podzielony jest na trzy mieszkania — Mieszkanie I, II i III — z których
+        każde ma własnego kierownika i zespół opiekunów. Dysponujemy pokojami jedno-, dwu-
+        i trzyosobowymi oraz pokojami czteroosobowymi dla osób leżących.
+      </p>
+      <p>
+        Poza pokojami Mieszkańcy korzystają ze wspólnych przestrzeni: świetlic, biblioteki,
+        jadalni, kaplicy, pracowni terapeutycznych i gabinetów zabiegowych. Wokół budynków
+        rozciąga się ogród z alejkami i ławkami, a przy Domu stoi pomnik patrona — świętego
+        Jana Pawła II.
+      </p>
+    </div>
+    <div class="mt-6">
+      <Gallery photos={interiors} />
+    </div>
+  </section>
+
+  <section class="mx-auto mt-14 max-w-6xl px-4 sm:px-6" aria-labelledby="grupa-muzyczna">
+    <div class="grid items-start gap-8 md:grid-cols-2 md:gap-12">
+      <div class="max-w-md">
+        <ArchImage
+          src={choirOnStage}
+          alt="Pięciu Mieszkańców z grupy wokalnej Christopher śpiewa na plenerowej scenie pod żółto-czerwonym namiotem"
+        />
+      </div>
+      <div class="doc">
+        <h2 id="grupa-muzyczna">Grupa muzyczna</h2>
+        <p>
+          Grupa wokalna „Christopher” działa w naszym Domu od 2005 roku. Powstała w ramach zajęć
+          pracowni muzykoterapii, a jej celem jest budowanie wiary w siebie i we własne
+          możliwości, rozwijanie zainteresowań muzycznych oraz integracja osób
+          z niepełnosprawnościami ze środowiskiem lokalnym.
+        </p>
+        <p>
+          Zespół propaguje piosenki Krzysztofa Klenczona i „Czerwonych Gitar”, a w jego
+          repertuarze są także piosenki biesiadne. Grupa wystąpiła na wielu festiwalach, majówkach
+          i festynach rodzinnych w regionie.
+        </p>
+        <p>
+          <a href="/grupa-muzyczna/">Więcej o grupie wokalnej „Christopher”</a>
+        </p>
+      </div>
+    </div>
+    <figure class="mt-8 max-w-sm">
+      <ZoomImage
+        src={choirInPress}
+        alt="Skan wycinka prasowego „Muzyka z naszych stron” ze zdjęciem członków zespołu „Christopher”. Treść artykułu jest przytoczona na stronie grupy wokalnej."
+        caption="Zespół „Christopher” w lokalnej prasie"
+        widths={[340, 680]}
+        sizes="(min-width: 768px) 340px, 90vw"
+      />
+      <figcaption class="mt-2 text-sm text-muted">
+        Zespół „Christopher” w lokalnej prasie. Treść artykułu przytaczamy na stronie
+        <a href="/grupa-muzyczna/#media" class="text-spruce underline underline-offset-4 hover:text-spruce-deep"
+          >grupy wokalnej „Christopher”</a
+        >.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section class="mx-auto mt-14 max-w-6xl px-4 sm:px-6" aria-labelledby="kierownictwo">
+    <div class="doc">
+      <h2 id="kierownictwo">Kierownictwo Domu</h2>
+      <dl class="mt-4 divide-y divide-line rounded-lg border border-line bg-white/60">
+        {
+          management.map((person) => (
+            <div class="grid gap-1 px-4 py-3 sm:grid-cols-2 sm:gap-6">
+              <dt class="text-muted">{person.role}</dt>
+              <dd class="font-medium">{person.name}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <section class="mx-auto mt-14 max-w-6xl px-4 sm:px-6" aria-labelledby="podstawa-prawna">
+    <div class="grid items-start gap-8 md:grid-cols-2 md:gap-12">
+      <div class="doc">
+        <h2 id="podstawa-prawna">Podstawa prawna działania</h2>
+        <p>Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie funkcjonuje na podstawie:</p>
+        <ol>
+          {legalBasis.map((item) => <li>{item}</li>)}
+        </ol>
+      </div>
+      <div class="max-w-md md:justify-self-end">
+        <ArchImage
+          src={buildingMonument}
+          alt="Pomnik świętego Jana Pawła II w ogrodzie przed głównym budynkiem Domu, obok ławki i strzyżone żywopłoty"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto mt-14 max-w-6xl px-4 sm:px-6" aria-labelledby="dokumenty">
+    <div class="doc">
+      <h2 id="dokumenty">Dokumenty</h2>
+      <p>Podstawowe dokumenty ustrojowe Domu do pobrania:</p>
+    </div>
+    <div class="mt-4 max-w-2xl">
+      <DocList docs={docs} />
+    </div>
+  </section>
+</Base>

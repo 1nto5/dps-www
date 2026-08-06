@@ -1,0 +1,71 @@
+---
+/**
+ * Whistleblower form templates (source page 1992).
+ */
+import Base from "../../../layouts/Base.astro";
+import PageHeader from "../../../components/PageHeader.astro";
+import DocList from "../../../components/DocList.astro";
+
+const docs = [
+  {
+    href: "/dokumenty/pliki/2018-Zalacznik-nr-1-Oswiadczenie.docx",
+    label: "Załącznik nr 1 — Oświadczenie",
+    format: "DOCX",
+    size: "14 KB",
+  },
+  {
+    href: "/dokumenty/pliki/2027-Zalacznik-nr-2-Zgloszenie-naruszenia-prawa.docx",
+    label: "Załącznik nr 2 — Zgłoszenie naruszenia prawa",
+    format: "DOCX",
+    size: "21 KB",
+  },
+  {
+    href: "/dokumenty/pliki/2028-Zalacznik-nr-3-Protokol-rozmowy_spotkania.docx",
+    label: "Załącznik nr 3 — Protokół rozmowy lub spotkania",
+    format: "DOCX",
+    size: "15 KB",
+  },
+  {
+    href: "/dokumenty/pliki/2029-Zalacznik-nr-4-Potwierdzernie-przyjecia-zgloszenia-naruszenia-prawa.docx",
+    label: "Załącznik nr 4 — Potwierdzenie przyjęcia zgłoszenia naruszenia prawa",
+    format: "DOCX",
+    size: "16 KB",
+  },
+  {
+    href: "/dokumenty/pliki/2030-Zalacznik-nr-5-Rejestr-zgloszen-wewnetrznych.docx",
+    label: "Załącznik nr 5 — Rejestr zgłoszeń wewnętrznych",
+    format: "DOCX",
+    size: "16 KB",
+  },
+];
+---
+
+<Base
+  title="Załączniki"
+  description="Wzory dokumentów do wewnętrznej procedury zgłaszania naruszeń prawa w Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie."
+>
+  <PageHeader
+    eyebrow="Sygnalista"
+    eyebrowHref="/dokumenty/sygnalista/"
+    title="Załączniki"
+    lead="Wzory dokumentów do wewnętrznej procedury zgłaszania naruszeń prawa."
+  />
+
+  <div class="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
+    <div class="doc">
+      <p>Poniższe wzory można pobrać i wypełnić:</p>
+    </div>
+
+    <div class="mt-6 max-w-2xl">
+      <DocList docs={docs} />
+    </div>
+
+    <p class="mt-14">
+      <a
+        href="/dokumenty/sygnalista/"
+        class="text-spruce underline underline-offset-4 hover:text-spruce-deep"
+        >Wróć do działu Sygnalista</a
+      >
+    </p>
+  </div>
+</Base>

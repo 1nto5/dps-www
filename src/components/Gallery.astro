@@ -1,0 +1,43 @@
+---
+/**
+ * Responsive photo grid. Pass imported images with meaningful alt text
+ * (alt: "" only for genuinely decorative repeats). Every photo opens
+ * enlarged in the shared Lightbox; without JS the link opens the
+ * full-size image file directly.
+ */
+import { Image, getImage } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import Lightbox from "./Lightbox.astro";
+
+interface Props {
+  photos: { src: ImageMetadata; alt: string }[];
+}
+const { photos } = Astro.props;
+
+const items = await Promise.all(
+  photos.map(async (p) => ({
+    ...p,
+    full: await getImage({ src: p.src, width: 1600, format: "webp" }),
+  })),
+);
+---
+
+<ul class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4" role="list" data-lightbox-group>
+  {
+    items.map((p) => (
+      <li>
+        <a href={p.full.src} data-lightbox data-caption={p.alt} class="rounded-lg">
+          <Image
+            src={p.src}
+            alt={p.alt}
+            widths={[400, 700]}
+            sizes="(min-width: 640px) 33vw, 50vw"
+            class="aspect-[4/3] w-full rounded-lg object-cover"
+            loading="lazy"
+          />
+        </a>
+      </li>
+    ))
+  }
+</ul>
+<Lightbox />
