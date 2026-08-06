@@ -27,6 +27,11 @@ const desc =
     <title>{fullTitle}</title>
     <meta name="description" content={desc} />
     <link rel="canonical" href={canonical} />
+    {
+      /* Test-phase deploys (non-root base) must never be indexed under
+         the temporary github.io address. */
+      import.meta.env.BASE_URL !== "/" && <meta name="robots" content="noindex" />
+    }
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={desc} />
