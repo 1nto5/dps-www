@@ -37,7 +37,8 @@ jobs:
       - name: Build site
         run: bun run build
         env:
-          SITE: https://1nto5.github.io
+          # Project Pages of a user with a custom domain are served there.
+          SITE: https://adrianantosiak.pl
           BASE: /dps-www
 
       - name: Prefix hand-written absolute URLs with the base path
