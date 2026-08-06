@@ -49,10 +49,15 @@ const dateFormat = new Intl.DateTimeFormat("pl-PL", {
   title="Strona główna"
   description="Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie — całodobowa opieka dla 196 osób przewlekle psychicznie chorych, wraz z filią w Spychowie."
 >
-  <section class="mx-auto max-w-6xl px-4 pb-6 pt-10 sm:px-6 md:pt-14" aria-labelledby="hero-title">
+  <section
+    class="mx-auto max-w-6xl px-4 pb-6 pt-10 sm:px-6 md:pt-14"
+    aria-labelledby="hero-title"
+    data-no-reveal
+  >
     <div class="grid items-center gap-10 md:grid-cols-2 md:gap-14">
       <PageHeader
         bare
+        class="hero-enter"
         size="hero"
         titleId="hero-title"
         eyebrow="Szczytno i Spychowo"
@@ -72,7 +77,7 @@ const dateFormat = new Intl.DateTimeFormat("pl-PL", {
           >
         </div>
       </PageHeader>
-      <div class="mx-auto w-full max-w-md md:max-w-none">
+      <div class="hero-enter-photo mx-auto w-full max-w-md md:max-w-none">
         <ArchImage
           src={heroPhoto}
           alt="Budynek Domu Pomocy Społecznej w Szczytnie z czerwonym dachem, widziany zza kwitnących hortensji"
@@ -111,7 +116,7 @@ const dateFormat = new Intl.DateTimeFormat("pl-PL", {
     <ul class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3" role="list">
       {
         cards.map((card) => (
-          <li class="relative flex flex-col overflow-hidden rounded-xl border border-line bg-white/60 transition-colors duration-150 hover:border-spruce/40 focus-within:border-spruce/40">
+          <li class="photo-zoom relative flex flex-col overflow-hidden rounded-xl border border-line bg-white/60 transition-colors duration-150 hover:border-spruce/40 focus-within:border-spruce/40">
             <Image
               src={card.photo}
               alt={card.alt}

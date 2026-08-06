@@ -42,27 +42,35 @@
     document.body.append(dialog);
 
     dialog.querySelector(".lightbox-close")!.addEventListener("click", () => dialog!.close());
-    dialog.querySelector(".lightbox-prev")!.addEventListener("click", () => show(index - 1));
-    dialog.querySelector(".lightbox-next")!.addEventListener("click", () => show(index + 1));
+    dialog.querySelector(".lightbox-prev")!.addEventListener("click", () => show(index - 1, true));
+    dialog.querySelector(".lightbox-next")!.addEventListener("click", () => show(index + 1, true));
     // Click on the backdrop area (the dialog element itself) closes.
     dialog.addEventListener("click", (e) => {
       if (e.target === dialog) dialog!.close();
     });
     dialog.addEventListener("keydown", (e) => {
-      if (e.key === "ArrowLeft") show(index - 1);
-      if (e.key === "ArrowRight") show(index + 1);
+      if (e.key === "ArrowLeft") show(index - 1, true);
+      if (e.key === "ArrowRight") show(index + 1, true);
     });
     dialog.addEventListener("close", () => {
       document.documentElement.style.removeProperty("overflow");
     });
   }
 
-  function show(i: number) {
+  function show(i: number, navigate = false) {
     if (!dialog || !group.length) return;
     index = (i + group.length) % group.length;
     const link = group[index]!;
     const img = dialog.querySelector("img")!;
     img.src = link.href;
+    // Crossfade on arrow navigation only (open has its own entrance).
+    // WAAPI retargets when arrows are held down instead of restarting.
+    if (navigate && matchMedia("(prefers-reduced-motion: no-preference)").matches) {
+      img.animate([{ opacity: 0 }, { opacity: 1 }], {
+        duration: 150,
+        easing: "cubic-bezier(0.23, 1, 0.32, 1)",
+      });
+    }
     img.alt = link.dataset.caption ?? link.querySelector("img")?.alt ?? "";
     dialog.querySelector(".lightbox-caption")!.textContent = link.dataset.caption ?? "";
     const counter = dialog.querySelector(".lightbox-counter")!;

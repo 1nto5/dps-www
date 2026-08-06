@@ -20,11 +20,16 @@ const isActive = (href: string) => path === href || (href !== "/" && path.starts
 <header class="border-b border-line bg-paper">
   <div class="mx-auto flex max-w-6xl items-center justify-between gap-6 px-4 py-4 sm:px-6">
     <a href="/" class="flex items-center gap-3 no-underline">
-      <span
+      <svg
+        width="30"
+        height="38"
+        viewBox="0 0 32 40"
         aria-hidden="true"
-        class="flex h-11 w-9 items-end justify-center rounded-t-full bg-spruce pb-1 font-display text-lg font-semibold text-white"
-        >D</span
+        class="shrink-0"
       >
+        <path d="M2 40V16a14 14 0 0 1 28 0v24z" fill="var(--color-spruce)"></path>
+        <path d="M11 40V23a5 5 0 0 1 10 0v17z" fill="var(--color-paper)"></path>
+      </svg>
       <span class="leading-tight">
         <span class="block font-display text-lg font-semibold">Dom Pomocy Społecznej</span>
         <span class="block text-sm text-muted">im. Jana Pawła II w Szczytnie</span>
@@ -65,7 +70,7 @@ const isActive = (href: string) => path === href || (href !== "/" && path.starts
       </summary>
       <nav
         aria-label="Nawigacja główna"
-        class="absolute right-0 top-full z-40 mt-2 w-56 rounded-lg border border-line bg-paper p-2 shadow-lg"
+        class="menu-panel absolute right-0 top-full z-40 mt-2 w-56 rounded-lg border border-line bg-paper p-2 shadow-lg"
       >
         <ul>
           {

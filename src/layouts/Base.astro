@@ -69,5 +69,60 @@ const desc =
       <slot />
     </main>
     <Footer />
+    <script>
+      // Scroll reveal: only below-fold, top-level sections get the hidden
+      // state (added here, never in markup, so first paint and no-JS are
+      // unaffected), then fade up once when they enter the viewport.
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        const belowFold = (el: Element) => el.getBoundingClientRect().top > innerHeight * 0.9;
+        const hide = (el: HTMLElement) => {
+          el.setAttribute("data-reveal", "");
+          el.style.transitionProperty = "none";
+          void el.offsetWidth;
+          el.style.transitionProperty = "";
+        };
+
+        const sections = [...document.querySelectorAll("main section")].filter(
+          (s) =>
+            !s.parentElement?.closest("section") &&
+            !s.hasAttribute("data-no-reveal") &&
+            belowFold(s),
+        );
+        // Card/photo grids cascade item by item instead of as one block.
+        const lists = [...document.querySelectorAll('main ul[role="list"]')].filter(belowFold);
+
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (!e.isIntersecting) continue;
+              io.unobserve(e.target);
+              if (e.target.matches("ul")) {
+                for (const li of e.target.children) {
+                  li.classList.add("is-visible");
+                  // The stagger delay must not slow down later hover
+                  // transitions on the same element.
+                  setTimeout(() => ((li as HTMLElement).style.transitionDelay = ""), 1100);
+                }
+              } else {
+                e.target.classList.add("is-visible");
+              }
+            }
+          },
+          { rootMargin: "0px 0px -60px 0px" },
+        );
+
+        for (const s of sections) {
+          hide(s as HTMLElement);
+          io.observe(s);
+        }
+        for (const ul of lists) {
+          [...ul.children].forEach((li, i) => {
+            hide(li as HTMLElement);
+            (li as HTMLElement).style.transitionDelay = `${Math.min(i * 70, 420)}ms`;
+          });
+          io.observe(ul);
+        }
+      }
+    </script>
   </body>
 </html>

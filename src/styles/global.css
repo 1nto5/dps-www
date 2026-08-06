@@ -19,6 +19,7 @@
   --font-body: "Source Sans 3 Variable", system-ui, sans-serif;
 
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   --default-transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
 }
 
@@ -44,7 +45,9 @@ h4 {
   font-family: var(--font-display);
   font-optical-sizing: auto;
   font-weight: 560;
-  text-wrap: balance;
+  /* "pretty" avoids orphans without the mid-width line breaks that
+     "balance" produces on long Polish headings. */
+  text-wrap: pretty;
   color: var(--color-ink);
 }
 /* Leading tracks size inversely; tracking tightens as display sizes grow. */
@@ -106,6 +109,119 @@ li:has(a[data-card-link]:active) {
     --color-muted: var(--color-ink);
   }
 }
+/* Cross-page transitions (MPA View Transitions API): the content gently
+   cross-fades and rises while the header stays put. Browsers without
+   support simply navigate; reduced motion turns it off. */
+@view-transition {
+  navigation: auto;
+}
+header {
+  view-transition-name: site-header;
+}
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root) {
+    animation: vt-fade-out 180ms var(--ease-out) both;
+  }
+  ::view-transition-new(root) {
+    animation: vt-rise-in 260ms var(--ease-out) both;
+  }
+  @keyframes vt-fade-out {
+    to {
+      opacity: 0;
+    }
+  }
+  @keyframes vt-rise-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+}
+
+/* Page-load sequence for the hero (homepage): headline block and photo
+   fade up once, staggered. CSS animation, transform/opacity only. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-enter > * {
+    animation: rise-in 550ms var(--ease-out) backwards;
+  }
+  .hero-enter > *:nth-child(2) {
+    animation-delay: 70ms;
+  }
+  .hero-enter > *:nth-child(3) {
+    animation-delay: 140ms;
+  }
+  .hero-enter > *:nth-child(4) {
+    animation-delay: 210ms;
+  }
+  .hero-enter-photo {
+    animation: rise-in 650ms var(--ease-out) 140ms backwards;
+  }
+  @keyframes rise-in {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+/* Scroll reveal: sections below the fold fade up once as they enter.
+   Hidden state applies only when JS runs and motion is allowed, so
+   content is never lost without JS or with reduced motion. */
+@media (prefers-reduced-motion: no-preference) and (scripting: enabled) {
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 550ms var(--ease-out),
+      transform 550ms var(--ease-out);
+  }
+  [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Card photos breathe on hover; the card clips the overflow. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .photo-zoom img,
+  a[data-lightbox] img {
+    transition: transform 250ms var(--ease-out);
+  }
+  .photo-zoom:hover img,
+  a[data-lightbox]:hover img {
+    transform: scale(1.03);
+  }
+  a[data-lightbox] {
+    overflow: hidden;
+  }
+}
+
+/* Mobile menu panel: entrance only, via @starting-style; closing is an
+   instant dismissal (deliberate close = snappy response). */
+@media (prefers-reduced-motion: no-preference) {
+  details[open] .menu-panel {
+    transition:
+      opacity 180ms var(--ease-out),
+      transform 180ms var(--ease-out);
+    transform-origin: top right;
+  }
+  @starting-style {
+    details[open] .menu-panel {
+      opacity: 0;
+      transform: scale(0.97);
+    }
+  }
+}
+
 /* Reduced motion kills movement (animations), but keeps the paint-only
    150ms colour crossfades — gentler, not zero, state feedback. */
 @media (prefers-reduced-motion: reduce) {

@@ -11,6 +11,7 @@ interface Props {
   bare?: boolean;
   /** Id for the h1, for sections that reference it with aria-labelledby. */
   titleId?: string;
+  class?: string;
 }
 const {
   eyebrow,
@@ -20,6 +21,7 @@ const {
   size = "default",
   bare = false,
   titleId,
+  class: className,
 } = Astro.props;
 
 const hero = size === "hero";
@@ -32,7 +34,7 @@ const leadClass = hero
   : "mt-4 max-w-2xl text-lg leading-relaxed text-ink/85 text-pretty";
 ---
 
-<div class:list={[!bare && "mx-auto max-w-6xl px-4 pb-8 pt-10 sm:px-6 md:pb-10 md:pt-14"]}>
+<div class:list={[!bare && "mx-auto max-w-6xl px-4 pb-8 pt-10 sm:px-6 md:pb-10 md:pt-14", className]}>
   {
     eyebrow && (
       <p class={eyebrowClass}>
