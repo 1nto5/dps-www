@@ -200,9 +200,6 @@ header {
   a[data-lightbox]:hover img {
     transform: scale(1.03);
   }
-  a[data-lightbox] {
-    overflow: hidden;
-  }
 }
 
 /* Mobile menu panel: entrance only, via @starting-style; closing is an
@@ -238,7 +235,9 @@ header {
 a[data-lightbox] {
   display: block;
   cursor: zoom-in;
-  border-radius: inherit;
+  overflow: hidden;
+  /* Radius comes from the utility class on the anchor; an unlayered
+     declaration here would beat Tailwind's layered .rounded-* rules. */
 }
 .lightbox {
   border: none;
