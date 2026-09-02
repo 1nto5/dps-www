@@ -73,10 +73,10 @@ export const contact = {
 
 /** "ul. Wielbarska 2, 12-100 Szczytno" — the one-line form. */
 export function addressLine(a: PostalAddress): string {
-  return `${a.street}, ${a.postalCode} ${a.city}`;
+  return `${a.street}, ${a.postalCode} ${a.city}`;
 }
 
 /** The same address as the lines an `<address>` element sets one per row. */
 export function addressLines(a: PostalAddress): string[] {
-  return [a.street, `${a.postalCode} ${a.city}`];
+  return [a.street, `${a.postalCode} ${a.city}`];
 }

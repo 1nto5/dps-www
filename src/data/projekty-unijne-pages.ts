@@ -5,5 +5,5 @@
  */
 export const projektyUnijnePages = [
   { href: "/dokumenty/projekty-unijne/", label: "Projekty unijne — przegląd" },
-  { href: "/dokumenty/projekty-unijne/oze/", label: "Wykorzystanie OZE w Domu" },
+  { href: "/dokumenty/projekty-unijne/oze/", label: "Wykorzystanie OZE w Domu" },
 ] as const;

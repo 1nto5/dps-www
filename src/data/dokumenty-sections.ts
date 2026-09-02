@@ -15,7 +15,7 @@ export const dokumentySections = [
   {
     href: "/dokumenty/dotacje/",
     label: "Dotacje",
-    text: "Dotacje i dofinansowania otrzymane przez Dom, zestawione rok po roku.",
+    text: "Dotacje i dofinansowania otrzymane przez Dom, zestawione rok po roku.",
   },
   {
     href: "/dokumenty/projekty-unijne/",
@@ -25,16 +25,16 @@ export const dokumentySections = [
   {
     href: "/dokumenty/zamowienia-publiczne/",
     label: "Zamówienia publiczne",
-    text: "Ogłoszenia o postępowaniach, dokumentacja i informacje o wynikach.",
+    text: "Ogłoszenia o postępowaniach, dokumentacja i informacje o wynikach.",
   },
   {
     href: "/dokumenty/sygnalista/",
     label: "Sygnalista",
-    text: "Procedura zgłaszania naruszeń prawa i zasady ochrony osób zgłaszających.",
+    text: "Procedura zgłaszania naruszeń prawa i zasady ochrony osób zgłaszających.",
   },
   {
     href: "/dokumenty/rodo/",
     label: "RODO",
-    text: "Klauzula informacyjna o przetwarzaniu danych osobowych w naszym Domu.",
+    text: "Klauzula informacyjna o przetwarzaniu danych osobowych w naszym Domu.",
   },
 ] as const;

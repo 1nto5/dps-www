@@ -23,7 +23,7 @@ const mapLinkClass =
 >
   <PageHeader
     eyebrow="Kontakt"
-    title="Jak się z nami skontaktować i gdzie nas znaleźć?"
+    title="Jak się z nami skontaktować i gdzie nas znaleźć?"
   />
 
   <PageShell>
@@ -33,18 +33,18 @@ const mapLinkClass =
         <address class="mt-6 not-italic">
           {contact.nameShort}<br />
           {contact.address.street}<br />
-          {contact.address.postalCode} {contact.address.city}
+          {contact.address.postalCode} {contact.address.city}
         </address>
         <p class="mt-4">
           <a class={mapLinkClass} href="https://www.google.com/maps/search/?api=1&query=Wielbarska+2%2C+12-100+Szczytno" rel="noopener" data-external="off">
             <MapPin />
-            Zobacz ul. Wielbarską 2 w Google Maps
+            Zobacz ul. Wielbarską 2 w Google Maps
           </a>
         </p>
       </section>
 
       <section aria-labelledby="filia" class={cardClass}>
-        <h2 id="filia" class="text-2xl">Filia w Spychowie</h2>
+        <h2 id="filia" class="text-2xl">Filia w Spychowie</h2>
         <address class="mt-6 not-italic">
           {contact.spychowo.name}<br />
           {contact.spychowo.address.street}<br />
@@ -57,7 +57,7 @@ const mapLinkClass =
         <p class="mt-4">
           <a class={mapLinkClass} href="https://www.google.com/maps/search/?api=1&query=Sienkiewicza+3%2C+12-150+Spychowo" rel="noopener" data-external="off">
             <MapPin />
-            Zobacz ul. Sienkiewicza 3 w Google Maps
+            Zobacz ul. Sienkiewicza 3 w Google Maps
           </a>
         </p>
       </section>
@@ -101,7 +101,7 @@ const mapLinkClass =
               >Wyślij pismo ogólne</a
             >{" "}
             na portalu gov.pl — jako adresata wskazuje się wtedy naszą skrytkę ePUAP
-            <span class="whitespace-nowrap">{contact.epuap}</span>. W zwykłych sprawach nie
+            <span class="whitespace-nowrap">{contact.epuap}</span>. W zwykłych sprawach nie
             trzeba jednak niczego podpisywać elektronicznie: wystarczy e-mail albo telefon.
           </p>
         </div>
@@ -130,22 +130,22 @@ const mapLinkClass =
         <h2 id="odwiedziny" class="text-2xl">Odwiedziny</h2>
         <p class="mt-6 max-w-column">
           Bliscy naszych Mieszkańców są mile widziani. Przed przyjazdem warto zadzwonić do domu
-          mieszkalnego, w którym mieszka odwiedzana osoba, albo do sekretariatu —{" "}
+          mieszkalnego, w którym mieszka odwiedzana osoba, albo do sekretariatu —{" "}
           <a class={linkClass} href={contact.phone.href}>{contact.phone.label}</a>. Pracownicy powiedzą
-          wtedy, kiedy i gdzie najlepiej się spotkać.
+          wtedy, kiedy i gdzie najlepiej się spotkać.
         </p>
         <!-- Hours, place and rules come from the Dom (docs/pytania-do-domu.md). -->
         <p class="mt-4 max-w-column">
-          Jeśli odwiedziny są pierwszym krokiem do zamieszkania u nas, drogę do przyjęcia
+          Jeśli odwiedziny są pierwszym krokiem do zamieszkania u nas, drogę do przyjęcia
           opisujemy na stronie{" "}
-          <a class={linkClass} href="/przyjecie-do-domu/">Jak zamieszkać w naszym Domu</a>.
+          <a class={linkClass} href="/przyjecie-do-domu/">Jak zamieszkać w naszym Domu</a>.
         </p>
       </section>
 
       <section aria-labelledby="iod" class={cardClass}>
         <h2 id="iod" class="text-2xl">Inspektor Ochrony Danych</h2>
         <p class="mt-6">
-          W sprawach dotyczących ochrony danych osobowych prosimy o kontakt z Inspektorem Ochrony
+          W sprawach dotyczących ochrony danych osobowych prosimy o kontakt z Inspektorem Ochrony
           Danych:
         </p>
         <p class="mt-3">
@@ -160,8 +160,8 @@ const mapLinkClass =
             <h3 class="text-lg">Nabywca</h3>
             <address class="mt-3 not-italic">
               Powiat Szczycieński<br />
-              ul. Sienkiewicza 1<br />
-              12-100 Szczytno
+              ul. Sienkiewicza 1<br />
+              12-100 Szczytno
             </address>
             <p class="mt-3"><span class={termClass}>NIP:</span> 745-18-11-678</p>
           </div>
@@ -170,7 +170,7 @@ const mapLinkClass =
             <address class="mt-3 not-italic">
               {contact.nameShort}<br />
               {contact.address.street}<br />
-              {contact.address.postalCode} {contact.address.city}
+              {contact.address.postalCode} {contact.address.city}
             </address>
             <p class="mt-3"><span class={termClass}>REGON:</span> 000963690</p>
           </div>

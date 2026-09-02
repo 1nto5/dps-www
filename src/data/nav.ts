@@ -9,9 +9,9 @@
  * turn one edit into two unrelated changes.
  */
 export const mainNav = [
-  { href: "/o-nas/", label: "O nas" },
+  { href: "/o-nas/", label: "O nas" },
   { href: "/oferta/", label: "Oferta" },
-  { href: "/filia-w-spychowie/", label: "Filia w Spychowie" },
+  { href: "/filia-w-spychowie/", label: "Filia w Spychowie" },
   { href: "/aktualnosci/", label: "Aktualności" },
   { href: "/galeria/", label: "Galeria" },
   { href: "/dokumenty/", label: "Dokumenty" },
