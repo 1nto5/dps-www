@@ -1,0 +1,70 @@
+---
+/**
+ * Plain photo frame: rounded corners, no arch. Same border and hover behaviour
+ * as `ArchImage`, and the frame every landscape photo uses — `ArchImage`
+ * rejects wide ratios because the arch radius degenerates on them.
+ *
+ * Without `aspect` the photo keeps its natural ratio; with it, the photo is
+ * cropped into the declared frame. Any ratio is allowed here.
+ *
+ * `src` must be an imported image (src/assets), rendered via astro:assets.
+ */
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  /** Frame ratio as `width/height`. Omit to keep the source ratio. */
+  aspect?: string;
+  /** `object-position`, for photos whose automatic centre crop cuts a subject. */
+  position?: string;
+  widths?: number[];
+  sizes?: string;
+  class?: string;
+  loading?: "eager" | "lazy";
+  fetchpriority?: "high" | "low" | "auto";
+}
+
+const {
+  src,
+  alt,
+  aspect,
+  position,
+  widths = [480, 800, 1200],
+  sizes = "(min-width: 768px) 50vw, 100vw",
+  class: className = "",
+  loading = "lazy",
+  fetchpriority,
+} = Astro.props;
+
+let frameRatio: string | undefined;
+if (aspect !== undefined) {
+  const [rawWidth, rawHeight = "1"] = String(aspect).split("/");
+  const frameWidth = Number(rawWidth);
+  const frameHeight = Number(rawHeight);
+  if (!(frameWidth > 0) || !(frameHeight > 0)) {
+    throw new Error(
+      `FramedImage: aspect must be a positive "width/height" ratio, received ${JSON.stringify(aspect)}.`,
+    );
+  }
+  frameRatio = `${frameWidth} / ${frameHeight}`;
+}
+---
+
+<div
+  data-framed
+  class:list={["w-full overflow-hidden rounded-xl", className]}
+  style={frameRatio ? `aspect-ratio: ${frameRatio};` : undefined}
+>
+  <Image
+    src={src}
+    alt={alt}
+    widths={widths}
+    sizes={sizes}
+    loading={loading}
+    fetchpriority={fetchpriority}
+    class:list={["w-full", frameRatio ? "h-full object-cover" : "h-auto"]}
+    style={position ? `object-position: ${position};` : undefined}
+  />
+</div>

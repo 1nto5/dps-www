@@ -6,11 +6,20 @@ const year = new Date().getFullYear();
   <div class="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-3">
     <div>
       <p class="font-display text-lg font-semibold">Dom Pomocy Społecznej<br />im. Jana Pawła II w Szczytnie</p>
+      <!--
+        `inline-block py-1` on every inline link: at this text size the bare
+        inline box is 22px tall, under the 24px minimum target of WCAG 2.2
+        SC 2.5.8, and the telephone number is a primary action here.
+      -->
       <address class="mt-3 text-sm not-italic text-muted">
         ul. Wielbarska 2, 12-100 Szczytno<br />
-        tel. <a href="tel:+48896242288" class="underline underline-offset-2 hover:text-spruce-deep">(89) 624-22-88</a
+        tel. <a
+          href="tel:+48896242288"
+          class="inline-block py-1 underline underline-offset-2 hover:text-spruce-deep">(89) 624-22-88</a
         ><br />
-        <a href="mailto:sekretariat@dpsszczytno.pl" class="underline underline-offset-2 hover:text-spruce-deep"
+        <a
+          href="mailto:sekretariat@dpsszczytno.pl"
+          class="inline-block py-1 underline underline-offset-2 hover:text-spruce-deep"
           >sekretariat@dpsszczytno.pl</a
         >
       </address>
@@ -18,12 +27,12 @@ const year = new Date().getFullYear();
     </div>
     <div>
       <p class="font-semibold">Na skróty</p>
-      <ul class="mt-3 space-y-1.5 text-sm">
-        <li><a href="/deklaracja-dostepnosci/" class="underline underline-offset-2 hover:text-spruce-deep">Deklaracja dostępności</a></li>
-        <li><a href="/dokumenty/rodo/" class="underline underline-offset-2 hover:text-spruce-deep">Ochrona danych osobowych (RODO)</a></li>
-        <li><a href="/dokumenty/sygnalista/" class="underline underline-offset-2 hover:text-spruce-deep">Zgłoszenia sygnalistów</a></li>
-        <li><a href="/dokumenty/zamowienia-publiczne/" class="underline underline-offset-2 hover:text-spruce-deep">Zamówienia publiczne</a></li>
-        <li><a href="/kontakt/" class="underline underline-offset-2 hover:text-spruce-deep">Kontakt i dojazd</a></li>
+      <ul class="mt-3 space-y-2 text-sm">
+        <li><a href="/deklaracja-dostepnosci/" class="inline-block py-1.5 underline underline-offset-2 hover:text-spruce-deep">Deklaracja dostępności</a></li>
+        <li><a href="/dokumenty/rodo/" class="inline-block py-1.5 underline underline-offset-2 hover:text-spruce-deep">Ochrona danych osobowych (RODO)</a></li>
+        <li><a href="/dokumenty/sygnalista/" class="inline-block py-1.5 underline underline-offset-2 hover:text-spruce-deep">Zgłoszenia sygnalistów</a></li>
+        <li><a href="/dokumenty/zamowienia-publiczne/" class="inline-block py-1.5 underline underline-offset-2 hover:text-spruce-deep">Zamówienia publiczne</a></li>
+        <li><a href="/kontakt/" class="inline-block py-1.5 underline underline-offset-2 hover:text-spruce-deep">Kontakt i dojazd</a></li>
       </ul>
     </div>
     <div>
@@ -39,12 +48,14 @@ const year = new Date().getFullYear();
         Strona centralna:
         <a
           href="https://www.bip.gov.pl/"
-          class="underline underline-offset-2 hover:text-spruce-deep">www.bip.gov.pl</a
+          class="inline-block py-1 underline underline-offset-2 hover:text-spruce-deep">www.bip.gov.pl</a
         >.
       </p>
       <p class="mt-2 text-sm text-muted">
         W sprawie dostępu do informacji publicznej prosimy o kontakt z
-        <a href="/kontakt/" class="underline underline-offset-2 hover:text-spruce-deep">sekretariatem Domu</a>.
+        <a href="/kontakt/" class="inline-block py-1 underline underline-offset-2 hover:text-spruce-deep"
+          >sekretariatem Domu</a
+        >.
       </p>
     </div>
   </div>

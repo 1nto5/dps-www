@@ -1,34 +1,84 @@
 ---
 /**
- * Signature photo frame: window-arch top. Use for hero and feature photos.
+ * Signature photo frame: window-arch top. Portrait and square photos only.
+ *
+ * The browser clamps `rounded-t-[999px]` to half the shorter side, so on a
+ * landscape frame the arch degenerates into a stadium shape with a flat span
+ * between two rounded corners. The frame therefore declares its own ratio, the
+ * photo is cropped into it with `object-cover`, and anything wider than square
+ * is rejected at build time. Landscape photos use `FramedImage` instead.
+ *
  * `src` must be an imported image (src/assets), rendered via astro:assets.
  */
 import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
 
+/** Rendered frame ratios. Every member is portrait or square by construction. */
+type ArchAspect = "4/5" | "1/1" | "3/4";
+
 interface Props {
   src: ImageMetadata;
   alt: string;
+  /** Frame ratio as `width/height`. Must resolve to <= 1. */
+  aspect?: ArchAspect;
+  /** `object-position`, for photos whose automatic centre crop cuts a subject. */
+  position?: string;
   widths?: number[];
   sizes?: string;
   class?: string;
   loading?: "eager" | "lazy";
+  fetchpriority?: "high" | "low" | "auto";
 }
+
 const {
   src,
   alt,
+  aspect = "4/5",
+  position,
   widths = [480, 800, 1200],
   sizes = "(min-width: 768px) 50vw, 100vw",
   class: className = "",
   loading = "lazy",
+  fetchpriority,
 } = Astro.props;
+
+/**
+ * Validation runs on the rendered frame, not on the source image: the frame is
+ * what decides the geometry, and `object-cover` crops any source into it. The
+ * union type already blocks a wider ratio, but a value cast to `any` or read
+ * from data would slip past it, so the rule is enforced at build time too.
+ */
+const [rawWidth, rawHeight = "1"] = String(aspect).split("/");
+const frameWidth = Number(rawWidth);
+const frameHeight = Number(rawHeight);
+
+if (!(frameWidth > 0) || !(frameHeight > 0)) {
+  throw new Error(
+    `ArchImage: aspect must be a positive "width/height" ratio, received ${JSON.stringify(aspect)}.`,
+  );
+}
+if (frameWidth / frameHeight > 1) {
+  throw new Error(
+    `ArchImage: aspect must be portrait or square (ratio <= 1), received ${JSON.stringify(
+      aspect,
+    )} = ${(frameWidth / frameHeight).toFixed(2)}. Use FramedImage for landscape photos.`,
+  );
+}
 ---
 
-<Image
-  src={src}
-  alt={alt}
-  widths={widths}
-  sizes={sizes}
-  loading={loading}
-  class:list={["w-full rounded-b-xl rounded-t-[999px] object-cover", className]}
-/>
+<div
+  data-arch
+  class:list={["w-full overflow-hidden rounded-t-[999px] rounded-b-xl", className]}
+  style={`aspect-ratio: ${frameWidth} / ${frameHeight};`}
+>
+  <Image
+    src={src}
+    alt={alt}
+    widths={widths}
+    sizes={sizes}
+    loading={loading}
+    fetchpriority={fetchpriority}
+    class="h-full w-full object-cover"
+    style={position ? `object-position: ${position};` : undefined}
+  />
+</div>

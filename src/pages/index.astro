@@ -80,14 +80,19 @@ const dateFormat = new Intl.DateTimeFormat("pl-PL", {
           >
         </div>
       </PageHeader>
-      <div class="hero-enter-photo mx-auto w-full max-w-md md:max-w-none">
+      {
+        /* The column is capped instead of the frame: a `max-h` clamp would
+           override the declared 3/4 ratio and flatten the arch. */
+      }
+      <div class="hero-enter-photo mx-auto w-full max-w-md md:max-w-[26rem]">
         <ArchImage
           src={heroPhoto}
           alt="Budynek Domu Pomocy Społecznej w Szczytnie z czerwonym dachem, widziany zza kwitnących hortensji"
           loading="eager"
+          fetchpriority="high"
           widths={[480, 800, 1200]}
-          sizes="(min-width: 768px) 50vw, 100vw"
-          class="aspect-[3/4] max-h-[34rem]"
+          sizes="(min-width: 768px) 26rem, 100vw"
+          aspect="3/4"
         />
       </div>
     </div>

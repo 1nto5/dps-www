@@ -97,12 +97,16 @@ const rooms = [
         </div>
 
         <div class="w-full max-w-xs md:justify-self-end">
+          {
+            /* Square, not 4/5: the two Mieszkanki sit too far apart in the
+               source for a 4/5 crop to hold both faces. */
+          }
           <ArchImage
             src={twinRoom}
             alt="Dwie Mieszkanki rozmawiające przy stoliku w swoim pokoju."
+            aspect="1/1"
             sizes="(min-width: 768px) 20rem, 100vw"
             loading="eager"
-            class="aspect-[3/4]"
           />
         </div>
       </div>

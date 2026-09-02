@@ -5,6 +5,7 @@ import PageHeader from "../components/PageHeader.astro";
 import PageShell from "../components/PageShell.astro";
 import SectionNav from "../components/SectionNav.astro";
 import ArchImage from "../components/ArchImage.astro";
+import FramedImage from "../components/FramedImage.astro";
 import Gallery from "../components/Gallery.astro";
 import DocList from "../components/DocList.astro";
 
@@ -116,6 +117,8 @@ const interiors = [
           <ArchImage
             src={buildingGarden}
             alt="Budynek Domu Pomocy Społecznej w Szczytnie z czerwonym dachem, widziany od strony ogrodu z kwitnącymi hortensjami"
+            aspect="4/5"
+            position="55% 50%"
             sizes="(min-width: 768px) 20rem, 100vw"
             loading="eager"
           />
@@ -167,8 +170,12 @@ const interiors = [
 
     <section class="band mt-section" aria-labelledby="grupa-muzyczna">
       <div class="grid items-start gap-8 md:grid-cols-[auto_1fr] md:gap-12">
+        {
+          /* Landscape: the five singers span the full width of the source, so
+             no portrait crop can hold them. FramedImage, not the arch. */
+        }
         <div class="w-full max-w-xs">
-          <ArchImage
+          <FramedImage
             src={choirOnStage}
             alt="Pięciu Mieszkańców z grupy wokalnej Christopher śpiewa na plenerowej scenie pod żółto-czerwonym namiotem"
             sizes="(min-width: 768px) 20rem, 100vw"
@@ -238,6 +245,7 @@ const interiors = [
           <ArchImage
             src={buildingMonument}
             alt="Pomnik świętego Jana Pawła II w ogrodzie przed głównym budynkiem Domu, obok ławki i strzyżone żywopłoty"
+            aspect="4/5"
             sizes="(min-width: 768px) 20rem, 100vw"
           />
         </div>

@@ -25,8 +25,16 @@ const isActive = (href: string) => path === href || (href !== "/" && path.starts
   over a header appearing earlier in the document.
 -->
 <header class="sticky top-0 z-40 border-b border-line bg-paper">
+  <!--
+    `bg-paper` is repeated here, not only on <header>: the open menu's scrim is
+    a fixed pseudo-element inside the header's stacking context, and a negative
+    z-index puts it above the header's own background but below this in-flow
+    wrapper's. Without an opaque background on the wrapper the scrim would tint
+    the header bar itself. Below `lg` — the only widths where the menu exists —
+    the wrapper spans the full header width, so nothing is left uncovered.
+  -->
   <div
-    class="relative mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:gap-6 sm:px-6 sm:py-4"
+    class="relative mx-auto flex max-w-6xl items-center justify-between gap-4 bg-paper px-4 py-3 sm:gap-6 sm:px-6 sm:py-4"
   >
     <a href="/" class="flex min-w-0 items-center gap-2.5 no-underline sm:gap-3">
       <svg viewBox="0 0 32 40" aria-hidden="true" class="h-7 w-auto shrink-0 sm:h-9">
@@ -82,7 +90,20 @@ const isActive = (href: string) => path === href || (href !== "/" && path.starts
       </ul>
     </nav>
 
-    <details class="lg:hidden">
+    <!--
+      The scrim is the `::before`: a fixed, translucent layer painted while the
+      menu is open, so the panel reads as a layer over the page. It sits at a
+      negative stack level, which keeps it under the panel and under the
+      header bar's own controls, and it swallows the press that dismisses the
+      menu (the script below closes on any pointer-down outside the panel).
+      The gutter that `scrollbar-gutter: stable` reserves stays outside it: no
+      element can paint into that strip, and on a real window the scrollbar
+      itself fills it.
+    -->
+    <details
+      data-menu
+      class="lg:hidden open:before:fixed open:before:inset-0 open:before:-z-10 open:before:bg-ink/20 open:before:content-['']"
+    >
       <summary
         class="flex cursor-pointer list-none items-center gap-1.5 rounded border border-line px-2.5 py-1.5 text-[0.95rem] font-medium sm:gap-2 sm:px-3 sm:py-2 sm:text-base [&::-webkit-details-marker]:hidden [[open]>&]:bg-moss-deep [[open]>&]:text-spruce-deep"
       >
@@ -123,3 +144,35 @@ const isActive = (href: string) => path === href || (href !== "/" && path.starts
     </details>
   </div>
 </header>
+
+<!--
+  Progressive enhancement only: <details> already opens and closes without
+  JavaScript, this adds the dismissals a native menu is expected to have.
+-->
+<script>
+  const menu = document.querySelector<HTMLDetailsElement>("[data-menu]");
+  const summary = menu?.querySelector("summary");
+  if (menu && summary) {
+    const close = (restoreFocus: boolean) => {
+      if (!menu.open) return;
+      menu.open = false;
+      if (restoreFocus) summary.focus();
+    };
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") close(true);
+    });
+    // A press on the scrim reports the <details> as its target (pseudo-elements
+    // have no target of their own), so "outside" is measured against the panel
+    // and the button rather than against the element.
+    document.addEventListener("pointerdown", (e) => {
+      const t = e.target as Element | null;
+      if (!t?.closest?.(".menu-panel") && !t?.closest?.("summary")) close(false);
+    });
+    // Leaving the page: close first, so the menu is not part of the outgoing
+    // view-transition snapshot and never returns open from the back/forward cache.
+    menu.addEventListener("click", (e) => {
+      if ((e.target as Element | null)?.closest?.("a")) close(false);
+    });
+    window.addEventListener("pagehide", () => close(false));
+  }
+</script>

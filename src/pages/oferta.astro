@@ -105,6 +105,7 @@ const galleryPhotos = [
           <ArchImage
             src={nursingRoom}
             alt="Gabinet pielęgniarski w Domu — pielęgniarka przy biurku, przeszklone szafy z lekami."
+            aspect="4/5"
             sizes="(min-width: 768px) 20rem, 100vw"
             loading="eager"
           />
@@ -113,13 +114,25 @@ const galleryPhotos = [
     </section>
 
     <section aria-labelledby="opieka" class="band mt-section">
-      <div class="doc">
-        <h2 id="opieka">Usługi opiekuńcze i pielęgnacyjne</h2>
-        <ul>
-          <li>pomagamy w utrzymaniu higieny osobistej,</li>
-          <li>udzielamy pomocy we wszystkich czynnościach dnia codziennego,</li>
-          <li>zapewniamy całodobową opiekę pielęgniarską.</li>
-        </ul>
+      <div class="grid items-start gap-8 md:grid-cols-[auto_1fr] md:gap-12">
+        <div class="doc">
+          <h2 id="opieka">Usługi opiekuńcze i pielęgnacyjne</h2>
+          <ul>
+            <li>pomagamy w utrzymaniu higieny osobistej,</li>
+            <li>udzielamy pomocy we wszystkich czynnościach dnia codziennego,</li>
+            <li>zapewniamy całodobową opiekę pielęgniarską.</li>
+          </ul>
+        </div>
+
+        {/* Prose stays first in the DOM; only the column order flips. */}
+        <div class="w-full max-w-xs md:order-first">
+          <ArchImage
+            src={singleRoom}
+            alt="Mieszkaniec w swoim pokoju jednoosobowym, przy oknie tapczan, telewizor i biurko."
+            aspect="4/5"
+            sizes="(min-width: 768px) 20rem, 100vw"
+          />
+        </div>
       </div>
     </section>
 
@@ -148,6 +161,8 @@ const galleryPhotos = [
           <ArchImage
             src={library}
             alt="Mieszkańcy i terapeutka przy wspólnym stole w bibliotece Domu."
+            aspect="4/5"
+            position="75% 50%"
             sizes="(min-width: 768px) 20rem, 100vw"
           />
         </div>
@@ -155,7 +170,7 @@ const galleryPhotos = [
     </section>
 
     <section aria-labelledby="bytowe" class="band mt-section">
-      <div class="grid items-start gap-8 md:grid-cols-[1fr_auto] md:gap-12">
+      <div class="grid items-start gap-8 md:grid-cols-[auto_1fr] md:gap-12">
         <div class="doc">
           <h2 id="bytowe">Potrzeby bytowe</h2>
           <ul>
@@ -169,10 +184,15 @@ const galleryPhotos = [
           </ul>
         </div>
 
-        <div class="w-full max-w-xs md:justify-self-end">
+        {
+          /* Square, not 4/5: the two Mieszkanki sit 370px apart in a 680px-wide
+             source, so a 4/5 crop cannot hold both faces at any position. */
+        }
+        <div class="w-full max-w-xs md:order-first">
           <ArchImage
             src={twinRoom}
             alt="Pokój dwuosobowy — dwie Mieszkanki siedzą w fotelach przy stoliku."
+            aspect="1/1"
             sizes="(min-width: 768px) 20rem, 100vw"
           />
         </div>

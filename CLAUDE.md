@@ -22,6 +22,8 @@ iframe. No JavaScript unless a feature genuinely cannot work without it.
 - `src/components/` — `PageHeader` (`eyebrow?`, `title`, `lead?`), `ArchImage`
   (signature arch-window frame; `src` is an imported `ImageMetadata`), `Gallery`
   (`photos: {src, alt}[]`), `DocList` (`docs: {href, label, format, size?}[]`).
+- **Images:** `ArchImage` is portrait-and-square only (`aspect` ≤ 1, validated at build
+  time); landscape photos use `FramedImage`.
 - `src/pages/` — one `.astro` file per URL. `trailingSlash: "always"`, `build.format:
 "directory"` — internal links must end with `/`.
 - `src/content/aktualnosci/` — news posts, schema in `src/content.config.ts`.

@@ -1,7 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
 import PageHeader from "../components/PageHeader.astro";
-import ArchImage from "../components/ArchImage.astro";
+import FramedImage from "../components/FramedImage.astro";
 import PageShell from "../components/PageShell.astro";
 import ZoomImage from "../components/ZoomImage.astro";
 import groupOnStage from "../assets/media/1168-christopherGroup.jpg";
@@ -44,8 +44,12 @@ const members = [
         </p>
       </div>
 
+      {
+        /* Landscape: the five singers span the full width of the source, so no
+           portrait crop can hold them. FramedImage, not the arch. */
+      }
       <div class="mx-auto w-full max-w-md">
-        <ArchImage
+        <FramedImage
           src={groupOnStage}
           alt="Pięciu członków grupy „Christopher” śpiewa na plenerowej scenie pod żółtym namiotem, jeden z nich gra na keyboardzie."
           loading="eager"
