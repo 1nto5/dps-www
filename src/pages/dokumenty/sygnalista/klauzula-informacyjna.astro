@@ -6,6 +6,9 @@
 import Base from "../../../layouts/Base.astro";
 import PageHeader from "../../../components/PageHeader.astro";
 import PageShell from "../../../components/PageShell.astro";
+import SiblingNav from "../../../components/SiblingNav.astro";
+import BackLink from "../../../components/BackLink.astro";
+import { sygnalistaPages } from "../../../data/sygnalista-pages";
 ---
 
 <Base
@@ -17,7 +20,14 @@ import PageShell from "../../../components/PageShell.astro";
     title="Klauzula informacyjna w związku z przetwarzaniem danych osobowych sygnalisty"
   />
 
-  <PageShell narrow>
+  <PageShell>
+    <SiblingNav
+      slot="rail"
+      title="Sygnalista"
+      items={sygnalistaPages}
+      current="/dokumenty/sygnalista/klauzula-informacyjna/"
+    />
+
     <div class="doc">
       <p>
         W związku z otrzymanym zgłoszeniem naruszenia przepisów prawa, wypełniając obowiązek
@@ -84,12 +94,6 @@ import PageShell from "../../../components/PageShell.astro";
       </ol>
     </div>
 
-    <p class="mt-section">
-      <a
-        href="/dokumenty/sygnalista/"
-        class="text-spruce underline hover:text-spruce-deep"
-        >Wróć do działu Sygnalista</a
-      >
-    </p>
+    <BackLink href="/dokumenty/sygnalista/" label="Wróć do działu Sygnalista" />
   </PageShell>
 </Base>

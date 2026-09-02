@@ -1,0 +1,31 @@
+---
+/**
+ * One tile in a card grid: a whole-card link with a title and an optional
+ * blurb. Four grids on the site drew this by hand and had drifted apart on
+ * radius, padding and hover state.
+ *
+ * The <li> stays on the page: each grid decides its own columns and gaps, so
+ * the card must not assume it is in one. The usual shape is
+ *
+ *   <ul class="grid gap-4 sm:grid-cols-2" role="list">
+ *     <li><LinkCard … /></li>
+ *   </ul>
+ *
+ * The title carries the underline, not the whole card — the link's own text is
+ * what a reader scans, and an underlined blurb would read as a second link.
+ */
+interface Props {
+  href: string;
+  label: string;
+  text?: string;
+}
+const { href, label, text } = Astro.props;
+---
+
+<a
+  href={href}
+  class="flex h-full flex-col gap-2 rounded-xl border border-line bg-white p-5 no-underline hover:border-spruce/40 hover:shadow-card focus-within:border-spruce/40"
+>
+  <span class="font-display text-xl font-semibold text-spruce-deep underline">{label}</span>
+  {text && <span class="text-muted">{text}</span>}
+</a>

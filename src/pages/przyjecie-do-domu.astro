@@ -10,6 +10,8 @@ import PageHeader from "../components/PageHeader.astro";
 import PageShell from "../components/PageShell.astro";
 import SectionNav from "../components/SectionNav.astro";
 import DocList from "../components/DocList.astro";
+import RailContactCard from "../components/RailContactCard.astro";
+import { contact } from "../data/contact";
 
 /** Rail table of contents. Labels are shorter than the headings they point at. */
 const sections = [
@@ -19,9 +21,6 @@ const sections = [
   { id: "dokumenty", label: "Dokumenty" },
   { id: "kontakt", label: "Z kim porozmawiać" },
 ];
-
-const cardLinkClass =
-  "inline-block py-1 text-spruce underline hover:text-spruce-deep";
 
 const docs = [
   {
@@ -47,24 +46,18 @@ const docs = [
     <div slot="rail" class="space-y-8">
       <SectionNav items={sections} />
 
-      <div class="rounded-xl border border-line bg-white p-5">
-        <!-- `font-body` and neutral leading/tracking: the global `h2` rule
-             would otherwise set this card's small heading in Fraunces. -->
-        <h2 class="font-body font-semibold leading-normal tracking-normal">Masz pytania?</h2>
-        <p class="mt-2 text-meta">
-          <span class="text-muted">Telefon:</span>{" "}
-          <a class={cardLinkClass} href="tel:+48896242288">(89) 624-22-88</a>
-        </p>
-        <p class="text-meta">
-          <span class="text-muted">E-mail:</span>{" "}
-          <a class={cardLinkClass} href="mailto:sekretariat@dpsszczytno.pl"
-            >sekretariat@dpsszczytno.pl</a
+      <RailContactCard
+        title="Masz pytania?"
+        headingId="kontakt-przyjecie"
+        phone={contact.phone}
+        email={contact.email}
+      >
+        <p class="mt-3">
+          <a href="/kontakt/" class="inline-block py-1 text-spruce underline hover:text-spruce-deep"
+            >Kontakt i adres</a
           >
         </p>
-        <p class="mt-2 text-meta">
-          <a class={cardLinkClass} href="/kontakt/">Kontakt i adres</a>
-        </p>
-      </div>
+      </RailContactCard>
     </div>
 
     <div class="doc">
@@ -139,8 +132,9 @@ const docs = [
       <section aria-labelledby="kontakt">
         <h2 id="kontakt">Z kim porozmawiać?</h2>
         <p>
-          Prosimy o kontakt z sekretariatem Domu: tel. <a href="tel:+48896242288">89 624 22 88</a>,
-          e-mail <a href="mailto:sekretariat@dpsszczytno.pl">sekretariat@dpsszczytno.pl</a>. Pełne
+          Prosimy o kontakt z sekretariatem Domu: tel. <a href={contact.phone.href}
+            >{contact.phone.label}</a
+          >, e-mail <a href={`mailto:${contact.email}`}>{contact.email}</a>. Pełne
           dane teleadresowe, także do domów mieszkalnych i do filii w Spychowie, zebraliśmy na
           stronie <a href="/kontakt/">Kontakt</a>.
         </p>

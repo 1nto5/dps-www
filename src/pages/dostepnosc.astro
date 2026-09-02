@@ -22,6 +22,7 @@ import PageHeader from "../components/PageHeader.astro";
 import PageShell from "../components/PageShell.astro";
 import SectionNav from "../components/SectionNav.astro";
 import DocList from "../components/DocList.astro";
+import { contact } from "../data/contact";
 
 /** Rail table of contents. Every id here exists as a heading id below —
  *  `scripts/check-section-nav.mjs` fails the build if one drifts. */
@@ -75,15 +76,15 @@ const docs = [
       <p>Nasz adres to: ulica Wielbarska 2, 12-100 Szczytno.</p>
       <p>Możesz do nas zadzwonić.</p>
       <p>
-        Nasz numer telefonu to: <a href="tel:+48896242288">89 624 22 88</a>.
+        Nasz numer telefonu to: <a href={contact.phone.href}>{contact.phone.label}</a>.
       </p>
       <p>Możesz do nas napisać wiadomość.</p>
       <p>
         Nasz adres e-mail to:
-        <a href="mailto:sekretariat@dpsszczytno.pl">sekretariat@dpsszczytno.pl</a>.
+        <a href={`mailto:${contact.email}`}>{contact.email}</a>.
       </p>
       <p>Możesz też napisać do nas przez ePUAP.</p>
-      <p>Nasza skrytka ePUAP to: /dpsszczytno/SkrytkaESP.</p>
+      <p>Nasza skrytka ePUAP to: {contact.epuap}.</p>
 
       <h2 id="jezyk-migowy">Nagranie w polskim języku migowym</h2>
       <p>
@@ -140,11 +141,13 @@ const docs = [
       <ul>
         <li>
           e-mailem na adres
-          <a href="mailto:sekretariat@dpsszczytno.pl">sekretariat@dpsszczytno.pl</a>,
+          <a href={`mailto:${contact.email}`}>{contact.email}</a>,
         </li>
-        <li>telefonicznie pod numerem <a href="tel:+48896242288">89 624 22 88</a>,</li>
+        <li>
+          telefonicznie pod numerem <a href={contact.phone.href}>{contact.phone.label}</a>,
+        </li>
         <li>pocztą na adres: ulica Wielbarska 2, 12-100 Szczytno,</li>
-        <li>przez ePUAP na skrytkę /dpsszczytno/SkrytkaESP.</li>
+        <li>przez ePUAP na skrytkę {contact.epuap}.</li>
       </ul>
       <p>
         Możesz też przyjść do nas z osobą przybraną, czyli z kimś bliskim, kto ukończył 16 lat

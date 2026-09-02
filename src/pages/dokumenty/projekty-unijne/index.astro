@@ -10,7 +10,10 @@ import PageHeader from "../../../components/PageHeader.astro";
 import Gallery from "../../../components/Gallery.astro";
 import PageShell from "../../../components/PageShell.astro";
 import SiblingNav from "../../../components/SiblingNav.astro";
+import SectionNav from "../../../components/SectionNav.astro";
+import LinkCard from "../../../components/LinkCard.astro";
 import { dokumentySections } from "../../../data/dokumenty-sections";
+import { projektyUnijnePages } from "../../../data/projekty-unijne-pages";
 
 import logoPower from "../../../assets/media/1196-UE.jpg";
 import posterCovidDps from "../../../assets/media/1197-13.jpg";
@@ -25,6 +28,17 @@ import photoFartuch from "../../../assets/media/1204-DSCN4419.jpg";
 import photoSprzet from "../../../assets/media/1205-IMG_20201022_102304794.jpg";
 import photoDozownik from "../../../assets/media/1206-IMG_20201021_140653511.jpg";
 import photoZamglawiacz from "../../../assets/media/1207-IMG_20201022_084222616.jpg";
+
+/** Rail table of contents. Labels are much shorter than the official project
+    names, which are reproduced in full in the headings themselves. */
+const sections = [
+  { id: "pomagajmy-razem", label: "Pomagajmy Razem" },
+  { id: "bezpieczenstwo-covid", label: "Bezpieczeństwo na czas Covid-19" },
+  { id: "wsparcie-instytucji", label: "Wsparcie instytucji opieki" },
+];
+
+/** The other pages of the subsection; the first entry is this page itself. */
+const otherPages = projektyUnijnePages.slice(1);
 
 const photos = [
   {
@@ -73,15 +87,28 @@ const photos = [
   />
 
   <PageShell>
-    <SiblingNav
-      slot="rail"
-      title="Dokumenty"
-      items={dokumentySections}
-      current="/dokumenty/projekty-unijne/"
-    />
+    <div slot="rail" class="space-y-8">
+      <SectionNav items={sections} />
+      <SiblingNav
+        title="Dokumenty"
+        items={dokumentySections}
+        current="/dokumenty/projekty-unijne/"
+      />
+      <nav aria-label="Strony w dziale Projekty unijne">
+        <ul role="list" class="grid gap-4">
+          {
+            otherPages.map((page) => (
+              <li>
+                <LinkCard href={page.href} label={page.label} />
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
 
     <div class="doc">
-      <h2>Projekt „Pomagajmy Razem”</h2>
+      <h2 id="pomagajmy-razem">Projekt „Pomagajmy Razem”</h2>
     </div>
 
     <Image
@@ -135,12 +162,15 @@ const photos = [
       <h3>Zdjęcia z realizacji projektu</h3>
     </div>
 
-    <div class="mt-4">
-      <Gallery photos={photos} />
+    <div class="mt-block">
+      <Gallery
+        photos={photos}
+        sizes="(min-width: 1024px) 15rem, (min-width: 640px) 33vw, 50vw"
+      />
     </div>
 
-    <div class="doc mt-12">
-      <h2>
+    <div class="doc mt-section">
+      <h2 id="bezpieczenstwo-covid">
         Projekt „Zapewnienie bezpieczeństwa i opieki pacjentom oraz personelowi zakładów
         opiekuńczo-leczniczych, domów pomocy społecznej, zakładów pielęgnacyjno-opiekuńczych i
         hospicjów na czas Covid-19”
@@ -164,7 +194,7 @@ const photos = [
       </p>
     </div>
 
-    <div class="mt-6 grid gap-6 sm:grid-cols-2">
+    <div class="mt-block grid gap-6 sm:grid-cols-2">
       <Image
         src={posterCovidDps}
         alt="Plakat informacyjny: Powiat Szczycieński — Dom Pomocy Społecznej im. Jana Pawła II współrealizuje projekt dofinansowany z Funduszy Europejskich na czas Covid-19. Dofinansowanie projektu 29 460,62 zł."
@@ -183,8 +213,8 @@ const photos = [
       />
     </div>
 
-    <div class="doc mt-12">
-      <h2>
+    <div class="doc mt-section">
+      <h2 id="wsparcie-instytucji">
         Projekt „Wsparcie instytucji zajmujących się opieką nad osobami wymagającymi wsparcia z terenu
         powiatu szczycieńskiego”
       </h2>
@@ -212,7 +242,7 @@ const photos = [
       </ul>
     </div>
 
-    <div class="mt-6 max-w-column">
+    <div class="mt-block max-w-column">
       <Image
         src={posterWsparcie}
         alt="Plakat projektu „Wsparcie instytucji zajmujących się opieką nad osobami wymagającymi wsparcia z terenu powiatu szczycieńskiego” z logotypami Funduszy Europejskich, Rzeczypospolitej Polskiej, Unii Europejskiej i herbem powiatu szczycieńskiego."
@@ -221,17 +251,6 @@ const photos = [
         class="h-auto w-full rounded-lg border border-line"
         loading="lazy"
       />
-    </div>
-
-    <div class="doc mt-12">
-      <h2>Pozostałe projekty</h2>
-      <ul>
-        <li>
-          <a href="/dokumenty/projekty-unijne/oze/"
-            >Projekt „Wykorzystanie OZE w Domu Pomocy Społecznej w Szczytnie”</a
-          >
-        </li>
-      </ul>
     </div>
   </PageShell>
 </Base>

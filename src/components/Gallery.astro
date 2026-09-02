@@ -11,8 +11,12 @@ import Lightbox from "./Lightbox.astro";
 
 interface Props {
   photos: { src: ImageMetadata; alt: string }[];
+  /** Layout hint for the browser. The default is the full-width grid; a page
+   *  whose grid sits in a rail-narrowed column passes its own, or every
+   *  thumbnail is fetched at roughly twice the size it is drawn at. */
+  sizes?: string;
 }
-const { photos } = Astro.props;
+const { photos, sizes = "(min-width: 640px) 33vw, 50vw" } = Astro.props;
 
 const items = await Promise.all(
   photos.map(async (p) => ({
@@ -32,7 +36,7 @@ const items = await Promise.all(
             src={p.src}
             alt={p.alt}
             widths={[400, 700]}
-            sizes="(min-width: 640px) 33vw, 50vw"
+            sizes={sizes}
             class="aspect-[4/3] w-full rounded-lg object-cover"
             loading="lazy"
           />

@@ -8,6 +8,7 @@ import ArchImage from "../components/ArchImage.astro";
 import FramedImage from "../components/FramedImage.astro";
 import Gallery from "../components/Gallery.astro";
 import DocList from "../components/DocList.astro";
+import { dokumentyUstrojowe } from "../data/dokumenty-ustrojowe";
 
 import buildingGarden from "../assets/media/1377-1-1.jpg";
 import buildingMonument from "../assets/media/1375-2-1.jpg";
@@ -46,27 +47,6 @@ const legalBasis = [
   "Ustawy o pomocy społecznej (t.j. Dz. U. z 2018 r., poz. 1508)",
   "Rozporządzenia w sprawie domów pomocy społecznej (t.j. Dz. U. z 2018 r., poz. 734)",
   "Decyzji nr PS.II.UR.3013-19.06 Wojewody Warmińsko-Mazurskiego z 13 lutego 2007 r. w sprawie zezwolenia na prowadzenie domu pomocy społecznej dla osób przewlekle psychicznie chorych",
-];
-
-const docs = [
-  {
-    href: "/dokumenty/pliki/1744-Regulamin-Organizacyjny-DPS-Szczytno.doc",
-    label: "Regulamin organizacyjny",
-    format: "DOC",
-    size: "133 KB",
-  },
-  {
-    href: "/dokumenty/pliki/1741-Statut-DPS-Szczytno.pdf",
-    label: "Statut Domu",
-    format: "PDF",
-    size: "699 KB",
-  },
-  {
-    href: "/dokumenty/pliki/1771-schemat-organizacyjny.pdf",
-    label: "Schemat organizacyjny",
-    format: "PDF",
-    size: "204 KB",
-  },
 ];
 
 const interiors = [
@@ -161,7 +141,10 @@ const interiors = [
         </p>
       </div>
       <div class="mt-block">
-        <Gallery photos={interiors} />
+        <Gallery
+          photos={interiors}
+          sizes="(min-width: 1024px) 15rem, (min-width: 640px) 33vw, 50vw"
+        />
       </div>
     </section>
 
@@ -194,13 +177,13 @@ const interiors = [
           <a href="/grupa-muzyczna/">Więcej o grupie wokalnej „Christopher”</a>
         </p>
       </div>
-      <figure class="mt-subsection max-w-sm">
+      <figure class="mt-block max-w-md">
         <ZoomImage
           src={choirInPress}
           alt="Skan wycinka prasowego „Muzyka z naszych stron” ze zdjęciem członków zespołu „Christopher”. Treść artykułu jest przytoczona na stronie grupy wokalnej."
           caption="Zespół „Christopher” w lokalnej prasie"
-          widths={[340, 680]}
-          sizes="(min-width: 768px) 340px, 90vw"
+          widths={[504, 680]}
+          sizes="(min-width: 640px) 28rem, 100vw"
         />
         <figcaption class="mt-2 text-meta text-muted">
           Zespół „Christopher” w lokalnej prasie. Treść artykułu przytaczamy na stronie
@@ -251,7 +234,7 @@ const interiors = [
         <p>Podstawowe dokumenty ustrojowe Domu do pobrania:</p>
       </div>
       <div class="mt-block max-w-column">
-        <DocList docs={docs} />
+        <DocList docs={dokumentyUstrojowe} />
       </div>
     </section>
   </PageShell>

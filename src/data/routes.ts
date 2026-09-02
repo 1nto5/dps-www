@@ -12,23 +12,24 @@
  * URLs deliberately absent are the news posts under /aktualnosci/, whose labels
  * are the post titles and are passed in at render time, and /404/, which has no
  * place in a hierarchy.
+ *
+ * The seven routes that are also in the main navigation take their labels from
+ * it: those are exactly the pages whose nav-style short name is already
+ * written down, and two copies of it would drift.
  */
+import { mainNav } from "./nav";
+
 export const routeLabels: Record<string, string> = {
   "/": "Strona główna",
 
-  "/o-nas/": "O nas",
-  "/oferta/": "Oferta",
+  ...Object.fromEntries(mainNav.map((item) => [item.href, item.label])),
+
   "/oferta/regulamin-imprez-okolicznosciowych/": "Regulamin imprez okolicznościowych",
-  "/filia-w-spychowie/": "Filia w Spychowie",
   "/przyjecie-do-domu/": "Przyjęcie do Domu",
-  "/aktualnosci/": "Aktualności",
-  "/galeria/": "Galeria",
   "/grupa-muzyczna/": "Grupa wokalna „Christopher”",
-  "/kontakt/": "Kontakt",
   "/deklaracja-dostepnosci/": "Deklaracja dostępności",
   "/dostepnosc/": "Tekst łatwy do czytania",
 
-  "/dokumenty/": "Dokumenty",
   "/dokumenty/dotacje/": "Dotacje",
   "/dokumenty/dotacje/2025/": "Dotacje 2025",
   "/dokumenty/dotacje/2024/": "Dotacje 2024",

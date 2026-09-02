@@ -3,21 +3,16 @@ import { getCollection } from "astro:content";
 import Base from "../../layouts/Base.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import PageShell from "../../components/PageShell.astro";
+import NewsCard from "../../components/NewsCard.astro";
 
 const entries = (await getCollection("aktualnosci")).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 );
 
-/** Fewer than three posts read badly as narrow cards marooned in a
+/** Fewer than three posts read badly as slim cards marooned in a
     three-column grid, so they become a single-column list at a larger type
     scale instead. */
 const asList = entries.length < 3;
-
-const dateFormat = new Intl.DateTimeFormat("pl-PL", {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-});
 ---
 
 <Base
@@ -30,7 +25,7 @@ const dateFormat = new Intl.DateTimeFormat("pl-PL", {
     lead="Ważniejsze komunikaty i podziękowania z życia Domu oraz filii w Spychowie. Bieżące ogłoszenia urzędowe publikujemy w Biuletynie Informacji Publicznej."
   />
 
-  <PageShell narrow>
+  <PageShell>
     <p class="mb-8 max-w-column text-lg leading-relaxed text-ink-soft">
       Zamówienia publiczne, nabory i inne ogłoszenia urzędowe znajdują się w
       <a
@@ -42,38 +37,19 @@ const dateFormat = new Intl.DateTimeFormat("pl-PL", {
 
     {
       entries.length === 0 ? (
-        <p class="rounded-xl border border-line bg-moss px-6 py-8 text-lg text-muted">
+        <p class="max-w-column rounded-xl border border-line bg-moss px-6 py-8 text-lg text-muted">
           Wkrótce pojawią się tu nowe informacje.
         </p>
       ) : (
         <ul
-          class:list={["grid", asList ? "gap-6" : "gap-6 sm:grid-cols-2 lg:grid-cols-3"]}
+          class:list={[
+            "grid gap-6",
+            asList ? "max-w-column" : "sm:grid-cols-2 lg:grid-cols-3",
+          ]}
           role="list"
         >
           {entries.map((entry) => (
-            <li class="relative flex">
-              <article class="flex w-full flex-col rounded-xl border border-line bg-white p-6 transition-colors duration-150 hover:border-spruce/40 hover:shadow-card focus-within:border-spruce/40">
-                <p class="text-meta text-muted">
-                  <time datetime={entry.data.date.toISOString().slice(0, 10)}>
-                    {dateFormat.format(entry.data.date)}
-                  </time>
-                </p>
-                <h2 class:list={["mt-2", asList ? "text-2xl" : "text-xl"]}>
-                  <a
-                    href={`/aktualnosci/${entry.id}/`}
-                    data-card-link
-                    class="text-spruce-deep underline before:absolute before:inset-0 before:content-[''] hover:text-spruce"
-                  >
-                    {entry.data.title}
-                  </a>
-                </h2>
-                {entry.data.description && (
-                  <p class:list={["mt-3 text-muted", asList && "text-lg"]}>
-                    {entry.data.description}
-                  </p>
-                )}
-              </article>
-            </li>
+            <NewsCard post={entry} headingLevel="h2" list={asList} />
           ))}
         </ul>
       )

@@ -2,8 +2,11 @@
 import Base from "../layouts/Base.astro";
 import PageHeader from "../components/PageHeader.astro";
 import ArchImage from "../components/ArchImage.astro";
+import Button from "../components/Button.astro";
+import NewsCard from "../components/NewsCard.astro";
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
+import { contact, addressLine } from "../data/contact";
 
 import heroPhoto from "../assets/media/1377-1-1.jpg";
 import offerPhoto from "../assets/media/1188-2012-07-25-at-10-18-46-1-1.jpg";
@@ -46,13 +49,8 @@ const posts = (await getCollection("aktualnosci")).sort(
 );
 const latest = posts.slice(0, 3);
 /** Same rule as /aktualnosci/: below three posts a three-column grid leaves a
-    lone narrow card, so the block becomes a single-column list instead. */
+    lone slim card, so the block becomes a single-column list instead. */
 const newsAsList = latest.length < 3;
-const dateFormat = new Intl.DateTimeFormat("pl-PL", {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-});
 ---
 
 <Base
@@ -75,16 +73,8 @@ const dateFormat = new Intl.DateTimeFormat("pl-PL", {
         lead="Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie jest domem dla osób przewlekle psychicznie chorych. Razem z filią w Spychowie zapewniamy Mieszkańcom całodobową opiekę."
       >
         <div class="mt-8 flex flex-wrap gap-3">
-          <a
-            href="/kontakt/"
-            class="rounded-lg bg-spruce px-5 py-3 font-semibold text-white hover:bg-spruce-deep active:bg-spruce-deep"
-            >Kontakt i adres</a
-          >
-          <a
-            href="/oferta/"
-            class="rounded-lg border border-edge bg-white px-5 py-3 font-semibold text-spruce-deep hover:border-spruce hover:bg-moss active:bg-moss-deep"
-            >Poznaj naszą ofertę</a
-          >
+          <Button href="/kontakt/">Kontakt i adres</Button>
+          <Button href="/oferta/" variant="secondary">Poznaj naszą ofertę</Button>
         </div>
       </PageHeader>
       {
@@ -181,27 +171,7 @@ const dateFormat = new Intl.DateTimeFormat("pl-PL", {
           role="list"
         >
           {latest.map((post) => (
-            <li class="relative rounded-xl border border-line bg-white p-5 transition-colors duration-150 hover:border-spruce/40 hover:shadow-card focus-within:border-spruce/40">
-              <p class="text-meta text-muted">
-                <time datetime={post.data.date.toISOString().slice(0, 10)}>
-                  {dateFormat.format(post.data.date)}
-                </time>
-              </p>
-              <h3 class:list={["mt-2", newsAsList ? "text-2xl" : "text-xl"]}>
-                <a
-                  href={`/aktualnosci/${post.id}/`}
-                  data-card-link
-                  class="text-spruce-deep underline before:absolute before:inset-0 before:content-[''] hover:text-spruce"
-                >
-                  {post.data.title}
-                </a>
-              </h3>
-              {post.data.description && (
-                <p class:list={["mt-2 text-muted", newsAsList && "text-lg"]}>
-                  {post.data.description}
-                </p>
-              )}
-            </li>
+            <NewsCard post={post} headingLevel="h3" list={newsAsList} />
           ))}
         </ul>
       </section>
@@ -213,23 +183,19 @@ const dateFormat = new Intl.DateTimeFormat("pl-PL", {
       <div>
         <h2 id="kontakt-skrot" class="text-2xl">Zapraszamy do kontaktu</h2>
         <address class="mt-3 not-italic text-muted">
-          ul. Wielbarska 2, 12-100 Szczytno<br />
-          tel. <a href="tel:+48896242288" class="text-spruce underline hover:text-spruce-deep"
-            >(89) 624-22-88</a
+          {addressLine(contact.address)}<br />
+          tel. <a href={contact.phone.href} class="text-spruce underline hover:text-spruce-deep"
+            >{contact.phone.label}</a
           ><br />
           <a
-            href="mailto:sekretariat@dpsszczytno.pl"
+            href={`mailto:${contact.email}`}
             class="text-spruce underline hover:text-spruce-deep"
-            >sekretariat@dpsszczytno.pl</a
+            >{contact.email}</a
           >
         </address>
       </div>
       <p>
-        <a
-          href="/kontakt/"
-          class="inline-block rounded-lg bg-spruce px-5 py-3 font-semibold text-white hover:bg-spruce-deep active:bg-spruce-deep"
-          >Pełne dane kontaktowe</a
-        >
+        <Button href="/kontakt/">Pełne dane kontaktowe</Button>
       </p>
     </div>
   </section>

@@ -1,9 +1,10 @@
 ---
-import { Image } from "astro:assets";
 import Base from "../../../layouts/Base.astro";
 import PageHeader from "../../../components/PageHeader.astro";
 import PageShell from "../../../components/PageShell.astro";
 import SiblingNav from "../../../components/SiblingNav.astro";
+import BackLink from "../../../components/BackLink.astro";
+import PosterFigure from "../../../components/PosterFigure.astro";
 import { dotacjeYears } from "../../../data/dotacje-years";
 import posterOchrona from "../../../assets/media/1266-212.jpg";
 import posterGratyfikacje from "../../../assets/media/1267-32.jpg";
@@ -22,7 +23,7 @@ import posterSrodkiOchrony from "../../../assets/media/1270-61.jpg";
     lead="Środki publiczne otrzymane przez nasz Dom w 2020 roku."
   />
 
-  <PageShell narrow>
+  <PageShell>
     <SiblingNav
       slot="rail"
       title="Dotacje"
@@ -49,19 +50,11 @@ import posterSrodkiOchrony from "../../../assets/media/1270-61.jpg";
         środków ochrony zdrowia i życia.
       </p>
 
-      <figure class="my-8">
-        <Image
-          src={posterOchrona}
-          alt="Informacja z flagą i godłem Polski o dotacji Wojewody Warmińsko-Mazurskiego na środki ochrony osobistej: dofinansowanie 78 400 zł, całkowita wartość zadania 98 000,65 zł."
-          widths={[480, 680]}
-          sizes="(min-width: 768px) 34rem, 100vw"
-          loading="lazy"
-          class="w-full max-w-[34rem] rounded-lg border border-line bg-white"
-        />
-        <figcaption class="mt-2 text-meta text-muted">
-          Informacja o dotacji na zakup środków ochrony osobistej.
-        </figcaption>
-      </figure>
+      <PosterFigure
+        src={posterOchrona}
+        alt="Informacja z flagą i godłem Polski o dotacji Wojewody Warmińsko-Mazurskiego na środki ochrony osobistej: dofinansowanie 78 400 zł, całkowita wartość zadania 98 000,65 zł."
+        caption="Informacja o dotacji na zakup środków ochrony osobistej."
+      />
 
       <h2>Gratyfikacje dla osób zatrudnionych w domach pomocy społecznej</h2>
       <p>
@@ -82,19 +75,11 @@ import posterSrodkiOchrony from "../../../assets/media/1270-61.jpg";
         SARS-CoV-2 w Domu Pomocy Społecznej w Szczytnie.
       </p>
 
-      <figure class="my-8">
-        <Image
-          src={posterGratyfikacje}
-          alt="Informacja z flagą i godłem Polski o środkach z rezerwy celowej budżetu państwa na gratyfikacje dla pracowników: dofinansowanie 72 348,00 zł, całkowita wartość zadania 90 801,16 zł."
-          widths={[480, 680]}
-          sizes="(min-width: 768px) 34rem, 100vw"
-          loading="lazy"
-          class="w-full max-w-[34rem] rounded-lg border border-line bg-white"
-        />
-        <figcaption class="mt-2 text-meta text-muted">
-          Informacja o dofinansowaniu gratyfikacji dla pracowników.
-        </figcaption>
-      </figure>
+      <PosterFigure
+        src={posterGratyfikacje}
+        alt="Informacja z flagą i godłem Polski o środkach z rezerwy celowej budżetu państwa na gratyfikacje dla pracowników: dofinansowanie 72 348,00 zł, całkowita wartość zadania 90 801,16 zł."
+        caption="Informacja o dofinansowaniu gratyfikacji dla pracowników."
+      />
 
       <h2>Opieka pielęgniarska i ochrona osobista w Szczytnie oraz w Spychowie</h2>
       <p>
@@ -116,19 +101,11 @@ import posterSrodkiOchrony from "../../../assets/media/1270-61.jpg";
         Szczytno i Filii w Spychowie. Zwalczanie pandemii oraz zapobieganie jej negatywnym skutkom.
       </p>
 
-      <figure class="my-8">
-        <Image
-          src={posterOpieka}
-          alt="Informacja z flagą i godłem Polski o dofinansowaniu bieżącej działalności Domu: 52 957,34 zł z rezerwy celowej budżetu państwa, 68 780,51 zł z budżetu Wojewody Warmińsko-Mazurskiego, całkowita wartość zadania 199 327,85 zł."
-          widths={[480, 680]}
-          sizes="(min-width: 768px) 34rem, 100vw"
-          loading="lazy"
-          class="w-full max-w-[34rem] rounded-lg border border-line bg-white"
-        />
-        <figcaption class="mt-2 text-meta text-muted">
-          Informacja o dofinansowaniu opieki pielęgniarskiej i środków ochrony osobistej.
-        </figcaption>
-      </figure>
+      <PosterFigure
+        src={posterOpieka}
+        alt="Informacja z flagą i godłem Polski o dofinansowaniu bieżącej działalności Domu: 52 957,34 zł z rezerwy celowej budżetu państwa, 68 780,51 zł z budżetu Wojewody Warmińsko-Mazurskiego, całkowita wartość zadania 199 327,85 zł."
+        caption="Informacja o dofinansowaniu opieki pielęgniarskiej i środków ochrony osobistej."
+      />
 
       <h2>Zapewnienie ciągłości usług i wynagrodzenia dla pracowników</h2>
       <p>
@@ -149,19 +126,11 @@ import posterSrodkiOchrony from "../../../assets/media/1270-61.jpg";
         dodatkowych obowiązków pracowniczych.
       </p>
 
-      <figure class="my-8">
-        <Image
-          src={posterCiaglosc}
-          alt="Informacja z flagą i godłem Polski o środkach z rezerwy celowej budżetu państwa na wynagrodzenia i gratyfikacje: dofinansowanie 88 732,00 zł, całkowita wartość zadania 118 359,59 zł."
-          widths={[480, 680]}
-          sizes="(min-width: 768px) 34rem, 100vw"
-          loading="lazy"
-          class="w-full max-w-[34rem] rounded-lg border border-line bg-white"
-        />
-        <figcaption class="mt-2 text-meta text-muted">
-          Informacja o dofinansowaniu wynagrodzeń zapewniających ciągłość usług.
-        </figcaption>
-      </figure>
+      <PosterFigure
+        src={posterCiaglosc}
+        alt="Informacja z flagą i godłem Polski o środkach z rezerwy celowej budżetu państwa na wynagrodzenia i gratyfikacje: dofinansowanie 88 732,00 zł, całkowita wartość zadania 118 359,59 zł."
+        caption="Informacja o dofinansowaniu wynagrodzeń zapewniających ciągłość usług."
+      />
 
       <h2>Wydatki na przeciwdziałanie rozprzestrzenianiu się wirusa SARS-CoV-2</h2>
       <p>
@@ -180,21 +149,13 @@ import posterSrodkiOchrony from "../../../assets/media/1270-61.jpg";
         COVID-19.
       </p>
 
-      <figure class="my-8">
-        <Image
-          src={posterSrodkiOchrony}
-          alt="Informacja z flagą i godłem Polski o dotacji Wojewody Warmińsko-Mazurskiego na wydatki przeciwdziałające rozprzestrzenianiu się wirusa SARS-CoV-2: dofinansowanie 43 149,00 zł, całkowita wartość zadania 53 937,00 zł."
-          widths={[480, 680]}
-          sizes="(min-width: 768px) 34rem, 100vw"
-          loading="lazy"
-          class="w-full max-w-[34rem] rounded-lg border border-line bg-white"
-        />
-        <figcaption class="mt-2 text-meta text-muted">
-          Informacja o dotacji na środki ochrony osobistej dla pracowników.
-        </figcaption>
-      </figure>
-
-      <p><a href="/dokumenty/dotacje/">Wróć do listy lat</a></p>
+      <PosterFigure
+        src={posterSrodkiOchrony}
+        alt="Informacja z flagą i godłem Polski o dotacji Wojewody Warmińsko-Mazurskiego na wydatki przeciwdziałające rozprzestrzenianiu się wirusa SARS-CoV-2: dofinansowanie 43 149,00 zł, całkowita wartość zadania 53 937,00 zł."
+        caption="Informacja o dotacji na środki ochrony osobistej dla pracowników."
+      />
     </div>
+
+    <BackLink href="/dokumenty/dotacje/" label="Wróć do listy lat" />
   </PageShell>
 </Base>

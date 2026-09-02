@@ -1,0 +1,36 @@
+---
+/**
+ * The site's three link buttons. Every call to action was written out as a
+ * class list at the point of use, which is how the same button ended up with
+ * `font-medium` on one page and `font-semibold` on the next.
+ *
+ * There are no <button> elements here: everything the site asks a reader to
+ * press is a link to somewhere else.
+ *
+ *   primary   — the one action of a page (dark spruce fill)
+ *   secondary — the alternative offered beside it (outlined, white)
+ *   quiet     — a small outlined chip, for a link that is not the page's point
+ *
+ * Extra attributes (`rel`, `data-external`, …) are passed straight through.
+ */
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"a"> {
+  href: string;
+  variant?: "primary" | "secondary" | "quiet";
+  class?: string;
+}
+
+const { href, variant = "primary", class: className, ...rest } = Astro.props;
+
+const variants = {
+  primary:
+    "inline-block rounded-lg bg-spruce px-5 py-3 font-semibold text-white hover:bg-spruce-deep active:bg-spruce-deep",
+  secondary:
+    "inline-block rounded-lg border border-edge bg-white px-5 py-3 font-semibold text-spruce-deep hover:border-spruce hover:bg-moss active:bg-moss-deep",
+  quiet:
+    "inline-flex items-center gap-2 rounded border border-edge bg-paper px-3 py-2 font-semibold text-spruce-deep hover:border-spruce hover:bg-white",
+};
+---
+
+<a href={href} class:list={[variants[variant], className]} {...rest}><slot /></a>

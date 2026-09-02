@@ -14,7 +14,10 @@ import Base from "../layouts/Base.astro";
 import PageHeader from "../components/PageHeader.astro";
 import PageShell from "../components/PageShell.astro";
 import SectionNav from "../components/SectionNav.astro";
+import SiblingNav from "../components/SiblingNav.astro";
 import DocList from "../components/DocList.astro";
+import BackLink from "../components/BackLink.astro";
+import { dokumentySections } from "../data/dokumenty-sections";
 
 /** Rail table of contents. Ids and labels only — the statement's own wording,
  *  dates and status are untouched. */
@@ -50,7 +53,10 @@ const docs = [
   />
 
   <PageShell>
-    <SectionNav slot="rail" items={sections} />
+    <div slot="rail" class="space-y-8">
+      <SectionNav items={sections} />
+      <SiblingNav title="Dokumenty" items={dokumentySections} />
+    </div>
 
     <div id="a11y-deklaracja" class="doc">
       <p class="a11y-wstep">
@@ -201,5 +207,7 @@ const docs = [
     <div class="mt-block max-w-column">
       <DocList docs={docs} />
     </div>
+
+    <BackLink href="/" label="Wróć na stronę główną" />
   </PageShell>
 </Base>

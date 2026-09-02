@@ -2,6 +2,15 @@
 import Base from "../../layouts/Base.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import PageShell from "../../components/PageShell.astro";
+import SectionNav from "../../components/SectionNav.astro";
+import BackLink from "../../components/BackLink.astro";
+
+/** Rail table of contents. The two headings are the regulations' full official
+    titles; the labels say which of the two a reader is heading for. */
+const sections = [
+  { id: "regulamin-imprez", label: "Regulamin imprez" },
+  { id: "regulamin-wizerunku", label: "Regulamin wizerunku" },
+];
 ---
 
 <Base
@@ -14,9 +23,11 @@ import PageShell from "../../components/PageShell.astro";
     lead="Dwa regulaminy obowiązujące podczas uroczystości i spotkań organizowanych przez Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie oraz w filii w Spychowie."
   />
 
-  <PageShell narrow>
-    <div class="doc border-t border-line pt-8">
-      <h2>
+  <PageShell>
+    <SectionNav slot="rail" items={sections} />
+
+    <div class="doc">
+      <h2 id="regulamin-imprez">
         Regulamin imprez okolicznościowych organizowanych przez Dom Pomocy Społecznej im. Jana Pawła
         II w Szczytnie
       </h2>
@@ -82,7 +93,7 @@ import PageShell from "../../components/PageShell.astro";
         siedzibie DPS w Szczytnie oraz w Spychowie, a także na stronie internetowej DPS.
       </p>
 
-      <h2>
+      <h2 id="regulamin-wizerunku">
         Regulamin utrwalania i rozpowszechniania wizerunku osób uczestniczących w imprezach
         okolicznościowych organizowanych przez Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie
       </h2>
@@ -146,10 +157,8 @@ import PageShell from "../../components/PageShell.astro";
           </ul>
         </li>
       </ol>
-
-      <p class="mt-10">
-        <a href="/oferta/">Wróć do oferty Domu</a>
-      </p>
     </div>
+
+    <BackLink href="/oferta/" label="Wróć do oferty Domu" />
   </PageShell>
 </Base>

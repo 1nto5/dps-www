@@ -5,6 +5,11 @@
  *
  * `label` doubles as the card title and the rail link text; `text` is the card
  * blurb only.
+ *
+ * The accessibility statement is deliberately not one of these. It is not a
+ * disclosure section with pages under it — it is a signed declaration that
+ * lives at the top level — so the hub links to it from a short "Powiązane"
+ * list instead, and the rail on these pages no longer offers it as a sibling.
  */
 export const dokumentySections = [
   {
@@ -31,10 +36,5 @@ export const dokumentySections = [
     href: "/dokumenty/rodo/",
     label: "RODO",
     text: "Klauzula informacyjna o przetwarzaniu danych osobowych w naszym Domu.",
-  },
-  {
-    href: "/deklaracja-dostepnosci/",
-    label: "Deklaracja dostępności",
-    text: "Informacja o dostępności strony i budynków oraz o zgłaszaniu utrudnień.",
   },
 ] as const;

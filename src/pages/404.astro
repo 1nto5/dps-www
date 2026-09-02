@@ -2,36 +2,36 @@
 import Base from "../layouts/Base.astro";
 import PageHeader from "../components/PageHeader.astro";
 import PageShell from "../components/PageShell.astro";
+import LinkCard from "../components/LinkCard.astro";
+import { contact } from "../data/contact";
+import { mainNav } from "../data/nav";
+import { routeLabels } from "../data/routes";
 
-/** The way onwards from a dead address: the same tiles the document hub uses,
-    so a reader who lands here gets the whole site, not a bare list. */
+/** The way onwards from a dead address: the main navigation, with the home
+    page in front of it and "Przyjęcie do Domu" — the one page people arrive
+    looking for that the navigation does not carry — after it. Built from the
+    nav so a renamed or added section reaches this page too. */
+const przyjecie: string = "/przyjecie-do-domu/";
+
+const blurbs: Record<string, string> = {
+  "/": "Krótko o Domu i ostatnie komunikaty.",
+  "/o-nas/": "Kierownictwo, statut i podstawy prawne działania Domu.",
+  "/oferta/": "Opieka, terapia zajęciowa i warunki bytowe.",
+  "/filia-w-spychowie/": "Nasz drugi dom, przy ul. Sienkiewicza 3.",
+  "/aktualnosci/": "Ważniejsze wiadomości z życia Domu i filii.",
+  "/galeria/": "Zdjęcia Domu, ogrodu i wspólnych wydarzeń.",
+  "/dokumenty/": "Dotacje, projekty unijne, zamówienia publiczne, RODO i sygnalista.",
+  "/kontakt/": "Adresy, telefony i adresy e-mail.",
+  [przyjecie]: "Kto może u nas zamieszkać i jak wygląda droga do przyjęcia.",
+};
+
 const links = [
-  { href: "/", label: "Strona główna", text: "Krótko o Domu i ostatnie komunikaty." },
-  { href: "/o-nas/", label: "O nas", text: "Kierownictwo, statut i podstawy prawne działania Domu." },
-  { href: "/oferta/", label: "Oferta", text: "Opieka, terapia zajęciowa i warunki bytowe." },
-  {
-    href: "/filia-w-spychowie/",
-    label: "Filia w Spychowie",
-    text: "Nasz drugi dom, przy ul. Sienkiewicza 3.",
-  },
-  {
-    href: "/przyjecie-do-domu/",
-    label: "Przyjęcie do Domu",
-    text: "Kto może u nas zamieszkać i jak wygląda droga do przyjęcia.",
-  },
-  {
-    href: "/aktualnosci/",
-    label: "Komunikaty i podziękowania",
-    text: "Ważniejsze wiadomości z życia Domu i filii.",
-  },
-  { href: "/galeria/", label: "Galeria", text: "Zdjęcia Domu, ogrodu i wspólnych wydarzeń." },
-  {
-    href: "/dokumenty/",
-    label: "Dokumenty",
-    text: "Dotacje, projekty unijne, zamówienia publiczne, RODO i sygnalista.",
-  },
-  { href: "/kontakt/", label: "Kontakt", text: "Adresy, telefony i adresy e-mail." },
-];
+  { href: "/", label: routeLabels["/"]! },
+  ...mainNav,
+  ...(mainNav.some((item) => item.href === przyjecie)
+    ? []
+    : [{ href: przyjecie, label: routeLabels[przyjecie]! }]),
+].map((item) => ({ ...item, text: blurbs[item.href] }));
 ---
 
 <Base
@@ -48,8 +48,8 @@ const links = [
     <div class="doc">
       <p>
         Jeśli szukasz konkretnej informacji i nie możesz jej znaleźć, chętnie pomożemy. Zadzwoń pod
-        numer <a href="tel:+48896242288">89 624 22 88</a> lub napisz na adres
-        <a href="mailto:sekretariat@dpsszczytno.pl">sekretariat@dpsszczytno.pl</a>.
+        numer <a href={contact.phone.href}>{contact.phone.label}</a> lub napisz na adres
+        <a href={`mailto:${contact.email}`}>{contact.email}</a>.
       </p>
     </div>
 
@@ -59,15 +59,7 @@ const links = [
         {
           links.map((l) => (
             <li>
-              <a
-                href={l.href}
-                class="flex h-full flex-col gap-2 rounded-xl border border-line bg-white p-5 no-underline hover:bg-moss hover:shadow-card"
-              >
-                <span class="font-display text-xl font-semibold text-spruce-deep underline">
-                  {l.label}
-                </span>
-                <span class="text-muted">{l.text}</span>
-              </a>
+              <LinkCard href={l.href} label={l.label} text={l.text} />
             </li>
           ))
         }

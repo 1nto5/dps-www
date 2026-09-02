@@ -5,6 +5,8 @@ import PageShell from "../components/PageShell.astro";
 import SectionNav from "../components/SectionNav.astro";
 import ArchImage from "../components/ArchImage.astro";
 import Gallery from "../components/Gallery.astro";
+import RailContactCard from "../components/RailContactCard.astro";
+import { contact } from "../data/contact";
 
 import nursingRoom from "../assets/media/1182-2012-07-25-at-10-20-35.jpg";
 import library from "../assets/media/1188-2012-07-25-at-10-18-46-1-1.jpg";
@@ -21,9 +23,6 @@ const sections = [
   { id: "zdjecia", label: "Zdjęcia" },
   { id: "regulamin", label: "Imprezy okolicznościowe" },
 ];
-
-const cardLinkClass =
-  "inline-block py-1 text-spruce underline hover:text-spruce-deep";
 
 const galleryPhotos = [
   {
@@ -55,24 +54,18 @@ const galleryPhotos = [
     <div slot="rail" class="space-y-8">
       <SectionNav items={sections} />
 
-      <div class="rounded-xl border border-line bg-white p-5">
-        <!-- `font-body` and neutral leading/tracking: the global `h2` rule
-             would otherwise set this card's small heading in Fraunces. -->
-        <h2 class="font-body font-semibold leading-normal tracking-normal">Masz pytania?</h2>
-        <p class="mt-2 text-meta">
-          <span class="text-muted">Telefon:</span>{" "}
-          <a class={cardLinkClass} href="tel:+48896242288">(89) 624-22-88</a>
-        </p>
-        <p class="text-meta">
-          <span class="text-muted">E-mail:</span>{" "}
-          <a class={cardLinkClass} href="mailto:sekretariat@dpsszczytno.pl"
-            >sekretariat@dpsszczytno.pl</a
+      <RailContactCard
+        title="Masz pytania?"
+        headingId="kontakt-oferta"
+        phone={contact.phone}
+        email={contact.email}
+      >
+        <p class="mt-3">
+          <a href="/kontakt/" class="inline-block py-1 text-spruce underline hover:text-spruce-deep"
+            >Kontakt i adres</a
           >
         </p>
-        <p class="mt-2 text-meta">
-          <a class={cardLinkClass} href="/kontakt/">Kontakt i adres</a>
-        </p>
-      </div>
+      </RailContactCard>
     </div>
 
     <section aria-labelledby="dom">
@@ -194,7 +187,10 @@ const galleryPhotos = [
 
     <section aria-labelledby="zdjecia" class="mt-section">
       <h2 id="zdjecia" class="mb-5 text-2xl">Nasz Dom w obiektywie</h2>
-      <Gallery photos={galleryPhotos} />
+      <Gallery
+        photos={galleryPhotos}
+        sizes="(min-width: 1024px) 15rem, (min-width: 640px) 33vw, 50vw"
+      />
     </section>
 
     <section aria-labelledby="regulamin" class="band mt-section">

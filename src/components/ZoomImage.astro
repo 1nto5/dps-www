@@ -15,6 +15,8 @@ interface Props {
   widths?: number[];
   sizes?: string;
   class?: string;
+  /** `eager` only for a scan that is the first thing on the page. */
+  loading?: "eager" | "lazy";
 }
 const {
   src,
@@ -23,6 +25,7 @@ const {
   widths = [480, 800],
   sizes = "(min-width: 768px) 50vw, 100vw",
   class: className = "",
+  loading = "lazy",
 } = Astro.props;
 const full = await getImage({ src, width: 1800, format: "webp" });
 ---
@@ -34,7 +37,7 @@ const full = await getImage({ src, width: 1800, format: "webp" });
     widths={widths}
     sizes={sizes}
     class:list={["w-full rounded-lg border border-line", className]}
-    loading="lazy"
+    loading={loading}
   />
 </a>
 <Lightbox />

@@ -3,35 +3,9 @@ import Base from "../layouts/Base.astro";
 import PageHeader from "../components/PageHeader.astro";
 import PageShell from "../components/PageShell.astro";
 import MapPin from "../components/icons/MapPin.astro";
+import { contact } from "../data/contact";
 
-/** Phone numbers of the residential units and the catering section. */
-const units = [
-  {
-    name: "Sekcja Żywienia",
-    phones: [{ label: "(89) 624-64-44", href: "tel:+48896246444" }],
-  },
-  {
-    name: "Dom Mieszkalny I",
-    phones: [
-      { label: "(89) 624-64-55", href: "tel:+48896246455" },
-      { label: "728 457 616", href: "tel:+48728457616" },
-    ],
-  },
-  {
-    name: "Dom Mieszkalny II",
-    phones: [
-      { label: "(89) 624-64-97", href: "tel:+48896246497" },
-      { label: "600 835 191", href: "tel:+48600835191" },
-    ],
-  },
-  {
-    name: "Dom Mieszkalny III",
-    phones: [
-      { label: "(89) 624-22-92", href: "tel:+48896242292" },
-      { label: "600 835 576", href: "tel:+48600835576" },
-    ],
-  },
-];
+const units = contact.units;
 
 // `inline-block py-1`: at this text size a bare inline box is 22px tall, under
 // the 24px minimum target of WCAG 2.2 SC 2.5.8, and these are phone numbers
@@ -57,9 +31,9 @@ const mapLinkClass =
       <section aria-labelledby="siedziba" class={cardClass}>
         <h2 id="siedziba" class="text-2xl">Szczytno</h2>
         <address class="mt-6 not-italic">
-          Dom Pomocy Społecznej im. Jana Pawła II<br />
-          ul. Wielbarska 2<br />
-          12-100 Szczytno
+          {contact.nameShort}<br />
+          {contact.address.street}<br />
+          {contact.address.postalCode} {contact.address.city}
         </address>
         <p class="mt-4">
           <a class={mapLinkClass} href="https://www.google.com/maps/search/?api=1&query=Wielbarska+2%2C+12-100+Szczytno" rel="noopener" data-external="off">
@@ -72,13 +46,13 @@ const mapLinkClass =
       <section aria-labelledby="filia" class={cardClass}>
         <h2 id="filia" class="text-2xl">Filia w Spychowie</h2>
         <address class="mt-6 not-italic">
-          Dom Pomocy Społecznej im. Jana Pawła II — Filia w Spychowie<br />
-          ul. Sienkiewicza 3<br />
-          12-150 Spychowo
+          {contact.spychowo.name}<br />
+          {contact.spychowo.address.street}<br />
+          {contact.spychowo.address.postalCode} {contact.spychowo.address.city}
         </address>
         <p class="mt-4">
           <span class={termClass}>Telefon:</span>{" "}
-          <a class={linkClass} href="tel:+48896225030">(89) 622-50-30</a>
+          <a class={linkClass} href={contact.spychowo.phone.href}>{contact.spychowo.phone.label}</a>
         </p>
         <p class="mt-4">
           <a class={mapLinkClass} href="https://www.google.com/maps/search/?api=1&query=Sienkiewicza+3%2C+12-150+Spychowo" rel="noopener" data-external="off">
@@ -102,23 +76,23 @@ const mapLinkClass =
           <dl class="mt-3 grid gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-4">
             <div class="min-w-0">
               <dt class={termClass}>Telefon</dt>
-              <dd><a class={linkClass} href="tel:+48896242288">(89) 624-22-88</a></dd>
+              <dd><a class={linkClass} href={contact.phone.href}>{contact.phone.label}</a></dd>
             </div>
             <div class="min-w-0">
               <dt class={termClass}>Faks</dt>
-              <dd>(89) 624-34-99</dd>
+              <dd>{contact.fax}</dd>
             </div>
             <div class="min-w-0">
               <dt class={termClass}>E-mail</dt>
               <dd>
-                <a class:list={[linkClass, "break-words"]} href="mailto:sekretariat@dpsszczytno.pl"
-                  >sekretariat@dpsszczytno.pl</a
+                <a class:list={[linkClass, "break-words"]} href={`mailto:${contact.email}`}
+                  >{contact.email}</a
                 >
               </dd>
             </div>
             <div class="min-w-0">
               <dt class={termClass}>Skrytka ePUAP</dt>
-              <dd>/dpsszczytno/SkrytkaESP</dd>
+              <dd>{contact.epuap}</dd>
             </div>
           </dl>
           <p id="epuap" class="mt-4 text-meta">
@@ -127,7 +101,7 @@ const mapLinkClass =
               >Wyślij pismo ogólne</a
             >{" "}
             na portalu gov.pl — jako adresata wskazuje się wtedy naszą skrytkę ePUAP
-            <span class="whitespace-nowrap">/dpsszczytno/SkrytkaESP</span>. W zwykłych sprawach nie
+            <span class="whitespace-nowrap">{contact.epuap}</span>. W zwykłych sprawach nie
             trzeba jednak niczego podpisywać elektronicznie: wystarczy e-mail albo telefon.
           </p>
         </div>
@@ -157,7 +131,7 @@ const mapLinkClass =
         <p class="mt-6 max-w-column">
           Bliscy naszych Mieszkańców są mile widziani. Przed przyjazdem warto zadzwonić do domu
           mieszkalnego, w którym mieszka odwiedzana osoba, albo do sekretariatu —{" "}
-          <a class={linkClass} href="tel:+48896242288">(89) 624-22-88</a>. Pracownicy powiedzą
+          <a class={linkClass} href={contact.phone.href}>{contact.phone.label}</a>. Pracownicy powiedzą
           wtedy, kiedy i gdzie najlepiej się spotkać.
         </p>
         <!-- Hours, place and rules come from the Dom (docs/pytania-do-domu.md). -->
@@ -194,9 +168,9 @@ const mapLinkClass =
           <div>
             <h3 class="text-lg">Odbiorca</h3>
             <address class="mt-3 not-italic">
-              Dom Pomocy Społecznej im. Jana Pawła II<br />
-              ul. Wielbarska 2<br />
-              12-100 Szczytno
+              {contact.nameShort}<br />
+              {contact.address.street}<br />
+              {contact.address.postalCode} {contact.address.city}
             </address>
             <p class="mt-3"><span class={termClass}>REGON:</span> 000963690</p>
           </div>

@@ -7,30 +7,13 @@ import Base from "../../../layouts/Base.astro";
 import PageHeader from "../../../components/PageHeader.astro";
 import PageShell from "../../../components/PageShell.astro";
 import SiblingNav from "../../../components/SiblingNav.astro";
+import LinkCard from "../../../components/LinkCard.astro";
 import { dokumentySections } from "../../../data/dokumenty-sections";
+import { sygnalistaPages } from "../../../data/sygnalista-pages";
 
-const subpages = [
-  {
-    href: "/dokumenty/sygnalista/wewnetrzna-procedura/",
-    title: "Wewnętrzna procedura",
-    desc: "Zasady dokonywania zgłoszeń naruszeń prawa i podejmowania działań następczych.",
-  },
-  {
-    href: "/dokumenty/sygnalista/osoba-upowazniona/",
-    title: "Osoba upoważniona",
-    desc: "Kto przyjmuje i weryfikuje zgłoszenia wewnętrzne oraz pod jakim numerem telefonu.",
-  },
-  {
-    href: "/dokumenty/sygnalista/klauzula-informacyjna/",
-    title: "Klauzula informacyjna",
-    desc: "Informacja o przetwarzaniu danych osobowych sygnalisty.",
-  },
-  {
-    href: "/dokumenty/sygnalista/zalaczniki/",
-    title: "Załączniki",
-    desc: "Wzory dokumentów do pobrania: oświadczenie, zgłoszenie, protokół, potwierdzenie, rejestr.",
-  },
-];
+/** The shared list opens with this page itself, for the rail on the subpages;
+    the tiles here are the pages below, so the index skips its own entry. */
+const subpages = sygnalistaPages.slice(1);
 ---
 
 <Base
@@ -67,20 +50,12 @@ const subpages = [
       </p>
     </div>
 
-    <nav aria-label="Strony w dziale Sygnalista" class="mt-8">
+    <nav aria-label="Strony w dziale Sygnalista" class="mt-subsection">
       <ul role="list" class="grid gap-4 sm:grid-cols-2">
         {
-          subpages.map((p) => (
+          subpages.map((page) => (
             <li>
-              <a
-                href={p.href}
-                class="block h-full rounded-lg border border-line bg-white p-5 hover:bg-moss hover:shadow-card"
-              >
-                <span class="block font-display text-lg font-semibold text-spruce-deep underline">
-                  {p.title}
-                </span>
-                <span class="mt-1 block text-muted">{p.desc}</span>
-              </a>
+              <LinkCard href={page.href} label={page.label} text={page.text} />
             </li>
           ))
         }

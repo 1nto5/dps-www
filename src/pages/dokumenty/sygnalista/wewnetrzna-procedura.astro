@@ -8,6 +8,9 @@ import Base from "../../../layouts/Base.astro";
 import PageHeader from "../../../components/PageHeader.astro";
 import PageShell from "../../../components/PageShell.astro";
 import SectionNav from "../../../components/SectionNav.astro";
+import SiblingNav from "../../../components/SiblingNav.astro";
+import BackLink from "../../../components/BackLink.astro";
+import { sygnalistaPages } from "../../../data/sygnalista-pages";
 
 /** Rail table of contents. Labels drop the "§ n." prefix the headings carry. */
 const sections = [
@@ -36,7 +39,14 @@ const sections = [
   />
 
   <PageShell>
-    <SectionNav slot="rail" items={sections} />
+    <div slot="rail" class="space-y-8">
+      <SectionNav items={sections} />
+      <SiblingNav
+        title="Sygnalista"
+        items={sygnalistaPages}
+        current="/dokumenty/sygnalista/wewnetrzna-procedura/"
+      />
+    </div>
 
     <div class="doc">
       <h2 id="postanowienia-ogolne">§ 1. Postanowienia ogólne</h2>
@@ -493,13 +503,7 @@ const sections = [
       </p>
     </div>
 
-    <p class="mt-section">
-      <a
-        href="/dokumenty/sygnalista/"
-        class="text-spruce underline hover:text-spruce-deep"
-        >Wróć do działu Sygnalista</a
-      >
-    </p>
+    <BackLink href="/dokumenty/sygnalista/" label="Wróć do działu Sygnalista" />
   </PageShell>
 </Base>
 

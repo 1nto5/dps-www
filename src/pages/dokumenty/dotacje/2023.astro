@@ -4,6 +4,7 @@ import Base from "../../../layouts/Base.astro";
 import PageHeader from "../../../components/PageHeader.astro";
 import PageShell from "../../../components/PageShell.astro";
 import SiblingNav from "../../../components/SiblingNav.astro";
+import BackLink from "../../../components/BackLink.astro";
 import { dotacjeYears } from "../../../data/dotacje-years";
 import DocList from "../../../components/DocList.astro";
 import emblem from "../../../assets/media/1423-Picture-1.png";
@@ -28,7 +29,7 @@ const docs = [
     lead="Środki publiczne otrzymane przez nasz Dom w 2023 roku."
   />
 
-  <PageShell narrow>
+  <PageShell>
     <SiblingNav
       slot="rail"
       title="Dotacje"
@@ -78,8 +79,6 @@ const docs = [
       <DocList docs={docs} />
     </div>
 
-    <div class="doc mt-8">
-      <p><a href="/dokumenty/dotacje/">Wróć do listy lat</a></p>
-    </div>
+    <BackLink href="/dokumenty/dotacje/" label="Wróć do listy lat" />
   </PageShell>
 </Base>

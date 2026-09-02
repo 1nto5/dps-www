@@ -9,6 +9,8 @@ import PageHeader from "../../../components/PageHeader.astro";
 import Gallery from "../../../components/Gallery.astro";
 import PageShell from "../../../components/PageShell.astro";
 import SiblingNav from "../../../components/SiblingNav.astro";
+import ZoomImage from "../../../components/ZoomImage.astro";
+import BackLink from "../../../components/BackLink.astro";
 import { projektyUnijnePages } from "../../../data/projekty-unijne-pages";
 
 import boardProject from "../../../assets/media/1344-680-00186.jpg";
@@ -64,7 +66,7 @@ const photos = [
     lead="Instalacja kolektorów słonecznych współfinansowana ze środków Europejskiego Funduszu Rozwoju Regionalnego."
   />
 
-  <PageShell narrow>
+  <PageShell>
     <SiblingNav
       slot="rail"
       title="Projekty unijne"
@@ -73,17 +75,17 @@ const photos = [
     />
 
     <div class="max-w-3xl">
-      <Image
+      <ZoomImage
         src={boardProject}
         alt="Tablica informacyjna projektu: „Warmia i Mazury regionem zjednoczonej Europy”. Projekt współfinansowany ze środków Europejskiego Funduszu Rozwoju Regionalnego w ramach Regionalnego Programu Operacyjnego Warmia i Mazury na lata 2007-2013. Tytuł projektu: „Wykorzystanie OZE w Domu Pomocy Społecznej w Szczytnie”. Całkowita wartość projektu 347 357,96 PLN, kwota dofinansowania 276 902,36 PLN, beneficjent — Powiat Szczycieński, ul. Sienkiewicza 1, 12-100 Szczytno."
+        caption="Tablica informacyjna projektu „Wykorzystanie OZE w Domu Pomocy Społecznej w Szczytnie”"
         widths={[400, 680]}
         sizes="(min-width: 768px) 680px, 100vw"
-        class="h-auto w-full rounded-lg border border-line"
         loading="eager"
       />
     </div>
 
-    <div class="doc mt-8">
+    <div class="doc mt-section">
       <h2>Cel projektu</h2>
       <p>
         Celem bezpośrednim realizacji przedsięwzięcia jest redukcja emisji zanieczyszczeń (ochrona
@@ -120,7 +122,7 @@ const photos = [
       </p>
     </div>
 
-    <div class="mt-6 max-w-column">
+    <div class="mt-block max-w-column">
       <Image
         src={photoUmowa}
         alt="Podpisanie umowy o dofinansowanie — uścisk dłoni prezesa WFOŚiGW w Olsztynie i Starosty Szczycieńskiego, obok Wicestarosta, w tle flagi Polski i Unii Europejskiej."
@@ -131,7 +133,7 @@ const photos = [
       />
     </div>
 
-    <div class="doc mt-10">
+    <div class="doc mt-section">
       <h2>Informacja o projekcie</h2>
       <p>
         W dniu 02.09.2014 r. w siedzibie Domu Pomocy Społecznej im. Jana Pawła II Dyrektor DPS p.
@@ -144,16 +146,13 @@ const photos = [
       <h2>Zdjęcia z realizacji inwestycji</h2>
     </div>
 
-    <div class="mt-4">
-      <Gallery photos={photos} />
+    <div class="mt-block">
+      <Gallery
+        photos={photos}
+        sizes="(min-width: 1024px) 15rem, (min-width: 640px) 33vw, 50vw"
+      />
     </div>
 
-    <p class="mt-section">
-      <a
-        href="/dokumenty/projekty-unijne/"
-        class="text-spruce underline hover:text-spruce-deep"
-        >Wróć do Projektów unijnych</a
-      >
-    </p>
+    <BackLink href="/dokumenty/projekty-unijne/" label="Wróć do Projektów unijnych" />
   </PageShell>
 </Base>

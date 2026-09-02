@@ -26,7 +26,11 @@ interface Props {
    *  with no rail; card grids need the full container width. The column stays
    *  left-aligned rather than centred, so it starts on the same vertical line
    *  as the `PageHeader` h1 above it — a centred column would step inwards
-   *  under a left-aligned title and read as a misalignment. */
+   *  under a left-aligned title and read as a misalignment.
+   *
+   *  It has NO EFFECT when a rail is present: the rail layout already caps the
+   *  content column at 46rem, so a page that gains a rail can simply drop the
+   *  prop. */
   narrow?: boolean;
   class?: string;
 }

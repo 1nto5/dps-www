@@ -3,6 +3,7 @@ import Base from "../../../layouts/Base.astro";
 import PageHeader from "../../../components/PageHeader.astro";
 import PageShell from "../../../components/PageShell.astro";
 import SiblingNav from "../../../components/SiblingNav.astro";
+import LinkCard from "../../../components/LinkCard.astro";
 import { dokumentySections } from "../../../data/dokumenty-sections";
 import { dotacjeYears } from "../../../data/dotacje-years";
 
@@ -32,15 +33,7 @@ const years = dotacjeYears;
       {
         years.map((y) => (
           <li>
-            <a
-              href={y.href}
-              class="flex h-full flex-col gap-2 rounded-xl border border-line bg-white p-5 no-underline hover:bg-moss hover:shadow-card"
-            >
-              <span class="font-display text-xl font-semibold text-spruce-deep underline">
-                {y.label}
-              </span>
-              <span class="text-muted">{y.text}</span>
-            </a>
+            <LinkCard href={y.href} label={y.label} text={y.text} />
           </li>
         ))
       }

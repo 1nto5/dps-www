@@ -110,8 +110,10 @@
    utility, which quietly takes the class name away from `display:
    inline-block`. Measured: the homepage call-to-action button broke out of
    the page at 1024px, and the footer links use the same class. So the value
-   is a plain custom property and the utilities that need it are declared by
-   hand. Add another one here if a page needs it. */
+   is a plain custom property and the one utility that needs it is declared by
+   hand below. Add another one here if a page ever needs it — but only once a
+   page does: the five that were declared alongside `mt-block` on spec were
+   never used by anything. */
 :root {
   --spacing-block: 1.5rem;
   /* The reading measure, narrower than the 46rem column: running text stops at
@@ -132,21 +134,6 @@
 }
 @utility mt-block {
   margin-top: var(--spacing-block);
-}
-@utility mb-block {
-  margin-bottom: var(--spacing-block);
-}
-@utility gap-block {
-  gap: var(--spacing-block);
-}
-@utility p-block {
-  padding: var(--spacing-block);
-}
-@utility px-block {
-  padding-inline: var(--spacing-block);
-}
-@utility py-block {
-  padding-block: var(--spacing-block);
 }
 
 /* 112.5% of the 16px default = 18px, but it tracks the reader's own
@@ -945,6 +932,21 @@ body:has(main > .pre-footer:last-child) footer {
   transform: rotate(180deg);
 }
 
+/* ---------------------------------------------------------------------------
+   Corner radius, so the site keeps two of them instead of collecting five.
+
+   `rounded-xl` — a standalone bordered card sitting on the page: a tile in a
+   grid (`LinkCard`), a news card, a rail contact card, the collapsed table of
+   contents, a framed photo.
+
+   `rounded-lg` — anything nested inside one of those, or smaller than one: the
+   panels inside a card, row lists (`DocList`), images and posters, buttons.
+
+   Everything else keeps whatever its own component says: `rounded` for the
+   small chips in the navigation and the accessibility bar, `rounded-full` for
+   the map pill, `999px` for the lightbox controls and the ArchImage window.
+   ------------------------------------------------------------------------ */
+
 /* Chapter band. The section sits inside a 46rem grid column that is not
    centred in the viewport once the rail appears, so the usual
    `margin-inline: calc(50% - 50vw)` full-bleed would land off-centre and
@@ -989,6 +991,14 @@ body:has(main > .pre-footer:last-child) footer {
 .doc h3 {
   font-size: 1.2rem;
   margin: 1.75rem 0 0.5rem;
+}
+/* A prose block opening with a heading must not push itself away from
+   whatever placed it: the wrapper already carries the spacing (`mt-section`
+   between chapters, `mt-block` between a block and its figure), and the
+   heading's own 2.25rem on top of that read as a hole. Pages used to answer
+   this one at a time with `mt-0!`. */
+.doc > :first-child {
+  margin-block-start: 0;
 }
 .doc p,
 .doc ul,
@@ -1087,6 +1097,10 @@ body:has(main > .pre-footer:last-child) footer {
    becomes a column at all. */
 @media (min-width: 1024px) {
   [data-shell-rail] {
+    /* The band's full-bleed shadow (below) belongs to a later sibling and
+       would paint over the rail's cards; lifting the sticky rail one level
+       keeps it on top. */
+    z-index: 1;
     max-height: calc(100svh - var(--header-h) - 3rem);
     overflow-y: auto;
     overscroll-behavior: contain;

@@ -8,6 +8,7 @@ import Footer from "../components/Footer.astro";
 // off downloads the font twice.
 import frauncesFont from "../assets/fonts/fraunces-subset.woff2?url";
 import bodyFont from "../assets/fonts/source-sans-3-subset.woff2?url";
+import { contact } from "../data/contact";
 
 interface Props {
   title: string;
@@ -142,15 +143,17 @@ const desc =
       set:html={JSON.stringify({
         "@context": "https://schema.org",
         "@type": "GovernmentOrganization",
-        name: "Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie",
+        name: contact.name,
         url: "https://dpsszczytno.pl/",
-        telephone: "+48 89 624 22 88",
-        email: "sekretariat@dpsszczytno.pl",
+        // Schema.org asks for the international form; the label is already the
+        // national one, so the country code is all that is added.
+        telephone: `+48 ${contact.phone.label}`,
+        email: contact.email,
         address: {
           "@type": "PostalAddress",
-          streetAddress: "ul. Wielbarska 2",
-          postalCode: "12-100",
-          addressLocality: "Szczytno",
+          streetAddress: contact.address.street,
+          postalCode: contact.address.postalCode,
+          addressLocality: contact.address.city,
           addressCountry: "PL",
         },
       })}

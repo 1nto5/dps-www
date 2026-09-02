@@ -7,6 +7,9 @@ import Base from "../../layouts/Base.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import PageShell from "../../components/PageShell.astro";
 import SectionNav from "../../components/SectionNav.astro";
+import SiblingNav from "../../components/SiblingNav.astro";
+import BackLink from "../../components/BackLink.astro";
+import { dokumentySections } from "../../data/dokumenty-sections";
 
 /** Rail table of contents. Labels are shorter than the notice headings. */
 const sections = [
@@ -30,7 +33,10 @@ const sections = [
   />
 
   <PageShell>
-    <SectionNav slot="rail" items={sections} />
+    <div slot="rail" class="space-y-8">
+      <SectionNav items={sections} />
+      <SiblingNav title="Dokumenty" items={dokumentySections} current="/dokumenty/rodo/" />
+    </div>
 
     <div class="doc">
       <h2 id="pracownik">Informacja o przetwarzaniu danych osobowych dla pracownika</h2>
@@ -463,5 +469,7 @@ const sections = [
         </li>
       </ol>
     </div>
+
+    <BackLink href="/dokumenty/" label="Wróć do Dokumentów" />
   </PageShell>
 </Base>

@@ -1,9 +1,10 @@
 ---
-import { Image } from "astro:assets";
 import Base from "../../../layouts/Base.astro";
 import PageHeader from "../../../components/PageHeader.astro";
 import PageShell from "../../../components/PageShell.astro";
 import SiblingNav from "../../../components/SiblingNav.astro";
+import BackLink from "../../../components/BackLink.astro";
+import PosterFigure from "../../../components/PosterFigure.astro";
 import { dotacjeYears } from "../../../data/dotacje-years";
 import posterWyposazenie from "../../../assets/media/1257-110.jpg";
 import posterCovid from "../../../assets/media/1258-97.jpg";
@@ -20,7 +21,7 @@ import posterWzmocnienie from "../../../assets/media/1259-123-1.jpg";
     lead="Środki publiczne otrzymane przez nasz Dom w 2021 roku."
   />
 
-  <PageShell narrow>
+  <PageShell>
     <SiblingNav
       slot="rail"
       title="Dotacje"
@@ -44,19 +45,11 @@ import posterWzmocnienie from "../../../assets/media/1259-123-1.jpg";
         podniesienia standardów, zachowania odpowiedniej higieny i czystości oraz komfortu życia.
       </p>
 
-      <figure class="my-8">
-        <Image
-          src={posterWyposazenie}
-          alt="Informacja z flagą i godłem Polski o dotacji Wojewody Warmińsko-Mazurskiego na realizację zadań domów pomocy społecznej: dofinansowanie 121 624 zł, całkowita wartość zadania 152 030 zł."
-          widths={[480, 680]}
-          sizes="(min-width: 768px) 34rem, 100vw"
-          loading="lazy"
-          class="w-full max-w-[34rem] rounded-lg border border-line bg-white"
-        />
-        <figcaption class="mt-2 text-meta text-muted">
-          Informacja o dotacji na zadania domów pomocy społecznej.
-        </figcaption>
-      </figure>
+      <PosterFigure
+        src={posterWyposazenie}
+        alt="Informacja z flagą i godłem Polski o dotacji Wojewody Warmińsko-Mazurskiego na realizację zadań domów pomocy społecznej: dofinansowanie 121 624 zł, całkowita wartość zadania 152 030 zł."
+        caption="Informacja o dotacji na zadania domów pomocy społecznej."
+      />
 
       <h2>Fundusz Przeciwdziałania COVID-19 — zakup sprzętu</h2>
       <p>
@@ -70,19 +63,11 @@ import posterWzmocnienie from "../../../assets/media/1259-123-1.jpg";
         wysokiego ryzyka, zostanie zakupiony sprzęt, który bezpośrednio pomoże w walce z COVID-19.
       </p>
 
-      <figure class="my-8">
-        <Image
-          src={posterCovid}
-          alt="Informacja z flagą i godłem Polski o dotacji z Funduszu Przeciwdziałania COVID-19 na kwotę 120 988 zł, przeznaczonej na zakup sprzętu do walki z COVID-19."
-          widths={[480, 680]}
-          sizes="(min-width: 768px) 34rem, 100vw"
-          loading="lazy"
-          class="w-full max-w-[34rem] rounded-lg border border-line bg-white"
-        />
-        <figcaption class="mt-2 text-meta text-muted">
-          Informacja o dotacji z Funduszu Przeciwdziałania COVID-19.
-        </figcaption>
-      </figure>
+      <PosterFigure
+        src={posterCovid}
+        alt="Informacja z flagą i godłem Polski o dotacji z Funduszu Przeciwdziałania COVID-19 na kwotę 120 988 zł, przeznaczonej na zakup sprzętu do walki z COVID-19."
+        caption="Informacja o dotacji z Funduszu Przeciwdziałania COVID-19."
+      />
 
       <h2>Wzmocnienie zabezpieczenia domów pomocy społecznej</h2>
       <p>
@@ -100,21 +85,13 @@ import posterWzmocnienie from "../../../assets/media/1259-123-1.jpg";
         i wyposażenia.
       </p>
 
-      <figure class="my-8">
-        <Image
-          src={posterWzmocnienie}
-          alt="Informacja z flagą i godłem Polski o dotacji Wojewody Warmińsko-Mazurskiego na wzmocnienie zabezpieczenia domów pomocy społecznej przed skutkami COVID-19, całkowita wartość zadania 73 701,00 zł."
-          widths={[480, 680]}
-          sizes="(min-width: 768px) 34rem, 100vw"
-          loading="lazy"
-          class="w-full max-w-[34rem] rounded-lg border border-line bg-white"
-        />
-        <figcaption class="mt-2 text-meta text-muted">
-          Informacja o dotacji na wzmocnienie zabezpieczenia domów pomocy społecznej.
-        </figcaption>
-      </figure>
-
-      <p><a href="/dokumenty/dotacje/">Wróć do listy lat</a></p>
+      <PosterFigure
+        src={posterWzmocnienie}
+        alt="Informacja z flagą i godłem Polski o dotacji Wojewody Warmińsko-Mazurskiego na wzmocnienie zabezpieczenia domów pomocy społecznej przed skutkami COVID-19, całkowita wartość zadania 73 701,00 zł."
+        caption="Informacja o dotacji na wzmocnienie zabezpieczenia domów pomocy społecznej."
+      />
     </div>
+
+    <BackLink href="/dokumenty/dotacje/" label="Wróć do listy lat" />
   </PageShell>
 </Base>

@@ -1,13 +1,5 @@
 ---
-const nav = [
-  { href: "/o-nas/", label: "O nas" },
-  { href: "/oferta/", label: "Oferta" },
-  { href: "/filia-w-spychowie/", label: "Filia w Spychowie" },
-  { href: "/aktualnosci/", label: "Aktualności" },
-  { href: "/galeria/", label: "Galeria" },
-  { href: "/dokumenty/", label: "Dokumenty" },
-  { href: "/kontakt/", label: "Kontakt" },
-];
+import { mainNav as nav } from "../data/nav";
 // Strip the deploy base (github.io test phase) so active-page detection
 // works the same as on the production domain.
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
