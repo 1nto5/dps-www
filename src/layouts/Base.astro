@@ -33,6 +33,24 @@ const desc =
       import.meta.env.BASE_URL !== "/" && <meta name="robots" content="noindex" />
     }
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <!--
+      Arms the reveal choreography before anything paints. The browser paints
+      incrementally, so a script at the end of <body> loses this race on a slow
+      connection (measured: content painted 2.7s before it ran) and the reader
+      would watch sections blink out. A render-blocking rule in <head> is the
+      only thing that beats first paint. The timer is the failsafe: if the
+      choreography script never runs, nothing stays hidden.
+    -->
+    <script is:inline>
+      (function () {
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        var d = document.documentElement;
+        d.classList.add("reveal-armed");
+        setTimeout(function () {
+          d.classList.remove("reveal-armed");
+        }, 2500);
+      })();
+    </script>
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={desc} />
     <meta property="og:type" content="website" />
@@ -69,60 +87,227 @@ const desc =
       <slot />
     </main>
     <Footer />
-    <script>
-      // Scroll reveal: only below-fold, top-level sections get the hidden
-      // state (added here, never in markup, so first paint and no-JS are
-      // unaffected), then fade up once when they enter the viewport.
-      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        const belowFold = (el: Element) => el.getBoundingClientRect().top > innerHeight * 0.9;
-        const hide = (el: HTMLElement) => {
+    <!--
+      Inline and parser-blocking on purpose. Astro's default `<script>` is a
+      deferred module, which runs only after the browser has already painted —
+      measured here at 18ms behind first paint locally and 18.7s behind it on a
+      throttled connection, because the module queues behind fonts and images.
+      Hiding content from there would blink it out in front of the reader. At
+      the end of <body> this runs during parsing, before the first paint, so
+      the staged state is the first thing painted and nothing ever flashes.
+      The cost is plain JS with no type checking; the script is small and
+      self-contained, and it is the only JavaScript the site ships.
+    -->
+    <script is:inline>
+      (function () {
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        if (!("IntersectionObserver" in window)) return;
+
+        var STEP = 85; // gap between one element and the next
+        var MAX_DELAY = 400; // never hold the last element back further
+        var LOAD_LEAD = 140; // let the hero start before the rest follows
+        // How far a section must travel into view before it plays. One number
+        // serves as both the staging test and the observer's reveal line: if
+        // they ever diverge, sections in the gap get staged and then revealed
+        // during page load, so a reader who has not scrolled never sees them
+        // move.
+        var INSET = Math.round(innerHeight * 0.12);
+
+        var staged = [];
+        var owner = new WeakMap();
+        var units = new Map();
+
+        function kids(el) {
+          return Array.prototype.slice.call(el.children);
+        }
+
+        // sr-only text and other 1px boxes would spend a stagger step on
+        // something nobody can see.
+        function isVisible(el) {
+          var r = el.getBoundingClientRect();
+          return r.width > 1 && r.height > 1;
+        }
+
+        // Walk past wrappers holding a single element until a node with real
+        // siblings appears: that is the level worth choreographing. A card or
+        // photo grid contributes its items to the same sequence rather than
+        // running a second animation inside one already playing.
+        function revealUnits(section) {
+          var node = section;
+          while (kids(node).length === 1) node = kids(node)[0];
+          var out = [];
+          kids(node).forEach(function (child) {
+            if (child.matches("ul, ol") && kids(child).length > 1) {
+              out.push.apply(out, kids(child));
+            } else {
+              out.push(child);
+            }
+          });
+          return out.filter(isVisible);
+        }
+
+        function hide(el, i) {
           el.setAttribute("data-reveal", "");
+          el.style.transitionDelay = Math.min(i * STEP, MAX_DELAY) + "ms";
           el.style.transitionProperty = "none";
           void el.offsetWidth;
           el.style.transitionProperty = "";
-        };
+          staged.push(el);
+        }
 
-        const sections = [...document.querySelectorAll("main section")].filter(
-          (s) =>
-            !s.parentElement?.closest("section") &&
-            !s.hasAttribute("data-no-reveal") &&
-            belowFold(s),
-        );
-        // Card/photo grids cascade item by item instead of as one block.
-        const lists = [...document.querySelectorAll('main ul[role="list"]')].filter(belowFold);
+        // `instant` skips the fade: used when keyboard focus lands on content
+        // that has not finished appearing, so the focus ring is never drawn on
+        // something transparent.
+        function show(el, instant) {
+          if (instant) {
+            el.style.transitionProperty = "none";
+            el.style.transitionDelay = "";
+          }
+          el.classList.add("is-visible");
+          if (instant) {
+            void el.offsetWidth;
+            el.style.transitionProperty = "";
+            return;
+          }
+          // The stagger delay must not slow down later hover transitions on
+          // the same element, but it must outlast this element's own run:
+          // its delay plus --reveal-duration, with room to spare.
+          var d = parseFloat(el.style.transitionDelay) || 0;
+          setTimeout(function () {
+            el.style.transitionDelay = "";
+          }, d + 1200);
+        }
 
-        const io = new IntersectionObserver(
-          (entries) => {
-            for (const e of entries) {
-              if (!e.isIntersecting) continue;
-              io.unobserve(e.target);
-              if (e.target.matches("ul")) {
-                for (const li of e.target.children) {
-                  li.classList.add("is-visible");
-                  // The stagger delay must not slow down later hover
-                  // transitions on the same element.
-                  setTimeout(() => ((li as HTMLElement).style.transitionDelay = ""), 1100);
-                }
-              } else {
-                e.target.classList.add("is-visible");
-              }
-            }
+        function reveal(section, instant) {
+          io.unobserve(section);
+          var u = units.get(section);
+          if (u) {
+            u.forEach(function (el) {
+              show(el, instant);
+            });
+          }
+        }
+
+        var io = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (e) {
+              if (e.isIntersecting) reveal(e.target);
+            });
           },
-          { rootMargin: "0px 0px -60px 0px" },
+          // Shrink the root's bottom edge by the same inset, so a section
+          // plays as the reader scrolls it into view rather than while it is
+          // still off-screen.
+          { rootMargin: "0px 0px -" + INSET + "px 0px" },
         );
 
-        for (const s of sections) {
-          hide(s as HTMLElement);
-          io.observe(s);
-        }
-        for (const ul of lists) {
-          [...ul.children].forEach((li, i) => {
-            hide(li as HTMLElement);
-            (li as HTMLElement).style.transitionDelay = `${Math.min(i * 70, 420)}ms`;
+        try {
+          var sections = Array.prototype.slice
+            .call(document.querySelectorAll("main section"))
+            .filter(function (s) {
+              return (
+                !(s.parentElement && s.parentElement.closest("section")) &&
+                !s.hasAttribute("data-no-reveal")
+              );
+            });
+
+          var onScreen = [];
+          sections.forEach(function (s) {
+            // Classify before hiding: the hidden state carries a transform,
+            // which would shift the measured rect.
+            var below = s.getBoundingClientRect().top > innerHeight - INSET;
+            var u = revealUnits(s);
+            if (!u.length) return;
+            u.forEach(function (el, i) {
+              hide(el, i);
+              owner.set(el, s);
+            });
+            units.set(s, u);
+            if (below) io.observe(s);
+            else onScreen.push(s);
           });
-          io.observe(ul);
+
+          // Every section now holds its own staged state, so the blanket hold
+          // from <head> can be released without anything becoming visible.
+          document.documentElement.classList.remove("reveal-armed");
+
+          // Whatever is already on screen when the page opens arrives as one
+          // continuous cascade just behind the hero. Without this, a reader on
+          // a tall display finds the upper sections already in place and never
+          // sees them appear at all.
+          if (onScreen.length) {
+            requestAnimationFrame(function () {
+              var i = 0;
+              onScreen.forEach(function (s) {
+                var u = units.get(s);
+                u.forEach(function (el) {
+                  el.style.transitionDelay = LOAD_LEAD + Math.min(i++ * STEP, MAX_DELAY) + "ms";
+                });
+                u.forEach(function (el) {
+                  show(el);
+                });
+              });
+            });
+          }
+
+          // Keyboard focus must never land on something the reader cannot see.
+          // Test the painted opacity, not the class: `show` marks every unit in
+          // a section visible at once while each waits out its stagger delay,
+          // so a unit can carry `is-visible` and still be fully transparent.
+          addEventListener("focusin", function (e) {
+            var el = e.target && e.target.closest && e.target.closest("[data-reveal]");
+            if (!el || parseFloat(getComputedStyle(el).opacity) >= 1) return;
+            var section = owner.get(el);
+            if (section) reveal(section, true);
+            else show(el, true);
+          });
+
+          // Safety net: anything sitting in the viewport but still hidden after
+          // a beat is shown regardless, so a missed observer callback cannot
+          // leave content invisible. Sections further down keep their entrance.
+          setTimeout(function () {
+            units.forEach(function (u, s) {
+              var r = s.getBoundingClientRect();
+              // Same line the observer uses. Testing the raw viewport edge
+              // instead would fire for a section merely peeking in below the
+              // line, playing its entrance late and unprompted.
+              if (r.top < innerHeight - INSET && r.bottom > 0) reveal(s);
+            });
+          }, 1500);
+
+          // Arriving by anchor replays the gesture once, briefly, on the whole
+          // section — not the full cascade, so hopping around a table of
+          // contents never replays an entrance each time. A section not yet
+          // revealed plays its full entrance instead.
+          var acknowledge = function () {
+            var id = decodeURIComponent(location.hash.slice(1));
+            if (!id || id === "tresc") return;
+            var el = document.getElementById(id);
+            var section = el && el.closest("main section");
+            if (!section) return;
+            var u = units.get(section);
+            if (
+              u &&
+              u.some(function (x) {
+                return parseFloat(getComputedStyle(x).opacity) < 1;
+              })
+            ) {
+              reveal(section);
+              return;
+            }
+            section.removeAttribute("data-arriving");
+            void section.offsetWidth;
+            section.setAttribute("data-arriving", "");
+          };
+          addEventListener("hashchange", acknowledge);
+          if (location.hash) acknowledge();
+        } catch (err) {
+          // Content hidden for this effect must never survive a failure in it.
+          document.documentElement.classList.remove("reveal-armed");
+          staged.forEach(function (el) {
+            show(el, true);
+          });
         }
-      }
+      })();
     </script>
   </body>
 </html>

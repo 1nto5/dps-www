@@ -29,6 +29,27 @@ html {
   font-size: 112.5%;
   /* Keeps the page from jumping ~15px when the lightbox locks scroll. */
   scrollbar-gutter: stable;
+  /* Anchor targets, the skip link and keyboard focus all scroll through this
+     property, so one declaration keeps every one of them clear of the sticky
+     header instead of landing underneath it. */
+  scroll-padding-top: calc(var(--header-h) + 1rem);
+}
+
+/* Measured height of the sticky header: 72px below `sm`, 85px above it, and
+   96px at the `lg` breakpoint where the nav appears. The larger figure is used
+   from `sm` up because overshooting only drops an anchor target slightly
+   lower, while undershooting hides it behind the header. */
+:root {
+  --header-h: 4rem;
+  /* How long one element takes to rise and fade in. The single knob for the
+     pace of the whole reveal; the gap between consecutive elements is `STEP`
+     in the choreography script and should move with it. */
+  --reveal-duration: 700ms;
+}
+@media (min-width: 640px) {
+  :root {
+    --header-h: 5.4rem;
+  }
 }
 
 body {
@@ -173,20 +194,48 @@ header {
   }
 }
 
-/* Scroll reveal: sections below the fold fade up once as they enter.
-   Hidden state applies only when JS runs and motion is allowed, so
-   content is never lost without JS or with reduced motion. */
+/* Scroll reveal: the same gesture as the hero above, applied to the pieces
+   of every section below the fold — each element rises and fades in turn
+   rather than the section appearing as one slab. Slightly quicker than the
+   hero because it plays while the reader is scrolling, not standing still.
+   Hidden state applies only when JS runs and motion is allowed, so content
+   is never lost without JS or with reduced motion. */
+/* Held from the very first paint by the <head> script, until the choreography
+   script has staged each section's own contents. Without this the reader sees
+   content appear and then blink out on a slow connection. The class only ever
+   exists when JavaScript runs and motion is allowed, and it removes itself
+   after 2.5s if the choreography never arrives. */
+.reveal-armed main > section:not([data-no-reveal]) {
+  opacity: 0;
+}
+
 @media (prefers-reduced-motion: no-preference) and (scripting: enabled) {
   [data-reveal] {
     opacity: 0;
     transform: translateY(14px);
     transition:
-      opacity 550ms var(--ease-out),
-      transform 550ms var(--ease-out);
+      opacity var(--reveal-duration) var(--ease-out),
+      transform var(--reveal-duration) var(--ease-out);
   }
   [data-reveal].is-visible {
     opacity: 1;
     transform: none;
+  }
+}
+
+/* Arriving at a section by anchor (in-page links, the "#" targets used by
+   headings) acknowledges the jump with one short rise — the reveal gesture
+   without the cascade, so hopping around a long page never replays a full
+   entrance each time. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-arriving] {
+    animation: arrive 250ms var(--ease-out) backwards;
+  }
+  @keyframes arrive {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
   }
 }
 
