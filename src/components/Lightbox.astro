@@ -21,6 +21,15 @@
   // reader left it instead of at the top of the document (WCAG 2.1 SC 2.4.3).
   let opener: HTMLAnchorElement | null = null;
 
+  // The site-wide "is movement allowed?" test, defined by the <head> script:
+  // it also answers no when the reader has chosen reduced motion or a high
+  // contrast mode in the accessibility toolbar. The fallback is the plain
+  // system query, for the case where that script never ran.
+  const motionOk = () => {
+    const fn = (window as unknown as { dpsMotionOk?: () => boolean }).dpsMotionOk;
+    return fn ? fn() : matchMedia("(prefers-reduced-motion: no-preference)").matches;
+  };
+
   function build() {
     dialog = document.createElement("dialog");
     dialog.className = "lightbox";
@@ -70,7 +79,7 @@
     img.src = link.href;
     // Crossfade on arrow navigation only (open has its own entrance).
     // WAAPI retargets when arrows are held down instead of restarting.
-    if (navigate && matchMedia("(prefers-reduced-motion: no-preference)").matches) {
+    if (navigate && motionOk()) {
       img.animate([{ opacity: 0 }, { opacity: 1 }], {
         duration: 150,
         easing: "cubic-bezier(0.23, 1, 0.32, 1)",

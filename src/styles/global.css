@@ -99,6 +99,16 @@
    hand. Add another one here if a page needs it. */
 :root {
   --spacing-block: 1.5rem;
+  /* The focus ring is named rather than written at the point of use, because
+     the high-contrast modes below have to be able to move it off the palette
+     they have just repainted: a spruce ring is invisible once spruce has
+     become the page's own yellow. */
+  --focus-ring: var(--color-spruce);
+  /* The card surface. Thirty-one places still say `bg-white`, which no token
+     swap can reach; the high-contrast block overrides that class through this
+     variable, and a later phase can migrate the class itself to `bg-card`
+     without touching the modes again. */
+  --color-card: #ffffff;
 }
 @utility mt-block {
   margin-top: var(--spacing-block);
@@ -200,7 +210,7 @@ body {
 }
 
 :focus-visible {
-  outline: 3px solid var(--color-spruce);
+  outline: 3px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -281,6 +291,234 @@ body {
      re-cut moss with no further transparency. */
   html:not([data-contrast]) .band {
     --band-fill: var(--color-moss);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Reader modes, chosen in the accessibility toolbar and re-applied by the
+   <head> script before the first paint.
+
+   The two high-contrast modes are the whole palette re-cut to two colours, so
+   every token that names a surface, a text colour or a boundary is answered
+   here — anything left out would keep its light value and punch a hole in a
+   black page. Measured ratios: #ffff00 on #000000 is 19.56:1 and #ffffff on
+   #000000 is 21:1, both far past the 7:1 of AAA. The one grey, `moss-deep`,
+   is #5a5a5a: yellow on it reads 6.52:1 and it reads 3.0:1 against the page
+   itself, so it can carry the "you are here" tint in the navigation and still
+   be seen as a shape. A darker grey cannot — #333333 measures 1.66:1 against
+   black and disappears.
+
+   `--color-on-dark` is the text drawn on a spruce fill (buttons, lightbox
+   chips). Spruce here IS the page's text colour, so its label has to flip to
+   the page's background: black.
+   ------------------------------------------------------------------------ */
+html[data-contrast="yellow"] {
+  --color-paper: #000000;
+  --color-ink: #ffff00;
+  --color-muted: #ffff00;
+  --color-spruce: #ffff00;
+  --color-spruce-deep: #ffff00;
+  --color-honey: #ffff00;
+  --color-line: #ffff00;
+  --color-edge: #ffff00;
+  --color-moss: #000000;
+  --color-moss-deep: #5a5a5a;
+  --color-card: #000000;
+  --color-overlay: #000000;
+  --color-on-overlay: #ffff00;
+  --color-on-dark: #000000;
+  /* The ring has to differ from both the text and the page, or it vanishes
+     into whichever it matches. */
+  --focus-ring: #ffffff;
+  color-scheme: dark;
+}
+html[data-contrast="bw"] {
+  --color-paper: #000000;
+  --color-ink: #ffffff;
+  --color-muted: #ffffff;
+  --color-spruce: #ffffff;
+  --color-spruce-deep: #ffffff;
+  --color-honey: #ffffff;
+  --color-line: #ffffff;
+  --color-edge: #ffffff;
+  --color-moss: #000000;
+  --color-moss-deep: #5a5a5a;
+  --color-card: #000000;
+  --color-overlay: #000000;
+  --color-on-overlay: #ffffff;
+  --color-on-dark: #000000;
+  --focus-ring: #ffff00;
+  color-scheme: dark;
+}
+
+/* Text size. The base is 112.5% (18px); these are 21px and 24px, and because
+   they are percentages of the reader's own browser setting rather than pixel
+   values, a reader who has already enlarged text keeps that gain on top. */
+html[data-font-size="large"] {
+  font-size: 131.25%;
+}
+html[data-font-size="xlarge"] {
+  font-size: 150%;
+}
+
+/* Everything the token swap above cannot reach, because it is written as a
+   literal somewhere outside the palette. */
+html[data-contrast] .bg-white {
+  background-color: var(--color-card) !important;
+}
+html[data-contrast] .hover\:bg-white:hover {
+  background-color: var(--color-card) !important;
+}
+html[data-contrast] .text-white,
+html[data-contrast] .focus\:text-white:focus {
+  color: var(--color-on-dark) !important;
+}
+/* The rail's dimmed link colour is an alpha of `ink`; at 85% of yellow it is
+   a duller yellow, which is exactly the distinction these modes exist to
+   remove. */
+html[data-contrast] .text-ink\/85 {
+  color: var(--color-ink);
+}
+/* The footer's tint is `bg-moss/60` — an alpha, so it would sit at 60% of
+   black over the page and read as a slightly different black. */
+html[data-contrast] footer {
+  background: var(--color-paper);
+}
+/* The menu scrim is `bg-ink/40`, which is 40% yellow: a yellow wash over the
+   page rather than a dimming of it. */
+html[data-contrast] [data-menu][open]::before {
+  background: rgb(0 0 0 / 0.7);
+}
+html[data-contrast] ::selection {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+/* A shadow is a soft grey edge, which on a black page is nothing at all. The
+   card says it is being pointed at with its border instead. */
+html[data-contrast] .hover\:shadow-card:hover {
+  box-shadow: none;
+  border-color: var(--color-ink);
+}
+/* The band is a filled slab in every other mode; here the fill would be the
+   page itself, so what is left — and what has to be kept — is its rule. */
+html[data-contrast] .band {
+  --band-fill: var(--color-paper);
+}
+/* Photographs are never inverted, greyscaled or dimmed: a picture of the Dom
+   has to stay a picture of the Dom. What a black page takes away is the
+   photo's edge, so the frame gets one back. On `ArchImage` it goes on the
+   element carrying the arch radius, so the line follows the window shape. */
+html[data-contrast] [data-arch],
+html[data-contrast] [data-framed],
+html[data-contrast] a[data-lightbox],
+html[data-contrast] .lightbox img {
+  border: 2px solid var(--color-line);
+}
+/* Inside the lightbox the ring is normally paper, which is now the same black
+   as the backdrop. */
+html[data-contrast] .lightbox :focus-visible {
+  outline-color: var(--focus-ring);
+}
+
+/* ---------------------------------------------------------------------------
+   The accessibility toolbar itself.
+
+   Hidden until the <head> script has marked scripting as live, so it never
+   flashes in and — more importantly — never sits in the tab order as a row of
+   controls that cannot do anything. `(scripting: none)` covers the browsers
+   that report it directly.
+   ------------------------------------------------------------------------ */
+html:not([data-js]) .a11y-bar {
+  display: none;
+}
+@media (scripting: none) {
+  .a11y-bar {
+    display: none;
+  }
+}
+.a11y-bar {
+  background: var(--color-moss);
+  border-bottom: 1px solid var(--color-line);
+  color: var(--color-ink);
+  /* In rem, so the bar grows with A+ and A++ like the rest of the page. */
+  font-size: 0.8125rem;
+}
+.a11y-bar-label {
+  color: var(--color-muted);
+}
+.a11y-bar button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* WCAG 2.2 SC 2.5.8 asks for 24px; these are the site's own controls, used
+     by the readers who need them most, so they are held at 44px in both
+     directions — the AAA figure of SC 2.5.5 — even at the narrowest width.
+     `min-width` is in px rather than rem on purpose: it is a finger, not a
+     letter, so it must not shrink with anything. The height is in rem because
+     it has to grow with the text it contains once A++ is chosen. */
+  min-height: 2.75rem;
+  min-width: 44px;
+  padding: 0.25rem 0.25rem;
+  border: 1px solid var(--color-edge);
+  border-radius: 0.375rem;
+  background: transparent;
+  color: var(--color-ink);
+  line-height: 1.2;
+  cursor: pointer;
+}
+@media (min-width: 640px) {
+  .a11y-bar button {
+    padding-inline: 0.6rem;
+  }
+}
+/* Below `sm` the bar has one width to fit into and no room to spare: at
+   390px the two groups have to share the first row, or the strip grows to
+   three rows and starts to feel like a page of its own above the header.
+   The text steps down one notch; nothing else about the controls changes,
+   and their 44px targets are untouched. */
+@media (max-width: 639px) {
+  .a11y-bar {
+    font-size: 0.75rem;
+  }
+}
+/* Fill, weight and border all change together: the pressed state is never
+   carried by colour alone (WCAG 2.1 SC 1.4.1). */
+.a11y-bar [aria-pressed="true"] {
+  background: var(--color-spruce-deep);
+  color: var(--color-on-dark);
+  border-color: var(--color-spruce-deep);
+  font-weight: 600;
+}
+/* Already on because the operating system says so, and a press cannot change
+   that — so it does not offer the pointer of something that would. */
+.a11y-bar [data-a11y-system] {
+  cursor: default;
+}
+.a11y-bar-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.a11y-bar-link:hover {
+  color: var(--color-spruce-deep);
+}
+/* Below `sm` the bar has to stay inside two rows on a 390px phone, and the
+   link is the one control here that is also in the footer's "Na skróty"
+   list — so it is the one that goes. */
+@media (max-width: 639px) {
+  .a11y-bar-link {
+    display: none;
+  }
+}
+/* Windows High Contrast repaints the whole page from the user's own colours,
+   which is a contrast choice already made and one this bar must not fight.
+   Text size and reduced motion are orthogonal to it and stay. */
+@media (forced-colors: active) {
+  .a11y-bar [data-a11y-group="contrast"] {
+    display: none;
   }
 }
 /* Cross-page transitions (MPA View Transitions API): the content cross-fades
@@ -373,15 +611,20 @@ header {
   }
 }
 
+/* The staged (transparent) state is the one rule here that can hide content
+   outright, so it is also the one that must not survive a choice the reader
+   makes mid-visit. Scoped away from both toolbar settings: a reader who turns
+   on high contrast or reduced motion while a section is still staged gets it
+   back on the spot, without waiting for the script to catch up. */
 @media screen and (prefers-reduced-motion: no-preference) and (scripting: enabled) {
-  [data-reveal] {
+  html:not([data-motion="reduce"]):not([data-contrast]) [data-reveal] {
     opacity: 0;
     transform: translateY(14px);
     transition:
       opacity var(--reveal-duration) var(--ease-out),
       transform var(--reveal-duration) var(--ease-out);
   }
-  [data-reveal].is-visible {
+  html:not([data-motion="reduce"]):not([data-contrast]) [data-reveal].is-visible {
     opacity: 1;
     transform: none;
   }
@@ -442,6 +685,24 @@ header {
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
   }
+}
+/* The same kill, for the two choices the reader can make on the site itself:
+   "Ogranicz animacje" in the toolbar, and either high-contrast mode — a page
+   re-cut to two colours has no room for a fade, and every one of the
+   `no-preference` blocks above would otherwise keep playing, because the
+   system query they are written against has not changed. Attribute selectors
+   cannot be added to a media query, so this is a second selector list rather
+   than a second condition. */
+html[data-motion="reduce"] *,
+html[data-motion="reduce"] *::before,
+html[data-motion="reduce"] *::after,
+html[data-contrast] *,
+html[data-contrast] *::before,
+html[data-contrast] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
 }
 
 /* Lightbox (click-to-enlarge images) */

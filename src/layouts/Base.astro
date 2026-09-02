@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import A11yTools from "../components/A11yTools.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 // Imported for the hashed URLs, so the two <link rel="preload"> tags below
@@ -48,21 +49,69 @@ const desc =
     <link rel="preload" as="font" type="font/woff2" href={frauncesFont} crossorigin />
     <link rel="preload" as="font" type="font/woff2" href={bodyFont} crossorigin />
     <!--
-      Arms the reveal choreography before anything paints. The browser paints
-      incrementally, so a script at the end of <body> loses this race on a slow
-      connection (measured: content painted 2.7s before it ran) and the reader
-      would watch sections blink out. A render-blocking rule in <head> is the
-      only thing that beats first paint. The timer is the failsafe: if the
-      choreography script never runs, nothing stays hidden.
+      Two jobs, both of which have to happen before the first paint.
+
+      1. The reader's own settings — contrast, text size, reduced motion —
+         chosen in the accessibility toolbar and kept in localStorage, because
+         a static site has no server to keep them in. A reader who asked for
+         the black-and-yellow page must never be shown a flash of the light
+         one, and a deferred script paints the light page first and repaints
+         after. Parser-blocking in <head> is the only place that beats first
+         paint. Every value is checked against a closed set before it reaches
+         the document, so the attribute is never written from the raw string
+         and a tampered storage entry cannot smuggle anything in. The read is
+         wrapped in try/catch because Safari in private mode throws on
+         localStorage rather than returning null.
+
+      2. Arming the reveal choreography. The browser paints incrementally, so
+         a script at the end of <body> loses this race on a slow connection
+         (measured: content painted 2.7s before it ran) and the reader would
+         watch sections blink out. The timer is the failsafe: if the
+         choreography script never runs, nothing stays hidden.
+
+      `dpsMotionOk` is defined here and nowhere else: the choreography below,
+      the lightbox crossfade and the toolbar all have to answer "is movement
+      allowed?" the same way, and three copies of that test would drift.
     -->
     <script is:inline>
       (function () {
-        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        var d = document.documentElement;
+        // Nothing else marks that scripting is live. The toolbar stays out of
+        // the page and out of the tab order until this lands, so a reader
+        // without JS is never offered controls that cannot work.
+        d.setAttribute("data-js", "");
+        try {
+          var c = localStorage.getItem("dps-contrast");
+          var f = localStorage.getItem("dps-font");
+          var m = localStorage.getItem("dps-motion");
+          if (c === "yellow" || c === "bw") d.setAttribute("data-contrast", c);
+          if (f === "large" || f === "xlarge") d.setAttribute("data-font-size", f);
+          if (m === "reduce") d.setAttribute("data-motion", "reduce");
+        } catch (e) {}
+
+        window.dpsMotionOk = function () {
+          var el = document.documentElement;
+          return (
+            !el.hasAttribute("data-contrast") &&
+            el.getAttribute("data-motion") !== "reduce" &&
+            !matchMedia("(prefers-reduced-motion: reduce)").matches
+          );
+        };
+
+        if (!window.dpsMotionOk()) {
+          // Cross-document view transitions are declared in CSS and cannot be
+          // switched off from script; a stylesheet redeclaring the rule can.
+          // Same id the toolbar uses, so a runtime change finds it again.
+          var s = document.createElement("style");
+          s.id = "dps-no-vt";
+          s.textContent = "@view-transition{navigation:none}";
+          document.head.appendChild(s);
+          return;
+        }
         // Same guard as the choreography script at the end of <body>: without
         // an observer nothing would ever reveal these sections again, so they
         // must never be hidden in the first place.
         if (!("IntersectionObserver" in window)) return;
-        var d = document.documentElement;
         // Focus reaching the content before the choreography has staged it —
         // a skip link on a slow connection, or restored focus after a
         // back/forward — releases the hold immediately, so the focus ring is
@@ -113,6 +162,7 @@ const desc =
       class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-spruce focus:px-4 focus:py-2 focus:text-white active:bg-spruce-deep"
       >Przejdź do treści</a
     >
+    <A11yTools />
     <Header />
     <!-- tabindex="-1" lets the skip link move keyboard focus, not just the fragment. -->
     <main id="tresc" tabindex="-1" class="flex-1">
@@ -132,7 +182,13 @@ const desc =
     -->
     <script is:inline>
       (function () {
-        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        // The site-wide predicate, set by the <head> script. The fallback only
+        // matters if that script never ran, in which case nothing was staged
+        // either and this one has nothing to do.
+        var motionOk = window.dpsMotionOk
+          ? window.dpsMotionOk()
+          : !matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (!motionOk) return;
         if (!("IntersectionObserver" in window)) return;
 
         var STEP = 85; // gap between one element and the next
