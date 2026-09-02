@@ -75,7 +75,7 @@ const dateFormat = new Intl.DateTimeFormat("pl-PL", {
           >
           <a
             href="/oferta/"
-            class="rounded-lg border border-line bg-white px-5 py-3 font-semibold text-spruce-deep hover:bg-moss active:bg-moss-deep"
+            class="rounded-lg border border-edge bg-white px-5 py-3 font-semibold text-spruce-deep hover:border-spruce hover:bg-moss active:bg-moss-deep"
             >Poznaj naszą ofertę</a
           >
         </div>
@@ -124,7 +124,7 @@ const dateFormat = new Intl.DateTimeFormat("pl-PL", {
     <ul class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3" role="list">
       {
         cards.map((card) => (
-          <li class="photo-zoom relative flex flex-col overflow-hidden rounded-xl border border-line bg-white transition-colors duration-150 hover:border-spruce/40 hover:shadow-[0_1px_2px_rgba(38,49,43,0.08)] focus-within:border-spruce/40">
+          <li class="photo-zoom relative flex flex-col overflow-hidden rounded-xl border border-line bg-white transition-colors duration-150 hover:border-spruce/40 hover:shadow-card focus-within:border-spruce/40">
             <Image
               src={card.photo}
               alt={card.alt}
@@ -174,7 +174,7 @@ const dateFormat = new Intl.DateTimeFormat("pl-PL", {
           role="list"
         >
           {latest.map((post) => (
-            <li class="relative rounded-xl border border-line bg-white p-5 transition-colors duration-150 hover:border-spruce/40 hover:shadow-[0_1px_2px_rgba(38,49,43,0.08)] focus-within:border-spruce/40">
+            <li class="relative rounded-xl border border-line bg-white p-5 transition-colors duration-150 hover:border-spruce/40 hover:shadow-card focus-within:border-spruce/40">
               <p class="text-sm text-muted">
                 <time datetime={post.data.date.toISOString().slice(0, 10)}>
                   {dateFormat.format(post.data.date)}

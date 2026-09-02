@@ -34,9 +34,13 @@ const { title, items, current } = Astro.props;
               href={item.href}
               aria-current={isCurrent ? "page" : undefined}
               class:list={[
-                "block rounded px-2 py-1.5 text-[0.95rem]",
+                // The 3px left rule is on the SHARED class, transparent on
+                // every item and coloured on the current one, so marking the
+                // current page adds a shape without moving any label sideways.
+                // Colour alone would not be enough on its own anyway (SC 1.4.1).
+                "block rounded border-l-[3px] border-transparent px-2 py-1.5 text-[0.95rem]",
                 isCurrent
-                  ? "bg-moss-deep font-semibold text-spruce-deep"
+                  ? "border-spruce bg-moss-deep font-semibold text-spruce-deep"
                   : "text-ink/85 hover:text-spruce-deep hover:underline hover:underline-offset-4",
               ]}
             >

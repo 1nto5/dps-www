@@ -59,8 +59,21 @@
   --color-spruce-deep: #1f4438;
   --color-honey: #96600f;
   --color-line: #e5e1d8;
+  /* Control boundaries — 3.40:1 on paper, 3.55:1 on white (SC 1.4.11); `line`
+     stays the decorative hairline. */
+  --color-edge: #7f8b82;
   --color-moss: #eef2ec;
   --color-moss-deep: #d8e2d3;
+
+  /* Non-surface colours that used to be written as literals at the point of
+     use: the lightbox's near-black ground and the two text colours that sit on
+     it. Kept here so nothing outside `@theme` names a colour. */
+  --color-overlay: #0f1411;
+  --color-on-overlay: #e8ebe8;
+  --color-on-dark: #ffffff;
+
+  /* The one card lift, so the six card grids cannot drift apart. */
+  --shadow-card: 0 1px 2px color-mix(in srgb, var(--color-ink) 8%, transparent);
 
   --font-display: "Fraunces Variable", "Fraunces Fallback", Georgia, serif;
   --font-body: "Source Sans 3 Variable", "Source Sans 3 Fallback", system-ui, sans-serif;
@@ -232,9 +245,42 @@ body {
   }
 }
 
+/* Increased-contrast mode. The previous one-line version only collapsed
+   `muted` into `ink`, which left every other colour — and every border — at
+   the default palette, so the request was largely ignored. This is the whole
+   palette re-cut. Measured on white, the card surface — ink 17.1:1,
+   muted 12.2:1, spruce 11.5:1, spruce-deep 15.1:1 and honey 10.2:1 for text,
+   edge 7.1:1 and line 4.7:1 for boundaries; on `paper`, which is a shade
+   darker, the same colours read 16.4 / 11.7 / 11.0 / 14.5 / 9.8 and 6.8 / 4.5.
+   Every one of them is well past the 4.5:1 (text) and 3:1 (non-text) that
+   WCAG 2.1 asks for. Paper itself stays put: darkening the page as well would
+   only cancel the gain.
+
+   Scoped to `html:not([data-contrast])` so a contrast choice the reader makes
+   on the site itself would win over the system setting. Nothing writes that
+   attribute yet; the hook is here so adding the control later needs no
+   change to this block. */
 @media (prefers-contrast: more) {
-  :root {
-    --color-muted: var(--color-ink);
+  html:not([data-contrast]) {
+    --color-ink: #131e18;
+    --color-muted: #2c3830;
+    --color-spruce: #194034;
+    --color-spruce-deep: #0f2b22;
+    --color-honey: #5c3a05;
+    --color-line: #6b7671;
+    --color-edge: #4f5b54;
+    --color-moss: #e7ece5;
+    --color-moss-deep: #c9d6c4;
+  }
+  /* The rail's dimmed link colour is an alpha of `ink`, which no token swap
+     can reach; in this mode it takes the full colour. */
+  html:not([data-contrast]) .text-ink\/85 {
+    color: var(--color-ink);
+  }
+  /* The band is already a full moss fill below; in this mode it takes the
+     re-cut moss with no further transparency. */
+  html:not([data-contrast]) .band {
+    --band-fill: var(--color-moss);
   }
 }
 /* Cross-page transitions (MPA View Transitions API): the content cross-fades
@@ -412,6 +458,14 @@ a[data-lightbox] {
    CSS rather than added to each component's markup, so one rule covers both
    the gallery grid and single zoomable images — and, being generated content,
    it stays out of the accessibility tree and leaves the link's name alone. */
+/* Two pseudo-elements over the same 1.6rem box, not one: the plate and the
+   glyph have to be able to take different colours in forced-colors mode, and a
+   glyph baked into the plate's `background` shorthand is a picture the browser
+   cannot recolour. So the plate is the `::before` and the arrows are the
+   `::after`, drawn as a mask over a flat token colour — in the mask only the
+   alpha of the data-URI matters, which is why the stroke inside it is plain
+   black rather than a colour anyone should read as the design's. */
+a[data-lightbox]::before,
 a[data-lightbox]::after {
   content: "";
   position: absolute;
@@ -419,17 +473,30 @@ a[data-lightbox]::after {
   bottom: 0.4rem;
   width: 1.6rem;
   height: 1.6rem;
+  pointer-events: none;
+}
+a[data-lightbox]::before {
   border-radius: 0.375rem;
-  background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%231f4438' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3h5v5M8 17H3v-5M17 3l-6 6M3 17l6-6'/%3E%3C/svg%3E")
-      center / 0.95rem 0.95rem no-repeat,
-    rgb(255 255 255 / 0.9);
+  background-color: color-mix(in srgb, var(--color-paper) 90%, transparent);
   /* Hairline and shadow: the chip is nearly white and several of the images
      it sits on are too (document scans, press clippings, a bright sky). */
   box-shadow:
-    0 0 0 1px rgb(38 49 43 / 0.12),
-    0 1px 3px rgb(38 49 43 / 0.25);
-  pointer-events: none;
+    0 0 0 1px color-mix(in srgb, var(--color-ink) 12%, transparent),
+    0 1px 3px color-mix(in srgb, var(--color-ink) 25%, transparent);
+}
+a[data-lightbox]::after {
+  /* The arrows themselves. `stroke='%23000'` in the URI below is not a design
+     colour — the shape is used as a mask, so only its alpha is read; the paint
+     is `--color-spruce-deep` on this line. */
+  background-color: var(--color-spruce-deep);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3h5v5M8 17H3v-5M17 3l-6 6M3 17l6-6'/%3E%3C/svg%3E");
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3h5v5M8 17H3v-5M17 3l-6 6M3 17l6-6'/%3E%3C/svg%3E");
+  mask-size: 0.95rem;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 0.95rem;
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
 }
 .lightbox {
   border: none;
@@ -454,7 +521,7 @@ a[data-lightbox]::after {
   display: flex;
 }
 .lightbox::backdrop {
-  background: rgb(15 20 17 / 0.92);
+  background: color-mix(in srgb, var(--color-overlay) 92%, transparent);
 }
 /* The gutter that `scrollbar-gutter: stable` reserves sits outside the initial
    containing block, so neither the dialog nor its backdrop can paint there —
@@ -463,7 +530,7 @@ a[data-lightbox]::after {
    (Setting a background on `html` also stops `body`'s from propagating to the
    canvas, which is what made the strip paper-coloured.) */
 html:has(.lightbox[open]) {
-  background-color: color-mix(in srgb, rgb(15 20 17) 92%, var(--color-paper));
+  background-color: color-mix(in srgb, var(--color-overlay) 92%, var(--color-paper));
 }
 @media (prefers-reduced-motion: no-preference) {
   .lightbox[open] figure {
@@ -509,7 +576,7 @@ html:has(.lightbox[open]) {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
-  color: #e8ebe8;
+  color: var(--color-on-overlay);
   font-size: 0.95rem;
   min-height: 1.5rem;
 }
@@ -524,8 +591,8 @@ html:has(.lightbox[open]) {
   height: 2.75rem;
   border-radius: 999px;
   background: var(--color-spruce-deep);
-  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.28);
-  color: #fff;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-on-dark) 28%, transparent);
+  color: var(--color-on-dark);
   cursor: pointer;
   flex: none;
 }
@@ -597,12 +664,18 @@ body:has(main > .pre-footer:last-child) footer {
    overhang one edge. Painting the colour outwards with a very large shadow
    spread and clipping it back to the section's own top and bottom edges
    reaches both viewport edges from any horizontal position, and — unlike a
-   negative margin — cannot add a single pixel of horizontal scroll. */
+   negative margin — cannot add a single pixel of horizontal scroll.
+
+   The fill is the full moss, not 40% of it: over paper, moss at 40% measured
+   1.03:1 against the page — a band nobody could see, so the "chapter starts
+   here" signal it exists to give was not being given at all. The hairline top
+   and bottom draw the boundary itself, which the fill alone never did. */
 .band {
-  --band-fill: color-mix(in oklab, var(--color-moss) 40%, transparent);
+  --band-fill: var(--color-moss);
   background-color: var(--band-fill);
   box-shadow: 0 0 0 100vmax var(--band-fill);
   clip-path: inset(0 -100vmax);
+  border-block: 1px solid var(--color-line);
   padding-block: var(--spacing-subsection);
 }
 
@@ -682,6 +755,7 @@ body:has(main > .pre-footer:last-child) footer {
   [data-menu],
   nav[aria-label="Spis treści strony"],
   .lightbox,
+  a[data-lightbox]::before,
   a[data-lightbox]::after {
     display: none !important;
   }
@@ -702,4 +776,71 @@ body:has(main > .pre-footer:last-child) footer {
   }
   h1, h2, h3 { break-after: avoid; }
   figure, img, li { break-inside: avoid; }
+}
+
+/* The rail is `position: sticky`, so on a short wide window — a laptop in
+   landscape, or any window at 200% zoom — it is taller than the strip left
+   between the sticky header and the bottom of the screen, and the last items
+   of an eleven-entry table of contents simply could not be reached: the rail
+   stopped moving with the page while its own overflow had nowhere to go.
+   Capping it to that strip and letting it scroll on its own fixes it, and
+   `overscroll-behavior: contain` keeps a flick inside the rail from carrying
+   on into the page behind it. Only from `lg`, the width where the rail
+   becomes a column at all. */
+@media (min-width: 1024px) {
+  [data-shell-rail] {
+    max-height: calc(100svh - var(--header-h) - 3rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+  }
+}
+
+/* Windows High Contrast and the other forced-colors modes throw the whole
+   palette away and repaint from the user's own small set of system colours.
+   Four things go missing when that happens, and each is restored here in
+   system colours rather than in ours.
+
+   The wordmark is the exception that keeps its own colours: it is two solid
+   shapes whose meaning IS the contrast between them, and forced to a single
+   system colour it collapses into one blob. */
+@media (forced-colors: active) {
+  header a[href="/"] svg {
+    forced-color-adjust: none;
+  }
+  /* The current page in the main navigation is marked with a background tint
+     and an inset shadow, and forced-colors drops both — leaving no way to tell
+     where you are. A border and an underline are drawn from system colours and
+     survive. Scoped to `header`: breadcrumbs and the rail's sibling list use
+     `aria-current` too, and they mark the current page in other ways.
+     The 3px border is taken out of the link's own `py-2` (0.5rem) padding, so
+     nothing in the bar shifts down. */
+  header a[aria-current="page"] {
+    border-bottom: 3px solid Highlight;
+    padding-bottom: calc(0.5rem - 3px);
+    text-decoration: underline;
+    text-decoration-thickness: 3px;
+    text-underline-offset: 4px;
+  }
+  /* Background colours are dropped, so the band would be invisible; its edges
+     are drawn instead. */
+  .band {
+    border-block: 1px solid CanvasText;
+  }
+  /* The enlarged photo has no frame of its own — against a forced Canvas
+     backdrop a light image would bleed straight into the page. */
+  .lightbox figure {
+    outline: 1px solid CanvasText;
+  }
+  /* The zoom chip: the plate takes the system surface with a real border
+     (its box-shadow hairline is dropped), and the arrows the system text
+     colour, which is what the two-pseudo-element split above is for. */
+  a[data-lightbox]::before {
+    background-color: Canvas;
+    border: 1px solid CanvasText;
+    box-shadow: none;
+  }
+  a[data-lightbox]::after {
+    background-color: CanvasText;
+  }
 }

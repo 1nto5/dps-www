@@ -39,7 +39,11 @@ const hasRail = Astro.slots.has("rail");
   {
     hasRail ? (
       <div class="grid gap-8 lg:grid-cols-[minmax(0,46rem)_minmax(0,18rem)] lg:gap-16">
-        <div class="lg:order-2 lg:sticky lg:self-start" style="top: calc(var(--header-h) + 1.5rem)">
+        <div
+          data-shell-rail
+          class="lg:order-2 lg:sticky lg:self-start"
+          style="top: calc(var(--header-h) + 1.5rem)"
+        >
           <slot name="rail" />
         </div>
         <div data-shell-content class="min-w-0 lg:order-1">

@@ -51,9 +51,13 @@ iframe. No JavaScript unless a feature genuinely cannot work without it.
 ## Design tokens
 
 Defined in `src/styles/global.css` under `@theme` — use these, never invent colors:
-`paper`, `ink`, `muted`, `spruce`, `spruce-deep`, `honey`, `line`, `moss`;
+`paper`, `ink`, `muted`, `spruce`, `spruce-deep`, `honey`, `line`, `edge`, `moss`;
 `font-display` = Fraunces, `font-body` = Source Sans 3. Contrast is handled by the
 tokens. No animations or transitions on motion-sensitive elements.
+
+`line` is decoration — a hairline that separates or frames. `edge` is the boundary of a
+control the reader can operate (button, menu button, panel, chip): it meets the 3:1 of
+WCAG 2.1 SC 1.4.11, and its hover colour is never weaker than its resting one.
 
 ## Accessibility (WCAG 2.1 AA — a legal duty here)
 

@@ -43,7 +43,7 @@ const dateFormat = new Intl.DateTimeFormat("pl-PL", {
         >
           {entries.map((entry) => (
             <li class="relative flex">
-              <article class="flex w-full flex-col rounded-xl border border-line bg-white p-6 transition-colors duration-150 hover:border-spruce/40 hover:shadow-[0_1px_2px_rgba(38,49,43,0.08)] focus-within:border-spruce/40">
+              <article class="flex w-full flex-col rounded-xl border border-line bg-white p-6 transition-colors duration-150 hover:border-spruce/40 hover:shadow-card focus-within:border-spruce/40">
                 <p class="text-sm font-medium text-honey">
                   <time datetime={entry.data.date.toISOString().slice(0, 10)}>
                     {dateFormat.format(entry.data.date)}

@@ -40,7 +40,7 @@ const linkClass = "inline-block py-1 text-spruce underline underline-offset-4 ho
 const cardClass = "rounded-xl border border-line bg-white p-6";
 const termClass = "text-sm font-medium text-muted";
 const mapLinkClass =
-  "inline-flex items-center gap-1.5 rounded-full border border-line px-3 py-1 text-sm text-spruce hover:border-spruce hover:text-spruce-deep";
+  "inline-flex items-center gap-1.5 rounded-full border border-edge px-3 py-1 text-sm text-spruce hover:border-spruce hover:text-spruce-deep";
 ---
 
 <Base
@@ -91,8 +91,10 @@ const mapLinkClass =
       <section aria-labelledby="domy-mieszkalne" class:list={[cardClass, "md:col-span-2"]}>
         <h2 id="domy-mieszkalne" class="text-2xl">Telefony</h2>
 
-        {/* The secretariat leads the list and sits on a soft tint so it reads as the front desk. */}
-        <div class="mt-6 rounded-lg bg-paper p-5">
+        {/* The secretariat leads the list and is set apart as the front desk.
+            The tint used to be `paper` on a white card — 1.02:1, a difference
+            nobody could see — so it is moss with a hairline of its own. */}
+        <div class="mt-6 rounded-lg border border-line bg-moss p-5">
           <h3 class="text-lg">Sekretariat</h3>
           {/* `min-w-0` on each cell: a grid item's default minimum is the width
               of its own content, so the unbreakable e-mail address would push
