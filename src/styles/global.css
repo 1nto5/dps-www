@@ -1105,3 +1105,27 @@ body:has(main > .pre-footer:last-child) footer {
     background-color: CanvasText;
   }
 }
+
+/* Outgoing links get a small north-east arrow so the reader knows the page
+   leaves the site (the Google Maps and BIP links say so in their own text and
+   opt out with data-external="off"). The arrow is a masked SVG, not a glyph:
+   U+2197 is outside the font subset and would fall back to a stranger face.
+   The alt text gives screen readers the same information. */
+a[href^="http"]:not([data-external="off"])::after {
+  content: "" / " (serwis zewnętrzny)";
+  display: inline-block;
+  width: 0.7em;
+  height: 0.7em;
+  margin-left: 0.2em;
+  vertical-align: 0.05em;
+  background-color: currentColor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 14L14 6M8 6h6v6'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 14L14 6M8 6h6v6'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+}
+@media print {
+  a[href^="http"]:not([data-external="off"])::after {
+    display: none;
+  }
+}

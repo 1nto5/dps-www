@@ -21,7 +21,7 @@ export const routeLabels: Record<string, string> = {
   "/oferta/regulamin-imprez-okolicznosciowych/": "Regulamin imprez okolicznościowych",
   "/filia-w-spychowie/": "Filia w Spychowie",
   "/przyjecie-do-domu/": "Przyjęcie do Domu",
-  "/aktualnosci/": "Komunikaty i podziękowania",
+  "/aktualnosci/": "Aktualności",
   "/galeria/": "Galeria",
   "/grupa-muzyczna/": "Grupa wokalna „Christopher”",
   "/kontakt/": "Kontakt",
