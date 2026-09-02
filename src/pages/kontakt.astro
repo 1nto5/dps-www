@@ -62,9 +62,9 @@ const mapLinkClass =
           12-100 Szczytno
         </address>
         <p class="mt-4">
-          <a class={mapLinkClass} href="https://www.google.com/maps/search/?api=1&query=Wielbarska+2%2C+12-100+Szczytno" rel="noopener" aria-label="Wielbarska 2 w Szczytnie w Google Maps">
+          <a class={mapLinkClass} href="https://www.google.com/maps/search/?api=1&query=Wielbarska+2%2C+12-100+Szczytno" rel="noopener" data-external="off">
             <MapPin />
-            Google Maps
+            Zobacz ul. Wielbarską 2 w Google Maps
           </a>
         </p>
       </section>
@@ -81,9 +81,9 @@ const mapLinkClass =
           <a class={linkClass} href="tel:+48896225030">(89) 622-50-30</a>
         </p>
         <p class="mt-4">
-          <a class={mapLinkClass} href="https://www.google.com/maps/search/?api=1&query=Sienkiewicza+3%2C+12-150+Spychowo" rel="noopener" aria-label="Sienkiewicza 3 w Spychowie w Google Maps">
+          <a class={mapLinkClass} href="https://www.google.com/maps/search/?api=1&query=Sienkiewicza+3%2C+12-150+Spychowo" rel="noopener" data-external="off">
             <MapPin />
-            Google Maps
+            Zobacz ul. Sienkiewicza 3 w Google Maps
           </a>
         </p>
       </section>
@@ -121,6 +121,15 @@ const mapLinkClass =
               <dd>/dpsszczytno/SkrytkaESP</dd>
             </div>
           </dl>
+          <p id="epuap" class="mt-4 text-[0.95rem]">
+            Pismo urzędowe można wysłać elektronicznie przez usługę{" "}
+            <a class={linkClass} href="https://www.gov.pl/web/gov/wyslij-pismo-ogolne"
+              >Wyślij pismo ogólne</a
+            >{" "}
+            na portalu gov.pl — jako adresata wskazuje się wtedy naszą skrytkę ePUAP
+            <span class="whitespace-nowrap">/dpsszczytno/SkrytkaESP</span>. W zwykłych sprawach nie
+            trzeba jednak niczego podpisywać elektronicznie: wystarczy e-mail albo telefon.
+          </p>
         </div>
 
         <ul class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" role="list">
@@ -141,6 +150,22 @@ const mapLinkClass =
             ))
           }
         </ul>
+      </section>
+
+      <section aria-labelledby="odwiedziny" class:list={[cardClass, "md:col-span-2"]}>
+        <h2 id="odwiedziny" class="text-2xl">Odwiedziny</h2>
+        <p class="mt-6 max-w-[46rem]">
+          Bliscy naszych Mieszkańców są mile widziani. Przed przyjazdem warto zadzwonić do domu
+          mieszkalnego, w którym mieszka odwiedzana osoba, albo do sekretariatu —{" "}
+          <a class={linkClass} href="tel:+48896242288">(89) 624-22-88</a>. Pracownicy powiedzą
+          wtedy, kiedy i gdzie najlepiej się spotkać.
+        </p>
+        <!-- Hours, place and rules come from the Dom (docs/pytania-do-domu.md). -->
+        <p class="mt-4 max-w-[46rem]">
+          Jeśli odwiedziny są pierwszym krokiem do zamieszkania u nas, drogę do przyjęcia
+          opisujemy na stronie{" "}
+          <a class={linkClass} href="/przyjecie-do-domu/">Jak zamieszkać w naszym Domu</a>.
+        </p>
       </section>
 
       <section aria-labelledby="iod" class={cardClass}>

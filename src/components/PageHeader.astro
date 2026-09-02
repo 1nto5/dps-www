@@ -2,6 +2,8 @@
 import Breadcrumbs from "./Breadcrumbs.astro";
 
 interface Props {
+  /** A short label above the h1, for something the breadcrumb does not already
+   *  say: repeating the trail's last-but-one crumb here only says it twice. */
   eyebrow?: string;
   title: string;
   lead?: string;

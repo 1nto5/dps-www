@@ -9,7 +9,7 @@ description: "Dziękujemy instytucjom, firmom i organizacjom, które przekazały
 
 Szanowni Państwo, w imieniu własnym, pracowników oraz Mieszkańców Domu Pomocy
 Społecznej w Szczytnie składamy najserdeczniejsze wyrazy wdzięczności za wsparcie
-udzielone naszej placówce w postaci środków ochrony osobistej związanych
+udzielone naszemu Domowi w postaci środków ochrony osobistej związanych
 z zapobieganiem, przeciwdziałaniem i zwalczaniem COVID-19. Dziękujemy za okazaną
 pomoc i życzliwość.
 

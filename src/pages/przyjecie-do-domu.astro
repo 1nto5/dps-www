@@ -1,0 +1,152 @@
+---
+/**
+ * How to come and live here: the statutory route into a public care home,
+ * written generically. Everything specific to this Dom — waiting times, the
+ * share of income a Mieszkaniec pays, which building has a free place — comes
+ * from the Dom itself and is deliberately absent until it is confirmed.
+ */
+import Base from "../layouts/Base.astro";
+import PageHeader from "../components/PageHeader.astro";
+import PageShell from "../components/PageShell.astro";
+import SectionNav from "../components/SectionNav.astro";
+import DocList from "../components/DocList.astro";
+
+/** Rail table of contents. Labels are shorter than the headings they point at. */
+const sections = [
+  { id: "kto-moze", label: "Kto może zamieszkać" },
+  { id: "krok-po-kroku", label: "Droga do przyjęcia" },
+  { id: "odplatnosc", label: "Odpłatność" },
+  { id: "dokumenty", label: "Dokumenty" },
+  { id: "kontakt", label: "Z kim porozmawiać" },
+];
+
+const cardLinkClass =
+  "inline-block py-1 text-spruce underline underline-offset-4 hover:text-spruce-deep";
+
+const docs = [
+  {
+    href: "/dokumenty/pliki/1744-Regulamin-Organizacyjny-DPS-Szczytno.doc",
+    label: "Regulamin organizacyjny Domu",
+    format: "DOC",
+    size: "133 KB",
+  },
+];
+---
+
+<Base
+  title="Przyjęcie do Domu"
+  description="Jak zamieszkać w Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie: kto może zostać Mieszkańcem, jak wygląda droga do przyjęcia, jakie dokumenty warto przygotować i z kim się skontaktować."
+>
+  <PageHeader
+    breadcrumbs
+    title="Jak zamieszkać w naszym Domu"
+    lead="Droga do domu pomocy społecznej zaczyna się nie u nas, lecz w ośrodku pomocy społecznej w miejscu zamieszkania. Opisujemy ją krok po kroku, żeby wiadomo było, czego się spodziewać."
+  />
+
+  <PageShell>
+    <div slot="rail" class="space-y-8">
+      <SectionNav items={sections} />
+
+      <div class="rounded-xl border border-line bg-white p-5">
+        <!-- `font-body` and neutral leading/tracking: the global `h2` rule
+             would otherwise set this card's small heading in Fraunces. -->
+        <h2 class="font-body font-semibold leading-normal tracking-normal">Masz pytania?</h2>
+        <p class="mt-2 text-[0.95rem]">
+          <span class="text-muted">Telefon:</span>{" "}
+          <a class={cardLinkClass} href="tel:+48896242288">(89) 624-22-88</a>
+        </p>
+        <p class="text-[0.95rem]">
+          <span class="text-muted">E-mail:</span>{" "}
+          <a class={cardLinkClass} href="mailto:sekretariat@dpsszczytno.pl"
+            >sekretariat@dpsszczytno.pl</a
+          >
+        </p>
+        <p class="mt-2 text-[0.95rem]">
+          <a class={cardLinkClass} href="/kontakt/">Kontakt i adres</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="doc">
+      <section aria-labelledby="kto-moze">
+        <h2 id="kto-moze" class="mt-0!">Kto może zamieszkać w Domu?</h2>
+        <p>
+          Nasz Dom jest — jak nazywa to ustawa — domem dla osób przewlekle psychicznie chorych.
+          Mieszkają u nas dorosłe osoby chorujące psychicznie, które z powodu choroby potrzebują
+          całodobowej opieki i nie mogą jej otrzymać tam, gdzie mieszkały dotychczas.
+        </p>
+        <p>
+          Dom ma dwie siedziby: w Szczytnie przy ul. Wielbarskiej 2 oraz filię w Spychowie przy
+          ul. Sienkiewicza 3. Obie prowadzi ten sam Dom i obowiązują w nich te same zasady
+          przyjęcia. O tym, jak wygląda w nich codzienność, piszemy na stronach
+          <a href="/oferta/">Oferta</a> oraz <a href="/filia-w-spychowie/">Filia w Spychowie</a>.
+        </p>
+      </section>
+
+      <section aria-labelledby="krok-po-kroku">
+        <h2 id="krok-po-kroku">Jak wygląda droga do przyjęcia?</h2>
+        <p>
+          Zasady są takie same w całej Polsce i opisuje je ustawa o pomocy społecznej. Kolejne kroki
+          wyglądają tak:
+        </p>
+        <ol>
+          <li>
+            Wniosek o skierowanie do domu pomocy społecznej składa się w ośrodku pomocy społecznej
+            właściwym dla miejsca zamieszkania. Może to zrobić sama osoba zainteresowana albo jej
+            przedstawiciel ustawowy.
+          </li>
+          <li>
+            Pracownik socjalny przeprowadza wywiad środowiskowy i kompletuje dokumentację, w tym
+            opinię lekarską.
+          </li>
+          <li>Gmina wydaje decyzję o skierowaniu do domu pomocy społecznej.</li>
+          <li>Następnie wydawana jest decyzja o umieszczeniu w Domu.</li>
+          <li>Na koniec ustala się z Domem termin przyjęcia.</li>
+        </ol>
+        <p>
+          Na każdym z tych etapów można do nas zadzwonić i zapytać o to, co budzi wątpliwości.
+          Chętnie opowiemy, jak wygląda życie w Domu i co warto przygotować przed przyjazdem.
+        </p>
+      </section>
+
+      <section aria-labelledby="odplatnosc">
+        <h2 id="odplatnosc">Ile kosztuje pobyt?</h2>
+        <p>
+          Za pobyt płaci Mieszkaniec, a jeśli jego dochód nie wystarcza, dopłacają kolejno rodzina
+          i gmina. Szczegółowe zasady określa ustawa o pomocy społecznej oraz decyzja gminy.
+        </p>
+        <!-- Percentages, thresholds and any queue information come from the Dom (docs/pytania-do-domu.md) — do not add them from memory. -->
+        <p>
+          Wysokość opłaty ustala gmina w swojej decyzji, a nie Dom, dlatego o konkretną kwotę
+          najlepiej zapytać w ośrodku pomocy społecznej, który prowadzi sprawę.
+        </p>
+      </section>
+
+      <section aria-labelledby="dokumenty">
+        <h2 id="dokumenty">Jakie dokumenty warto przygotować?</h2>
+        <p>
+          Dokumentację kompletuje ośrodek pomocy społecznej, ale sprawa idzie sprawniej, gdy pod
+          ręką są:
+        </p>
+        <ul>
+          <li>dowód osobisty osoby, która ma zamieszkać w Domu,</li>
+          <li>decyzja o skierowaniu do domu pomocy społecznej,</li>
+          <li>dokumentacja medyczna, w tym opinia lekarska o stanie zdrowia,</li>
+          <li>decyzja o świadczeniach — emeryturze, rencie lub zasiłku.</li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="kontakt">
+        <h2 id="kontakt">Z kim porozmawiać?</h2>
+        <p>
+          Prosimy o kontakt z sekretariatem Domu: tel. <a href="tel:+48896242288">89 624 22 88</a>,
+          e-mail <a href="mailto:sekretariat@dpsszczytno.pl">sekretariat@dpsszczytno.pl</a>. Pełne
+          dane teleadresowe, także do domów mieszkalnych i do filii w Spychowie, zebraliśmy na
+          stronie <a href="/kontakt/">Kontakt</a>.
+        </p>
+        <p>Zasady, według których działa nasz Dom, opisuje regulamin organizacyjny:</p>
+        <DocList docs={docs} />
+      </section>
+    </div>
+  </PageShell>
+</Base>

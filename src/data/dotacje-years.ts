@@ -29,7 +29,7 @@ export const dotacjeYears = [
   {
     href: "/dokumenty/dotacje/2021/",
     label: "Dotacje 2021",
-    text: "Dotacje wojewody i środki covidowe na wyposażenie, kadrę oraz ochronę mieszkańców.",
+    text: "Dotacje wojewody i środki covidowe na wyposażenie, kadrę oraz ochronę Mieszkańców.",
   },
   {
     href: "/dokumenty/dotacje/2020/",
