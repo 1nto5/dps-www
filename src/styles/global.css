@@ -1028,10 +1028,24 @@ body:has(main > .pre-footer:last-child) footer {
 .doc strong {
   font-weight: 600;
 }
+/* Wide tables scroll inside their own container so the page itself never scrolls
+   sideways. The wrapper is what scrolls; the <table> keeps its table display and
+   therefore its semantics (a `display: block` table is announced as a plain
+   block by screen readers). Markdown tables get the wrapper from the
+   `rehype-table-scroll` plugin; hand-written HTML in `.doc` must add it too. */
+.doc .table-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+  margin: 1.25rem 0;
+}
+.doc .table-scroll:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
 .doc table {
   width: 100%;
+  min-width: 32rem;
   border-collapse: collapse;
-  margin: 1.25rem 0;
   font-size: var(--text-meta);
 }
 .doc th,

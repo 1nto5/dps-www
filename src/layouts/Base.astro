@@ -173,6 +173,19 @@ const desc =
     </main>
     <Footer />
     <!--
+      Opting in to the reveal choreography: a page joins it by using `<section>`
+      for its top-level blocks. The hold rules in global.css
+      (`main > section`, `main [data-shell-content] section`) and the selector
+      below (`main section`) both key off that one element, so nothing else has
+      to be marked up. `data-no-reveal` opts a single section back out.
+
+      Pages built from long-form prose rather than sections — the accessibility
+      statement, the migrated document pages — therefore render statically, and
+      that is deliberate, not an oversight: legal text a reader may be reaching
+      for under pressure should be on screen the moment it is painted, never
+      fading in a block at a time. Do not "fix" it by wrapping those pages in
+      sections.
+
       Inline and parser-blocking on purpose. Astro's default `<script>` is a
       deferred module, which runs only after the browser has already painted —
       measured here at 18ms behind first paint locally and 18.7s behind it on a
