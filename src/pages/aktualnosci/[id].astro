@@ -31,7 +31,7 @@ const publishedOn = new Intl.DateTimeFormat("pl-PL", {
   />
 
   <PageShell narrow>
-    <p class="text-sm font-medium text-honey">
+    <p class="text-meta text-muted">
       <time datetime={entry.data.date.toISOString().slice(0, 10)}>{publishedOn}</time>
     </p>
 
@@ -44,7 +44,7 @@ const publishedOn = new Intl.DateTimeFormat("pl-PL", {
     <p class="mt-12">
       <a
         href="/aktualnosci/"
-        class="text-spruce underline underline-offset-4 hover:text-spruce-deep"
+        class="text-spruce underline hover:text-spruce-deep"
         >Wróć do listy aktualności</a
       >
     </p>

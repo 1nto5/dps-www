@@ -51,7 +51,7 @@ const hasRail = Astro.slots.has("rail");
         </div>
       </div>
     ) : (
-      <div data-shell-content class:list={["min-w-0", narrow && "max-w-[46rem]"]}>
+      <div data-shell-content class:list={["min-w-0", narrow && "max-w-column"]}>
         <slot />
       </div>
     )

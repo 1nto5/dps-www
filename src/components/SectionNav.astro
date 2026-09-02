@@ -24,7 +24,7 @@ const { items, title = "Na tej stronie" } = Astro.props;
 <nav aria-label="Spis treści strony" data-section-nav>
   <details open class="rounded-xl border border-edge bg-white lg:rounded-none lg:border-0 lg:bg-transparent">
     <summary
-      class="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-muted lg:px-0 lg:py-0 [&::-webkit-details-marker]:hidden"
+      class="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-meta font-semibold text-muted lg:px-0 lg:py-0 [&::-webkit-details-marker]:hidden"
     >
       {title}
       <svg
@@ -50,7 +50,7 @@ const { items, title = "Na tej stronie" } = Astro.props;
           <li>
             <a
               href={`#${item.id}`}
-              class="block py-1.5 text-[0.95rem] text-ink/85 hover:text-spruce-deep hover:underline hover:underline-offset-4"
+              class="block py-1.5 text-meta text-ink-soft hover:text-spruce-deep hover:underline"
             >
               {item.label}
             </a>

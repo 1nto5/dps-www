@@ -33,13 +33,14 @@ const {
 } = Astro.props;
 
 const hero = size === "hero";
-const eyebrowClass = hero
-  ? "mb-3 text-sm font-semibold uppercase tracking-[0.12em] text-honey"
-  : "mb-2 text-sm font-semibold uppercase tracking-[0.12em] text-honey";
+// Sentence case, no letter-spacing: the eyebrow is a short label, not a
+// heading, and small uppercase Polish with diacritics is the hardest thing on
+// the page to read. Weight and the honey colour carry it instead.
+const eyebrowClass = `${hero ? "mb-3" : "mb-2"} text-meta font-semibold text-honey`;
 const titleClass = hero ? "text-4xl md:text-5xl" : "text-3xl md:text-4xl";
 const leadClass = hero
-  ? "mt-5 max-w-xl text-lg leading-relaxed text-ink/85 text-pretty"
-  : "mt-4 max-w-2xl text-lg leading-relaxed text-ink/85 text-pretty";
+  ? "mt-5 max-w-xl text-lg leading-relaxed text-ink-soft text-pretty"
+  : "mt-4 max-w-column text-lg leading-relaxed text-ink-soft text-pretty";
 ---
 
 <div class:list={[!bare && "mx-auto max-w-6xl px-4 pb-8 pt-10 sm:px-6 md:pb-10 md:pt-14", className]}>

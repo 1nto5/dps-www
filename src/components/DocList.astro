@@ -23,8 +23,8 @@ const { docs } = Astro.props;
           href={d.href}
           class="flex items-baseline justify-between gap-4 px-4 py-3 hover:bg-moss"
         >
-          <span class="font-medium text-spruce-deep underline underline-offset-2">{d.label}</span>
-          <span class="shrink-0 text-sm text-muted">{d.size ? `${d.format}, ${d.size}` : d.format}</span>
+          <span class="font-medium text-spruce-deep underline">{d.label}</span>
+          <span class="shrink-0 text-base text-muted">{d.size ? `${d.format}, ${d.size}` : d.format}</span>
         </a>
       </li>
     ))

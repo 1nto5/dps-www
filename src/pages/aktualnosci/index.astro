@@ -31,11 +31,11 @@ const dateFormat = new Intl.DateTimeFormat("pl-PL", {
   />
 
   <PageShell narrow>
-    <p class="mb-8 max-w-[46rem] text-lg leading-relaxed text-ink/85">
+    <p class="mb-8 max-w-column text-lg leading-relaxed text-ink-soft">
       Zamówienia publiczne, nabory i inne ogłoszenia urzędowe znajdują się w
       <a
         href="https://dpsszczytno.bip.gov.pl/"
-        class="text-spruce underline underline-offset-4 hover:text-spruce-deep"
+        class="text-spruce underline hover:text-spruce-deep"
         >Biuletynie Informacji Publicznej Domu</a
       >.
     </p>
@@ -53,7 +53,7 @@ const dateFormat = new Intl.DateTimeFormat("pl-PL", {
           {entries.map((entry) => (
             <li class="relative flex">
               <article class="flex w-full flex-col rounded-xl border border-line bg-white p-6 transition-colors duration-150 hover:border-spruce/40 hover:shadow-card focus-within:border-spruce/40">
-                <p class="text-sm font-medium text-honey">
+                <p class="text-meta text-muted">
                   <time datetime={entry.data.date.toISOString().slice(0, 10)}>
                     {dateFormat.format(entry.data.date)}
                   </time>
@@ -62,7 +62,7 @@ const dateFormat = new Intl.DateTimeFormat("pl-PL", {
                   <a
                     href={`/aktualnosci/${entry.id}/`}
                     data-card-link
-                    class="text-spruce-deep underline underline-offset-4 before:absolute before:inset-0 before:content-[''] hover:text-spruce"
+                    class="text-spruce-deep underline before:absolute before:inset-0 before:content-[''] hover:text-spruce"
                   >
                     {entry.data.title}
                   </a>

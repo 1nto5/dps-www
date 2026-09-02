@@ -64,6 +64,8 @@
   --color-edge: #7f8b82;
   --color-moss: #eef2ec;
   --color-moss-deep: #d8e2d3;
+  /* ink at 85% on paper, resolved — 8.1:1 */
+  --color-ink-soft: #464f4a;
 
   /* Non-surface colours that used to be written as literals at the point of
      use: the lightbox's near-black ground and the two text colours that sit on
@@ -85,6 +87,19 @@
   --spacing-section: clamp(3.5rem, 8vw, 6rem);
   --spacing-subsection: clamp(2rem, 4vw, 3rem);
 
+  /* The one step below body size, and the only one: captions, rail labels,
+     table cells, document formats, dates. 0.9375rem is 16.875px at the site's
+     18px base — still above the 16px that a phone browser zooms in below.
+     Tailwind emits the `text-meta` utility, line height included, from this
+     pair. Nothing on the site may be smaller except the accessibility bar,
+     which is chrome and carries its own scale. */
+  --text-meta: 0.9375rem;
+  --text-meta--line-height: 1.5;
+
+  /* The page's content column. Named so `max-w-column` says what it is
+     instead of repeating 46rem in a dozen places. */
+  --container-column: 46rem;
+
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   --default-transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
@@ -99,6 +114,11 @@
    hand. Add another one here if a page needs it. */
 :root {
   --spacing-block: 1.5rem;
+  /* The reading measure, narrower than the 46rem column: running text stops at
+     about 80 characters while tables, floated photos and card lists keep the
+     full column. Deliberately NOT a spacing token — it is a measure, and a
+     `max-w-*` utility for it would invite it onto things that are not prose. */
+  --measure-prose: 33rem;
   /* The focus ring is named rather than written at the point of use, because
      the high-contrast modes below have to be able to move it off the palette
      they have just repainted: a spruce ring is invisible once spruce has
@@ -214,6 +234,15 @@ body {
   outline-offset: 2px;
 }
 
+/* One underline offset for the whole site. It used to be written per link —
+   two pixels here, four there — so the same underline sat at two different
+   distances depending on the page. In `em`, so it tracks the text it belongs
+   to instead of drifting closer as the type grows; unlayered, so it beats
+   Tailwind's utilities and nobody has to remember it. */
+a {
+  text-underline-offset: 0.22em;
+}
+
 ::selection {
   background: var(--color-moss-deep);
   color: var(--color-ink);
@@ -281,11 +310,12 @@ body {
     --color-edge: #4f5b54;
     --color-moss: #e7ece5;
     --color-moss-deep: #c9d6c4;
-  }
-  /* The rail's dimmed link colour is an alpha of `ink`, which no token swap
-     can reach; in this mode it takes the full colour. */
-  html:not([data-contrast]) .text-ink\/85 {
-    color: var(--color-ink);
+    /* The one softened text colour collapses into `ink`: a reader who has
+       asked the system for more contrast is asking for exactly this gap to
+       go away. It used to be an alpha of ink written as a utility class, which
+       no token swap could reach and which needed an override of its own here;
+       now it is a token like every other colour. */
+    --color-ink-soft: #131e18;
   }
   /* The band is already a full moss fill below; in this mode it takes the
      re-cut moss with no further transparency. */
@@ -315,6 +345,7 @@ body {
 html[data-contrast="yellow"] {
   --color-paper: #000000;
   --color-ink: #ffff00;
+  --color-ink-soft: #ffff00;
   --color-muted: #ffff00;
   --color-spruce: #ffff00;
   --color-spruce-deep: #ffff00;
@@ -335,6 +366,7 @@ html[data-contrast="yellow"] {
 html[data-contrast="bw"] {
   --color-paper: #000000;
   --color-ink: #ffffff;
+  --color-ink-soft: #ffffff;
   --color-muted: #ffffff;
   --color-spruce: #ffffff;
   --color-spruce-deep: #ffffff;
@@ -372,12 +404,6 @@ html[data-contrast] .hover\:bg-white:hover {
 html[data-contrast] .text-white,
 html[data-contrast] .focus\:text-white:focus {
   color: var(--color-on-dark) !important;
-}
-/* The rail's dimmed link colour is an alpha of `ink`; at 85% of yellow it is
-   a duller yellow, which is exactly the distinction these modes exist to
-   remove. */
-html[data-contrast] .text-ink\/85 {
-  color: var(--color-ink);
 }
 /* The footer's tint is `bg-moss/60` — an alpha, so it would sit at 60% of
    black over the page and read as a slightly different black. */
@@ -838,7 +864,7 @@ html:has(.lightbox[open]) {
   justify-content: space-between;
   gap: 1rem;
   color: var(--color-on-overlay);
-  font-size: 0.95rem;
+  font-size: var(--text-meta);
   min-height: 1.5rem;
 }
 /* Solid chips, not a 12% white wash: these controls sit over photographs that
@@ -944,6 +970,18 @@ body:has(main > .pre-footer:last-child) footer {
 .doc {
   max-width: 46rem;
 }
+/* Running text stops at ~80 characters (Source Sans 3 at 18px ≈ 7.46px per
+   character in Polish prose → 33rem); tables, floated photos and DocList
+   cards keep the full 46rem column. Lists get the measure plus their own
+   1.4rem indent, so the text edge of a bullet lines up with the paragraphs
+   above and below it rather than stopping short of them. */
+.doc > :is(p, dl, blockquote) {
+  max-width: var(--measure-prose);
+}
+.doc > ol,
+.doc > ul:not(.doc-list) {
+  max-width: calc(var(--measure-prose) + 1.4rem);
+}
 .doc h2 {
   font-size: 1.5rem;
   margin: 2.25rem 0 0.75rem;
@@ -973,19 +1011,18 @@ body:has(main > .pre-footer:last-child) footer {
 .doc a {
   color: var(--color-spruce);
   text-decoration: underline;
-  text-underline-offset: 3px;
 }
 .doc a:hover {
   color: var(--color-spruce-deep);
 }
 .doc strong {
-  font-weight: 650;
+  font-weight: 600;
 }
 .doc table {
   width: 100%;
   border-collapse: collapse;
   margin: 1.25rem 0;
-  font-size: 0.95rem;
+  font-size: var(--text-meta);
 }
 .doc th,
 .doc td {
@@ -996,7 +1033,7 @@ body:has(main > .pre-footer:last-child) footer {
 }
 .doc th {
   background: var(--color-moss);
-  font-weight: 650;
+  font-weight: 600;
 }
 
 /* Print: nothing staged for the reveal may stay transparent on paper, and

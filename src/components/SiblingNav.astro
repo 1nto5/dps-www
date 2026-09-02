@@ -23,7 +23,7 @@ const { title, items, current } = Astro.props;
 ---
 
 <nav aria-label={title}>
-  <p class="px-2 text-sm font-semibold uppercase tracking-[0.12em] text-muted">{title}</p>
+  <p class="px-2 text-meta font-semibold text-muted">{title}</p>
   <ul role="list" class="mt-2">
     {
       items.map((item) => {
@@ -38,10 +38,10 @@ const { title, items, current } = Astro.props;
                 // every item and coloured on the current one, so marking the
                 // current page adds a shape without moving any label sideways.
                 // Colour alone would not be enough on its own anyway (SC 1.4.1).
-                "block rounded border-l-[3px] border-transparent px-2 py-1.5 text-[0.95rem]",
+                "block rounded border-l-[3px] border-transparent px-2 py-1.5 text-meta",
                 isCurrent
                   ? "border-spruce bg-moss-deep font-semibold text-spruce-deep"
-                  : "text-ink/85 hover:text-spruce-deep hover:underline hover:underline-offset-4",
+                  : "text-ink-soft hover:text-spruce-deep hover:underline",
               ]}
             >
               {item.label}

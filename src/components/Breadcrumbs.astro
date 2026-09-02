@@ -52,20 +52,20 @@ const jsonLd = {
 
 {
   items.length > 1 && (
-    <nav aria-label="Ścieżka nawigacji" class="breadcrumbs mb-4 text-sm text-muted">
+    <nav aria-label="Ścieżka nawigacji" class="breadcrumbs mb-4 text-base text-muted">
       <ol role="list" class="flex flex-wrap items-center gap-x-1">
         {trail.map((crumb) => (
           <li>
             <a
               href={crumb.href}
-              class="inline-block py-1 underline underline-offset-4 hover:text-spruce-deep"
+              class="inline-block py-1 underline hover:text-spruce-deep"
             >
               {crumb.label}
             </a>
           </li>
         ))}
         <li>
-          <span aria-current="page" class="inline-block py-1 font-medium text-ink/85">
+          <span aria-current="page" class="inline-block py-1 font-medium text-ink-soft">
             {currentCrumb.label}
           </span>
         </li>

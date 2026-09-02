@@ -65,7 +65,7 @@ const currentState = (href: string) => (path === href ? "page" : isActive(href) 
           assistive technology, so the link keeps the Dom's full name while the
           sticky header stays short enough to give up screen space for.
         -->
-        <span class="sr-only text-sm text-muted sm:not-sr-only sm:block"
+        <span class="sr-only text-base text-muted sm:not-sr-only sm:block"
           >im. Jana Pawła II w Szczytnie</span
         >
       </span>
@@ -83,7 +83,7 @@ const currentState = (href: string) => (path === href ? "page" : isActive(href) 
                   // Tighter between lg and xl: at full size these seven items
                   // plus the wordmark overflow 1024px and wrap the header onto
                   // a second line.
-                  "rounded px-2 py-2 text-[0.95rem] font-medium hover:bg-moss-deep hover:text-spruce-deep xl:px-3 xl:text-base",
+                  "rounded px-2 py-2 text-meta font-medium hover:bg-moss-deep hover:text-spruce-deep xl:px-3 xl:text-base",
                   isActive(item.href)
                     ? "bg-moss-deep font-semibold text-spruce-deep shadow-[inset_0_-3px_0_var(--color-spruce)]"
                     : "text-ink",
@@ -112,7 +112,7 @@ const currentState = (href: string) => (path === href ? "page" : isActive(href) 
       class="lg:hidden open:before:fixed open:before:inset-0 open:before:-z-10 open:before:bg-ink/40 open:before:content-['']"
     >
       <summary
-        class="flex cursor-pointer list-none items-center gap-1.5 rounded border border-edge px-2.5 py-1.5 text-[0.95rem] font-medium hover:border-spruce sm:gap-2 sm:px-3 sm:py-2 sm:text-base [&::-webkit-details-marker]:hidden [[open]>&]:bg-moss-deep [[open]>&]:text-spruce-deep"
+        class="flex cursor-pointer list-none items-center gap-1.5 rounded border border-edge px-2.5 py-1.5 text-meta font-medium hover:border-spruce sm:gap-2 sm:px-3 sm:py-2 sm:text-base [&::-webkit-details-marker]:hidden [[open]>&]:bg-moss-deep [[open]>&]:text-spruce-deep"
       >
         Menu
         <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" fill="none">

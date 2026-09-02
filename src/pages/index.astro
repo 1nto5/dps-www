@@ -108,18 +108,18 @@ const dateFormat = new Intl.DateTimeFormat("pl-PL", {
   <section class="mx-auto mt-section max-w-6xl px-4 sm:px-6" aria-labelledby="o-domu">
     <div class="max-w-3xl">
       <h2 id="o-domu" class="text-2xl md:text-3xl">O naszym domu</h2>
-      <p class="mt-4 text-lg leading-relaxed text-ink/85">
+      <p class="mt-4">
         Troszczymy się o dobre samopoczucie Mieszkańców, nie zapominając o indywidualności każdego z
         nich. Wsparcie wykwalifikowanych terapeutów pomaga aktywnie spędzać czas i rozwijać
         zainteresowania, a wszechstronna opieka pielęgniarska i medyczna daje poczucie bezpieczeństwa.
       </p>
-      <p class="mt-4 text-lg leading-relaxed text-ink/85">
+      <p class="mt-4">
         Zależy nam na godnych warunkach życia, z poszanowaniem prawa do wolności i intymności.
         Podejmujemy też działania, które łączą Mieszkańców ze środowiskiem lokalnym — od wizyt szkół
         i zespołów artystycznych po nasze własne występy poza Domem.
       </p>
       <p class="mt-6">
-        <a href="/o-nas/" class="font-semibold text-spruce underline underline-offset-4 hover:text-spruce-deep"
+        <a href="/o-nas/" class="font-semibold text-spruce underline hover:text-spruce-deep"
           >Więcej o Domu i jego kierownictwie</a
         >
       </p>
@@ -147,7 +147,7 @@ const dateFormat = new Intl.DateTimeFormat("pl-PL", {
                 <a
                   href={card.href}
                   data-card-link
-                  class="font-semibold text-spruce underline underline-offset-4 before:absolute before:inset-0 before:content-[''] hover:text-spruce-deep"
+                  class="font-semibold text-spruce underline before:absolute before:inset-0 before:content-[''] hover:text-spruce-deep"
                 >
                   {card.title} — czytaj dalej
                 </a>
@@ -168,7 +168,7 @@ const dateFormat = new Intl.DateTimeFormat("pl-PL", {
           </h2>
           <a
             href="/aktualnosci/"
-            class="font-semibold text-spruce underline underline-offset-4 hover:text-spruce-deep"
+            class="font-semibold text-spruce underline hover:text-spruce-deep"
           >
             Wszystkie komunikaty
           </a>
@@ -176,13 +176,13 @@ const dateFormat = new Intl.DateTimeFormat("pl-PL", {
         <ul
           class:list={[
             "mt-6 grid gap-6",
-            newsAsList ? "max-w-[46rem]" : "sm:grid-cols-2 lg:grid-cols-3",
+            newsAsList ? "max-w-column" : "sm:grid-cols-2 lg:grid-cols-3",
           ]}
           role="list"
         >
           {latest.map((post) => (
             <li class="relative rounded-xl border border-line bg-white p-5 transition-colors duration-150 hover:border-spruce/40 hover:shadow-card focus-within:border-spruce/40">
-              <p class="text-sm text-muted">
+              <p class="text-meta text-muted">
                 <time datetime={post.data.date.toISOString().slice(0, 10)}>
                   {dateFormat.format(post.data.date)}
                 </time>
@@ -191,7 +191,7 @@ const dateFormat = new Intl.DateTimeFormat("pl-PL", {
                 <a
                   href={`/aktualnosci/${post.id}/`}
                   data-card-link
-                  class="text-spruce-deep underline underline-offset-4 before:absolute before:inset-0 before:content-[''] hover:text-spruce"
+                  class="text-spruce-deep underline before:absolute before:inset-0 before:content-[''] hover:text-spruce"
                 >
                   {post.data.title}
                 </a>
@@ -214,12 +214,12 @@ const dateFormat = new Intl.DateTimeFormat("pl-PL", {
         <h2 id="kontakt-skrot" class="text-2xl">Zapraszamy do kontaktu</h2>
         <address class="mt-3 not-italic text-muted">
           ul. Wielbarska 2, 12-100 Szczytno<br />
-          tel. <a href="tel:+48896242288" class="text-spruce underline underline-offset-4 hover:text-spruce-deep"
+          tel. <a href="tel:+48896242288" class="text-spruce underline hover:text-spruce-deep"
             >(89) 624-22-88</a
           ><br />
           <a
             href="mailto:sekretariat@dpsszczytno.pl"
-            class="text-spruce underline underline-offset-4 hover:text-spruce-deep"
+            class="text-spruce underline hover:text-spruce-deep"
             >sekretariat@dpsszczytno.pl</a
           >
         </address>
