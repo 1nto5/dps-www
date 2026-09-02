@@ -1,8 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
 import PageHeader from "../components/PageHeader.astro";
-import ArchImage from "../components/ArchImage.astro";
-import buildingPhoto from "../assets/media/1290-dps1.jpg";
+import PageShell from "../components/PageShell.astro";
 
 /** Round-the-clock phone numbers of the residential units and the catering section. */
 const units = [
@@ -34,7 +33,7 @@ const units = [
 ];
 
 const linkClass = "text-spruce underline underline-offset-4 hover:text-spruce-deep";
-const cardClass = "rounded-xl border border-line bg-white/60 p-6";
+const cardClass = "rounded-xl border border-line bg-white p-6";
 const termClass = "text-sm font-medium text-muted";
 ---
 
@@ -48,149 +47,129 @@ const termClass = "text-sm font-medium text-muted";
     lead="Chętnie odpowiemy na pytania o pobyt, odwiedziny i sprawy formalne. Telefony do domów mieszkalnych odbieramy przez całą dobę, we wszystkie dni tygodnia."
   />
 
-  <div class="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
-    <div class="mx-auto w-full max-w-md">
-      <ArchImage
-        src={buildingPhoto}
-        alt="Budynek Domu Pomocy Społecznej w Szczytnie z czerwonym dachem, otoczony zielenią i kwitnącymi hortensjami"
-        sizes="(min-width: 768px) 28rem, 100vw"
-        loading="eager"
-      />
+  <PageShell>
+    <div class="grid gap-6 md:grid-cols-2">
+      <section aria-labelledby="siedziba" class={cardClass}>
+        <h2 id="siedziba" class="text-2xl">Siedziba w Szczytnie</h2>
+
+        <h3 class="mt-6 text-lg">Adres</h3>
+        <address class="mt-3 not-italic">
+          Dom Pomocy Społecznej im. Jana Pawła II<br />
+          ul. Wielbarska 2<br />
+          12-100 Szczytno
+        </address>
+        <p class="mt-4">
+          <a
+            class={linkClass}
+            href="https://www.openstreetmap.org/search?query=Wielbarska%202%2C%2012-100%20Szczytno"
+            rel="noopener">Zobacz Wielbarską 2 na mapie OpenStreetMap</a
+          >
+        </p>
+
+        <h3 class="mt-6 text-lg">Sekretariat</h3>
+        <dl class="mt-3 space-y-3">
+          <div>
+            <dt class={termClass}>Telefon</dt>
+            <dd><a class={linkClass} href="tel:+48896242288">(89) 624-22-88</a></dd>
+          </div>
+          <div>
+            <dt class={termClass}>Faks</dt>
+            <dd>(89) 624-34-99</dd>
+          </div>
+          <div>
+            <dt class={termClass}>E-mail</dt>
+            <dd>
+              <a class={linkClass} href="mailto:sekretariat@dpsszczytno.pl"
+                >sekretariat@dpsszczytno.pl</a
+              >
+            </dd>
+          </div>
+          <div>
+            <dt class={termClass}>Skrytka ePUAP</dt>
+            <dd>/dpsszczytno/SkrytkaESP</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section aria-labelledby="filia" class={cardClass}>
+        <h2 id="filia" class="text-2xl">Filia w Spychowie</h2>
+        <address class="mt-6 not-italic">
+          Dom Pomocy Społecznej im. Jana Pawła II — Filia w Spychowie<br />
+          ul. Sienkiewicza 3<br />
+          12-150 Spychowo
+        </address>
+        <p class="mt-4">
+          <span class={termClass}>Telefon:</span>{" "}
+          <a class={linkClass} href="tel:+48896225030">(89) 622-50-30</a>
+        </p>
+        <p class="mt-4">
+          <a
+            class={linkClass}
+            href="https://www.openstreetmap.org/search?query=Sienkiewicza%203%2C%20Spychowo"
+            rel="noopener">Zobacz Sienkiewicza 3 w Spychowie na mapie OpenStreetMap</a
+          >
+        </p>
+      </section>
+
+      <section aria-labelledby="domy-mieszkalne" class:list={[cardClass, "md:col-span-2"]}>
+        <h2 id="domy-mieszkalne" class="text-2xl">Domy mieszkalne i sekcja żywienia</h2>
+        <p class="mt-3 max-w-2xl text-muted">
+          Poniższe numery działają przez całą dobę, we wszystkie dni tygodnia.
+        </p>
+        <ul class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" role="list">
+          {
+            units.map((unit) => (
+              <li>
+                <h3 class="text-lg">{unit.name}</h3>
+                <ul class="mt-3 space-y-1">
+                  {unit.phones.map((phone) => (
+                    <li>
+                      <a class={linkClass} href={phone.href}>
+                        {phone.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <section aria-labelledby="iod" class={cardClass}>
+        <h2 id="iod" class="text-2xl">Inspektor Ochrony Danych</h2>
+        <p class="mt-6">
+          W sprawach dotyczących ochrony danych osobowych prosimy o kontakt z Inspektorem Ochrony
+          Danych:
+        </p>
+        <p class="mt-3">
+          <a class={linkClass} href="mailto:iod2@warmiainkaso.pl">iod2@warmiainkaso.pl</a>
+        </p>
+      </section>
+
+      <section aria-labelledby="dane-do-faktur" class={cardClass}>
+        <h2 id="dane-do-faktur" class="text-2xl">Dane do faktur</h2>
+        <div class="mt-6 grid gap-6 sm:grid-cols-2">
+          <div>
+            <h3 class="text-lg">Nabywca</h3>
+            <address class="mt-3 not-italic">
+              Powiat Szczycieński<br />
+              ul. Sienkiewicza 1<br />
+              12-100 Szczytno
+            </address>
+            <p class="mt-3"><span class={termClass}>NIP:</span> 745-18-11-678</p>
+          </div>
+          <div>
+            <h3 class="text-lg">Odbiorca</h3>
+            <address class="mt-3 not-italic">
+              Dom Pomocy Społecznej im. Jana Pawła II<br />
+              ul. Wielbarska 2<br />
+              12-100 Szczytno
+            </address>
+            <p class="mt-3"><span class={termClass}>REGON:</span> 000963690</p>
+          </div>
+        </div>
+      </section>
     </div>
-
-    <section aria-labelledby="siedziba" class="mt-14">
-      <h2 id="siedziba" class="text-2xl">Siedziba w Szczytnie</h2>
-      <div class="mt-6 grid gap-6 md:grid-cols-2">
-        <div class={cardClass}>
-          <h3 class="text-lg">Adres</h3>
-          <address class="mt-3 not-italic">
-            Dom Pomocy Społecznej im. Jana Pawła II<br />
-            ul. Wielbarska 2<br />
-            12-100 Szczytno
-          </address>
-          <p class="mt-4">
-            <a
-              class={linkClass}
-              href="https://www.openstreetmap.org/search?query=Wielbarska%202%2C%2012-100%20Szczytno"
-              rel="noopener">Zobacz Wielbarską 2 na mapie OpenStreetMap</a
-            >
-          </p>
-        </div>
-
-        <div class={cardClass}>
-          <h3 class="text-lg">Sekretariat</h3>
-          <dl class="mt-3 space-y-3">
-            <div>
-              <dt class={termClass}>Telefon</dt>
-              <dd><a class={linkClass} href="tel:+48896242288">(89) 624-22-88</a></dd>
-            </div>
-            <div>
-              <dt class={termClass}>Faks</dt>
-              <dd>(89) 624-34-99</dd>
-            </div>
-            <div>
-              <dt class={termClass}>E-mail</dt>
-              <dd>
-                <a class={linkClass} href="mailto:sekretariat@dpsszczytno.pl"
-                  >sekretariat@dpsszczytno.pl</a
-                >
-              </dd>
-            </div>
-            <div>
-              <dt class={termClass}>Skrytka ePUAP</dt>
-              <dd>/dpsszczytno/SkrytkaESP</dd>
-            </div>
-          </dl>
-        </div>
-      </div>
-    </section>
-
-    <section aria-labelledby="domy-mieszkalne" class="mt-14">
-      <h2 id="domy-mieszkalne" class="text-2xl">Domy mieszkalne i sekcja żywienia</h2>
-      <p class="mt-3 max-w-2xl text-muted">
-        Poniższe numery działają przez całą dobę, we wszystkie dni tygodnia.
-      </p>
-      <div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {
-          units.map((unit) => (
-            <div class={cardClass}>
-              <h3 class="text-lg">{unit.name}</h3>
-              <ul class="mt-3 space-y-1">
-                {unit.phones.map((phone) => (
-                  <li>
-                    <a class={linkClass} href={phone.href}>
-                      {phone.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))
-        }
-      </div>
-    </section>
-
-    <section aria-labelledby="filia" class="mt-14">
-      <h2 id="filia" class="text-2xl">Filia w Spychowie</h2>
-      <div class="mt-6 grid gap-6 md:grid-cols-2">
-        <div class={cardClass}>
-          <address class="not-italic">
-            Dom Pomocy Społecznej im. Jana Pawła II — Filia w Spychowie<br />
-            ul. Sienkiewicza 3<br />
-            12-150 Spychowo
-          </address>
-          <p class="mt-4">
-            <span class={termClass}>Telefon:</span>{" "}
-            <a class={linkClass} href="tel:+48896225030">(89) 622-50-30</a>
-          </p>
-          <p class="mt-4">
-            <a
-              class={linkClass}
-              href="https://www.openstreetmap.org/search?query=Sienkiewicza%203%2C%20Spychowo"
-              rel="noopener">Zobacz Sienkiewicza 3 w Spychowie na mapie OpenStreetMap</a
-            >
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section aria-labelledby="iod" class="mt-14">
-      <h2 id="iod" class="text-2xl">Inspektor Ochrony Danych</h2>
-      <div class="mt-6 grid gap-6 md:grid-cols-2">
-        <div class={cardClass}>
-          <p>
-            W sprawach dotyczących ochrony danych osobowych prosimy o kontakt z Inspektorem
-            Ochrony Danych:
-          </p>
-          <p class="mt-3">
-            <a class={linkClass} href="mailto:iod2@warmiainkaso.pl">iod2@warmiainkaso.pl</a>
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section aria-labelledby="dane-do-faktur" class="mt-14">
-      <h2 id="dane-do-faktur" class="text-2xl">Dane do faktur</h2>
-      <div class="mt-6 grid gap-6 md:grid-cols-2">
-        <div class={cardClass}>
-          <h3 class="text-lg">Nabywca</h3>
-          <address class="mt-3 not-italic">
-            Powiat Szczycieński<br />
-            ul. Sienkiewicza 1<br />
-            12-100 Szczytno
-          </address>
-          <p class="mt-3"><span class={termClass}>NIP:</span> 745-18-11-678</p>
-        </div>
-        <div class={cardClass}>
-          <h3 class="text-lg">Odbiorca</h3>
-          <address class="mt-3 not-italic">
-            Dom Pomocy Społecznej im. Jana Pawła II<br />
-            ul. Wielbarska 2<br />
-            12-100 Szczytno
-          </address>
-          <p class="mt-3"><span class={termClass}>REGON:</span> 000963690</p>
-        </div>
-      </div>
-    </section>
-  </div>
+  </PageShell>
 </Base>

@@ -2,6 +2,9 @@
 import { Image } from "astro:assets";
 import Base from "../../../layouts/Base.astro";
 import PageHeader from "../../../components/PageHeader.astro";
+import PageShell from "../../../components/PageShell.astro";
+import SiblingNav from "../../../components/SiblingNav.astro";
+import { dotacjeYears } from "../../../data/dotacje-years";
 import posterOchrona from "../../../assets/media/1266-212.jpg";
 import posterGratyfikacje from "../../../assets/media/1267-32.jpg";
 import posterOpieka from "../../../assets/media/1268-41.jpg";
@@ -20,7 +23,14 @@ import posterSrodkiOchrony from "../../../assets/media/1270-61.jpg";
     lead="Środki publiczne otrzymane przez nasz Dom w 2020 roku."
   />
 
-  <div class="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
+  <PageShell narrow>
+    <SiblingNav
+      slot="rail"
+      title="Dotacje"
+      items={dotacjeYears}
+      current="/dokumenty/dotacje/2020/"
+    />
+
     <div class="doc">
       <h2>Środki ochrony osobistej dla domów pomocy społecznej</h2>
       <p>
@@ -187,5 +197,5 @@ import posterSrodkiOchrony from "../../../assets/media/1270-61.jpg";
 
       <p><a href="/dokumenty/dotacje/">Wróć do listy lat</a></p>
     </div>
-  </div>
+  </PageShell>
 </Base>

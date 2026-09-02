@@ -1,6 +1,8 @@
 ---
 import Base from "../layouts/Base.astro";
 import PageHeader from "../components/PageHeader.astro";
+import PageShell from "../components/PageShell.astro";
+import SectionNav from "../components/SectionNav.astro";
 import ArchImage from "../components/ArchImage.astro";
 import Gallery from "../components/Gallery.astro";
 
@@ -9,6 +11,19 @@ import library from "../assets/media/1188-2012-07-25-at-10-18-46-1-1.jpg";
 import twinRoom from "../assets/media/1185-2012-07-25-at-10-40-40.jpg";
 import diningRoom from "../assets/media/1187-2012-07-25-at-10-46-26.jpg";
 import singleRoom from "../assets/media/1186-2012-07-25-at-10-43-511.jpg";
+
+/** Rail table of contents. Labels are shorter than the headings they point at. */
+const sections = [
+  { id: "dom", label: "Nasz Dom" },
+  { id: "opieka", label: "Opieka i pielęgnacja" },
+  { id: "wspomagajace", label: "Usługi wspomagające" },
+  { id: "bytowe", label: "Potrzeby bytowe" },
+  { id: "zdjecia", label: "Zdjęcia" },
+  { id: "regulamin", label: "Imprezy okolicznościowe" },
+];
+
+const cardLinkClass =
+  "inline-block py-1 text-spruce underline underline-offset-4 hover:text-spruce-deep";
 
 const galleryPhotos = [
   {
@@ -36,44 +51,68 @@ const galleryPhotos = [
     lead="Nasz Dom przeznaczony jest dla osób przewlekle psychicznie chorych. Zapewniamy opiekę całodobową dla 196 osób — 171 Mieszkańców w Szczytnie i 25 Mieszkańców w filii w Spychowie."
   />
 
-  <div class="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
-    <section aria-labelledby="dom" class="grid gap-8 border-t border-line pt-10 md:grid-cols-2 md:gap-12">
-      <div class="doc">
-        <h2 id="dom">Dom, w którym czuć troskę</h2>
-        <p>
-          Mieszkańcy znajdują u nas wykwalifikowaną, całodobową opiekę i własny kąt. Troszczymy się
-          o ich dobre samopoczucie, nie zapominając o indywidualności każdej osoby.
+  <PageShell>
+    <div slot="rail" class="space-y-8">
+      <SectionNav items={sections} />
+
+      <div class="rounded-xl border border-line bg-white p-5">
+        <p class="font-semibold">Masz pytania?</p>
+        <p class="mt-2 text-[0.95rem]">
+          <span class="text-muted">Telefon:</span>{" "}
+          <a class={cardLinkClass} href="tel:+48896242288">(89) 624-22-88</a>
         </p>
-        <p>
-          Zapewniamy wsparcie terapeutów, którzy dbają o to, aby Mieszkańcy aktywnie spędzali czas i
-          rozwijali swoje zainteresowania. Podejmujemy działania zmierzające do integracji osób
-          chorujących psychicznie ze środowiskiem lokalnym: nasi Mieszkańcy bywają w kawiarniach,
-          korzystają z plaży miejskiej, należą do Klubu Miłośników Kina. Współpracujemy również z
-          uczniami lokalnych szkół.
+        <p class="text-[0.95rem]">
+          <span class="text-muted">E-mail:</span>{" "}
+          <a class={cardLinkClass} href="mailto:sekretariat@dpsszczytno.pl"
+            >sekretariat@dpsszczytno.pl</a
+          >
         </p>
-        <p>
-          Wszechstronna opieka terapeutyczna i medyczna oraz zaangażowanie pracowników w tworzenie
-          jak najlepszej atmosfery zapewniają godne warunki życia, ze szczególnym poszanowaniem
-          prawa do wolności, intymności i poczucia bezpieczeństwa.
-        </p>
-        <p>
-          <strong>
-            Nasi Mieszkańcy objęci są opieką lekarza psychiatry. Korzystają z usług psychologa i
-            rehabilitanta zatrudnionych w naszym Domu.
-          </strong>
+        <p class="mt-2 text-[0.95rem]">
+          <a class={cardLinkClass} href="/kontakt/">Kontakt i dojazd</a>
         </p>
       </div>
+    </div>
 
-      <div class="md:pt-2">
-        <ArchImage
-          src={nursingRoom}
-          alt="Gabinet pielęgniarski w Domu — pielęgniarka przy biurku, przeszklone szafy z lekami."
-          loading="eager"
-        />
+    <section aria-labelledby="dom">
+      <div class="grid items-start gap-8 md:grid-cols-[1fr_auto] md:gap-12">
+        <div class="doc">
+          <h2 id="dom">Dom, w którym czuć troskę</h2>
+          <p>
+            Mieszkańcy znajdują u nas wykwalifikowaną, całodobową opiekę i własny kąt. Troszczymy się
+            o ich dobre samopoczucie, nie zapominając o indywidualności każdej osoby.
+          </p>
+          <p>
+            Zapewniamy wsparcie terapeutów, którzy dbają o to, aby Mieszkańcy aktywnie spędzali czas i
+            rozwijali swoje zainteresowania. Podejmujemy działania zmierzające do integracji osób
+            chorujących psychicznie ze środowiskiem lokalnym: nasi Mieszkańcy bywają w kawiarniach,
+            korzystają z plaży miejskiej, należą do Klubu Miłośników Kina. Współpracujemy również z
+            uczniami lokalnych szkół.
+          </p>
+          <p>
+            Wszechstronna opieka terapeutyczna i medyczna oraz zaangażowanie pracowników w tworzenie
+            jak najlepszej atmosfery zapewniają godne warunki życia, ze szczególnym poszanowaniem
+            prawa do wolności, intymności i poczucia bezpieczeństwa.
+          </p>
+          <p>
+            <strong>
+              Nasi Mieszkańcy objęci są opieką lekarza psychiatry. Korzystają z usług psychologa i
+              rehabilitanta zatrudnionych w naszym Domu.
+            </strong>
+          </p>
+        </div>
+
+        <div class="w-full max-w-xs md:justify-self-end">
+          <ArchImage
+            src={nursingRoom}
+            alt="Gabinet pielęgniarski w Domu — pielęgniarka przy biurku, przeszklone szafy z lekami."
+            sizes="(min-width: 768px) 20rem, 100vw"
+            loading="eager"
+          />
+        </div>
       </div>
     </section>
 
-    <section aria-labelledby="opieka" class="mt-14 border-t border-line pt-10">
+    <section aria-labelledby="opieka" class="band mt-section">
       <div class="doc">
         <h2 id="opieka">Usługi opiekuńcze i pielęgnacyjne</h2>
         <ul>
@@ -84,62 +123,68 @@ const galleryPhotos = [
       </div>
     </section>
 
-    <section aria-labelledby="wspomagajace" class="mt-14 grid gap-8 border-t border-line pt-10 md:grid-cols-2 md:gap-12">
-      <div class="doc">
-        <h2 id="wspomagajace">Usługi wspomagające</h2>
-        <p>Prowadzimy zajęcia terapeutyczne w pracowniach:</p>
-        <ul>
-          <li>arteterapia,</li>
-          <li>wsparcie duchowe,</li>
-          <li>aktywizacja społeczna,</li>
-          <li>pracownia multimedialna,</li>
-          <li>pracownia kulturalno-oświatowa,</li>
-          <li>pracownia rękodzieła artystycznego,</li>
-          <li>ergoterapia.</li>
-        </ul>
-        <p>
-          Umożliwiamy Mieszkańcom korzystanie z codziennej prasy i biblioteki, dbamy o poprawę ich
-          sprawności fizycznej, zapewniamy wsparcie kapłana oraz współpracujemy z rodzinami
-          Mieszkańców i z jednostkami pomocy społecznej.
-        </p>
-      </div>
+    <section aria-labelledby="wspomagajace" class="mt-section">
+      <div class="grid items-start gap-8 md:grid-cols-[1fr_auto] md:gap-12">
+        <div class="doc">
+          <h2 id="wspomagajace">Usługi wspomagające</h2>
+          <p>Prowadzimy zajęcia terapeutyczne w pracowniach:</p>
+          <ul>
+            <li>arteterapia,</li>
+            <li>wsparcie duchowe,</li>
+            <li>aktywizacja społeczna,</li>
+            <li>pracownia multimedialna,</li>
+            <li>pracownia kulturalno-oświatowa,</li>
+            <li>pracownia rękodzieła artystycznego,</li>
+            <li>ergoterapia.</li>
+          </ul>
+          <p>
+            Umożliwiamy Mieszkańcom korzystanie z codziennej prasy i biblioteki, dbamy o poprawę ich
+            sprawności fizycznej, zapewniamy wsparcie kapłana oraz współpracujemy z rodzinami
+            Mieszkańców i z jednostkami pomocy społecznej.
+          </p>
+        </div>
 
-      <div class="md:pt-2">
-        <ArchImage
-          src={library}
-          alt="Mieszkańcy i terapeutka przy wspólnym stole w bibliotece Domu."
-        />
-      </div>
-    </section>
-
-    <section aria-labelledby="bytowe" class="mt-14 grid gap-8 border-t border-line pt-10 md:grid-cols-2 md:gap-12">
-      <div class="doc">
-        <h2 id="bytowe">Potrzeby bytowe</h2>
-        <ul>
-          <li>
-            dysponujemy pokojami jedno-, dwu- i trzyosobowymi oraz pokojami czteroosobowymi dla osób
-            leżących,
-          </li>
-          <li>zapewniamy urozmaicone posiłki, zgodne z dietą zaleconą przez lekarza,</li>
-          <li>pomagamy w zakupie odzieży i obuwia,</li>
-          <li>zapewniamy bezpieczne przechowywanie środków finansowych i przedmiotów wartościowych.</li>
-        </ul>
-      </div>
-
-      <div class="md:pt-2">
-        <ArchImage
-          src={twinRoom}
-          alt="Pokój dwuosobowy — dwie Mieszkanki siedzą w fotelach przy stoliku."
-        />
+        <div class="w-full max-w-xs md:justify-self-end">
+          <ArchImage
+            src={library}
+            alt="Mieszkańcy i terapeutka przy wspólnym stole w bibliotece Domu."
+            sizes="(min-width: 768px) 20rem, 100vw"
+          />
+        </div>
       </div>
     </section>
 
-    <section aria-labelledby="zdjecia" class="mt-14 border-t border-line pt-10">
+    <section aria-labelledby="bytowe" class="band mt-section">
+      <div class="grid items-start gap-8 md:grid-cols-[1fr_auto] md:gap-12">
+        <div class="doc">
+          <h2 id="bytowe">Potrzeby bytowe</h2>
+          <ul>
+            <li>
+              dysponujemy pokojami jedno-, dwu- i trzyosobowymi oraz pokojami czteroosobowymi dla osób
+              leżących,
+            </li>
+            <li>zapewniamy urozmaicone posiłki, zgodne z dietą zaleconą przez lekarza,</li>
+            <li>pomagamy w zakupie odzieży i obuwia,</li>
+            <li>zapewniamy bezpieczne przechowywanie środków finansowych i przedmiotów wartościowych.</li>
+          </ul>
+        </div>
+
+        <div class="w-full max-w-xs md:justify-self-end">
+          <ArchImage
+            src={twinRoom}
+            alt="Pokój dwuosobowy — dwie Mieszkanki siedzą w fotelach przy stoliku."
+            sizes="(min-width: 768px) 20rem, 100vw"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="zdjecia" class="mt-section">
       <h2 id="zdjecia" class="mb-5 text-2xl">Nasz Dom w obiektywie</h2>
       <Gallery photos={galleryPhotos} />
     </section>
 
-    <section aria-labelledby="regulamin" class="mt-14 border-t border-line pt-10">
+    <section aria-labelledby="regulamin" class="band mt-section">
       <div class="doc">
         <h2 id="regulamin">Imprezy okolicznościowe</h2>
         <p>
@@ -153,5 +198,5 @@ const galleryPhotos = [
         </p>
       </div>
     </section>
-  </div>
+  </PageShell>
 </Base>

@@ -12,7 +12,21 @@
  */
 import Base from "../layouts/Base.astro";
 import PageHeader from "../components/PageHeader.astro";
+import PageShell from "../components/PageShell.astro";
+import SectionNav from "../components/SectionNav.astro";
 import DocList from "../components/DocList.astro";
+
+/** Rail table of contents. Ids and labels only — the statement's own wording,
+ *  dates and status are untouched. */
+const sections = [
+  { id: "status-zgodnosci", label: "Status zgodności" },
+  { id: "przygotowanie-deklaracji", label: "Przygotowanie deklaracji" },
+  { id: "skroty-klawiaturowe", label: "Skróty klawiaturowe" },
+  { id: "informacje-zwrotne", label: "Informacje zwrotne i kontakt" },
+  { id: "procedura", label: "Procedura wnioskowa" },
+  { id: "dostepnosc-architektoniczna", label: "Dostępność architektoniczna" },
+  { id: "raport", label: "Raport o dostępności" },
+];
 
 const docs = [
   {
@@ -34,7 +48,9 @@ const docs = [
     lead="Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie dba o to, aby z naszej strony mógł swobodnie korzystać każdy."
   />
 
-  <div class="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
+  <PageShell>
+    <SectionNav slot="rail" items={sections} />
+
     <div id="a11y-deklaracja" class="doc">
       <p>
         Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie zobowiązuje się zapewnić dostępność
@@ -55,7 +71,7 @@ const docs = [
         </li>
       </ul>
 
-      <h2>Status pod względem zgodności z ustawą</h2>
+      <h2 id="status-zgodnosci">Status pod względem zgodności z ustawą</h2>
       <p class="a11y-status">
         Strona internetowa jest częściowo zgodna z ustawą z dnia 4 kwietnia 2019 r. o dostępności
         cyfrowej stron internetowych i aplikacji mobilnych podmiotów publicznych z powodu
@@ -67,7 +83,7 @@ const docs = [
         <li>zamieszczone na stronie pliki PDF nie są dostępne cyfrowo,</li>
         <li>mapy Google są wyłączone z obowiązku zapewniania dostępności.</li>
       </ul>
-      <h2>Przygotowanie deklaracji dostępności</h2>
+      <h2 id="przygotowanie-deklaracji">Przygotowanie deklaracji dostępności</h2>
       <ul>
         <li>
           Data sporządzenia deklaracji:
@@ -78,14 +94,14 @@ const docs = [
         Deklarację sporządzono na podstawie samooceny przeprowadzonej przez podmiot publiczny.
       </p>
 
-      <h2>Skróty klawiaturowe</h2>
+      <h2 id="skroty-klawiaturowe">Skróty klawiaturowe</h2>
       <p>
         Na stronie internetowej można używać standardowych skrótów klawiaturowych przeglądarki. Po
         wszystkich odnośnikach i przyciskach można poruszać się klawiszem Tab, a na początku każdej
         strony dostępny jest odnośnik pozwalający przejść od razu do treści.
       </p>
 
-      <h2>Informacje zwrotne i dane kontaktowe</h2>
+      <h2 id="informacje-zwrotne">Informacje zwrotne i dane kontaktowe</h2>
       <p>
         W przypadku problemów z dostępnością strony internetowej prosimy o kontakt. Osobą kontaktową
         jest <span class="a11y-osoba">Mariusz Dziatkowiak</span>,
@@ -96,7 +112,7 @@ const docs = [
         dostępności.
       </p>
 
-      <h2>Informacje na temat procedury</h2>
+      <h2 id="procedura">Informacje na temat procedury</h2>
       <p class="a11y-procedura">
         Każdy ma prawo do wystąpienia z żądaniem zapewnienia dostępności cyfrowej strony
         internetowej, aplikacji mobilnej lub jakiegoś ich elementu. Można także zażądać udostępnienia
@@ -130,7 +146,7 @@ const docs = [
         Od decyzji Prezesa Zarządu PFRON przysługuje skarga do sądu administracyjnego.
       </p>
 
-      <h2>Dostępność architektoniczna</h2>
+      <h2 id="dostepnosc-architektoniczna">Dostępność architektoniczna</h2>
       <p class="a11y-architektura">
         Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie przeznaczony jest dla osób przewlekle
         psychicznie chorych. Zapewniamy opiekę całodobową dla 196 osób. W budynku przy ul.
@@ -176,11 +192,11 @@ const docs = [
         <li>tłumacz języka migowego.</li>
       </ul>
 
-      <h2>Raport o stanie zapewniania dostępności</h2>
+      <h2 id="raport">Raport o stanie zapewniania dostępności</h2>
     </div>
 
     <div class="mt-4 max-w-2xl">
       <DocList docs={docs} />
     </div>
-  </div>
+  </PageShell>
 </Base>

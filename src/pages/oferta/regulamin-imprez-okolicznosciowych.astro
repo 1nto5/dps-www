@@ -1,6 +1,7 @@
 ---
 import Base from "../../layouts/Base.astro";
 import PageHeader from "../../components/PageHeader.astro";
+import PageShell from "../../components/PageShell.astro";
 ---
 
 <Base
@@ -14,7 +15,7 @@ import PageHeader from "../../components/PageHeader.astro";
     lead="Dwa regulaminy obowiązujące podczas uroczystości i spotkań organizowanych przez Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie oraz w filii w Spychowie."
   />
 
-  <div class="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
+  <PageShell narrow>
     <div class="doc border-t border-line pt-8">
       <h2>
         Regulamin imprez okolicznościowych organizowanych przez Dom Pomocy Społecznej im. Jana Pawła
@@ -151,5 +152,5 @@ import PageHeader from "../../components/PageHeader.astro";
         <a href="/oferta/">Wróć do oferty Domu</a>
       </p>
     </div>
-  </div>
+  </PageShell>
 </Base>

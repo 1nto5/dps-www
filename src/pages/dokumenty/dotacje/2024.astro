@@ -2,6 +2,9 @@
 import { Image } from "astro:assets";
 import Base from "../../../layouts/Base.astro";
 import PageHeader from "../../../components/PageHeader.astro";
+import PageShell from "../../../components/PageShell.astro";
+import SiblingNav from "../../../components/SiblingNav.astro";
+import { dotacjeYears } from "../../../data/dotacje-years";
 import DocList from "../../../components/DocList.astro";
 import poster from "../../../assets/media/2059-Screenshot-2024-10-02-at-12.30.49.png";
 
@@ -26,7 +29,14 @@ const docs = [
     lead="Środki publiczne otrzymane przez nasz Dom w 2024 roku."
   />
 
-  <div class="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
+  <PageShell narrow>
+    <SiblingNav
+      slot="rail"
+      title="Dotacje"
+      items={dotacjeYears}
+      current="/dokumenty/dotacje/2024/"
+    />
+
     <div class="doc">
       <h2>Dofinansowano ze środków budżetu państwa</h2>
       <p>
@@ -90,5 +100,5 @@ const docs = [
     <div class="doc mt-8">
       <p><a href="/dokumenty/dotacje/">Wróć do listy lat</a></p>
     </div>
-  </div>
+  </PageShell>
 </Base>

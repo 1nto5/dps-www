@@ -1,6 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
 import PageHeader from "../components/PageHeader.astro";
+import PageShell from "../components/PageShell.astro";
 
 const links = [
   { href: "/", label: "Strona główna" },
@@ -21,7 +22,7 @@ const links = [
     lead="Adres mógł się zmienić przy przenosinach naszej strony albo zawiera literówkę. Nic straconego — poniżej znajdziesz drogę dalej."
   />
 
-  <div class="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
+  <PageShell narrow>
     <div class="doc">
       <p>
         Jeśli szukasz konkretnej informacji i nie możesz jej znaleźć, chętnie pomożemy. Zadzwoń pod
@@ -35,5 +36,5 @@ const links = [
         </ul>
       </nav>
     </div>
-  </div>
+  </PageShell>
 </Base>

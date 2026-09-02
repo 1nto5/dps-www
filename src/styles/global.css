@@ -18,9 +18,45 @@
   --font-display: "Fraunces Variable", Georgia, serif;
   --font-body: "Source Sans 3 Variable", system-ui, sans-serif;
 
+  /* Three-step vertical rhythm, so a chapter boundary is visibly bigger than
+     a paragraph group. Named entries in the spacing scale, so every spacing
+     utility takes them: `mt-section`, `pt-section`, `gap-subsection`, and so
+     on. The third step is deliberately NOT here — see below. */
+  --spacing-section: clamp(3.5rem, 8vw, 6rem);
+  --spacing-subsection: clamp(2rem, 4vw, 3rem);
+
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   --default-transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* The third spacing step, `block`, cannot live in `@theme`: a spacing entry
+   named `block` makes Tailwind generate `inline-block` as an `inline-size`
+   utility, which quietly takes the class name away from `display:
+   inline-block`. Measured: the homepage call-to-action button broke out of
+   the page at 1024px, and the footer links use the same class. So the value
+   is a plain custom property and the utilities that need it are declared by
+   hand. Add another one here if a page needs it. */
+:root {
+  --spacing-block: 1.5rem;
+}
+@utility mt-block {
+  margin-top: var(--spacing-block);
+}
+@utility mb-block {
+  margin-bottom: var(--spacing-block);
+}
+@utility gap-block {
+  gap: var(--spacing-block);
+}
+@utility p-block {
+  padding: var(--spacing-block);
+}
+@utility px-block {
+  padding-inline: var(--spacing-block);
+}
+@utility py-block {
+  padding-block: var(--spacing-block);
 }
 
 /* 112.5% of the 16px default = 18px, but it tracks the reader's own
@@ -205,7 +241,11 @@ header {
    content appear and then blink out on a slow connection. The class only ever
    exists when JavaScript runs and motion is allowed, and it removes itself
    after 2.5s if the choreography never arrives. */
-.reveal-armed main > section:not([data-no-reveal]) {
+/* `PageShell` puts a wrapper between `main` and the sections, so the hold has
+   to reach one level deeper as well. Same rule, same release — the
+   choreography script itself already selects `main section` at any depth. */
+.reveal-armed main > section:not([data-no-reveal]),
+.reveal-armed main [data-shell-content] section:not([data-no-reveal]) {
   opacity: 0;
 }
 
@@ -410,6 +450,48 @@ a[data-lightbox] {
 body:has(main > .pre-footer:last-child) footer {
   margin-top: 0;
   border-top: 0;
+}
+
+/* Section table of contents. One element at every width: a collapsed
+   <details> panel on small screens, an always-open list in the desktop rail.
+   Opened by CSS, never by script, so it works with JavaScript off. */
+@media (min-width: 1024px) {
+  /* Older engines hide the content by not laying it out at all... */
+  [data-section-nav] details > *:not(summary) {
+    display: block;
+  }
+  /* ...newer ones keep it in the box tree and hide it with
+     `content-visibility` on ::details-content, so both need answering. */
+  [data-section-nav] details::details-content {
+    content-visibility: visible;
+    block-size: auto;
+  }
+  /* The summary stops being a control and becomes the rail's small heading:
+     no chevron, no pointer affordance, nothing left to toggle. */
+  [data-section-nav] summary {
+    pointer-events: none;
+  }
+  [data-section-nav] [data-section-nav-chevron] {
+    display: none;
+  }
+}
+[data-section-nav] details[open] [data-section-nav-chevron] {
+  transform: rotate(180deg);
+}
+
+/* Chapter band. The section sits inside a 46rem grid column that is not
+   centred in the viewport once the rail appears, so the usual
+   `margin-inline: calc(50% - 50vw)` full-bleed would land off-centre and
+   overhang one edge. Painting the colour outwards with a very large shadow
+   spread and clipping it back to the section's own top and bottom edges
+   reaches both viewport edges from any horizontal position, and — unlike a
+   negative margin — cannot add a single pixel of horizontal scroll. */
+.band {
+  --band-fill: color-mix(in oklab, var(--color-moss) 40%, transparent);
+  background-color: var(--band-fill);
+  box-shadow: 0 0 0 100vmax var(--band-fill);
+  clip-path: inset(0 -100vmax);
+  padding-block: var(--spacing-subsection);
 }
 
 /* Long-form migrated content (prose) */

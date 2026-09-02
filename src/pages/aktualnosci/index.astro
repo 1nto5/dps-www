@@ -2,10 +2,16 @@
 import { getCollection } from "astro:content";
 import Base from "../../layouts/Base.astro";
 import PageHeader from "../../components/PageHeader.astro";
+import PageShell from "../../components/PageShell.astro";
 
 const entries = (await getCollection("aktualnosci")).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 );
+
+/** Fewer than three posts read badly as narrow cards marooned in a
+    three-column grid, so they become a single-column list at a larger type
+    scale instead. */
+const asList = entries.length < 3;
 
 const dateFormat = new Intl.DateTimeFormat("pl-PL", {
   day: "numeric",
@@ -24,23 +30,26 @@ const dateFormat = new Intl.DateTimeFormat("pl-PL", {
     lead="Wydarzenia, komunikaty i podziękowania z życia Domu oraz filii w Spychowie."
   />
 
-  <div class="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
+  <PageShell narrow>
     {
       entries.length === 0 ? (
-        <p class="max-w-2xl rounded-xl border border-line bg-moss px-6 py-8 text-lg text-muted">
+        <p class="rounded-xl border border-line bg-moss px-6 py-8 text-lg text-muted">
           Wkrótce pojawią się tu nowe informacje.
         </p>
       ) : (
-        <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3" role="list">
+        <ul
+          class:list={["grid", asList ? "gap-6" : "gap-6 sm:grid-cols-2 lg:grid-cols-3"]}
+          role="list"
+        >
           {entries.map((entry) => (
             <li class="relative flex">
-              <article class="flex flex-col rounded-xl border border-line bg-white/60 p-6 transition-colors duration-150 hover:border-spruce/40 focus-within:border-spruce/40">
+              <article class="flex w-full flex-col rounded-xl border border-line bg-white p-6 transition-colors duration-150 hover:border-spruce/40 hover:shadow-[0_1px_2px_rgba(38,49,43,0.08)] focus-within:border-spruce/40">
                 <p class="text-sm font-medium text-honey">
                   <time datetime={entry.data.date.toISOString().slice(0, 10)}>
                     {dateFormat.format(entry.data.date)}
                   </time>
                 </p>
-                <h2 class="mt-2 text-xl">
+                <h2 class:list={["mt-2", asList ? "text-2xl" : "text-xl"]}>
                   <a
                     href={`/aktualnosci/${entry.id}/`}
                     data-card-link
@@ -50,7 +59,9 @@ const dateFormat = new Intl.DateTimeFormat("pl-PL", {
                   </a>
                 </h2>
                 {entry.data.description && (
-                  <p class="mt-3 text-muted">{entry.data.description}</p>
+                  <p class:list={["mt-3 text-muted", asList && "text-lg"]}>
+                    {entry.data.description}
+                  </p>
                 )}
               </article>
             </li>
@@ -58,5 +69,5 @@ const dateFormat = new Intl.DateTimeFormat("pl-PL", {
         </ul>
       )
     }
-  </div>
+  </PageShell>
 </Base>

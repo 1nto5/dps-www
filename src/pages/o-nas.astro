@@ -2,6 +2,8 @@
 import Base from "../layouts/Base.astro";
 import ZoomImage from "../components/ZoomImage.astro";
 import PageHeader from "../components/PageHeader.astro";
+import PageShell from "../components/PageShell.astro";
+import SectionNav from "../components/SectionNav.astro";
 import ArchImage from "../components/ArchImage.astro";
 import Gallery from "../components/Gallery.astro";
 import DocList from "../components/DocList.astro";
@@ -15,6 +17,17 @@ import diningRoom from "../assets/media/1187-2012-07-25-at-10-46-26.jpg";
 import treatmentRoom from "../assets/media/1182-2012-07-25-at-10-20-35.jpg";
 import choirOnStage from "../assets/media/1168-christopherGroup.jpg";
 import choirInPress from "../assets/media/1169-christopher680.jpg";
+
+/** Rail table of contents. Labels are shorter than the headings they point at. */
+const sections = [
+  { id: "nasz-dom", label: "Nasz dom" },
+  { id: "dla-kogo", label: "Dla kogo" },
+  { id: "mieszkania", label: "Mieszkania i budynki" },
+  { id: "grupa-muzyczna", label: "Grupa muzyczna" },
+  { id: "kierownictwo", label: "Kierownictwo" },
+  { id: "podstawa-prawna", label: "Podstawa prawna" },
+  { id: "dokumenty", label: "Dokumenty" },
+];
 
 const management = [
   { role: "Dyrektor", name: "mgr Dorota Sędzińska-Bruździak" },
@@ -74,164 +87,171 @@ const interiors = [
     lead="Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie jest domem dla osób przewlekle psychicznie chorych. Razem z filią w Spychowie zapewniamy całodobową opiekę 196 Mieszkańcom."
   />
 
-  <section class="mx-auto max-w-6xl px-4 sm:px-6" aria-labelledby="nasz-dom">
-    <div class="grid items-start gap-8 md:grid-cols-2 md:gap-12">
+  <PageShell>
+    <SectionNav slot="rail" items={sections} />
+
+    <section aria-labelledby="nasz-dom">
+      <div class="grid items-start gap-8 md:grid-cols-[1fr_auto] md:gap-12">
+        <div class="doc">
+          <h2 id="nasz-dom">Nasz dom</h2>
+          <p>
+            Jesteśmy jednostką organizacyjną Powiatu Szczycieńskiego. Nasz Dom stoi przy ulicy
+            Wielbarskiej w Szczytnie, w otoczeniu ogrodu, a od 2001 roku prowadzimy także filię
+            w Spychowie.
+          </p>
+          <p>
+            Troszczymy się o dobre samopoczucie naszych Mieszkańców, nie zapominając
+            o indywidualności każdego z nich. Wszechstronna opieka terapeutyczna i medyczna oraz
+            zaangażowanie pracowników zapewniają godne warunki życia, ze szczególnym poszanowaniem
+            prawa do wolności, intymności i poczucia bezpieczeństwa.
+          </p>
+          <p>
+            Podejmujemy działania zmierzające do integracji osób chorujących psychicznie ze
+            środowiskiem lokalnym. Nasi Mieszkańcy bywają gośćmi kawiarni, korzystają z plaży
+            miejskiej i należą do Klubu Miłośników Kina. Współpracujemy również z uczniami
+            okolicznych szkół.
+          </p>
+        </div>
+        <div class="w-full max-w-xs md:justify-self-end">
+          <ArchImage
+            src={buildingGarden}
+            alt="Budynek Domu Pomocy Społecznej w Szczytnie z czerwonym dachem, widziany od strony ogrodu z kwitnącymi hortensjami"
+            sizes="(min-width: 768px) 20rem, 100vw"
+            loading="eager"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section class="band mt-section" aria-labelledby="dla-kogo">
       <div class="doc">
-        <h2 id="nasz-dom">Nasz dom</h2>
+        <h2 id="dla-kogo">Dla kogo jest nasz dom</h2>
         <p>
-          Jesteśmy jednostką organizacyjną Powiatu Szczycieńskiego. Nasz Dom stoi przy ulicy
-          Wielbarskiej w Szczytnie, w otoczeniu ogrodu, a od 2001 roku prowadzimy także filię
+          Nasz Dom przeznaczony jest dla osób przewlekle psychicznie chorych. Zapewniamy opiekę
+          całodobową dla 196 osób: 171 Mieszkańców mieszka w Szczytnie, a 25 osób w filii
           w Spychowie.
         </p>
         <p>
-          Troszczymy się o dobre samopoczucie naszych podopiecznych, nie zapominając
-          o indywidualności każdego z nich. Wszechstronna opieka terapeutyczna i medyczna oraz
-          zaangażowanie pracowników zapewniają godne warunki życia, ze szczególnym poszanowaniem
-          prawa do wolności, intymności i poczucia bezpieczeństwa.
+          Mieszkańcy objęci są opieką lekarza psychiatry oraz korzystają z usług psychologa
+          i rehabilitanta zatrudnionych w Domu. Zapewniamy wsparcie wykwalifikowanych
+          terapeutów, którzy dbają o to, aby Mieszkańcy aktywnie spędzali czas i rozwijali swoje
+          zainteresowania.
         </p>
         <p>
-          Podejmujemy działania zmierzające do integracji osób chorujących psychicznie ze
-          środowiskiem lokalnym. Nasi Mieszkańcy bywają gośćmi kawiarni, korzystają z plaży
-          miejskiej i należą do Klubu Miłośników Kina. Współpracujemy również z uczniami
-          okolicznych szkół.
+          Szczegółowy zakres usług opiekuńczych, pielęgnacyjnych i wspomagających opisujemy na
+          stronie <a href="/oferta/">Oferta</a>. O życiu codziennym w Spychowie piszemy na stronie
+          <a href="/filia-w-spychowie/">Filia w Spychowie</a>.
         </p>
       </div>
-      <div class="max-w-md md:justify-self-end">
-        <ArchImage
-          src={buildingGarden}
-          alt="Budynek Domu Pomocy Społecznej w Szczytnie z czerwonym dachem, widziany od strony ogrodu z kwitnącymi hortensjami"
-          loading="eager"
-        />
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="mx-auto mt-14 max-w-6xl px-4 sm:px-6" aria-labelledby="dla-kogo">
-    <div class="doc">
-      <h2 id="dla-kogo">Dla kogo jest nasz dom</h2>
-      <p>
-        Nasz Dom przeznaczony jest dla osób przewlekle psychicznie chorych. Zapewniamy opiekę
-        całodobową dla 196 osób: 171 Mieszkańców mieszka w Szczytnie, a 25 osób w filii
-        w Spychowie.
-      </p>
-      <p>
-        Mieszkańcy objęci są opieką lekarza psychiatry oraz korzystają z usług psychologa
-        i rehabilitanta zatrudnionych w placówce. Zapewniamy wsparcie wykwalifikowanych
-        terapeutów, którzy dbają o to, aby Mieszkańcy aktywnie spędzali czas i rozwijali swoje
-        zainteresowania.
-      </p>
-      <p>
-        Szczegółowy zakres usług opiekuńczych, pielęgnacyjnych i wspomagających opisujemy na
-        stronie <a href="/oferta/">Oferta</a>. O życiu codziennym w Spychowie piszemy na stronie
-        <a href="/filia-w-spychowie/">Filia w Spychowie</a>.
-      </p>
-    </div>
-  </section>
-
-  <section class="mx-auto mt-14 max-w-6xl px-4 sm:px-6" aria-labelledby="mieszkania">
-    <div class="doc">
-      <h2 id="mieszkania">Mieszkania i budynki</h2>
-      <p>
-        Dom w Szczytnie podzielony jest na trzy mieszkania — Mieszkanie I, II i III — z których
-        każde ma własnego kierownika i zespół opiekunów. Dysponujemy pokojami jedno-, dwu-
-        i trzyosobowymi oraz pokojami czteroosobowymi dla osób leżących.
-      </p>
-      <p>
-        Poza pokojami Mieszkańcy korzystają ze wspólnych przestrzeni: świetlic, biblioteki,
-        jadalni, kaplicy, pracowni terapeutycznych i gabinetów zabiegowych. Wokół budynków
-        rozciąga się ogród z alejkami i ławkami, a przy Domu stoi pomnik patrona — świętego
-        Jana Pawła II.
-      </p>
-    </div>
-    <div class="mt-6">
-      <Gallery photos={interiors} />
-    </div>
-  </section>
-
-  <section class="mx-auto mt-14 max-w-6xl px-4 sm:px-6" aria-labelledby="grupa-muzyczna">
-    <div class="grid items-start gap-8 md:grid-cols-2 md:gap-12">
-      <div class="max-w-md">
-        <ArchImage
-          src={choirOnStage}
-          alt="Pięciu Mieszkańców z grupy wokalnej Christopher śpiewa na plenerowej scenie pod żółto-czerwonym namiotem"
-        />
-      </div>
+    <section class="mt-section" aria-labelledby="mieszkania">
       <div class="doc">
-        <h2 id="grupa-muzyczna">Grupa muzyczna</h2>
+        <h2 id="mieszkania">Mieszkania i budynki</h2>
         <p>
-          Grupa wokalna „Christopher” działa w naszym Domu od 2005 roku. Powstała w ramach zajęć
-          pracowni muzykoterapii, a jej celem jest budowanie wiary w siebie i we własne
-          możliwości, rozwijanie zainteresowań muzycznych oraz integracja osób
-          z niepełnosprawnościami ze środowiskiem lokalnym.
+          Dom w Szczytnie podzielony jest na trzy mieszkania — Mieszkanie I, II i III — z których
+          każde ma własnego kierownika i zespół opiekunów. Dysponujemy pokojami jedno-, dwu-
+          i trzyosobowymi oraz pokojami czteroosobowymi dla osób leżących.
         </p>
         <p>
-          Zespół propaguje piosenki Krzysztofa Klenczona i „Czerwonych Gitar”, a w jego
-          repertuarze są także piosenki biesiadne. Grupa wystąpiła na wielu festiwalach, majówkach
-          i festynach rodzinnych w regionie.
-        </p>
-        <p>
-          <a href="/grupa-muzyczna/">Więcej o grupie wokalnej „Christopher”</a>
+          Poza pokojami Mieszkańcy korzystają ze wspólnych przestrzeni: świetlic, biblioteki,
+          jadalni, kaplicy, pracowni terapeutycznych i gabinetów zabiegowych. Wokół budynków
+          rozciąga się ogród z alejkami i ławkami, a przy Domu stoi pomnik patrona — świętego
+          Jana Pawła II.
         </p>
       </div>
-    </div>
-    <figure class="mt-8 max-w-sm">
-      <ZoomImage
-        src={choirInPress}
-        alt="Skan wycinka prasowego „Muzyka z naszych stron” ze zdjęciem członków zespołu „Christopher”. Treść artykułu jest przytoczona na stronie grupy wokalnej."
-        caption="Zespół „Christopher” w lokalnej prasie"
-        widths={[340, 680]}
-        sizes="(min-width: 768px) 340px, 90vw"
-      />
-      <figcaption class="mt-2 text-sm text-muted">
-        Zespół „Christopher” w lokalnej prasie. Treść artykułu przytaczamy na stronie
-        <a href="/grupa-muzyczna/#media" class="text-spruce underline underline-offset-4 hover:text-spruce-deep"
-          >grupy wokalnej „Christopher”</a
-        >.
-      </figcaption>
-    </figure>
-  </section>
-
-  <section class="mx-auto mt-14 max-w-6xl px-4 sm:px-6" aria-labelledby="kierownictwo">
-    <div class="doc">
-      <h2 id="kierownictwo">Kierownictwo Domu</h2>
-      <dl class="mt-4 divide-y divide-line rounded-lg border border-line bg-white/60">
-        {
-          management.map((person) => (
-            <div class="grid gap-1 px-4 py-3 sm:grid-cols-2 sm:gap-6">
-              <dt class="text-muted">{person.role}</dt>
-              <dd class="font-medium">{person.name}</dd>
-            </div>
-          ))
-        }
-      </dl>
-    </div>
-  </section>
-
-  <section class="mx-auto mt-14 max-w-6xl px-4 sm:px-6" aria-labelledby="podstawa-prawna">
-    <div class="grid items-start gap-8 md:grid-cols-2 md:gap-12">
-      <div class="doc">
-        <h2 id="podstawa-prawna">Podstawa prawna działania</h2>
-        <p>Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie funkcjonuje na podstawie:</p>
-        <ol>
-          {legalBasis.map((item) => <li>{item}</li>)}
-        </ol>
+      <div class="mt-block">
+        <Gallery photos={interiors} />
       </div>
-      <div class="max-w-md md:justify-self-end">
-        <ArchImage
-          src={buildingMonument}
-          alt="Pomnik świętego Jana Pawła II w ogrodzie przed głównym budynkiem Domu, obok ławki i strzyżone żywopłoty"
+    </section>
+
+    <section class="band mt-section" aria-labelledby="grupa-muzyczna">
+      <div class="grid items-start gap-8 md:grid-cols-[auto_1fr] md:gap-12">
+        <div class="w-full max-w-xs">
+          <ArchImage
+            src={choirOnStage}
+            alt="Pięciu Mieszkańców z grupy wokalnej Christopher śpiewa na plenerowej scenie pod żółto-czerwonym namiotem"
+            sizes="(min-width: 768px) 20rem, 100vw"
+          />
+        </div>
+        <div class="doc">
+          <h2 id="grupa-muzyczna">Grupa muzyczna</h2>
+          <p>
+            Grupa wokalna „Christopher” działa w naszym Domu od 2005 roku. Powstała w ramach zajęć
+            pracowni muzykoterapii, a jej celem jest budowanie wiary w siebie i we własne
+            możliwości, rozwijanie zainteresowań muzycznych oraz integracja osób
+            z niepełnosprawnościami ze środowiskiem lokalnym.
+          </p>
+          <p>
+            Zespół propaguje piosenki Krzysztofa Klenczona i „Czerwonych Gitar”, a w jego
+            repertuarze są także piosenki biesiadne. Grupa wystąpiła na wielu festiwalach, majówkach
+            i festynach rodzinnych w regionie.
+          </p>
+          <p>
+            <a href="/grupa-muzyczna/">Więcej o grupie wokalnej „Christopher”</a>
+          </p>
+        </div>
+      </div>
+      <figure class="mt-subsection max-w-sm">
+        <ZoomImage
+          src={choirInPress}
+          alt="Skan wycinka prasowego „Muzyka z naszych stron” ze zdjęciem członków zespołu „Christopher”. Treść artykułu jest przytoczona na stronie grupy wokalnej."
+          caption="Zespół „Christopher” w lokalnej prasie"
+          widths={[340, 680]}
+          sizes="(min-width: 768px) 340px, 90vw"
         />
-      </div>
-    </div>
-  </section>
+        <figcaption class="mt-2 text-sm text-muted">
+          Zespół „Christopher” w lokalnej prasie. Treść artykułu przytaczamy na stronie
+          <a href="/grupa-muzyczna/#media" class="text-spruce underline underline-offset-4 hover:text-spruce-deep"
+            >grupy wokalnej „Christopher”</a
+          >.
+        </figcaption>
+      </figure>
+    </section>
 
-  <section class="mx-auto mt-14 max-w-6xl px-4 sm:px-6" aria-labelledby="dokumenty">
-    <div class="doc">
-      <h2 id="dokumenty">Dokumenty</h2>
-      <p>Podstawowe dokumenty ustrojowe Domu do pobrania:</p>
-    </div>
-    <div class="mt-4 max-w-2xl">
-      <DocList docs={docs} />
-    </div>
-  </section>
+    <section class="mt-section" aria-labelledby="kierownictwo">
+      <div class="doc">
+        <h2 id="kierownictwo">Kierownictwo Domu</h2>
+        <dl class="mt-4 divide-y divide-line rounded-lg border border-line bg-white">
+          {
+            management.map((person) => (
+              <div class="grid gap-1 px-4 py-3 sm:grid-cols-2 sm:gap-6">
+                <dt class="text-muted">{person.role}</dt>
+                <dd class="font-medium">{person.name}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </section>
+
+    <section class="band mt-section" aria-labelledby="podstawa-prawna">
+      <div class="grid items-start gap-8 md:grid-cols-[1fr_auto] md:gap-12">
+        <div class="doc">
+          <h2 id="podstawa-prawna">Podstawa prawna działania</h2>
+          <p>Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie funkcjonuje na podstawie:</p>
+          <ol>
+            {legalBasis.map((item) => <li>{item}</li>)}
+          </ol>
+        </div>
+        <div class="w-full max-w-xs md:justify-self-end">
+          <ArchImage
+            src={buildingMonument}
+            alt="Pomnik świętego Jana Pawła II w ogrodzie przed głównym budynkiem Domu, obok ławki i strzyżone żywopłoty"
+            sizes="(min-width: 768px) 20rem, 100vw"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-section" aria-labelledby="dokumenty">
+      <div class="doc">
+        <h2 id="dokumenty">Dokumenty</h2>
+        <p>Podstawowe dokumenty ustrojowe Domu do pobrania:</p>
+      </div>
+      <div class="mt-block max-w-2xl">
+        <DocList docs={docs} />
+      </div>
+    </section>
+  </PageShell>
 </Base>

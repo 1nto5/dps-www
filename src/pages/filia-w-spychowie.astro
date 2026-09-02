@@ -1,9 +1,19 @@
 ---
 import Base from "../layouts/Base.astro";
 import PageHeader from "../components/PageHeader.astro";
+import PageShell from "../components/PageShell.astro";
+import SectionNav from "../components/SectionNav.astro";
 import ArchImage from "../components/ArchImage.astro";
 
 import twinRoom from "../assets/media/1185-2012-07-25-at-10-40-40.jpg";
+
+/** Rail table of contents. Labels are shorter than the headings they point at. */
+const sections = [
+  { id: "o-filii", label: "O filii" },
+  { id: "pomieszczenia", label: "Wspólne pomieszczenia" },
+  { id: "zajecia", label: "Zajęcia terapeutyczne" },
+  { id: "spolecznosc", label: "Społeczność lokalna" },
+];
 
 const therapies = [
   "zajęcia plastyczne",
@@ -34,23 +44,73 @@ const rooms = [
     lead="Mniejszy dom pośród mazurskich lasów. Od 2001 roku mieszka tu 25 osób, otoczonych opieką i codziennym rytmem zajęć."
   />
 
-  <div class="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
-    <div class="grid gap-10 md:grid-cols-[minmax(0,1fr)_18rem]">
-      <div class="doc">
-        <h2>O filii</h2>
-        <p>
-          Filia w Spychowie istnieje od 2001 roku i jest domem dla 25 Mieszkańców. Opieka
-          pielęgniarska jest tu przez całą dobę, a dzień ma swój rytm: wspólne posiłki w
-          stołówce, zajęcia w pracowni terapeutycznej, msza w kaplicy i czas dla siebie we
-          własnym pokoju. Pomagamy w codziennych czynnościach tyle, ile potrzeba — i tak,
-          żeby każdy zachował swoje przyzwyczajenia.
-        </p>
-        <p>
-          Zakres usług pielęgnacyjnych, opiekuńczych i wspomagających oraz warunki bytowe
-          określa Regulamin Organizacyjny Domu.
-        </p>
+  <PageShell>
+    <div slot="rail" class="space-y-8">
+      <SectionNav items={sections} />
 
-        <h2>Wspólne pomieszczenia</h2>
+      <aside class="rounded-xl border border-line bg-moss/60 p-5" aria-labelledby="kontakt-filia">
+        <h2 id="kontakt-filia" class="text-xl">Kontakt do filii</h2>
+        <address class="mt-3 not-italic leading-relaxed">
+          Filia Domu Pomocy Społecznej<br />
+          ul. Sienkiewicza 3<br />
+          Spychowo
+        </address>
+        <p class="mt-4">
+          <a
+            href="tel:+48896225030"
+            class="inline-block py-1 font-medium text-spruce-deep underline underline-offset-4 hover:text-spruce"
+            >Telefon: 89 622 50 30</a
+          >
+        </p>
+        <p>
+          <a
+            href="mailto:sekretariat@dpsszczytno.pl"
+            class="inline-block py-1 text-spruce-deep underline underline-offset-4 hover:text-spruce"
+            >sekretariat@dpsszczytno.pl</a
+          >
+        </p>
+        <p class="mt-4 text-sm text-muted">
+          Sprawy formalne prowadzi <a
+            href="/kontakt/"
+            class="inline-block py-1 text-spruce-deep underline underline-offset-4"
+            >sekretariat domu w Szczytnie</a
+          >.
+        </p>
+      </aside>
+    </div>
+
+    <section aria-labelledby="o-filii">
+      <div class="grid items-start gap-8 md:grid-cols-[1fr_auto] md:gap-12">
+        <div class="doc">
+          <h2 id="o-filii">O filii</h2>
+          <p>
+            Filia w Spychowie istnieje od 2001 roku i jest domem dla 25 Mieszkańców. Opieka
+            pielęgniarska jest tu przez całą dobę, a dzień ma swój rytm: wspólne posiłki w
+            stołówce, zajęcia w pracowni terapeutycznej, msza w kaplicy i czas dla siebie we
+            własnym pokoju. Pomagamy w codziennych czynnościach tyle, ile potrzeba — i tak,
+            żeby każdy zachował swoje przyzwyczajenia.
+          </p>
+          <p>
+            Zakres usług pielęgnacyjnych, opiekuńczych i wspomagających oraz warunki bytowe
+            określa Regulamin Organizacyjny Domu.
+          </p>
+        </div>
+
+        <div class="w-full max-w-xs md:justify-self-end">
+          <ArchImage
+            src={twinRoom}
+            alt="Dwie Mieszkanki rozmawiające przy stoliku w swoim pokoju."
+            sizes="(min-width: 768px) 20rem, 100vw"
+            loading="eager"
+            class="aspect-[3/4]"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="pomieszczenia" class="band mt-section">
+      <div class="doc">
+        <h2 id="pomieszczenia">Wspólne pomieszczenia</h2>
         <p>
           Oprócz własnych pokoi Mieszkańcy korzystają także z pozostałych pomieszczeń domu:
         </p>
@@ -58,13 +118,21 @@ const rooms = [
           {rooms.map((room) => <li>{room}</li>)}
         </ul>
         <p>Wsparcie duchowe zapewnia kapłan z tutejszej parafii.</p>
+      </div>
+    </section>
 
-        <h2>Zajęcia terapeutyczne</h2>
+    <section aria-labelledby="zajecia" class="mt-section">
+      <div class="doc">
+        <h2 id="zajecia">Zajęcia terapeutyczne</h2>
         <ul>
           {therapies.map((item) => <li>{item}</li>)}
         </ul>
+      </div>
+    </section>
 
-        <h2>Życie ze społecznością lokalną</h2>
+    <section aria-labelledby="spolecznosc" class="band mt-section">
+      <div class="doc">
+        <h2 id="spolecznosc">Życie ze społecznością lokalną</h2>
         <p>
           Pracownicy domu i Mieszkańcy dokładają starań, by utrzymywać dobre kontakty ze
           środowiskiem lokalnym, szczególnie ze szkołą i miejscowymi zakładami pracy. Dom
@@ -73,40 +141,6 @@ const rooms = [
           oraz Mieszkańcy i uczestnicy placówek o podobnym profilu działalności.
         </p>
       </div>
-
-      <div class="space-y-8 self-start">
-        <ArchImage
-          src={twinRoom}
-          alt="Dwie Mieszkanki rozmawiające przy stoliku w swoim pokoju."
-          loading="eager"
-          class="aspect-[3/4]"
-        />
-
-        <aside
-          class="h-fit rounded-xl border border-line bg-moss/60 p-5"
-          aria-labelledby="kontakt-filia"
-        >
-          <h2 id="kontakt-filia" class="text-xl">Kontakt do filii</h2>
-          <address class="mt-3 not-italic leading-relaxed">
-            Filia Domu Pomocy Społecznej<br />
-            ul. Sienkiewicza 3<br />
-            Spychowo
-          </address>
-          <p class="mt-4">
-            <a
-              href="tel:+48896225030"
-              class="font-medium text-spruce-deep underline underline-offset-4 hover:text-spruce"
-              >Telefon: 89 622 50 30</a
-            >
-          </p>
-          <p class="mt-4 text-sm text-muted">
-            Sprawy formalne prowadzi <a
-              href="/kontakt/"
-              class="text-spruce-deep underline underline-offset-4">sekretariat domu w Szczytnie</a
-            >.
-          </p>
-        </aside>
-      </div>
-    </div>
-  </div>
+    </section>
+  </PageShell>
 </Base>

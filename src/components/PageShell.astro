@@ -1,0 +1,52 @@
+---
+/**
+ * Page shell: the container every route's body content sits in, optionally
+ * with a sticky rail beside it on wide screens.
+ *
+ * Slots:
+ *   (default) — the page content, one column
+ *   rail      — optional supplementary column (SectionNav, a contact card…)
+ *
+ * DOM order, deliberately: the rail is rendered BEFORE the content at every
+ * width, and moved into the right-hand column at `lg` with `order`. On small
+ * screens the table of contents therefore collapses into a panel above the
+ * text, and on wide screens it sits in the rail — one element, never two
+ * copies, with the same reading and tab order at both widths: rail, then
+ * content. That is how a printed table of contents precedes its chapter, and
+ * it keeps focus order and screen-reader order identical everywhere.
+ *
+ * The rail is always supplementary: everything it links to is reachable from
+ * the body text or the main navigation.
+ */
+interface Props {
+  /** Cap the content column at the 46rem measure. For long-form prose pages
+   *  with no rail; card grids need the full container width. The column stays
+   *  left-aligned rather than centred, so it starts on the same vertical line
+   *  as the `PageHeader` h1 above it — a centred column would step inwards
+   *  under a left-aligned title and read as a misalignment. */
+  narrow?: boolean;
+  class?: string;
+}
+const { narrow = false, class: className } = Astro.props;
+
+const hasRail = Astro.slots.has("rail");
+---
+
+<div class:list={["mx-auto max-w-6xl px-4 pb-16 sm:px-6", className]}>
+  {
+    hasRail ? (
+      <div class="grid gap-8 lg:grid-cols-[minmax(0,46rem)_minmax(0,18rem)] lg:gap-16">
+        <aside class="lg:order-2 lg:sticky lg:self-start" style="top: calc(var(--header-h) + 1.5rem)">
+          <slot name="rail" />
+        </aside>
+        <div data-shell-content class="min-w-0 lg:order-1">
+          <slot />
+        </div>
+      </div>
+    ) : (
+      <div data-shell-content class:list={["min-w-0", narrow && "max-w-[46rem]"]}>
+        <slot />
+      </div>
+    )
+  }
+</div>

@@ -8,6 +8,9 @@ import { Image } from "astro:assets";
 import Base from "../../../layouts/Base.astro";
 import PageHeader from "../../../components/PageHeader.astro";
 import Gallery from "../../../components/Gallery.astro";
+import PageShell from "../../../components/PageShell.astro";
+import SiblingNav from "../../../components/SiblingNav.astro";
+import { dokumentySections } from "../../../data/dokumenty-sections";
 
 import logoPower from "../../../assets/media/1196-UE.jpg";
 import posterCovidDps from "../../../assets/media/1197-13.jpg";
@@ -70,7 +73,14 @@ const photos = [
     lead="Projekty finansowane ze środków Unii Europejskiej, w których uczestniczy nasz Dom."
   />
 
-  <div class="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
+  <PageShell>
+    <SiblingNav
+      slot="rail"
+      title="Dokumenty"
+      items={dokumentySections}
+      current="/dokumenty/projekty-unijne/"
+    />
+
     <div class="doc">
       <h2>Projekt „Pomagajmy Razem”</h2>
     </div>
@@ -224,5 +234,5 @@ const photos = [
         </li>
       </ul>
     </div>
-  </div>
+  </PageShell>
 </Base>

@@ -5,6 +5,18 @@
  */
 import Base from "../../layouts/Base.astro";
 import PageHeader from "../../components/PageHeader.astro";
+import PageShell from "../../components/PageShell.astro";
+import SectionNav from "../../components/SectionNav.astro";
+
+/** Rail table of contents. Labels are shorter than the notice headings. */
+const sections = [
+  { id: "pracownik", label: "Dla pracownika" },
+  { id: "rodzina", label: "Dla rodziny" },
+  { id: "kurator", label: "Dla kuratora lub opiekuna" },
+  { id: "stazysta", label: "Dla stażysty lub praktykanta" },
+  { id: "kandydat", label: "Dla kandydata" },
+  { id: "monitoring", label: "Monitoring wizyjny" },
+];
 ---
 
 <Base
@@ -18,24 +30,10 @@ import PageHeader from "../../components/PageHeader.astro";
     lead="Informacje o przetwarzaniu danych osobowych w Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie."
   />
 
-  <div class="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
-    <div class="doc">
-      <nav aria-label="Spis treści strony">
-        <h2 id="spis-tresci">Na tej stronie</h2>
-        <ul>
-          <li><a href="#pracownik">Informacja o przetwarzaniu danych osobowych dla pracownika</a></li>
-          <li><a href="#rodzina">Informacja o przetwarzaniu danych osobowych dla rodziny</a></li>
-          <li>
-            <a href="#kurator">Informacja o przetwarzaniu danych osobowych dla kuratora lub opiekuna</a>
-          </li>
-          <li>
-            <a href="#stazysta">Informacja o przetwarzaniu danych osobowych dla stażysty lub praktykanta</a>
-          </li>
-          <li><a href="#kandydat">Informacja o przetwarzaniu danych osobowych dla kandydata</a></li>
-          <li><a href="#monitoring">Informacja w sprawie monitoringu wizyjnego</a></li>
-        </ul>
-      </nav>
+  <PageShell>
+    <SectionNav slot="rail" items={sections} />
 
+    <div class="doc">
       <h2 id="pracownik">Informacja o przetwarzaniu danych osobowych dla pracownika</h2>
       <p>
         Zgodnie z art. 13 ust. 1 i 2 Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 z
@@ -466,5 +464,5 @@ import PageHeader from "../../components/PageHeader.astro";
         </li>
       </ol>
     </div>
-  </div>
+  </PageShell>
 </Base>

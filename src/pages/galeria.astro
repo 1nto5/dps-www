@@ -2,6 +2,7 @@
 import Base from "../layouts/Base.astro";
 import PageHeader from "../components/PageHeader.astro";
 import Gallery from "../components/Gallery.astro";
+import PageShell from "../components/PageShell.astro";
 import ZoomImage from "../components/ZoomImage.astro";
 
 import buildingGarden from "../assets/media/1377-1-1.jpg";
@@ -87,47 +88,58 @@ const events = [
     lead="Kilka zdjęć naszego Domu: budynki i ogród, w którym Mieszkańcy spędzają czas, wnętrza mieszkań oraz występy grupy wokalnej „Christopher”."
   />
 
-  <section class="mx-auto max-w-6xl px-4 sm:px-6" aria-labelledby="budynki">
-    <div class="doc">
-      <h2 id="budynki">Budynki i otoczenie</h2>
-      <p>
-        Dom stoi przy ulicy Wielbarskiej w Szczytnie, w otoczeniu ogrodu z alejkami, ławkami
-        i pomnikiem patrona.
-      </p>
-    </div>
-    <div class="mt-6">
-      <Gallery photos={buildings} />
-    </div>
-  </section>
+  <PageShell>
+    <section aria-labelledby="budynki">
+      <div class="doc">
+        <h2 id="budynki">Budynki i otoczenie</h2>
+        <p>
+          Dom stoi przy ulicy Wielbarskiej w Szczytnie, w otoczeniu ogrodu z alejkami, ławkami
+          i pomnikiem patrona.
+        </p>
+      </div>
+      <div class="mt-block">
+        <Gallery photos={buildings} />
+      </div>
+    </section>
 
-  <section class="mx-auto mt-14 max-w-6xl px-4 sm:px-6" aria-labelledby="wnetrza">
-    <div class="doc">
-      <h2 id="wnetrza">Wnętrza i życie codzienne</h2>
-      <p>
-        Pokoje Mieszkańców, świetlice, jadalnia i gabinety zabiegowe — miejsca, w których toczy się
-        zwykły dzień w naszym Domu.
-      </p>
-    </div>
-    <div class="mt-6">
-      <Gallery photos={interiors} />
-    </div>
-  </section>
+    <section class="mt-section" aria-labelledby="wnetrza">
+      <div class="doc">
+        <h2 id="wnetrza">Wnętrza i życie codzienne</h2>
+        <p>
+          Pokoje Mieszkańców, świetlice, jadalnia i gabinety zabiegowe — miejsca, w których toczy się
+          zwykły dzień w naszym Domu.
+        </p>
+      </div>
+      <div class="mt-block">
+        <Gallery photos={interiors} />
+      </div>
+    </section>
 
-  <section class="mx-auto mt-14 max-w-6xl px-4 sm:px-6" aria-labelledby="wystepy">
-    <div class="doc">
-      <h2 id="wystepy">Zajęcia i występy</h2>
-      <p>
-        Nasi Mieszkańcy występują na festynach i festiwalach w regionie. Więcej o zespole piszemy
-        na stronie <a href="/grupa-muzyczna/">Grupa muzyczna „Christopher”</a>.
-      </p>
-    </div>
-    <div class="mt-6 max-w-2xl">
-      <ZoomImage
-        src={events[0]!.src}
-        alt={events[0]!.alt}
-        widths={[480, 680]}
-        sizes="(min-width: 768px) 42rem, 100vw"
-      />
-    </div>
-  </section>
+    <section class="mt-section" aria-labelledby="wystepy">
+      <div class="doc">
+        <h2 id="wystepy">Zajęcia i występy</h2>
+        <p>
+          Nasi Mieszkańcy występują na festynach i festiwalach w regionie. Więcej o zespole piszemy
+          na stronie <a href="/grupa-muzyczna/">Grupa muzyczna „Christopher”</a>.
+        </p>
+      </div>
+      {
+        /* A single photo is rendered at one column's width with a visible
+           caption, rather than stretched across the space a grid row would
+           have used. The `Gallery` grid stays a grid: one photo is a figure,
+           not a one-item list, so the special case belongs here. */
+      }
+      <figure class="mt-block max-w-md">
+        <ZoomImage
+          src={events[0]!.src}
+          alt={events[0]!.alt}
+          widths={[400, 700]}
+          sizes="(min-width: 640px) 24rem, 100vw"
+        />
+        <figcaption class="mt-2 text-sm text-muted">
+          Grupa wokalna „Christopher” podczas występu na plenerowej scenie.
+        </figcaption>
+      </figure>
+    </section>
+  </PageShell>
 </Base>

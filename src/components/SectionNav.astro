@@ -1,0 +1,59 @@
+---
+/**
+ * Table of contents for one page's own sections. Pages pass the list
+ * explicitly rather than having it introspected from the headings, so labels
+ * can be shorter than the headings they point at.
+ *
+ * One element at every width: a collapsed <details> panel above the text on
+ * small screens, forced open by CSS in the desktop rail (see `global.css`).
+ * No script — with JavaScript off it still opens and closes.
+ *
+ * Every `id` here must exist on the rendered page; `scripts/check-section-nav.mjs`
+ * fails the build if one drifts.
+ */
+interface Props {
+  items: { id: string; label: string }[];
+  title?: string;
+}
+const { items, title = "Na tej stronie" } = Astro.props;
+---
+
+<nav aria-label="Spis treści strony" data-section-nav>
+  <details class="rounded-xl border border-line bg-white lg:rounded-none lg:border-0 lg:bg-transparent">
+    <summary
+      class="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-muted lg:px-0 lg:py-0 [&::-webkit-details-marker]:hidden"
+    >
+      {title}
+      <svg
+        data-section-nav-chevron
+        width="16"
+        height="16"
+        viewBox="0 0 20 20"
+        fill="none"
+        aria-hidden="true"
+        class="shrink-0"
+      >
+        <path
+          d="M5 8l5 5 5-5"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"></path>
+      </svg>
+    </summary>
+    <ol class="border-t border-line px-4 pb-3 pt-2 lg:mt-3 lg:border-t-0 lg:px-0 lg:pb-0 lg:pt-0">
+      {
+        items.map((item) => (
+          <li>
+            <a
+              href={`#${item.id}`}
+              class="block py-1.5 text-[0.95rem] text-ink/85 hover:text-spruce-deep hover:underline hover:underline-offset-4"
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </details>
+</nav>

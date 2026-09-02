@@ -7,6 +7,7 @@
 import { Image } from "astro:assets";
 import Base from "../../../layouts/Base.astro";
 import PageHeader from "../../../components/PageHeader.astro";
+import PageShell from "../../../components/PageShell.astro";
 import DocList from "../../../components/DocList.astro";
 
 import scan from "../../../assets/media/2065-Screenshot-2024-10-02-at-13.03.49.png";
@@ -32,7 +33,7 @@ const docs = [
     lead="Kto przyjmuje i weryfikuje zgłoszenia wewnętrzne w naszym Domu."
   />
 
-  <div class="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
+  <PageShell narrow>
     <div class="doc">
       <p>
         Osobą upoważnioną do przyjmowania i weryfikacji zgłoszeń wewnętrznych w Domu Pomocy Społecznej
@@ -63,12 +64,12 @@ const docs = [
       <DocList docs={docs} />
     </div>
 
-    <p class="mt-14">
+    <p class="mt-section">
       <a
         href="/dokumenty/sygnalista/"
         class="text-spruce underline underline-offset-4 hover:text-spruce-deep"
         >Wróć do działu Sygnalista</a
       >
     </p>
-  </div>
+  </PageShell>
 </Base>
