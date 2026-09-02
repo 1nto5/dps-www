@@ -36,12 +36,12 @@ const rooms = [
 
 <Base
   title="Filia w Spychowie"
-  description="Filia Domu Pomocy Społecznej im. Jana Pawła II w Spychowie — 25 miejsc, opieka pielęgnacyjna i zajęcia terapeutyczne. Spychowo, ul. Sienkiewicza 3, tel. 89 622 50 30."
+  description="Filia Domu Pomocy Społecznej im. Jana Pawła II w Spychowie — opieka pielęgnacyjna i zajęcia terapeutyczne. Spychowo, ul. Sienkiewicza 3, tel. 89 622 50 30."
 >
   <PageHeader
     eyebrow="Nasz dom"
     title="Filia w Spychowie"
-    lead="Mniejszy dom pośród mazurskich lasów. Od 2001 roku mieszka tu 25 osób, otoczonych opieką i codziennym rytmem zajęć."
+    lead="Mniejszy dom pośród mazurskich lasów. Od 2001 roku Mieszkańcy znajdują tu opiekę i codzienny rytm zajęć."
   />
 
   <PageShell>
@@ -73,42 +73,39 @@ const rooms = [
           Sprawy formalne prowadzi <a
             href="/kontakt/"
             class="inline-block py-1 text-spruce-deep underline underline-offset-4"
-            >sekretariat domu w Szczytnie</a
+            >sekretariat w Szczytnie</a
           >.
         </p>
       </aside>
     </div>
 
     <section aria-labelledby="o-filii">
-      <div class="grid items-start gap-8 md:grid-cols-[1fr_auto] md:gap-12">
-        <div class="doc">
-          <h2 id="o-filii">O filii</h2>
-          <p>
-            Filia w Spychowie istnieje od 2001 roku i jest domem dla 25 Mieszkańców. Opieka
-            pielęgniarska jest tu przez całą dobę, a dzień ma swój rytm: wspólne posiłki w
-            stołówce, zajęcia w pracowni terapeutycznej, msza w kaplicy i czas dla siebie we
-            własnym pokoju. Pomagamy w codziennych czynnościach tyle, ile potrzeba — i tak,
-            żeby każdy zachował swoje przyzwyczajenia.
-          </p>
-          <p>
-            Zakres usług pielęgnacyjnych, opiekuńczych i wspomagających oraz warunki bytowe
-            określa Regulamin Organizacyjny Domu.
-          </p>
-        </div>
-
-        <div class="w-full max-w-xs md:justify-self-end">
-          {
-            /* Square, not 4/5: the two Mieszkanki sit too far apart in the
-               source for a 4/5 crop to hold both faces. */
-          }
+      <div class="doc flow-root">
+        <h2 id="o-filii">O filii</h2>
+        {
+          /* Square, not 4/5: the two Mieszkanki sit too far apart in the
+             source for a 4/5 crop to hold both faces. */
+        }
+        <div class="mb-6 w-full max-w-xs md:mb-4 md:w-64 md:float-right md:ml-8">
           <ArchImage
             src={twinRoom}
             alt="Dwie Mieszkanki rozmawiające przy stoliku w swoim pokoju."
             aspect="1/1"
-            sizes="(min-width: 768px) 20rem, 100vw"
+            sizes="(min-width: 768px) 16rem, 100vw"
             loading="eager"
           />
         </div>
+        <p>
+          Filia w Spychowie istnieje od 2001 roku i jest domem dla Mieszkańców. Opieka
+          pielęgniarska jest tu przez całą dobę, a dzień ma swój rytm: wspólne posiłki w
+          stołówce, zajęcia w pracowni terapeutycznej, msza w kaplicy i czas dla siebie we
+          własnym pokoju. Pomagamy w codziennych czynnościach tyle, ile potrzeba — i tak,
+          żeby każdy zachował swoje przyzwyczajenia.
+        </p>
+        <p>
+          Zakres usług pielęgnacyjnych, opiekuńczych i wspomagających oraz warunki bytowe
+          określa Regulamin Organizacyjny Domu.
+        </p>
       </div>
     </section>
 

@@ -48,7 +48,7 @@ const galleryPhotos = [
   <PageHeader
     eyebrow="Oferta"
     title="Co zapewniamy naszym Mieszkańcom"
-    lead="Nasz Dom przeznaczony jest dla osób przewlekle psychicznie chorych. Zapewniamy opiekę całodobową dla 196 osób — 171 Mieszkańców w Szczytnie i 25 Mieszkańców w filii w Spychowie."
+    lead="Nasz Dom przeznaczony jest dla osób przewlekle psychicznie chorych. Zapewniamy całodobową opiekę w Szczytnie i w filii w Spychowie."
   />
 
   <PageShell>
@@ -68,134 +68,117 @@ const galleryPhotos = [
           >
         </p>
         <p class="mt-2 text-[0.95rem]">
-          <a class={cardLinkClass} href="/kontakt/">Kontakt i dojazd</a>
+          <a class={cardLinkClass} href="/kontakt/">Kontakt i adres</a>
         </p>
       </div>
     </div>
 
     <section aria-labelledby="dom">
-      <div class="grid items-start gap-8 md:grid-cols-[1fr_auto] md:gap-12">
-        <div class="doc">
-          <h2 id="dom">Dom, w którym czuć troskę</h2>
-          <p>
-            Mieszkańcy znajdują u nas wykwalifikowaną, całodobową opiekę i własny kąt. Troszczymy się
-            o ich dobre samopoczucie, nie zapominając o indywidualności każdej osoby.
-          </p>
-          <p>
-            Zapewniamy wsparcie terapeutów, którzy dbają o to, aby Mieszkańcy aktywnie spędzali czas i
-            rozwijali swoje zainteresowania. Podejmujemy działania zmierzające do integracji osób
-            chorujących psychicznie ze środowiskiem lokalnym: nasi Mieszkańcy bywają w kawiarniach,
-            korzystają z plaży miejskiej, należą do Klubu Miłośników Kina. Współpracujemy również z
-            uczniami lokalnych szkół.
-          </p>
-          <p>
-            Wszechstronna opieka terapeutyczna i medyczna oraz zaangażowanie pracowników w tworzenie
-            jak najlepszej atmosfery zapewniają godne warunki życia, ze szczególnym poszanowaniem
-            prawa do wolności, intymności i poczucia bezpieczeństwa.
-          </p>
-          <p>
-            <strong>
-              Nasi Mieszkańcy objęci są opieką lekarza psychiatry. Korzystają z usług psychologa i
-              rehabilitanta zatrudnionych w naszym Domu.
-            </strong>
-          </p>
-        </div>
-
-        <div class="w-full max-w-xs md:justify-self-end">
+      <div class="doc flow-root">
+        <h2 id="dom">Dom, w którym czuć troskę</h2>
+        <div class="mb-6 w-full max-w-xs md:mb-4 md:w-64 md:float-right md:ml-8">
           <ArchImage
             src={nursingRoom}
             alt="Gabinet pielęgniarski w Domu — pielęgniarka przy biurku, przeszklone szafy z lekami."
             aspect="4/5"
-            sizes="(min-width: 768px) 20rem, 100vw"
+            sizes="(min-width: 768px) 16rem, 100vw"
             loading="eager"
           />
         </div>
+        <p>
+          Mieszkańcy znajdują u nas wykwalifikowaną, całodobową opiekę i własny kąt. Troszczymy się
+          o ich dobre samopoczucie, nie zapominając o indywidualności każdej osoby.
+        </p>
+        <p>
+          Zapewniamy wsparcie terapeutów, którzy dbają o to, aby Mieszkańcy aktywnie spędzali czas i
+          rozwijali swoje zainteresowania. Podejmujemy działania zmierzające do integracji osób
+          chorujących psychicznie ze środowiskiem lokalnym: nasi Mieszkańcy bywają w kawiarniach,
+          korzystają z plaży miejskiej, należą do Klubu Miłośników Kina. Współpracujemy również z
+          uczniami lokalnych szkół.
+        </p>
+        <p>
+          Wszechstronna opieka terapeutyczna i medyczna oraz zaangażowanie pracowników w tworzenie
+          jak najlepszej atmosfery zapewniają godne warunki życia, ze szczególnym poszanowaniem
+          prawa do wolności, intymności i poczucia bezpieczeństwa.
+        </p>
+        <p>
+          <strong>
+            Nasi Mieszkańcy objęci są opieką lekarza psychiatry. Korzystają z usług psychologa i
+            rehabilitanta zatrudnionych w naszym Domu.
+          </strong>
+        </p>
       </div>
     </section>
 
     <section aria-labelledby="opieka" class="band mt-section">
-      <div class="grid items-start gap-8 md:grid-cols-[auto_1fr] md:gap-12">
-        <div class="doc">
-          <h2 id="opieka">Usługi opiekuńcze i pielęgnacyjne</h2>
-          <ul>
-            <li>pomagamy w utrzymaniu higieny osobistej,</li>
-            <li>udzielamy pomocy we wszystkich czynnościach dnia codziennego,</li>
-            <li>zapewniamy całodobową opiekę pielęgniarską.</li>
-          </ul>
-        </div>
-
-        {/* Prose stays first in the DOM; only the column order flips. */}
-        <div class="w-full max-w-xs md:order-first">
+      <div class="doc flow-root">
+        <h2 id="opieka">Usługi opiekuńcze i pielęgnacyjne</h2>
+        <div class="mb-6 w-full max-w-xs md:mb-4 md:w-64 md:float-left md:mr-8">
           <ArchImage
             src={singleRoom}
             alt="Mieszkaniec w swoim pokoju jednoosobowym, przy oknie tapczan, telewizor i biurko."
             aspect="4/5"
-            sizes="(min-width: 768px) 20rem, 100vw"
+            sizes="(min-width: 768px) 16rem, 100vw"
           />
         </div>
+        <ul>
+          <li>pomagamy w utrzymaniu higieny osobistej,</li>
+          <li>udzielamy pomocy we wszystkich czynnościach dnia codziennego,</li>
+          <li>zapewniamy całodobową opiekę pielęgniarską.</li>
+        </ul>
       </div>
     </section>
 
     <section aria-labelledby="wspomagajace" class="mt-section">
-      <div class="grid items-start gap-8 md:grid-cols-[1fr_auto] md:gap-12">
-        <div class="doc">
-          <h2 id="wspomagajace">Usługi wspomagające</h2>
-          <p>Prowadzimy zajęcia terapeutyczne w pracowniach:</p>
-          <ul>
-            <li>arteterapia,</li>
-            <li>wsparcie duchowe,</li>
-            <li>aktywizacja społeczna,</li>
-            <li>pracownia multimedialna,</li>
-            <li>pracownia kulturalno-oświatowa,</li>
-            <li>pracownia rękodzieła artystycznego,</li>
-            <li>ergoterapia.</li>
-          </ul>
-          <p>
-            Umożliwiamy Mieszkańcom korzystanie z codziennej prasy i biblioteki, dbamy o poprawę ich
-            sprawności fizycznej, zapewniamy wsparcie kapłana oraz współpracujemy z rodzinami
-            Mieszkańców i z jednostkami pomocy społecznej.
-          </p>
-        </div>
-
-        <div class="w-full max-w-xs md:justify-self-end">
+      <div class="doc flow-root">
+        <h2 id="wspomagajace">Usługi wspomagające</h2>
+        <div class="mb-6 w-full max-w-xs md:mb-4 md:w-64 md:float-right md:ml-8">
           <ArchImage
             src={library}
             alt="Mieszkańcy i terapeutka przy wspólnym stole w bibliotece Domu."
             aspect="4/5"
             position="75% 50%"
-            sizes="(min-width: 768px) 20rem, 100vw"
+            sizes="(min-width: 768px) 16rem, 100vw"
           />
         </div>
+        <p>Prowadzimy zajęcia terapeutyczne w pracowniach:</p>
+        <ul>
+          <li>arteterapia,</li>
+          <li>wsparcie duchowe,</li>
+          <li>aktywizacja społeczna,</li>
+          <li>pracownia multimedialna,</li>
+          <li>pracownia kulturalno-oświatowa,</li>
+          <li>pracownia rękodzieła artystycznego,</li>
+          <li>ergoterapia.</li>
+        </ul>
+        <p>
+          Umożliwiamy Mieszkańcom korzystanie z codziennej prasy i biblioteki, dbamy o poprawę ich
+          sprawności fizycznej, zapewniamy wsparcie kapłana oraz współpracujemy z rodzinami
+          Mieszkańców i z jednostkami pomocy społecznej.
+        </p>
       </div>
     </section>
 
     <section aria-labelledby="bytowe" class="band mt-section">
-      <div class="grid items-start gap-8 md:grid-cols-[auto_1fr] md:gap-12">
-        <div class="doc">
-          <h2 id="bytowe">Potrzeby bytowe</h2>
-          <ul>
-            <li>
-              dysponujemy pokojami jedno-, dwu- i trzyosobowymi oraz pokojami czteroosobowymi dla osób
-              leżących,
-            </li>
-            <li>zapewniamy urozmaicone posiłki, zgodne z dietą zaleconą przez lekarza,</li>
-            <li>pomagamy w zakupie odzieży i obuwia,</li>
-            <li>zapewniamy bezpieczne przechowywanie środków finansowych i przedmiotów wartościowych.</li>
-          </ul>
-        </div>
-
-        {
-          /* Square, not 4/5: the two Mieszkanki sit 370px apart in a 680px-wide
-             source, so a 4/5 crop cannot hold both faces at any position. */
-        }
-        <div class="w-full max-w-xs md:order-first">
+      <div class="doc flow-root">
+        <h2 id="bytowe">Potrzeby bytowe</h2>
+        <div class="mb-6 w-full max-w-xs md:mb-4 md:w-64 md:float-left md:mr-8">
           <ArchImage
             src={twinRoom}
             alt="Pokój dwuosobowy — dwie Mieszkanki siedzą w fotelach przy stoliku."
             aspect="1/1"
-            sizes="(min-width: 768px) 20rem, 100vw"
+            sizes="(min-width: 768px) 16rem, 100vw"
           />
         </div>
+        <ul>
+          <li>
+            dysponujemy pokojami jedno-, dwu- i trzyosobowymi oraz pokojami czteroosobowymi dla osób
+            leżących,
+          </li>
+          <li>zapewniamy urozmaicone posiłki, zgodne z dietą zaleconą przez lekarza,</li>
+          <li>pomagamy w zakupie odzieży i obuwia,</li>
+          <li>zapewniamy bezpieczne przechowywanie środków finansowych i przedmiotów wartościowych.</li>
+        </ul>
       </div>
     </section>
 

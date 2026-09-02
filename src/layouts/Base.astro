@@ -90,8 +90,7 @@ const desc =
       })}
     />
   </head>
-  <!-- The target of the "Do góry strony" link at the foot of every page. -->
-  <body id="gora" class="flex min-h-svh flex-col">
+  <body class="flex min-h-svh flex-col">
     <a
       href="#tresc"
       class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-spruce focus:px-4 focus:py-2 focus:text-white"
@@ -101,36 +100,6 @@ const desc =
     <!-- tabindex="-1" lets the skip link move keyboard focus, not just the fragment. -->
     <main id="tresc" tabindex="-1" class="flex-1">
       <slot />
-      <!--
-        Back to top. A plain link, not a floating button, and it stays inside
-        <main> so every part of the page belongs to a landmark. It shows on
-        every page: CSS cannot ask how tall a page is, and the only way to hide
-        it on short ones would be a scroll listener — script for a cosmetic
-        gain, which this site does not spend.
-
-        A <div>, so the reveal choreography (which stages `main section`)
-        leaves it alone.
-      -->
-      <div data-to-top class="text-sm">
-        <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-          <a href="#gora" class="inline-block py-1 text-spruce hover:text-spruce-deep">
-            <svg
-              class="mr-1 inline-block align-[-0.15em]"
-              width="14"
-              height="14"
-              viewBox="0 0 20 20"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M10 16V4M4 10l6-6 6 6"></path>
-            </svg>Do góry strony
-          </a>
-        </div>
-      </div>
     </main>
     <Footer />
     <!--

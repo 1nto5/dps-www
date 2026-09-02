@@ -548,16 +548,10 @@ html:has(.lightbox[open]) {
 }
 
 /* When a page ends with a full-bleed tinted band, the footer joins it
-   directly instead of leaving a bare paper gap. The back-to-top strip that
-   closes every page sits between the two, so it takes the same tint as the
-   band and the footer and the three read as one block; on paper it would
-   have cut a pale gap straight through the middle of them. */
-body:has(main > .pre-footer + [data-to-top]) footer {
+   directly instead of leaving a bare paper gap. */
+body:has(main > .pre-footer:last-child) footer {
   margin-top: 0;
   border-top: 0;
-}
-main > .pre-footer + [data-to-top] {
-  background: color-mix(in oklab, var(--color-moss) 60%, transparent);
 }
 
 /* Section table of contents. One element at every width: a collapsed
