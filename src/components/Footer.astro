@@ -5,7 +5,7 @@ const year = new Date().getFullYear();
 <footer class="mt-16 border-t border-line bg-moss/60">
   <div class="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-3">
     <div>
-      <p class="font-display text-lg font-semibold">Dom Pomocy Społecznej<br />im. Jana Pawła II w Szczytnie</p>
+      <h2 class="font-display text-lg font-semibold">Dom Pomocy Społecznej<br />im. Jana Pawła II w Szczytnie</h2>
       <!--
         `inline-block py-1` on every inline link: at this text size the bare
         inline box is 22px tall, under the 24px minimum target of WCAG 2.2
@@ -26,8 +26,15 @@ const year = new Date().getFullYear();
       <p class="mt-2 text-sm text-muted">ePUAP: /dpsszczytno/SkrytkaESP</p>
     </div>
     <div>
-      <p class="font-semibold">Na skróty</p>
-      <ul class="mt-3 space-y-2 text-sm">
+      <!--
+        A heading, so the footer's three blocks are landmarks a screen reader
+        can jump between instead of three unlabelled columns. `font-body` and
+        the neutral leading/tracking are needed because the global `h2` rule
+        switches to Fraunces and tightens the line box: without them the same
+        words would suddenly be set in the display face.
+      -->
+      <h2 class="font-body font-semibold leading-normal tracking-normal">Na skróty</h2>
+      <ul role="list" class="mt-3 space-y-2 text-sm">
         <li><a href="/deklaracja-dostepnosci/" class="inline-block py-1.5 underline underline-offset-2 hover:text-spruce-deep">Deklaracja dostępności</a></li>
         <li><a href="/dokumenty/rodo/" class="inline-block py-1.5 underline underline-offset-2 hover:text-spruce-deep">Ochrona danych osobowych (RODO)</a></li>
         <li><a href="/dokumenty/sygnalista/" class="inline-block py-1.5 underline underline-offset-2 hover:text-spruce-deep">Zgłoszenia sygnalistów</a></li>
@@ -36,7 +43,7 @@ const year = new Date().getFullYear();
       </ul>
     </div>
     <div>
-      <p class="font-semibold">Biuletyn Informacji Publicznej</p>
+      <h2 class="font-body font-semibold leading-normal tracking-normal">Biuletyn Informacji Publicznej</h2>
       <a
         href="https://dpsszczytno.bip.gov.pl/"
         class="mt-3 inline-flex items-center gap-2 rounded border border-line bg-paper px-3 py-2 font-semibold text-spruce-deep hover:bg-white"

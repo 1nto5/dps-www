@@ -118,12 +118,17 @@ html {
   scroll-padding-top: calc(var(--header-h) + 1rem);
 }
 
-/* Measured height of the sticky header: 72px below `sm`, 85px above it, and
-   96px at the `lg` breakpoint where the nav appears. The larger figure is used
-   from `sm` up because overshooting only drops an anchor target slightly
-   lower, while undershooting hides it behind the header. */
+/* Measured height of the sticky header: 85px above `sm`, 96px at the `lg`
+   breakpoint where the nav appears. The larger figure is used from `sm` up
+   because overshooting only drops an anchor target slightly lower, while
+   undershooting hides it behind the header.
+
+   Below `sm` the wordmark is allowed to wrap onto a second line — a fixed rem
+   size that grows with the reader's own text-size setting cannot be promised
+   one line — so the reserved height is the two-line case, not the 72px the
+   one-line header measured. */
 :root {
-  --header-h: 4rem;
+  --header-h: 5rem;
   /* How long one element takes to rise and fade in. The single knob for the
      pace of the whole reveal; the gap between consecutive elements is `STEP`
      in the choreography script and should move with it. */
@@ -140,35 +145,45 @@ body {
   background: var(--color-paper);
   color: var(--color-ink);
   line-height: 1.65;
+  /* A single long word — an e-mail address, a long Polish compound in an h1 —
+     breaks rather than pushing the page sideways at 320px. */
+  overflow-wrap: break-word;
 }
 
-h1,
-h2,
-h3,
-h4 {
-  font-family: var(--font-display);
-  font-optical-sizing: auto;
-  font-weight: 560;
-  /* "pretty" avoids orphans without the mid-width line breaks that
-     "balance" produces on long Polish headings. */
-  text-wrap: pretty;
-  color: var(--color-ink);
-}
-/* Leading tracks size inversely; tracking tightens as display sizes grow. */
-h1 {
-  line-height: 1.08;
-  letter-spacing: -0.021em;
-}
-h2 {
-  line-height: 1.18;
-  letter-spacing: -0.012em;
-}
-h3 {
-  line-height: 1.28;
-  letter-spacing: -0.005em;
-}
-h4 {
-  line-height: 1.32;
+/* In `@layer base` for the same reason the pressed state is, below: these are
+   defaults, and a heading that needs to say `font-body` — a small
+   sans-serif label in a card or in the footer that is still structurally a
+   heading — must be able to. Unlayered, they would beat every Tailwind
+   utility written on the element itself. */
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-weight: 560;
+    /* "pretty" avoids orphans without the mid-width line breaks that
+       "balance" produces on long Polish headings. */
+    text-wrap: pretty;
+    color: var(--color-ink);
+  }
+  /* Leading tracks size inversely; tracking tightens as display sizes grow. */
+  h1 {
+    line-height: 1.08;
+    letter-spacing: -0.021em;
+  }
+  h2 {
+    line-height: 1.18;
+    letter-spacing: -0.012em;
+  }
+  h3 {
+    line-height: 1.28;
+    letter-spacing: -0.005em;
+  }
+  h4 {
+    line-height: 1.32;
+  }
 }
 
 :focus-visible {
@@ -195,16 +210,26 @@ h4 {
 }
 /* Pressed state is a background tint from the palette, never a `filter`: a
    non-none filter turns the element into the containing block for its own
-   ::before, which collapsed the hit area of stretched card links mid-press. */
-a:active,
-button:active,
-summary:active {
-  background-color: var(--color-moss-deep);
-}
-/* The whole card acknowledges a press on its stretched link. Two shapes in
-   use: the card is the <li> itself, or an <article> filling the <li>. */
-:is(li, article):has(a[data-card-link]:active) {
-  background-color: var(--color-moss);
+   ::before, which collapsed the hit area of stretched card links mid-press.
+
+   Both rules live in `@layer base` on purpose. Unlayered CSS beats every
+   layer, so outside a layer these would win over Tailwind's own
+   `@layer utilities` — including `active:bg-*` written on a specific element.
+   A dark button would then take the light moss tint under the finger and its
+   white label would drop to 1.33:1, far below the 4.5:1 that WCAG 2.1 SC 1.4.3
+   requires. Inside `base` they stay the default press tint and any element
+   that needs a different one can simply say so with a utility. */
+@layer base {
+  a:active,
+  button:active,
+  summary:active {
+    background-color: var(--color-moss-deep);
+  }
+  /* The whole card acknowledges a press on its stretched link. Two shapes in
+     use: the card is the <li> itself, or an <article> filling the <li>. */
+  :is(li, article):has(a[data-card-link]:active) {
+    background-color: var(--color-moss);
+  }
 }
 
 @media (prefers-contrast: more) {
@@ -295,12 +320,14 @@ header {
 /* `PageShell` puts a wrapper between `main` and the sections, so the hold has
    to reach one level deeper as well. Same rule, same release — the
    choreography script itself already selects `main section` at any depth. */
-.reveal-armed main > section:not([data-no-reveal]),
-.reveal-armed main [data-shell-content] section:not([data-no-reveal]) {
-  opacity: 0;
+@media screen {
+  .reveal-armed main > section:not([data-no-reveal]),
+  .reveal-armed main [data-shell-content] section:not([data-no-reveal]) {
+    opacity: 0;
+  }
 }
 
-@media (prefers-reduced-motion: no-preference) and (scripting: enabled) {
+@media screen and (prefers-reduced-motion: no-preference) and (scripting: enabled) {
   [data-reveal] {
     opacity: 0;
     transform: translateY(14px);
@@ -318,7 +345,7 @@ header {
    headings) acknowledges the jump with one short rise — the reveal gesture
    without the cascade, so hopping around a long page never replays a full
    entrance each time. */
-@media (prefers-reduced-motion: no-preference) {
+@media screen and (prefers-reduced-motion: no-preference) {
   [data-arriving] {
     animation: arrive 250ms var(--ease-out) backwards;
   }
@@ -507,7 +534,9 @@ html:has(.lightbox[open]) {
   background: var(--color-spruce);
 }
 /* The site-wide pressed tint is a light moss, which would swallow a white
-   glyph; these keep a dark press of their own. */
+   glyph, so these keep a dark press of their own. Not a workaround any more —
+   the site-wide rule now sits in `@layer base` and is overridable — just the
+   pressed colour these controls want. */
 .lightbox-close:active,
 .lightbox-nav:active {
   background: var(--color-spruce);
@@ -554,29 +583,10 @@ body:has(main > .pre-footer:last-child) footer {
   border-top: 0;
 }
 
-/* Section table of contents. One element at every width: a collapsed
-   <details> panel on small screens, an always-open list in the desktop rail.
-   Opened by CSS, never by script, so it works with JavaScript off. */
-@media (min-width: 1024px) {
-  /* Older engines hide the content by not laying it out at all... */
-  [data-section-nav] details > *:not(summary) {
-    display: block;
-  }
-  /* ...newer ones keep it in the box tree and hide it with
-     `content-visibility` on ::details-content, so both need answering. */
-  [data-section-nav] details::details-content {
-    content-visibility: visible;
-    block-size: auto;
-  }
-  /* The summary stops being a control and becomes the rail's small heading:
-     no chevron, no pointer affordance, nothing left to toggle. */
-  [data-section-nav] summary {
-    pointer-events: none;
-  }
-  [data-section-nav] [data-section-nav-chevron] {
-    display: none;
-  }
-}
+/* Section table of contents. One element at every width: a <details> panel
+   that starts open and can be closed again, on small screens above the text
+   and on wide screens in the rail. No script, so it works with JavaScript
+   off — and the chevron always tells the truth about the open state. */
 [data-section-nav] details[open] [data-section-nav-chevron] {
   transform: rotate(180deg);
 }
@@ -653,4 +663,43 @@ body:has(main > .pre-footer:last-child) footer {
 .doc th {
   background: var(--color-moss);
   font-weight: 650;
+}
+
+/* Print: nothing staged for the reveal may stay transparent on paper, and
+   chrome that only serves the screen (sticky header, menu, in-page TOC,
+   lightbox, zoom chips) is dropped. The footer stays: address and phone are
+   exactly what a printout is for. */
+@media print {
+  .reveal-armed main section,
+  [data-reveal],
+  [data-arriving] {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+  body > header,
+  [data-menu],
+  nav[aria-label="Spis treści strony"],
+  .lightbox,
+  a[data-lightbox]::after {
+    display: none !important;
+  }
+  body {
+    background: none;
+    color: var(--color-ink);
+  }
+  .doc,
+  main {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+  .doc a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    word-break: break-all;
+  }
+  h1, h2, h3 { break-after: avoid; }
+  figure, img, li { break-inside: avoid; }
 }

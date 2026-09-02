@@ -25,6 +25,7 @@ export const routeLabels: Record<string, string> = {
   "/grupa-muzyczna/": "Grupa wokalna „Christopher”",
   "/kontakt/": "Kontakt",
   "/deklaracja-dostepnosci/": "Deklaracja dostępności",
+  "/dostepnosc/": "Tekst łatwy do czytania",
 
   "/dokumenty/": "Dokumenty",
   "/dokumenty/dotacje/": "Dotacje",

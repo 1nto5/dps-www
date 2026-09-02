@@ -24,7 +24,7 @@ const { title, items, current } = Astro.props;
 
 <nav aria-label={title}>
   <p class="px-2 text-sm font-semibold uppercase tracking-[0.12em] text-muted">{title}</p>
-  <ul class="mt-2">
+  <ul role="list" class="mt-2">
     {
       items.map((item) => {
         const isCurrent = item.href === current;

@@ -56,7 +56,9 @@ const galleryPhotos = [
       <SectionNav items={sections} />
 
       <div class="rounded-xl border border-line bg-white p-5">
-        <p class="font-semibold">Masz pytania?</p>
+        <!-- `font-body` and neutral leading/tracking: the global `h2` rule
+             would otherwise set this card's small heading in Fraunces. -->
+        <h2 class="font-body font-semibold leading-normal tracking-normal">Masz pytania?</h2>
         <p class="mt-2 text-[0.95rem]">
           <span class="text-muted">Telefon:</span>{" "}
           <a class={cardLinkClass} href="tel:+48896242288">(89) 624-22-88</a>

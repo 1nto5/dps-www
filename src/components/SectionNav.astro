@@ -4,9 +4,12 @@
  * explicitly rather than having it introspected from the headings, so labels
  * can be shorter than the headings they point at.
  *
- * One element at every width: a collapsed <details> panel above the text on
- * small screens, forced open by CSS in the desktop rail (see `global.css`).
- * No script — with JavaScript off it still opens and closes.
+ * One element at every width: a <details> panel above the text on small
+ * screens and in the rail on wide ones. It is open by default and can be
+ * closed again at every width — it used to be forced open by CSS in the rail
+ * while still reporting itself as a closed disclosure, which is exactly the
+ * false state WCAG 2.1 SC 4.1.2 forbids. No script: with JavaScript off it
+ * still opens and closes.
  *
  * Every `id` here must exist on the rendered page; `scripts/check-section-nav.mjs`
  * fails the build if one drifts.
@@ -19,7 +22,7 @@ const { items, title = "Na tej stronie" } = Astro.props;
 ---
 
 <nav aria-label="Spis treści strony" data-section-nav>
-  <details class="rounded-xl border border-line bg-white lg:rounded-none lg:border-0 lg:bg-transparent">
+  <details open class="rounded-xl border border-line bg-white lg:rounded-none lg:border-0 lg:bg-transparent">
     <summary
       class="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-muted lg:px-0 lg:py-0 [&::-webkit-details-marker]:hidden"
     >
@@ -41,7 +44,7 @@ const { items, title = "Na tej stronie" } = Astro.props;
           stroke-linejoin="round"></path>
       </svg>
     </summary>
-    <ol class="border-t border-line px-4 pb-3 pt-2 lg:mt-3 lg:border-t-0 lg:px-0 lg:pb-0 lg:pt-0">
+    <ol role="list" class="border-t border-line px-4 pb-3 pt-2 lg:mt-3 lg:border-t-0 lg:px-0 lg:pb-0 lg:pt-0">
       {
         items.map((item) => (
           <li>

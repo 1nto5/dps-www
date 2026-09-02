@@ -53,7 +53,7 @@ const jsonLd = {
 {
   items.length > 1 && (
     <nav aria-label="Ścieżka nawigacji" class="breadcrumbs mb-4 text-sm text-muted">
-      <ol class="flex flex-wrap items-center gap-x-1">
+      <ol role="list" class="flex flex-wrap items-center gap-x-1">
         {trail.map((crumb) => (
           <li>
             <a
@@ -84,6 +84,13 @@ const jsonLd = {
      the trail wraps on a narrow screen the new line starts with a word
      instead of with a stray arrow. */
   .breadcrumbs li:not(:last-child)::after {
+    /* Declared twice on purpose, and the order matters. An engine that does
+       not understand the `/ <alt text>` syntax throws the second declaration
+       away as invalid and keeps the first, so it still draws the arrow; an
+       engine that does understand it takes the second and drops the arrow from
+       the accessibility tree. Neither is left without a separator, and no
+       `@supports` test is needed — the cascade does it. */
+    content: "›";
     content: "›" / "";
     margin-inline-start: 0.25rem;
   }

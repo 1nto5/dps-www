@@ -15,6 +15,12 @@ const path = Astro.url.pathname.startsWith(base)
   ? Astro.url.pathname.slice(base.length) || "/"
   : Astro.url.pathname;
 const isActive = (href: string) => path === href || (href !== "/" && path.startsWith(href));
+// `aria-current="page"` is only true on the page itself. A section item that is
+// merely an ancestor of the page being read — /dokumenty/ while the reader is
+// on /dokumenty/rodo/ — is "current" in the weaker sense the spec spells
+// `true`; claiming "page" there tells a screen-reader user they have arrived
+// somewhere they have not.
+const currentState = (href: string) => (path === href ? "page" : isActive(href) ? "true" : undefined);
 ---
 
 <!--
@@ -43,14 +49,15 @@ const isActive = (href: string) => path === href || (href !== "/" && path.starts
       </svg>
       <span class="min-w-0 leading-tight">
         <!--
-          Never wraps: a second line is what made this header 145px tall. The
-          size tracks the viewport instead of stepping at a breakpoint, so the
-          name still fits on one line at 320px — the width WCAG 2.1 SC 1.4.10
-          requires to reflow without horizontal scrolling. `truncate` is a
-          structural backstop that should never fire.
+          Plain rem sizes, one step at `sm`. A viewport-derived size ignores
+          the reader's own text-size setting and stops growing on zoom, which
+          is exactly what WCAG 2.1 SC 1.4.4 asks for. And no `truncate`: with
+          increased letter-spacing (SC 1.4.12) the name grows past the bar, and
+          it has to wrap onto a second line rather than have its end cut off.
+          `--header-h` in global.css already reserves room for two lines below
+          `sm`.
         -->
-        <span
-          class="block truncate font-display text-[clamp(0.8rem,3.6vw,1.125rem)] font-semibold"
+        <span class="block font-display text-[0.9rem] font-semibold text-balance sm:text-lg"
           >Dom Pomocy Społecznej</span
         >
         <!--
@@ -65,13 +72,13 @@ const isActive = (href: string) => path === href || (href !== "/" && path.starts
     </a>
 
     <nav aria-label="Nawigacja główna" class="hidden lg:block">
-      <ul class="flex items-center gap-1">
+      <ul role="list" class="flex items-center gap-1">
         {
           nav.map((item) => (
             <li>
               <a
                 href={item.href}
-                aria-current={isActive(item.href) ? "page" : undefined}
+                aria-current={currentState(item.href)}
                 class:list={[
                   // Tighter between lg and xl: at full size these seven items
                   // plus the wordmark overflow 1024px and wrap the header onto
@@ -120,13 +127,13 @@ const isActive = (href: string) => path === href || (href !== "/" && path.starts
         aria-label="Nawigacja główna"
         class="menu-panel absolute right-4 top-full z-40 w-56 rounded-b-lg border border-t-0 border-line bg-paper p-2 shadow-lg sm:right-6"
       >
-        <ul>
+        <ul role="list">
           {
             nav.map((item) => (
               <li>
                 <a
                   href={item.href}
-                  aria-current={isActive(item.href) ? "page" : undefined}
+                  aria-current={currentState(item.href)}
                   class:list={[
                     "block rounded px-3 py-2 font-medium hover:bg-moss-deep hover:text-spruce-deep",
                     isActive(item.href)

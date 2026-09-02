@@ -58,7 +58,24 @@ const desc =
     <script is:inline>
       (function () {
         if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        // Same guard as the choreography script at the end of <body>: without
+        // an observer nothing would ever reveal these sections again, so they
+        // must never be hidden in the first place.
+        if (!("IntersectionObserver" in window)) return;
         var d = document.documentElement;
+        // Focus reaching the content before the choreography has staged it —
+        // a skip link on a slow connection, or restored focus after a
+        // back/forward — releases the hold immediately, so the focus ring is
+        // never drawn on something the reader cannot see. Capture phase: the
+        // hold has to go before anything else reacts to the focus.
+        document.addEventListener(
+          "focusin",
+          function (e) {
+            var t = e.target;
+            if (t && t.closest && t.closest("main")) d.classList.remove("reveal-armed");
+          },
+          true,
+        );
         d.classList.add("reveal-armed");
         setTimeout(function () {
           d.classList.remove("reveal-armed");
@@ -93,7 +110,7 @@ const desc =
   <body class="flex min-h-svh flex-col">
     <a
       href="#tresc"
-      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-spruce focus:px-4 focus:py-2 focus:text-white"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-spruce focus:px-4 focus:py-2 focus:text-white active:bg-spruce-deep"
       >Przejdź do treści</a
     >
     <Header />
@@ -244,6 +261,17 @@ const desc =
           // Every section now holds its own staged state, so the blanket hold
           // from <head> can be released without anything becoming visible.
           document.documentElement.classList.remove("reveal-armed");
+
+          // Focus may already be sitting on staged content — the skip link
+          // fired, or the browser restored focus — and staging has just made
+          // it transparent. Show it at once, without the fade.
+          var af = document.activeElement;
+          var focused = af && af.closest && af.closest("[data-reveal]");
+          if (focused) {
+            var sec = owner.get(focused);
+            if (sec) reveal(sec, true);
+            else show(focused, true);
+          }
 
           // Whatever is already on screen when the page opens arrives as one
           // continuous cascade just behind the hero. Without this, a reader on

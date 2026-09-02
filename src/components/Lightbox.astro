@@ -17,6 +17,9 @@
   let dialog: HTMLDialogElement | null = null;
   let group: HTMLAnchorElement[] = [];
   let index = 0;
+  // The link the dialog was opened from, so closing puts focus back where the
+  // reader left it instead of at the top of the document (WCAG 2.1 SC 2.4.3).
+  let opener: HTMLAnchorElement | null = null;
 
   function build() {
     dialog = document.createElement("dialog");
@@ -31,7 +34,7 @@
       </button>
       <figure>
         <img alt="" />
-        <figcaption>
+        <figcaption aria-live="polite" aria-atomic="true">
           <span class="lightbox-caption"></span>
           <span class="lightbox-counter"></span>
         </figcaption>
@@ -54,6 +57,8 @@
     });
     dialog.addEventListener("close", () => {
       document.documentElement.style.removeProperty("overflow");
+      opener?.focus();
+      opener = null;
     });
   }
 
@@ -71,10 +76,23 @@
         easing: "cubic-bezier(0.23, 1, 0.32, 1)",
       });
     }
-    img.alt = link.dataset.caption ?? link.querySelector("img")?.alt ?? "";
-    dialog.querySelector(".lightbox-caption")!.textContent = link.dataset.caption ?? "";
+    // The thumbnail's own alt text describes the picture; the caption is a
+    // title for it. Prefer the description, and fall back to the caption only
+    // when the thumbnail was decorative.
+    const thumbAlt = link.querySelector("img")?.alt ?? "";
+    const cap = link.dataset.caption ?? "";
+    img.alt = thumbAlt || cap;
+    // Counter before the caption: the figcaption is an atomic live region, so
+    // both spans should be in place before the announcement is triggered.
     const counter = dialog.querySelector(".lightbox-counter")!;
     counter.textContent = group.length > 1 ? `${index + 1} z ${group.length}` : "";
+    const caption = dialog.querySelector(".lightbox-caption")!;
+    caption.textContent = cap;
+    // A caption identical to the alt text would be read out twice, so it stays
+    // visible but leaves the accessibility tree. Both branches run on every
+    // show(): one dialog is shared by every image on the page.
+    if (cap && cap === img.alt) caption.setAttribute("aria-hidden", "true");
+    else caption.removeAttribute("aria-hidden");
     const nav = group.length > 1;
     (dialog.querySelector(".lightbox-prev") as HTMLElement).hidden = !nav;
     (dialog.querySelector(".lightbox-next") as HTMLElement).hidden = !nav;
@@ -91,6 +109,7 @@
     if (!link) return;
     e.preventDefault();
     if (!dialog) build();
+    opener = link;
     // Only images inside an explicit group navigate with arrows;
     // a standalone scan opens alone.
     const scope = link.closest("[data-lightbox-group]");

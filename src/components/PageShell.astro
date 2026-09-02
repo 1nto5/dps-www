@@ -17,6 +17,9 @@
  *
  * The rail is always supplementary: everything it links to is reachable from
  * the body text or the main navigation.
+ *
+ * The rail wrapper is a layout container, not a landmark; the cards placed in
+ * the rail bring their own <aside> (or <nav>) when they need one.
  */
 interface Props {
   /** Cap the content column at the 46rem measure. For long-form prose pages
@@ -36,9 +39,9 @@ const hasRail = Astro.slots.has("rail");
   {
     hasRail ? (
       <div class="grid gap-8 lg:grid-cols-[minmax(0,46rem)_minmax(0,18rem)] lg:gap-16">
-        <aside class="lg:order-2 lg:sticky lg:self-start" style="top: calc(var(--header-h) + 1.5rem)">
+        <div class="lg:order-2 lg:sticky lg:self-start" style="top: calc(var(--header-h) + 1.5rem)">
           <slot name="rail" />
-        </aside>
+        </div>
         <div data-shell-content class="min-w-0 lg:order-1">
           <slot />
         </div>
