@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && node scripts/check-section-nav.mjs",
+    "build": "astro build && node scripts/check-section-nav.mjs && node scripts/check-font-coverage.mjs",
+    "fonts": "bash scripts/subset-fonts.sh",
     "preview": "astro preview",
     "astro": "astro"
   },

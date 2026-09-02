@@ -24,8 +24,12 @@ const publishedOn = new Intl.DateTimeFormat("pl-PL", {
 ---
 
 <Base title={entry.data.title} description={entry.data.description}>
-  <PageHeader eyebrow="Aktualności"
-    eyebrowHref="/aktualnosci/" title={entry.data.title} />
+  <PageHeader
+    breadcrumbs
+    breadcrumbLabel={entry.data.title}
+    eyebrow="Aktualności"
+    title={entry.data.title}
+  />
 
   <PageShell narrow>
     <p class="text-sm font-medium text-honey">

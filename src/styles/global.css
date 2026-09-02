@@ -1,8 +1,55 @@
 @import "tailwindcss";
-@import "@fontsource-variable/source-sans-3/index.css";
-/* opsz variant: Fraunces' optical-size axis is what keeps both the 54px hero
-   and 20px card titles drawn correctly; wght-only would lock it at one size. */
-@import "@fontsource-variable/fraunces/opsz.css";
+
+/* Both families are subset by `bun run fonts` (scripts/subset-fonts.sh) to the
+   characters this site actually uses: 215 KB across four files became 70 KB
+   across two, because Polish needs the `latin` and `latin-ext` slices of both
+   families at once and so downloaded all four every time.
+
+   The optical-size axis is kept: it is what keeps both the 54px hero and the
+   20px card titles drawn correctly, where a weight-only font would lock the
+   letterforms to one size. `bun run build` fails if any character on any page
+   is missing from the subsets. */
+@font-face {
+  font-family: "Fraunces Variable";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("../assets/fonts/fraunces-subset.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Source Sans 3 Variable";
+  font-style: normal;
+  font-weight: 200 900;
+  font-display: swap;
+  src: url("../assets/fonts/source-sans-3-subset.woff2") format("woff2");
+}
+
+/* Fallback faces for the `font-display: swap` gap. Georgia and Arial are both
+   wider and shorter than the fonts they stand in for, so text reflowed when
+   the real font arrived. These overrides scale the stand-in to the same
+   running width and the same line box, which turns the swap into a change of
+   letterform with nothing moving.
+
+   The numbers come from the fonts themselves — mean advance across the
+   lowercase alphabet at the weight each family is rendered at, plus the
+   ascent and descent the browser reads — and are printed by `bun run fonts`
+   whenever the subsets are rebuilt. */
+@font-face {
+  font-family: "Fraunces Fallback";
+  src: local("Georgia"), local("Times New Roman"), local("Times");
+  size-adjust: 110.76%;
+  ascent-override: 88.3%;
+  descent-override: 23.02%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Source Sans 3 Fallback";
+  src: local("Arial"), local("Helvetica Neue"), local("Helvetica");
+  size-adjust: 96.47%;
+  ascent-override: 106.14%;
+  descent-override: 41.46%;
+  line-gap-override: 0%;
+}
 
 @theme {
   --color-paper: #fbfaf7;
@@ -15,8 +62,8 @@
   --color-moss: #eef2ec;
   --color-moss-deep: #d8e2d3;
 
-  --font-display: "Fraunces Variable", Georgia, serif;
-  --font-body: "Source Sans 3 Variable", system-ui, sans-serif;
+  --font-display: "Fraunces Variable", "Fraunces Fallback", Georgia, serif;
+  --font-body: "Source Sans 3 Variable", "Source Sans 3 Fallback", system-ui, sans-serif;
 
   /* Three-step vertical rhythm, so a chapter boundary is visibly bigger than
      a paragraph group. Named entries in the spacing scale, so every spacing
@@ -165,9 +212,15 @@ summary:active {
     --color-muted: var(--color-ink);
   }
 }
-/* Cross-page transitions (MPA View Transitions API): the content gently
-   cross-fades and rises while the header stays put. Browsers without
-   support simply navigate; reduced motion turns it off. */
+/* Cross-page transitions (MPA View Transitions API): the content cross-fades
+   while the header stays put. Browsers without support simply navigate;
+   reduced motion turns it off.
+
+   A pure crossfade, with no rise on the incoming page. The arriving page then
+   plays its own reveal choreography from the top, and a transform underneath
+   that read as the whole page sliding a second time. The outgoing fade is
+   short — 120ms — because it is dead time between a click and the new page:
+   long enough to soften the cut, not long enough to feel like waiting. */
 @view-transition {
   navigation: auto;
 }
@@ -176,20 +229,19 @@ header {
 }
 @media (prefers-reduced-motion: no-preference) {
   ::view-transition-old(root) {
-    animation: vt-fade-out 180ms var(--ease-out) both;
+    animation: vt-fade-out 120ms var(--ease-out) both;
   }
   ::view-transition-new(root) {
-    animation: vt-rise-in 260ms var(--ease-out) both;
+    animation: vt-fade-in 260ms var(--ease-out) both;
   }
   @keyframes vt-fade-out {
     to {
       opacity: 0;
     }
   }
-  @keyframes vt-rise-in {
+  @keyframes vt-fade-in {
     from {
       opacity: 0;
-      transform: translateY(8px);
     }
   }
 }
@@ -496,10 +548,16 @@ html:has(.lightbox[open]) {
 }
 
 /* When a page ends with a full-bleed tinted band, the footer joins it
-   directly instead of leaving a bare paper gap. */
-body:has(main > .pre-footer:last-child) footer {
+   directly instead of leaving a bare paper gap. The back-to-top strip that
+   closes every page sits between the two, so it takes the same tint as the
+   band and the footer and the three read as one block; on paper it would
+   have cut a pale gap straight through the middle of them. */
+body:has(main > .pre-footer + [data-to-top]) footer {
   margin-top: 0;
   border-top: 0;
+}
+main > .pre-footer + [data-to-top] {
+  background: color-mix(in oklab, var(--color-moss) 60%, transparent);
 }
 
 /* Section table of contents. One element at every width: a collapsed

@@ -1,8 +1,8 @@
 ---
+import Breadcrumbs from "./Breadcrumbs.astro";
+
 interface Props {
   eyebrow?: string;
-  /** When the eyebrow names a parent section, link it there — wayfinding, not decoration. */
-  eyebrowHref?: string;
   title: string;
   lead?: string;
   /** "hero" is the larger homepage scale; every other page uses the default. */
@@ -11,16 +11,22 @@ interface Props {
   bare?: boolean;
   /** Id for the h1, for sections that reference it with aria-labelledby. */
   titleId?: string;
+  /** Show the trail from the home page down to here. Every page below the
+   *  top level sets it; the seven main-navigation routes do not need it. */
+  breadcrumbs?: boolean;
+  /** Label for the last crumb when the route map cannot know it — a news post. */
+  breadcrumbLabel?: string;
   class?: string;
 }
 const {
   eyebrow,
-  eyebrowHref,
   title,
   lead,
   size = "default",
   bare = false,
   titleId,
+  breadcrumbs = false,
+  breadcrumbLabel,
   class: className,
 } = Astro.props;
 
@@ -35,19 +41,8 @@ const leadClass = hero
 ---
 
 <div class:list={[!bare && "mx-auto max-w-6xl px-4 pb-8 pt-10 sm:px-6 md:pb-10 md:pt-14", className]}>
-  {
-    eyebrow && (
-      <p class={eyebrowClass}>
-        {eyebrowHref ? (
-          <a href={eyebrowHref} class="underline underline-offset-4 hover:text-ink">
-            {eyebrow}
-          </a>
-        ) : (
-          eyebrow
-        )}
-      </p>
-    )
-  }
+  {breadcrumbs && <Breadcrumbs current={breadcrumbLabel} />}
+  {eyebrow && <p class={eyebrowClass}>{eyebrow}</p>}
   <h1 id={titleId} class={titleClass}>{title}</h1>
   {lead && <p class={leadClass}>{lead}</p>}
   <slot />

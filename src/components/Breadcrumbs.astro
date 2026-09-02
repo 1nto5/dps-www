@@ -1,0 +1,90 @@
+---
+import { breadcrumbsFor, type Crumb } from "../data/routes";
+
+/**
+ * The trail from the home page down to the page being read, for every page
+ * below the top level.
+ *
+ * It is a second, always-visible route upwards: the main navigation reaches the
+ * seven top-level sections, but nothing else told a reader on
+ * /dokumenty/sygnalista/zalaczniki/ where that page sits or how to step back
+ * one level. The `PageHeader` eyebrow used to carry a link for that; it named
+ * one ancestor at most and never the whole chain.
+ *
+ * The separators are `::after` pseudo-elements with empty alternative text, so
+ * they are drawn but never read out: a screen reader announces the list, not a
+ * row of arrows. The last crumb is the current page, so it is a `<span>` with
+ * `aria-current="page"` rather than a link to where the reader already is.
+ */
+interface Props {
+  /** Defaults to the trail for the current URL. */
+  items?: Crumb[];
+  /** Label for the last crumb when the route map cannot know it — a news post. */
+  current?: string;
+}
+
+// Strip the deploy base (github.io test phase) before matching the route map,
+// exactly as `Header.astro` does for active-page detection. The hrefs stay
+// base-less: the deploy rewrites hand-written absolute URLs.
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const path = Astro.url.pathname.startsWith(base)
+  ? Astro.url.pathname.slice(base.length) || "/"
+  : Astro.url.pathname;
+
+const { items = breadcrumbsFor(path, Astro.props.current) } = Astro.props;
+
+const trail = items.slice(0, -1);
+const currentCrumb = items[items.length - 1];
+
+// Search engines want one absolute URL per crumb. `Astro.site` is the origin,
+// the base is the subdirectory the test build is served from.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: items.map((crumb, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: crumb.label,
+    item: new URL(`${base}${crumb.href}`, Astro.site).href,
+  })),
+};
+---
+
+{
+  items.length > 1 && (
+    <nav aria-label="Ścieżka nawigacji" class="breadcrumbs mb-4 text-sm text-muted">
+      <ol class="flex flex-wrap items-center gap-x-1">
+        {trail.map((crumb) => (
+          <li>
+            <a
+              href={crumb.href}
+              class="inline-block py-1 underline underline-offset-4 hover:text-spruce-deep"
+            >
+              {crumb.label}
+            </a>
+          </li>
+        ))}
+        <li>
+          <span aria-current="page" class="inline-block py-1 font-medium text-ink/85">
+            {currentCrumb.label}
+          </span>
+        </li>
+      </ol>
+      <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
+    </nav>
+  )
+}
+
+<style>
+  /* Drawn, never announced: the empty string after the `/` is the pseudo
+     element's alternative text, which keeps the arrow out of the
+     accessibility tree.
+
+     It trails its own crumb rather than leading the next one, so that when
+     the trail wraps on a narrow screen the new line starts with a word
+     instead of with a stray arrow. */
+  .breadcrumbs li:not(:last-child)::after {
+    content: "›" / "";
+    margin-inline-start: 0.25rem;
+  }
+</style>
