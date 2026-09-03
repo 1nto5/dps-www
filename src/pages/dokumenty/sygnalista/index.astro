@@ -1,18 +1,21 @@
 ---
 /**
  * Whistleblower section landing page. Source page 1938 had no body content —
- * this page introduces the section and links to its four subpages.
+ * this page introduces the section and links to its four subpages. The rail
+ * is the document section, because the subsection itself is the page's body.
  */
 import Base from "../../../layouts/Base.astro";
 import PageHeader from "../../../components/PageHeader.astro";
 import PageShell from "../../../components/PageShell.astro";
-import SiblingNav from "../../../components/SiblingNav.astro";
-import LinkCard from "../../../components/LinkCard.astro";
+import PageList from "../../../components/PageList.astro";
+import { addressLine, contact } from "../../../data/contact";
 import { dokumentySections } from "../../../data/dokumenty-sections";
 import { sygnalistaPages } from "../../../data/sygnalista-pages";
 
-/** The shared list opens with this page itself, for the rail on the subpages;
-    the tiles here are the pages below, so the index skips its own entry. */
+/** The rail is a bare list of the section's pages — the blurbs would not fit. */
+const rail = dokumentySections.map(({ href, label }) => ({ href, label }));
+
+/** The tiles here are the pages below, so the index skips its own entry. */
 const subpages = sygnalistaPages.slice(1);
 ---
 
@@ -23,43 +26,29 @@ const subpages = sygnalistaPages.slice(1);
   <PageHeader
     breadcrumbs
     title="Sygnalista"
-    lead="Zgłaszanie naruszeń prawa w Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie."
+    lead="Zgłaszanie naruszeń prawa w Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie."
   />
 
   <PageShell>
-    <SiblingNav
-      slot="rail"
-      title="Dokumenty"
-      items={dokumentySections}
-      current="/dokumenty/sygnalista/"
-    />
+    <PageList slot="rail" items={rail} current="/dokumenty/sygnalista/" />
 
-    <div class="doc">
+    <div class="doc mt-subsection">
       <p>
-        Na podstawie ustawy z dnia 14 czerwca 2024 r. o ochronie sygnalistów w naszym Domu obowiązuje
-        wewnętrzna procedura dokonywania zgłoszeń naruszeń prawa i podejmowania działań następczych.
+        Na podstawie ustawy z dnia 14 czerwca 2024 r. o ochronie sygnalistów w naszym Domu obowiązuje
+        wewnętrzna procedura dokonywania zgłoszeń naruszeń prawa i podejmowania działań następczych.
         Poniżej znajdą Państwo treść procedury, dane osoby upoważnionej do przyjmowania zgłoszeń,
         klauzulę informacyjną oraz wzory dokumentów.
       </p>
       <p>
         Zgłoszenia wewnętrzne można przekazać pocztą elektroniczną na adres
         <a href="mailto:sygnalista@dpsszczytno.pl">sygnalista@dpsszczytno.pl</a>, pisemnie na adres
-        Domu (ul. Wielbarska 2, 12-100 Szczytno) w zamkniętej kopercie opatrzonej napisem „Zgłoszenie
-        naruszenia”, a także ustnie — telefonicznie lub podczas bezpośredniego spotkania. Zgłoszenia
+        Domu ({addressLine(contact.address)}) w zamkniętej kopercie opatrzonej napisem „Zgłoszenie
+        naruszenia”, a także ustnie — telefonicznie lub podczas bezpośredniego spotkania. Zgłoszenia
         anonimowe nie są rozpatrywane.
       </p>
-    </div>
 
-    <nav aria-label="Strony w dziale Sygnalista" class="mt-subsection">
-      <ul role="list" class="grid gap-4 sm:grid-cols-2">
-        {
-          subpages.map((page) => (
-            <li>
-              <LinkCard href={page.href} label={page.label} text={page.text} />
-            </li>
-          ))
-        }
-      </ul>
-    </nav>
+      <h2>Strony w dziale Sygnalista</h2>
+      <PageList items={subpages} />
+    </div>
   </PageShell>
 </Base>

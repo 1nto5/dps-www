@@ -1,49 +1,38 @@
 ---
 import Base from "../layouts/Base.astro";
-import PageHeader from "../components/PageHeader.astro";
-import ArchImage from "../components/ArchImage.astro";
 import Button from "../components/Button.astro";
-import NewsCard from "../components/NewsCard.astro";
-import { Image } from "astro:assets";
+import Figure from "../components/Figure.astro";
+import PageList from "../components/PageList.astro";
+import PostDate from "../components/PostDate.astro";
 import { getCollection } from "astro:content";
 import { contact, addressLine } from "../data/contact";
 
 import heroPhoto from "../assets/media/1377-1-1.jpg";
 import offerPhoto from "../assets/media/1188-2012-07-25-at-10-18-46-1-1.jpg";
-/** No photograph of the Spychowo branch exists yet, and every card in this
-    grid carries one, so the Szczytno building stands in until the Dom sends
-    photographs of the branch (see docs/pytania-do-domu.md). */
 import branchPhoto from "../assets/media/1376-3.jpg";
 import musicPhoto from "../assets/media/1168-christopherGroup.jpg";
 
-const cards = [
+/** The four ways into the site, with the wording the production site uses. */
+const sections = [
   {
-    href: "/oferta/",
-    title: "Oferta",
-    photo: offerPhoto,
-    alt: "Mieszkańcy i terapeutka przy wspólnym stole w świetlicy, w tle regały z książkami.",
-    text: "Zapewniamy całodobową opiekę, wsparcie pielęgniarskie i medyczne oraz zajęcia terapeutyczne dostosowane do możliwości każdego Mieszkańca. Dbamy o warunki bytowe, posiłki i codzienny rytm dnia, który daje poczucie bezpieczeństwa.",
+    href: "/zycie-w-domu/",
+    label: "Oferta",
+    text: "Zapewniamy całodobową opiekę, wsparcie pielęgniarskie i medyczne oraz zajęcia terapeutyczne dostosowane do możliwości każdego Mieszkańca. Dbamy o warunki bytowe, posiłki i codzienny rytm dnia, który daje poczucie bezpieczeństwa.",
   },
   {
-    href: "/filia-w-spychowie/",
-    title: "Filia w Spychowie",
-    photo: branchPhoto,
-    alt: "Biały budynek Domu z czerwonym dachem i drewniana altana w ogrodzie",
-    text: "Filia w Spychowie działa od 2001 roku i jest domem dla Mieszkańców. Poza pokojami do dyspozycji są świetlica, kaplica, stołówka i pracownia terapeutyczna.",
+    href: "/zycie-w-domu/spychowo/",
+    label: "Filia w Spychowie",
+    text: "Filia w Spychowie działa od 2001 roku i jest domem dla Mieszkańców. Poza pokojami do dyspozycji są świetlica, kaplica, stołówka i pracownia terapeutyczna.",
   },
   {
-    href: "/grupa-muzyczna/",
-    title: "Grupa wokalna „Christopher”",
-    photo: musicPhoto,
-    alt: "Pięciu członków grupy wokalnej „Christopher” śpiewa na plenerowej scenie pod żółtym namiotem.",
-    text: "Nasza grupa wokalna gra i śpiewa na uroczystościach w Domu oraz na przeglądach poza nim. Wspólne próby to dla Mieszkańców sposób na kontakt z ludźmi i na własną twórczość.",
+    href: "/zycie-w-domu/grupa-christopher/",
+    label: "Grupa wokalna „Christopher”",
+    text: "Nasza grupa wokalna gra i śpiewa na uroczystościach w Domu oraz na przeglądach poza nim. Wspólne próby to dla Mieszkańców sposób na kontakt z ludźmi i na własną twórczość.",
   },
   {
-    href: "/przyjecie-do-domu/",
-    title: "Przyjęcie do Domu",
-    photo: heroPhoto,
-    alt: "Budynek Domu Pomocy Społecznej w Szczytnie z czerwonym dachem, za kwitnącymi hortensjami",
-    text: "Wyjaśniamy, kto może u nas zamieszkać, jak wygląda droga do przyjęcia i jakie dokumenty warto przygotować. W razie pytań wystarczy do nas zadzwonić.",
+    href: "/zamieszkac-u-nas/",
+    label: "Przyjęcie do Domu",
+    text: "Wyjaśniamy, kto może u nas zamieszkać, jak wygląda droga do przyjęcia i jakie dokumenty warto przygotować. W razie pytań wystarczy do nas zadzwonić.",
   },
 ];
 
@@ -51,155 +40,119 @@ const posts = (await getCollection("aktualnosci")).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 );
 const latest = posts.slice(0, 3);
-/** Same rule as /aktualnosci/: below three posts a three-column grid leaves a
-    lone slim card, so the block becomes a single-column list instead. */
-const newsAsList = latest.length < 3;
 ---
 
 <Base
   title="Strona główna"
   description="Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie — całodobowa opieka dla osób przewlekle psychicznie chorych, wraz z filią w Spychowie."
 >
-  <section
-    class="mx-auto max-w-6xl px-4 pb-6 pt-10 sm:px-6 md:pt-14"
-    aria-labelledby="hero-title"
-    data-no-reveal
-  >
+  <section class="mx-auto max-w-wide px-5 pt-10 sm:px-8 md:pt-14" aria-labelledby="hero-title">
     <div class="grid items-center gap-10 md:grid-cols-2 md:gap-14">
-      <PageHeader
-        bare
-        size="hero"
-        titleId="hero-title"
-        eyebrow="Szczytno i Spychowo"
-        title="Dom z całodobową opieką"
-        lead="Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie jest domem dla osób przewlekle psychicznie chorych. Razem z filią w Spychowie zapewniamy Mieszkańcom całodobową opiekę."
-      >
+      <div>
+        <h1 id="hero-title" class="max-w-[16ch] text-4xl md:text-5xl">Dom z całodobową opieką</h1>
+        <p class="mt-5 max-w-[44ch] text-lg text-ink-soft">
+          Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie jest domem dla osób przewlekle
+          psychicznie chorych. Razem z filią w Spychowie zapewniamy Mieszkańcom całodobową opiekę.
+        </p>
         <div class="mt-8 flex flex-wrap gap-3">
-          <Button href="/kontakt/">Kontakt i adres</Button>
-          <Button href="/oferta/" variant="secondary">Poznaj naszą ofertę</Button>
+          <Button href="/kontakt/">Kontakt i adres</Button>
+          <Button href="/zycie-w-domu/" variant="secondary">Poznaj naszą ofertę</Button>
         </div>
-      </PageHeader>
-      {
-        /* The column is capped instead of the frame: a `max-h` clamp would
-           override the declared 4/5 ratio and flatten the arch. */
-      }
-      <div class="hero-enter-photo mx-auto w-full max-w-md md:max-w-[26rem]">
-        <ArchImage
-          src={heroPhoto}
-          alt="Budynek Domu Pomocy Społecznej w Szczytnie z czerwonym dachem, widziany zza kwitnących hortensji"
-          loading="eager"
-          fetchpriority="high"
-          widths={[480, 800, 1200]}
-          sizes="(min-width: 768px) 26rem, 100vw"
-          aspect="4/5"
-          position="42% 50%"
+      </div>
+      <Figure
+        src={heroPhoto}
+        alt="Budynek Domu Pomocy Społecznej w Szczytnie z czerwonym dachem, widziany zza kwitnących hortensji"
+        loading="eager"
+        sizes="(min-width: 48rem) 32rem, 100vw"
+      />
+    </div>
+  </section>
+
+  <section class="mx-auto mt-section max-w-wide px-5 sm:px-8" aria-labelledby="o-domu">
+    <div class="max-w-column">
+      <h2 id="o-domu" class="text-2xl md:text-3xl">O naszym domu</h2>
+      <p class="mt-4">
+        Troszczymy się o dobre samopoczucie Mieszkańców, nie zapominając o indywidualności każdego
+        z nich. Wsparcie wykwalifikowanych terapeutów pomaga aktywnie spędzać czas i rozwijać
+        zainteresowania, a wszechstronna opieka pielęgniarska i medyczna daje poczucie
+        bezpieczeństwa.
+      </p>
+      <p class="mt-4">
+        Zależy nam na godnych warunkach życia, z poszanowaniem prawa do wolności i intymności.
+        Podejmujemy też działania, które łączą Mieszkańców ze środowiskiem lokalnym — od wizyt szkół
+        i zespołów artystycznych po nasze własne występy poza Domem.
+      </p>
+      <p class="mt-6">
+        <a href="/o-domu/" class="font-semibold text-lake-deep underline"
+          >Więcej o Domu i jego kierownictwie</a
+        >
+      </p>
+    </div>
+  </section>
+
+  <section class="mx-auto mt-section max-w-wide px-5 sm:px-8" aria-labelledby="czym-sie-zajmujemy">
+    <h2 id="czym-sie-zajmujemy" class="text-2xl md:text-3xl">Czym się zajmujemy</h2>
+    <div class="mt-6 grid gap-10 lg:grid-cols-[1fr_20rem] lg:gap-14">
+      <PageList items={sections} />
+      <div class="grid gap-6 sm:grid-cols-3 lg:grid-cols-1">
+        <Figure
+          src={offerPhoto}
+          alt="Mieszkańcy i terapeutka przy wspólnym stole w świetlicy, w tle regały z książkami."
+          sizes="(min-width: 64rem) 20rem, (min-width: 40rem) 33vw, 100vw"
+          widths={[400, 700]}
+        />
+        <Figure
+          src={branchPhoto}
+          alt="Biały budynek Domu z czerwonym dachem i drewniana altana w ogrodzie"
+          sizes="(min-width: 64rem) 20rem, (min-width: 40rem) 33vw, 100vw"
+          widths={[400, 700]}
+        />
+        <Figure
+          src={musicPhoto}
+          alt="Pięciu członków grupy wokalnej „Christopher” śpiewa na plenerowej scenie pod żółtym namiotem."
+          sizes="(min-width: 64rem) 20rem, (min-width: 40rem) 33vw, 100vw"
+          widths={[400, 700]}
         />
       </div>
     </div>
   </section>
 
-  <section class="mx-auto mt-section max-w-6xl px-4 sm:px-6" aria-labelledby="o-domu">
-    <div class="max-w-3xl">
-      <h2 id="o-domu" class="text-2xl md:text-3xl">O naszym domu</h2>
-      <p class="mt-4">
-        Troszczymy się o dobre samopoczucie Mieszkańców, nie zapominając o indywidualności każdego
-        z nich. Wsparcie wykwalifikowanych terapeutów pomaga aktywnie spędzać czas i rozwijać
-        zainteresowania, a wszechstronna opieka pielęgniarska i medyczna daje poczucie bezpieczeństwa.
-      </p>
-      <p class="mt-4">
-        Zależy nam na godnych warunkach życia, z poszanowaniem prawa do wolności i intymności.
-        Podejmujemy też działania, które łączą Mieszkańców ze środowiskiem lokalnym — od wizyt szkół
-        i zespołów artystycznych po nasze własne występy poza Domem.
-      </p>
-      <p class="mt-6">
-        <a href="/o-nas/" class="font-semibold text-spruce underline hover:text-spruce-deep"
-          >Więcej o Domu i jego kierownictwie</a
-        >
-      </p>
-    </div>
-  </section>
-
-  <section class="mx-auto mt-section max-w-6xl px-4 sm:px-6" aria-labelledby="czym-sie-zajmujemy">
-    <h2 id="czym-sie-zajmujemy" class="sr-only">Czym się zajmujemy</h2>
-    <ul class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4" role="list">
-      {
-        cards.map((card) => (
-          <li class="photo-zoom relative flex flex-col overflow-hidden rounded-xl border border-line bg-card hover:border-spruce/40 hover:shadow-card focus-within:border-spruce/40">
-            <Image
-              src={card.photo}
-              alt={card.alt}
-              widths={[400, 700]}
-              sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-              loading="lazy"
-              class="aspect-[4/3] w-full object-cover"
-            />
-            <div class="flex flex-1 flex-col p-5">
-              <h3 class="text-xl">{card.title}</h3>
-              <p class="mt-2 flex-1 text-muted">{card.text}</p>
-              <p class="mt-4">
-                <a
-                  href={card.href}
-                  data-card-link
-                  class="font-semibold text-spruce underline before:absolute before:inset-0 before:content-[''] hover:text-spruce-deep"
-                >
-                  {card.title} — czytaj dalej
-                </a>
-              </p>
-            </div>
-          </li>
-        ))
-      }
-    </ul>
-  </section>
-
   {
     latest.length > 0 && (
-      <section class="mx-auto mt-section max-w-6xl px-4 sm:px-6" aria-labelledby="aktualnosci">
+      <section class="mx-auto mt-section max-w-wide px-5 sm:px-8" aria-labelledby="aktualnosci">
         <div class="flex flex-wrap items-baseline justify-between gap-4">
           <h2 id="aktualnosci" class="text-2xl md:text-3xl">
-            Komunikaty i podziękowania
+            Komunikaty i podziękowania
           </h2>
-          <a
-            href="/aktualnosci/"
-            class="font-semibold text-spruce underline hover:text-spruce-deep"
-          >
+          <a href="/aktualnosci/" class="font-semibold text-lake-deep underline">
             Wszystkie komunikaty
           </a>
         </div>
-        <ul
-          class:list={[
-            "mt-6 grid gap-6",
-            newsAsList ? "max-w-column" : "sm:grid-cols-2 lg:grid-cols-3",
-          ]}
-          role="list"
-        >
+        <ul class="mt-6 max-w-column" role="list">
           {latest.map((post) => (
-            <NewsCard post={post} headingLevel="h3" list={newsAsList} />
+            <li class="border-t border-line py-4 last:border-b">
+              <PostDate date={post.data.date} />
+              <a href={`/aktualnosci/${post.id}/`} class="mt-1 inline-block text-lg font-semibold text-lake-deep underline">
+                {post.data.title}
+              </a>
+            </li>
           ))}
         </ul>
       </section>
     )
   }
 
-  <section class="pre-footer mt-section border-y border-line bg-moss/60" aria-labelledby="kontakt-skrot">
-    <div class="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:px-6 md:grid-cols-[1fr_auto] md:items-center">
+  <section class="mt-section border-y border-line bg-mist" aria-labelledby="kontakt-skrot">
+    <div class="mx-auto grid max-w-wide gap-8 px-5 py-10 sm:px-8 md:grid-cols-[1fr_auto] md:items-center">
       <div>
         <h2 id="kontakt-skrot" class="text-2xl">Zapraszamy do kontaktu</h2>
-        <address class="mt-3 not-italic text-muted">
+        <address class="mt-3 not-italic text-ink-soft">
           {addressLine(contact.address)}<br />
-          tel. <a href={contact.phone.href} class="text-spruce underline hover:text-spruce-deep"
-            >{contact.phone.label}</a
-          ><br />
-          <a
-            href={`mailto:${contact.email}`}
-            class="text-spruce underline hover:text-spruce-deep"
-            >{contact.email}</a
-          >
+          tel. <a href={contact.phone.href} class="text-lake-deep underline">{contact.phone.label}</a><br />
+          <a href={`mailto:${contact.email}`} class="text-lake-deep underline">{contact.email}</a>
         </address>
       </div>
-      <p>
-        <Button href="/kontakt/">Pełne dane kontaktowe</Button>
-      </p>
+      <p><Button href="/kontakt/">Pełne dane kontaktowe</Button></p>
     </div>
   </section>
 </Base>

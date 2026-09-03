@@ -3,16 +3,28 @@ import { getCollection } from "astro:content";
 import Base from "../../layouts/Base.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import PageShell from "../../components/PageShell.astro";
-import NewsCard from "../../components/NewsCard.astro";
+import PageList from "../../components/PageList.astro";
+import { contact } from "../../data/contact";
 
 const entries = (await getCollection("aktualnosci")).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 );
 
-/** Fewer than three posts read badly as slim cards marooned in a
-    three-column grid, so they become a single-column list at a larger type
-    scale instead. */
-const asList = entries.length < 3;
+/** The same long-form date the post itself prints, so a list row and the post agree. */
+const dateFormat = new Intl.DateTimeFormat("pl-PL", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+
+const items = entries.map((entry) => {
+  const date = dateFormat.format(entry.data.date);
+  return {
+    href: `/aktualnosci/${entry.id}/`,
+    label: entry.data.title,
+    text: entry.data.description ? `${date} — ${entry.data.description}` : date,
+  };
+});
 ---
 
 <Base
@@ -20,39 +32,29 @@ const asList = entries.length < 3;
   description="Komunikaty i podziękowania z życia Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie i filii w Spychowie. Ogłoszenia urzędowe publikujemy w Biuletynie Informacji Publicznej."
 >
   <PageHeader
-    eyebrow="Aktualności"
+    breadcrumbs
     title="Komunikaty i podziękowania"
     lead="Ważniejsze komunikaty i podziękowania z życia Domu oraz filii w Spychowie. Bieżące ogłoszenia urzędowe publikujemy w Biuletynie Informacji Publicznej."
   />
 
   <PageShell>
-    <p class="mb-8 max-w-column text-lg leading-relaxed text-ink-soft">
-      Zamówienia publiczne, nabory i inne ogłoszenia urzędowe znajdują się w
-      <a
-        href="https://dpsszczytno.bip.gov.pl/"
-        class="text-spruce underline hover:text-spruce-deep"
-        >Biuletynie Informacji Publicznej Domu</a
-      >.
-    </p>
+    <div class="doc">
+      <p>
+        Zamówienia publiczne, nabory i inne ogłoszenia urzędowe znajdują się
+        w <a href={contact.bip}>Biuletynie Informacji Publicznej Domu</a>.
+      </p>
+    </div>
 
-    {
-      entries.length === 0 ? (
-        <p class="max-w-column rounded-xl border border-line bg-moss px-6 py-8 text-lg text-muted">
-          Wkrótce pojawią się tu nowe informacje.
-        </p>
-      ) : (
-        <ul
-          class:list={[
-            "grid gap-6",
-            asList ? "max-w-column" : "sm:grid-cols-2 lg:grid-cols-3",
-          ]}
-          role="list"
-        >
-          {entries.map((entry) => (
-            <NewsCard post={entry} headingLevel="h2" list={asList} />
-          ))}
-        </ul>
-      )
-    }
+    <div class="mt-subsection">
+      {
+        items.length === 0 ? (
+          <p class="max-w-column rounded-lg border border-line bg-mist px-6 py-6 text-ink-soft">
+            Wkrótce pojawią się tu nowe informacje.
+          </p>
+        ) : (
+          <PageList items={items} />
+        )
+      }
+    </div>
   </PageShell>
 </Base>

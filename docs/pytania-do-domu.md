@@ -275,3 +275,81 @@ Pytania:
   ma te zgody na piśmie?
 - Jeśli którejś zgody brakuje — czy zdjęcie usuwamy ze strony, czy Dom zgodę uzupełni?
 - Czy któraś z tych osób ma opiekuna prawnego, który zgodę podpisuje w jej imieniu?
+
+---
+
+## 10. Nowa strona: brakujące fakty
+
+Pytania, które pojawiły się przy pisaniu stron „Zamieszkać u nas”, „Kontakt” i strony
+głównej. Do czasu odpowiedzi strona pisze tylko to, co wynika z ustawy albo z dokumentów
+Domu.
+
+- **Godziny sekretariatu.** Na stronie głównej przy numerze telefonu piszemy „Odpowiemy,
+  czy jest wolne miejsce, i wyjaśnimy, co dalej”, ale nie podajemy godzin — bo ich nie
+  znamy (patrz też punkt 8). Prosimy o godziny, w których ktoś odbiera telefon
+  w Szczytnie i w filii w Spychowie. Dopiszemy je pod numerem.
+- **Odwiedziny.** Rozdział „Odwiedziny” na stronie „Zamieszkać u nas” mówi dziś tylko
+  tyle, że prosimy o telefon przed przyjazdem i umówimy porę. Gdy dostaniemy odpowiedzi
+  z punktu 6, wpiszemy tam konkretne dni i godziny.
+- **Koszt pobytu.** Piszemy to, co wynika z ustawy o pomocy społecznej: Mieszkaniec płaci
+  nie więcej niż 70% swojego dochodu, potem dopłaca rodzina, a na końcu gmina; miesięczny
+  koszt utrzymania ogłasza Starosta Szczycieński. Prosimy o potwierdzenie, czy możemy
+  podać aktualną kwotę i z jakiego roku jest obowiązująca.
+- **Co zabrać ze sobą.** Nowy Mieszkaniec przywozi dokumenty (mamy je z regulaminu), ale
+  nie wiemy, co Dom radzi zabrać poza nimi: ile ubrań, czy własne meble albo sprzęt RTV
+  są dopuszczalne, jak jest z lekami przywiezionymi z domu. Prosimy o krótką listę —
+  wpiszemy ją do rozdziału „Co zabrać ze sobą”.
+- **Dojazd.** Na stronie „Kontakt” opisujemy dojazd słowami (mapy nie ma, bo wymagałaby
+  wysyłania danych czytelników do zewnętrznej firmy). Dziś umiemy napisać tylko to, co
+  jest w deklaracji dostępności: adres, wejście z podjazdem od ul. Sobieszczańskiego,
+  parking na terenie Domu. Prosimy o dwa–trzy zdania: którym autobusem albo od której
+  drogi najłatwiej dojechać do Szczytna i do Spychowa, gdzie zaparkować i gdzie jest
+  wejście dla odwiedzających.
+
+---
+
+## 11. Deklaracja dostępności: do aktualizacji po audycie
+
+Przy przebudowie strony przenieśliśmy deklarację dostępności znak w znak — ten sam tekst,
+te same daty, ten sam status „częściowo zgodna”. Zmieniliśmy wyłącznie to, co ją otacza
+(nagłówek strony, okruszki, spis rozdziałów). Zapisujemy tu, czego deklaracja **nie
+opisuje poprawnie** dla nowej strony, żeby po audycie było wiadomo, co poprawić:
+
+- wymienia **mapy Google** jako wyłączone z obowiązku dostępności — na nowej stronie nie
+  ma żadnej osadzonej mapy (patrz punkt 1.4);
+- wymienia **zdjęcia bez tekstu alternatywnego** i **elementy nietekstowe bez opisu** —
+  na nowej stronie każde zdjęcie ma opis po polsku (patrz punkt 1.4);
+- podaje daty publikacji i ostatniej istotnej aktualizacji `07.10.2008`, czyli daty starej
+  strony (patrz punkt 1.2);
+- **nie wspomina o ustawieniach dostępności w nagłówku nowej strony** — czytelnik może tam
+  powiększyć tekst i włączyć tryb wysokiego kontrastu. Nowa deklaracja powinna to wymienić
+  jako udogodnienie.
+
+Do czasu audytu i pisemnej zgody Domu nie zmieniamy w deklaracji ani jednego słowa.
+
+---
+
+## 12. Życie w Domu — czego nie wiemy
+
+### 10.1. Rytm dnia
+
+Na stronie „Życie w Domu” piszemy, że dzień ma swój rytm: posiłki, zajęcia, spacery
+i czas dla siebie. Nie znamy jednak godzin, więc ich nie podajemy.
+
+Pytania:
+
+- O jakich godzinach są śniadanie, obiad i kolacja — w Szczytnie i w Spychowie?
+- W jakich godzinach czynne są pracownie terapeutyczne?
+- Czy jest stała pora, o której odprawiana jest msza w kaplicy w Spychowie?
+
+### 10.2. Odwiedziny
+
+Odsyłamy Bliskich do strony „Kontakt”, ale nie wiemy, w jakich godzinach można
+odwiedzać Mieszkańców ani czy trzeba wizytę wcześniej zapowiedzieć. Prosimy o jedno
+zdanie na ten temat.
+
+### 10.3. Grupa wokalna „Christopher”
+
+Skład zespołu i nazwisko opiekuna pochodzą ze starej strony. Prosimy o potwierdzenie,
+czy skład jest aktualny, oraz o rok ostatniego występu — chcielibyśmy napisać, że grupa
+nadal działa, ale tylko jeśli to prawda.

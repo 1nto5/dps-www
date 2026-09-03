@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 #
-# Rebuilds the two web fonts the site ships.
+# Rebuilds the two web fonts the site ships: Bricolage Grotesque (headings)
+# and Golos Text (body).
 #
 # Why a script and not four files copied out of node_modules: Polish needs both
 # the `latin` and the `latin-ext` slice of both families at once, so all four
@@ -17,12 +18,12 @@
 # downloads are cached in `.cache/fonts/` and are only needed when this script
 # runs; the build never touches the network.
 #
-# Both axes the site uses are kept: Fraunces' `opsz`, which is what draws the
+# Both axes the site uses are kept: Bricolage's `opsz`, which is what draws the
 # 54px hero and the 20px card titles correctly, and `wght`, which covers every
-# weight asked for. The upstream Fraunces carries two more — `SOFT` and `WONK`
+# weight asked for. The upstream Bricolage carries one more — `wdth`
 # — that no rule on this site ever sets; they are frozen at their default
 # values, which is exactly the two-axis font Fontsource shipped before. Keeping
-# them variable cost 41 KB in the Fraunces file alone.
+# them variable cost tens of KB for nothing.
 #
 # Usage: bun run fonts
 #
@@ -69,13 +70,13 @@ fetch() {
     curl -fsSL -o "$CACHE/$file" "$url"
   fi
 }
-fetch Fraunces.ttf \
-  "https://raw.githubusercontent.com/google/fonts/main/ofl/fraunces/Fraunces%5BSOFT%2CWONK%2Copsz%2Cwght%5D.ttf"
-fetch SourceSans3.ttf \
-  "https://raw.githubusercontent.com/google/fonts/main/ofl/sourcesans3/SourceSans3%5Bwght%5D.ttf"
+fetch BricolageGrotesque.ttf \
+  "https://raw.githubusercontent.com/google/fonts/main/ofl/bricolagegrotesque/BricolageGrotesque%5Bopsz%2Cwdth%2Cwght%5D.ttf"
+fetch GolosText.ttf \
+  "https://raw.githubusercontent.com/google/fonts/main/ofl/golostext/GolosText%5Bwght%5D.ttf"
 
 # Freeze the axes nothing on the site drives. `pyftsubset` cannot remove an
-# axis, so this runs first and writes a two-axis Fraunces beside the original.
+# axis, so this runs first and writes a two-axis Bricolage beside the original.
 echo "freezing unused axes…"
 "${FT[@]}" python - "$CACHE" <<'PY'
 import sys
@@ -83,17 +84,17 @@ from fontTools.ttLib import TTFont
 from fontTools.varLib import instancer
 
 cache = sys.argv[1]
-font = TTFont(f"{cache}/Fraunces.ttf")
+font = TTFont(f"{cache}/BricolageGrotesque.ttf")
 keep = {"opsz", "wght"}
 pin = {a.axisTag: a.defaultValue for a in font["fvar"].axes if a.axisTag not in keep}
 instancer.instantiateVariableFont(font, pin, inplace=True)
-font.save(f"{cache}/Fraunces-opsz-wght.ttf")
-print("  Fraunces: froze " + ", ".join(f"{t}={v:g}" for t, v in pin.items()))
+font.save(f"{cache}/BricolageGrotesque-opsz-wght.ttf")
+print("  Bricolage Grotesque: froze " + ", ".join(f"{t}={v:g}" for t, v in pin.items()))
 PY
 
 # Layout features are left at pyftsubset's own default set — ccmp, kern, liga,
 # locl, the fraction and numerator features, and the `rvrn` variations that
-# carry Fraunces' optical-size letterforms. Asking for every feature instead
+# carry Bricolage's optical-size letterforms. Asking for every feature instead
 # (`--layout-features='*'`) drags in small caps, ten stylistic sets, oldstyle
 # figures and their alternate glyphs: it doubled Source Sans 3 to 40 KB for
 # features no rule on this site turns on.
@@ -109,8 +110,8 @@ subset() {
 }
 
 echo "subsetting…"
-subset Fraunces-opsz-wght.ttf fraunces-subset.woff2
-subset SourceSans3.ttf source-sans-3-subset.woff2
+subset BricolageGrotesque-opsz-wght.ttf bricolage-grotesque-subset.woff2
+subset GolosText.ttf golos-text-subset.woff2
 
 # The character list the build-time coverage check reads. Writing it here keeps
 # that check dependency-free: it is plain Node against a committed JSON file,
@@ -128,10 +129,5 @@ report() {
 }
 
 echo
-echo "before — Fontsource latin + latin-ext, both families:"
-report "$ROOT"/node_modules/@fontsource-variable/fraunces/files/fraunces-latin-opsz-normal.woff2 \
-       "$ROOT"/node_modules/@fontsource-variable/fraunces/files/fraunces-latin-ext-opsz-normal.woff2 \
-       "$ROOT"/node_modules/@fontsource-variable/source-sans-3/files/source-sans-3-latin-wght-normal.woff2 \
-       "$ROOT"/node_modules/@fontsource-variable/source-sans-3/files/source-sans-3-latin-ext-wght-normal.woff2
-echo "after — subset:"
-report "$OUT/fraunces-subset.woff2" "$OUT/source-sans-3-subset.woff2"
+echo "subset:"
+report "$OUT/bricolage-grotesque-subset.woff2" "$OUT/golos-text-subset.woff2"

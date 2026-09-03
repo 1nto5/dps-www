@@ -1,18 +1,17 @@
 ---
 /**
  * RODO — six data-protection notices migrated verbatim from the old site
- * (page 1234). Legal wording must not be paraphrased.
+ * (page 1234). Legal wording must not be paraphrased. The Dom's own address
+ * and telephone come from `contact.ts`, so a corrected number cannot go stale
+ * here; every other detail is the notice as signed.
  */
 import Base from "../../layouts/Base.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import PageShell from "../../components/PageShell.astro";
-import SectionNav from "../../components/SectionNav.astro";
-import SiblingNav from "../../components/SiblingNav.astro";
-import BackLink from "../../components/BackLink.astro";
-import { dokumentySections } from "../../data/dokumenty-sections";
+import Toc from "../../components/Toc.astro";
+import { addressLine, contact } from "../../data/contact";
 
-/** Rail table of contents. Labels are shorter than the notice headings. */
-const sections = [
+const toc = [
   { id: "pracownik", label: "Dla pracownika" },
   { id: "rodzina", label: "Dla rodziny" },
   { id: "kurator", label: "Dla kuratora lub opiekuna" },
@@ -20,6 +19,8 @@ const sections = [
   { id: "kandydat", label: "Dla kandydata" },
   { id: "monitoring", label: "Monitoring wizyjny" },
 ];
+
+const adres = `${contact.nameShort}, ${addressLine(contact.address)}`;
 ---
 
 <Base
@@ -29,168 +30,167 @@ const sections = [
   <PageHeader
     breadcrumbs
     title="RODO"
-    lead="Informacje o przetwarzaniu danych osobowych w Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie."
+    lead="Informacje o przetwarzaniu danych osobowych w Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie."
   />
 
-  <SectionNav items={sections} />
-
   <PageShell>
-    <div slot="rail" class="space-y-8">
-      <SiblingNav title="Dokumenty" items={dokumentySections} current="/dokumenty/rodo/" />
-    </div>
+    <Toc slot="rail" items={toc} />
 
-    <div class="doc">
-      <h2 id="pracownik">Informacja o przetwarzaniu danych osobowych dla pracownika</h2>
+    <div class="doc mt-subsection">
+      <h2 id="pracownik">Informacja o przetwarzaniu danych osobowych dla pracownika</h2>
       <p>
-        Zgodnie z art. 13 ust. 1 i 2 Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679
-        z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych
-        osobowych — ogólne rozporządzenie o ochronie danych (Dz. U. UE L 119/1 z dnia 4 maja
-        2016 r.) Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie informuje, że:
+        Zgodnie z art. 13 ust. 1 i 2 Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679
+        z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem
+        danych osobowych — ogólne rozporządzenie o ochronie danych (Dz. U. UE L 119/1 z dnia 4 maja
+        2016 r.) Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie informuje, że:
       </p>
       <ol>
         <li>
           <p>
             Administratorem Pani/Pana danych osobowych jest: <strong
-              >Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie</strong
-            > reprezentowany przez Dyrektora Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie. Możesz
-            się z nami skontaktować w następujący sposób:
+              >Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie</strong
+            > reprezentowany przez Dyrektora Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie. Możesz
+            się z nami skontaktować w następujący sposób:
           </p>
           <ul>
-            <li>listownie: Dom Pomocy Społecznej im. Jana Pawła II, ul. Wielbarska 2, 12-100 Szczytno;</li>
+            <li>listownie: {adres};</li>
             <li>e-mail: <a href="mailto:szczytno@dps.pl">szczytno@dps.pl</a>;</li>
-            <li>telefon: <a href="tel:+48896242288">89 624 22 88</a>.</li>
+            <li>telefon: <a href={contact.phone.href}>{contact.phone.label}</a>.</li>
           </ul>
         </li>
         <li>
           <p>
             Jeśli masz jakieś pytania dotyczące przetwarzania Twoich danych osobowych, możesz się
-            kontaktować bezpośrednio z naszym Inspektorem Ochrony Danych: e-mail
+            kontaktować bezpośrednio z naszym Inspektorem Ochrony Danych: e-mail
             <a href="mailto:iod2@warmiainkaso.pl">iod2@warmiainkaso.pl</a>.
           </p>
         </li>
         <li>
           <p>
             Celem przetwarzania jest zatrudnianie, pomoc socjalna, zapewnienie świadczeń socjalnych
-            oraz bezpieczeństwo i higiena pracy, organizacja pracy, bezpieczeństwo informacji poprzez
+            oraz bezpieczeństwo i higiena pracy, organizacja pracy, bezpieczeństwo informacji poprzez
             kontrolę dostępu lub monitoring:
           </p>
           <ul>
             <li>
-              na podstawie art. 6 ust. 1 lit. c ogólnego rozporządzenia o ochronie danych osobowych
-              z dnia 27 kwietnia 2016 r. oraz Kodeksu pracy z dnia 26 czerwca 1974 r. oraz
+              na podstawie art. 6 ust. 1 lit. c ogólnego rozporządzenia o ochronie danych osobowych
+              z dnia 27 kwietnia 2016 r. oraz Kodeksu pracy z dnia 26 czerwca 1974 r. oraz
             </li>
             <li>
-              na podstawie art. 6 ust. 1 lit. a, jako zgody na publikację wizerunku i na przekazanie
+              na podstawie art. 6 ust. 1 lit. a, jako zgody na publikację wizerunku i na przekazanie
               danych innym podmiotom,
             </li>
             <li>
-              na podstawie art. 9 ust. 2 lit. h jako niezbędne do celów profilaktyki zdrowotnej lub
+              na podstawie art. 9 ust. 2 lit. h jako niezbędne do celów profilaktyki zdrowotnej lub
               medycyny pracy, do oceny zdolności pracownika do pracy.
             </li>
           </ul>
         </li>
         <li>
           Twoje dane osobowe mogą być przez nas udostępniane dostawcy usług hostingowych, dostawcy
-          poczty elektronicznej, firmom serwisującym oprogramowanie, lekarzom oraz kancelarii prawnej.
-          Zgodnie z przepisami prawa Twoje dane mogą zostać przekazane odpowiednim organom publicznym.
+          poczty elektronicznej, firmom serwisującym oprogramowanie, lekarzom oraz kancelarii
+          prawnej. Zgodnie z przepisami prawa Twoje dane mogą zostać przekazane odpowiednim organom
+          publicznym.
         </li>
         <li>
           Pani/Pana dane osobowe przechowywane będą przez okres 10 lat, na podstawie Kodeksu pracy,
-          a w pozostałych przypadkach do ustania przyczyn biznesowych oraz do momentu odwołania zgody.
+          a w pozostałych przypadkach do ustania przyczyn biznesowych oraz do momentu odwołania
+          zgody.
         </li>
         <li>
           Masz prawo dostępu do swoich danych osobowych, ich sprostowania, usunięcia lub ograniczenia
-          przetwarzania oraz prawo do wniesienia sprzeciwu wobec przetwarzania, a także prawo do
-          przenoszenia danych. W przypadku jeśli wystąpisz do nas o realizację swoich uprawnień,
-          niezwłocznie zajmiemy się Twoją sprawą i nie później niż w terminie 30 dni zostaniesz
-          poinformowany o sposobie załatwienia Twojej sprawy; termin ten możemy jednak przedłużyć
-          o kolejne 2 miesiące, w przypadku gdyby Twoje żądanie okazało się bardziej skomplikowane.
-          Jeżeli termin zostanie wydłużony, zostaniesz o tym poinformowany. Jeśli jednak wymagania
+          przetwarzania oraz prawo do wniesienia sprzeciwu wobec przetwarzania, a także prawo do
+          przenoszenia danych. W przypadku jeśli wystąpisz do nas o realizację swoich uprawnień,
+          niezwłocznie zajmiemy się Twoją sprawą i nie później niż w terminie 30 dni zostaniesz
+          poinformowany o sposobie załatwienia Twojej sprawy; termin ten możemy jednak przedłużyć
+          o kolejne 2 miesiące, w przypadku gdyby Twoje żądanie okazało się bardziej skomplikowane.
+          Jeżeli termin zostanie wydłużony, zostaniesz o tym poinformowany. Jeśli jednak wymagania
           ustawowe uniemożliwią realizację Twoich uprawnień, otrzymasz od nas stosowne uzasadnienie.
         </li>
         <li>
-          Masz prawo do wniesienia w każdym momencie skargi do Prezesa Urzędu Ochrony Danych
+          Masz prawo do wniesienia w każdym momencie skargi do Prezesa Urzędu Ochrony Danych
           Osobowych, gdy uzna Pan/Pani, iż przetwarzanie danych osobowych Pani/Pana dotyczących
-          narusza przepisy Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 z 27 kwietnia
-          2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych i
-          w sprawie swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE.
+          narusza przepisy Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 z 27 kwietnia
+          2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych
+          i w sprawie swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE.
         </li>
         <li>
-          Podanie danych osobowych jest obligatoryjne w oparciu o przepisy prawa, a w pozostałym
+          Podanie danych osobowych jest obligatoryjne w oparciu o przepisy prawa, a w pozostałym
           zakresie jest dobrowolne. Konsekwencją niepodania danych jest brak kontaktu oraz
-          niewykonanie celu z pkt 3.
+          niewykonanie celu z pkt 3.
         </li>
         <li>
           Administrator danych nie ma zamiaru przekazywać danych osobowych do państwa trzeciego lub
           organizacji międzynarodowej.
         </li>
         <li>
-          Pani/Pana dane nie będą przetwarzane w sposób zautomatyzowany i nie będą poddawane
+          Pani/Pana dane nie będą przetwarzane w sposób zautomatyzowany i nie będą poddawane
           profilowaniu.
         </li>
       </ol>
 
-      <h2 id="rodzina">Informacja o przetwarzaniu danych osobowych dla rodziny</h2>
+      <h2 id="rodzina">Informacja o przetwarzaniu danych osobowych dla rodziny</h2>
       <p>
-        Zgodnie z Rozporządzeniem Parlamentu Europejskiego i Rady (UE) 2016/679 z 27 kwietnia 2016 r.
-        w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych i w sprawie
-        swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE informuję, iż:
+        Zgodnie z Rozporządzeniem Parlamentu Europejskiego i Rady (UE) 2016/679 z 27 kwietnia
+        2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych
+        i w sprawie swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE informuję,
+        iż:
       </p>
       <ol>
         <li>
           <p>
             Administratorem Pani/Pana danych osobowych jest: <strong
-              >Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie</strong
-            > reprezentowany przez Dyrektora Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie. Możesz
-            się z nami skontaktować w następujący sposób:
+              >Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie</strong
+            > reprezentowany przez Dyrektora Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie. Możesz
+            się z nami skontaktować w następujący sposób:
           </p>
           <ul>
-            <li>listownie: Dom Pomocy Społecznej im. Jana Pawła II, ul. Wielbarska 2, 12-100 Szczytno;</li>
+            <li>listownie: {adres};</li>
             <li>e-mail: <a href="mailto:szczytno@dps.pl">szczytno@dps.pl</a>;</li>
-            <li>telefon: <a href="tel:+48896242288">89 624 22 88</a>.</li>
+            <li>telefon: <a href={contact.phone.href}>{contact.phone.label}</a>.</li>
           </ul>
         </li>
         <li>
           Jeśli masz jakieś pytania dotyczące przetwarzania Twoich danych osobowych, możesz się
-          kontaktować bezpośrednio z naszym Inspektorem Ochrony Danych: e-mail
+          kontaktować bezpośrednio z naszym Inspektorem Ochrony Danych: e-mail
           <a href="mailto:iod2@warmiainkaso.pl">iod2@warmiainkaso.pl</a>.
         </li>
         <li>
           Celem, dla którego przetwarzamy Twoje dane osobowe, jest nawiązywanie kontaktu
-          telefonicznego i korespondencyjnego w celu utrzymania więzi rodzinnych, informowania
-          o nagłych i ważnych wydarzeniach związanych z przyjęciem i pobytem Mieszkańca, sporządzania
-          i prowadzenia dokumentacji z zakresu pomocy społecznej.
+          telefonicznego i korespondencyjnego w celu utrzymania więzi rodzinnych, informowania
+          o nagłych i ważnych wydarzeniach związanych z przyjęciem i pobytem Mieszkańca, sporządzania
+          i prowadzenia dokumentacji z zakresu pomocy społecznej.
         </li>
         <li>
           Twoje dane osobowe mogą być przez nas udostępniane dostawcy poczty elektronicznej, firmom
-          serwisującym oprogramowanie. Zgodnie z przepisami prawa Twoje dane mogą zostać przekazane
+          serwisującym oprogramowanie. Zgodnie z przepisami prawa Twoje dane mogą zostać przekazane
           odpowiednim organom publicznym.
         </li>
         <li>
-          Pani/Pana dane osobowe będą przechowywane przez okres wynikający z obowiązujących przepisów
-          prawa (przepisy o archiwizacji); w przypadku danych osobowych pozyskanych na podstawie
-          zgody, dane te będą przechowywane przez okres wskazany w zgodzie.
+          Pani/Pana dane osobowe będą przechowywane przez okres wynikający z obowiązujących
+          przepisów prawa (przepisy o archiwizacji); w przypadku danych osobowych pozyskanych na
+          podstawie zgody, dane te będą przechowywane przez okres wskazany w zgodzie.
         </li>
         <li>
           Masz prawo dostępu do swoich danych osobowych, ich sprostowania, usunięcia lub ograniczenia
-          przetwarzania oraz prawo do wniesienia sprzeciwu wobec przetwarzania, a także prawo do
-          przenoszenia danych. W przypadku jeśli wystąpisz do nas o realizację swoich uprawnień,
-          niezwłocznie zajmiemy się Twoją sprawą i nie później niż w terminie 30 dni zostaniesz
-          poinformowany o sposobie załatwienia Twojej sprawy; termin ten możemy jednak przedłużyć
-          o kolejne 2 miesiące, w przypadku gdyby Twoje żądanie okazało się bardziej skomplikowane.
-          Jeżeli termin zostanie wydłużony, zostaniesz o tym poinformowany. Jeśli jednak wymagania
+          przetwarzania oraz prawo do wniesienia sprzeciwu wobec przetwarzania, a także prawo do
+          przenoszenia danych. W przypadku jeśli wystąpisz do nas o realizację swoich uprawnień,
+          niezwłocznie zajmiemy się Twoją sprawą i nie później niż w terminie 30 dni zostaniesz
+          poinformowany o sposobie załatwienia Twojej sprawy; termin ten możemy jednak przedłużyć
+          o kolejne 2 miesiące, w przypadku gdyby Twoje żądanie okazało się bardziej skomplikowane.
+          Jeżeli termin zostanie wydłużony, zostaniesz o tym poinformowany. Jeśli jednak wymagania
           ustawowe uniemożliwią realizację Twoich uprawnień, otrzymasz od nas stosowne uzasadnienie.
         </li>
         <li>
-          Masz prawo do wniesienia w każdym momencie skargi do Prezesa Urzędu Ochrony Danych
+          Masz prawo do wniesienia w każdym momencie skargi do Prezesa Urzędu Ochrony Danych
           Osobowych, gdy uzna Pan/Pani, iż przetwarzanie danych osobowych Pani/Pana dotyczących
-          narusza przepisy Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 z 27 kwietnia
-          2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych i
-          w sprawie swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE.
+          narusza przepisy Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 z 27 kwietnia
+          2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych
+          i w sprawie swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE.
         </li>
         <li>
           Podanie przez Panią/Pana danych osobowych jest dobrowolne. Konsekwencją niepodania danych
-          jest brak kontaktu oraz niewykonanie celu z pkt 3.
+          jest brak kontaktu oraz niewykonanie celu z pkt 3.
         </li>
         <li>
           Administrator danych nie ma zamiaru przekazywać danych osobowych do państwa trzeciego lub
@@ -198,67 +198,68 @@ const sections = [
         </li>
       </ol>
 
-      <h2 id="kurator">Informacja o przetwarzaniu danych osobowych dla kuratora lub opiekuna</h2>
+      <h2 id="kurator">Informacja o przetwarzaniu danych osobowych dla kuratora lub opiekuna</h2>
       <p>
-        Zgodnie z Rozporządzeniem Parlamentu Europejskiego i Rady (UE) 2016/679 z 27 kwietnia 2016 r.
-        w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych i w sprawie
-        swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE informuję, iż:
+        Zgodnie z Rozporządzeniem Parlamentu Europejskiego i Rady (UE) 2016/679 z 27 kwietnia
+        2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych
+        i w sprawie swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE informuję,
+        iż:
       </p>
       <ol>
         <li>
           <p>
             Administratorem Pani/Pana danych osobowych jest: <strong
-              >Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie</strong
-            > reprezentowany przez Dyrektora Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie. Możesz
-            się z nami skontaktować w następujący sposób:
+              >Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie</strong
+            > reprezentowany przez Dyrektora Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie. Możesz
+            się z nami skontaktować w następujący sposób:
           </p>
           <ul>
-            <li>listownie: Dom Pomocy Społecznej im. Jana Pawła II, ul. Wielbarska 2, 12-100 Szczytno;</li>
+            <li>listownie: {adres};</li>
             <li>e-mail: <a href="mailto:szczytno@dps.pl">szczytno@dps.pl</a>;</li>
-            <li>telefon: <a href="tel:+48896242288">89 624 22 88</a>.</li>
+            <li>telefon: <a href={contact.phone.href}>{contact.phone.label}</a>.</li>
           </ul>
         </li>
         <li>
           Jeśli masz jakieś pytania dotyczące przetwarzania Twoich danych osobowych, możesz się
-          kontaktować bezpośrednio z naszym Inspektorem Ochrony Danych: e-mail
+          kontaktować bezpośrednio z naszym Inspektorem Ochrony Danych: e-mail
           <a href="mailto:iod2@warmiainkaso.pl">iod2@warmiainkaso.pl</a>.
         </li>
         <li>
           Celem, dla którego przetwarzamy Twoje dane osobowe, jest nawiązywanie kontaktu
-          telefonicznego i korespondencyjnego w celu informowania o nagłych i ważnych wydarzeniach
-          związanych z przyjęciem i pobytem Mieszkańca, sporządzania i prowadzenia dokumentacji
-          z zakresu pomocy społecznej.
+          telefonicznego i korespondencyjnego w celu informowania o nagłych i ważnych wydarzeniach
+          związanych z przyjęciem i pobytem Mieszkańca, sporządzania i prowadzenia dokumentacji
+          z zakresu pomocy społecznej.
         </li>
         <li>
           Twoje dane osobowe mogą być przez nas udostępniane dostawcy poczty elektronicznej, firmom
-          serwisującym oprogramowanie. Zgodnie z przepisami prawa Twoje dane mogą zostać przekazane
+          serwisującym oprogramowanie. Zgodnie z przepisami prawa Twoje dane mogą zostać przekazane
           odpowiednim organom publicznym.
         </li>
         <li>
-          Pani/Pana dane osobowe będą przechowywane przez okres wynikający z obowiązujących przepisów
-          prawa (przepisy o archiwizacji); w przypadku danych osobowych pozyskanych na podstawie
-          zgody, dane te będą przechowywane przez okres wskazany w zgodzie.
+          Pani/Pana dane osobowe będą przechowywane przez okres wynikający z obowiązujących
+          przepisów prawa (przepisy o archiwizacji); w przypadku danych osobowych pozyskanych na
+          podstawie zgody, dane te będą przechowywane przez okres wskazany w zgodzie.
         </li>
         <li>
           Masz prawo dostępu do swoich danych osobowych, ich sprostowania, usunięcia lub ograniczenia
-          przetwarzania oraz prawo do wniesienia sprzeciwu wobec przetwarzania, a także prawo do
-          przenoszenia danych. W przypadku jeśli wystąpisz do nas o realizację swoich uprawnień,
-          niezwłocznie zajmiemy się Twoją sprawą i nie później niż w terminie 30 dni zostaniesz
-          poinformowany o sposobie załatwienia Twojej sprawy; termin ten możemy jednak przedłużyć
-          o kolejne 2 miesiące, w przypadku gdyby Twoje żądanie okazało się bardziej skomplikowane.
-          Jeżeli termin zostanie wydłużony, zostaniesz o tym poinformowany. Jeśli jednak wymagania
+          przetwarzania oraz prawo do wniesienia sprzeciwu wobec przetwarzania, a także prawo do
+          przenoszenia danych. W przypadku jeśli wystąpisz do nas o realizację swoich uprawnień,
+          niezwłocznie zajmiemy się Twoją sprawą i nie później niż w terminie 30 dni zostaniesz
+          poinformowany o sposobie załatwienia Twojej sprawy; termin ten możemy jednak przedłużyć
+          o kolejne 2 miesiące, w przypadku gdyby Twoje żądanie okazało się bardziej skomplikowane.
+          Jeżeli termin zostanie wydłużony, zostaniesz o tym poinformowany. Jeśli jednak wymagania
           ustawowe uniemożliwią realizację Twoich uprawnień, otrzymasz od nas stosowne uzasadnienie.
         </li>
         <li>
-          Masz prawo do wniesienia w każdym momencie skargi do Prezesa Urzędu Ochrony Danych
+          Masz prawo do wniesienia w każdym momencie skargi do Prezesa Urzędu Ochrony Danych
           Osobowych, gdy uzna Pan/Pani, iż przetwarzanie danych osobowych Pani/Pana dotyczących
-          narusza przepisy Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 z 27 kwietnia
-          2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych i
-          w sprawie swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE.
+          narusza przepisy Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 z 27 kwietnia
+          2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych
+          i w sprawie swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE.
         </li>
         <li>
           Podanie przez Panią/Pana danych osobowych jest dobrowolne. Konsekwencją niepodania danych
-          jest brak kontaktu oraz niewykonanie celu z pkt 3.
+          jest brak kontaktu oraz niewykonanie celu z pkt 3.
         </li>
         <li>
           Administrator danych nie ma zamiaru przekazywać danych osobowych do państwa trzeciego lub
@@ -266,75 +267,77 @@ const sections = [
         </li>
       </ol>
 
-      <h2 id="stazysta">Informacja o przetwarzaniu danych osobowych dla stażysty lub praktykanta</h2>
+      <h2 id="stazysta">Informacja o przetwarzaniu danych osobowych dla stażysty lub praktykanta</h2>
       <p>
-        Zgodnie z Rozporządzeniem Parlamentu Europejskiego i Rady (UE) 2016/679 z 27 kwietnia 2016 r.
-        w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych i w sprawie
-        swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE informuję, iż:
+        Zgodnie z Rozporządzeniem Parlamentu Europejskiego i Rady (UE) 2016/679 z 27 kwietnia
+        2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych
+        i w sprawie swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE informuję,
+        iż:
       </p>
       <ol>
         <li>
           <p>
             Administratorem Pani/Pana danych osobowych jest: <strong
-              >Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie</strong
-            > reprezentowany przez Dyrektora Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie. Możesz
-            się z nami skontaktować w następujący sposób:
+              >Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie</strong
+            > reprezentowany przez Dyrektora Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie. Możesz
+            się z nami skontaktować w następujący sposób:
           </p>
           <ul>
-            <li>listownie: Dom Pomocy Społecznej im. Jana Pawła II, ul. Wielbarska 2, 12-100 Szczytno;</li>
+            <li>listownie: {adres};</li>
             <li>e-mail: <a href="mailto:szczytno@dps.pl">szczytno@dps.pl</a>;</li>
-            <li>telefon: <a href="tel:+48896242288">89 624 22 88</a>.</li>
+            <li>telefon: <a href={contact.phone.href}>{contact.phone.label}</a>.</li>
           </ul>
         </li>
         <li>
           Jeśli masz jakieś pytania dotyczące przetwarzania Twoich danych osobowych, możesz się
-          kontaktować bezpośrednio z naszym Inspektorem Ochrony Danych: e-mail
+          kontaktować bezpośrednio z naszym Inspektorem Ochrony Danych: e-mail
           <a href="mailto:iod2@warmiainkaso.pl">iod2@warmiainkaso.pl</a>.
         </li>
         <li>
-          Celem, dla którego przetwarzamy Twoje dane osobowe, jest zawarcie i realizacja umowy lub
-          porozumienia zawartego z Tobą lub innym podmiotem dotyczące odbywania przez Ciebie stażu lub
-          praktyki w Domu Pomocy Społecznej. Wypełnienie naszego obowiązku prawnego związanego
-          z realizacją stażu lub praktyki. Zapewnienie bezpieczeństwa na terenie Domu Pomocy Społecznej,
-          w tym bezpieczeństwa informacji, poprzez kontrolę dostępu lub monitoring.
+          Celem, dla którego przetwarzamy Twoje dane osobowe, jest zawarcie i realizacja umowy lub
+          porozumienia zawartego z Tobą lub innym podmiotem dotyczące odbywania przez Ciebie stażu
+          lub praktyki w Domu Pomocy Społecznej. Wypełnienie naszego obowiązku prawnego związanego
+          z realizacją stażu lub praktyki. Zapewnienie bezpieczeństwa na terenie Domu Pomocy
+          Społecznej, w tym bezpieczeństwa informacji, poprzez kontrolę dostępu lub monitoring.
         </li>
         <li>
           Twoje dane osobowe mogą być przez nas udostępniane dostawcy usług hostingowych, dostawcy
-          poczty elektronicznej, firmom serwisującym oprogramowanie, lekarzom oraz kancelarii prawnej.
-          Zgodnie z przepisami prawa Twoje dane mogą zostać przekazane odpowiednim organom publicznym.
+          poczty elektronicznej, firmom serwisującym oprogramowanie, lekarzom oraz kancelarii
+          prawnej. Zgodnie z przepisami prawa Twoje dane mogą zostać przekazane odpowiednim organom
+          publicznym.
         </li>
         <li>
           Pani/Pana dane osobowe będziemy przetwarzać przez okres trwania praktyki lub stażu. Twoje
-          dane osobowe zawarte w dokumentacji kadrowej lub księgowej będziemy przechowywać do momentu
-          wygaśnięcia obowiązków przechowywania danych wynikających z przepisów szczególnych. Będziemy
-          przechowywać Twoje dane osobowe przez czas określony dla poszczególnych symboli kategorii
-          archiwalnej, którym jest oznaczona dokumentacja zgromadzona w DPS zgodnie z Jednolitym
-          Rzeczowym Wykazem Akt Domu Pomocy Społecznej opracowanym na podstawie rozporządzenia
-          Ministra Kultury i Dziedzictwa Narodowego z dnia 20 października 2015 r. w sprawie
-          klasyfikowania i kwalifikowania dokumentacji, przekazywania materiałów archiwalnych do
-          archiwów państwowych i brakowania dokumentacji niearchiwalnej.
+          dane osobowe zawarte w dokumentacji kadrowej lub księgowej będziemy przechowywać do
+          momentu wygaśnięcia obowiązków przechowywania danych wynikających z przepisów szczególnych.
+          Będziemy przechowywać Twoje dane osobowe przez czas określony dla poszczególnych symboli
+          kategorii archiwalnej, którym jest oznaczona dokumentacja zgromadzona w DPS zgodnie
+          z Jednolitym Rzeczowym Wykazem Akt Domu Pomocy Społecznej opracowanym na podstawie
+          rozporządzenia Ministra Kultury i Dziedzictwa Narodowego z dnia 20 października 2015 r.
+          w sprawie klasyfikowania i kwalifikowania dokumentacji, przekazywania materiałów
+          archiwalnych do archiwów państwowych i brakowania dokumentacji niearchiwalnej.
         </li>
         <li>
           Masz prawo dostępu do swoich danych osobowych, ich sprostowania, usunięcia lub ograniczenia
-          przetwarzania oraz prawo do wniesienia sprzeciwu wobec przetwarzania, a także prawo do
-          przenoszenia danych. W przypadku jeśli wystąpisz do nas o realizację swoich uprawnień,
-          niezwłocznie zajmiemy się Twoją sprawą i nie później niż w terminie 30 dni zostaniesz
-          poinformowany o sposobie załatwienia Twojej sprawy; termin ten możemy jednak przedłużyć
-          o kolejne 2 miesiące, w przypadku gdyby Twoje żądanie okazało się bardziej skomplikowane.
-          Jeżeli termin zostanie wydłużony, zostaniesz o tym poinformowany. Jeśli jednak wymagania
+          przetwarzania oraz prawo do wniesienia sprzeciwu wobec przetwarzania, a także prawo do
+          przenoszenia danych. W przypadku jeśli wystąpisz do nas o realizację swoich uprawnień,
+          niezwłocznie zajmiemy się Twoją sprawą i nie później niż w terminie 30 dni zostaniesz
+          poinformowany o sposobie załatwienia Twojej sprawy; termin ten możemy jednak przedłużyć
+          o kolejne 2 miesiące, w przypadku gdyby Twoje żądanie okazało się bardziej skomplikowane.
+          Jeżeli termin zostanie wydłużony, zostaniesz o tym poinformowany. Jeśli jednak wymagania
           ustawowe uniemożliwią realizację Twoich uprawnień, otrzymasz od nas stosowne uzasadnienie.
         </li>
         <li>
-          Masz prawo do wniesienia w każdym momencie skargi do Prezesa Urzędu Ochrony Danych
+          Masz prawo do wniesienia w każdym momencie skargi do Prezesa Urzędu Ochrony Danych
           Osobowych, gdy uzna Pan/Pani, iż przetwarzanie danych osobowych Pani/Pana dotyczących
-          narusza przepisy Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 z 27 kwietnia
-          2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych i
-          w sprawie swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE.
+          narusza przepisy Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 z 27 kwietnia
+          2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych
+          i w sprawie swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE.
         </li>
         <li>
-          Podanie danych osobowych jest obligatoryjne w oparciu o przepisy prawa, a w pozostałym
+          Podanie danych osobowych jest obligatoryjne w oparciu o przepisy prawa, a w pozostałym
           zakresie jest dobrowolne. Konsekwencją niepodania danych jest brak kontaktu oraz
-          niewykonanie celu z pkt 3.
+          niewykonanie celu z pkt 3.
         </li>
         <li>
           Administrator danych nie ma zamiaru przekazywać danych osobowych do państwa trzeciego lub
@@ -342,74 +345,75 @@ const sections = [
         </li>
       </ol>
 
-      <h2 id="kandydat">Informacja o przetwarzaniu danych osobowych dla kandydata</h2>
+      <h2 id="kandydat">Informacja o przetwarzaniu danych osobowych dla kandydata</h2>
       <p>
-        Zgodnie z Rozporządzeniem Parlamentu Europejskiego i Rady (UE) 2016/679 z 27 kwietnia 2016 r.
-        w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych i w sprawie
-        swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE informuję, iż:
+        Zgodnie z Rozporządzeniem Parlamentu Europejskiego i Rady (UE) 2016/679 z 27 kwietnia
+        2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych
+        i w sprawie swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE informuję,
+        iż:
       </p>
       <ol>
         <li>
           <p>
             Administratorem Pani/Pana danych osobowych jest: <strong
-              >Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie</strong
-            > reprezentowany przez Dyrektora Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie. Możesz
-            się z nami skontaktować w następujący sposób:
+              >Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie</strong
+            > reprezentowany przez Dyrektora Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie. Możesz
+            się z nami skontaktować w następujący sposób:
           </p>
           <ul>
-            <li>listownie: Dom Pomocy Społecznej im. Jana Pawła II, ul. Wielbarska 2, 12-100 Szczytno;</li>
+            <li>listownie: {adres};</li>
             <li>e-mail: <a href="mailto:szczytno@dps.pl">szczytno@dps.pl</a>;</li>
-            <li>telefon: <a href="tel:+48896242288">89 624 22 88</a>.</li>
+            <li>telefon: <a href={contact.phone.href}>{contact.phone.label}</a>.</li>
           </ul>
         </li>
         <li>
           Jeśli masz jakieś pytania dotyczące przetwarzania Twoich danych osobowych, możesz się
-          kontaktować bezpośrednio z naszym Inspektorem Ochrony Danych: e-mail
+          kontaktować bezpośrednio z naszym Inspektorem Ochrony Danych: e-mail
           <a href="mailto:iod2@warmiainkaso.pl">iod2@warmiainkaso.pl</a>.
         </li>
         <li>
           Celem przetwarzania Twoich danych osobowych jest przeprowadzenie procesu naboru na
           stanowisko, na które aplikujesz. Zapewnienie bezpieczeństwa na terenie Domu Pomocy
-          Społecznej, w tym bezpieczeństwa informacji, poprzez kontrolę dostępu lub monitoring.
+          Społecznej, w tym bezpieczeństwa informacji, poprzez kontrolę dostępu lub monitoring.
         </li>
         <li>
           Twoje dane osobowe mogą być przez nas udostępniane dostawcy usług hostingowych, dostawcy
-          poczty elektronicznej, kancelarii prawnej. Zgodnie z przepisami prawa Twoje dane mogą zostać
-          przekazane odpowiednim organom publicznym.
+          poczty elektronicznej, kancelarii prawnej. Zgodnie z przepisami prawa Twoje dane mogą
+          zostać przekazane odpowiednim organom publicznym.
         </li>
         <li>
-          Pani/Pana dane osobowe będziemy przetwarzać przez okres prowadzenia rekrutacji oraz 3
-          miesięcy po zakończeniu procesu rekrutacji, jeżeli DPS nie nawiąże z Tobą stosunku pracy.
-          W wypadku nawiązania z Tobą stosunku pracy Twoje dane osobowe uzyskane w procesie rekrutacji
-          będą dalej przetwarzane jako dane osobowe pracownika DPS. Będziemy przechowywać Twoje dane
-          osobowe przez czas określony dla poszczególnych symboli kategorii archiwalnej, którym jest
-          oznaczona dokumentacja zgromadzona w DPS zgodnie z Jednolitym Rzeczowym Wykazem Akt Domu
-          Pomocy Społecznej opracowanym na podstawie rozporządzenia Ministra Kultury i Dziedzictwa
-          Narodowego z dnia 20 października 2015 r. w sprawie klasyfikowania i kwalifikowania
-          dokumentacji, przekazywania materiałów archiwalnych do archiwów państwowych i brakowania
-          dokumentacji niearchiwalnej.
+          Pani/Pana dane osobowe będziemy przetwarzać przez okres prowadzenia rekrutacji oraz
+          3 miesięcy po zakończeniu procesu rekrutacji, jeżeli DPS nie nawiąże z Tobą stosunku pracy.
+          W wypadku nawiązania z Tobą stosunku pracy Twoje dane osobowe uzyskane w procesie
+          rekrutacji będą dalej przetwarzane jako dane osobowe pracownika DPS. Będziemy przechowywać
+          Twoje dane osobowe przez czas określony dla poszczególnych symboli kategorii archiwalnej,
+          którym jest oznaczona dokumentacja zgromadzona w DPS zgodnie z Jednolitym Rzeczowym Wykazem
+          Akt Domu Pomocy Społecznej opracowanym na podstawie rozporządzenia Ministra Kultury
+          i Dziedzictwa Narodowego z dnia 20 października 2015 r. w sprawie klasyfikowania
+          i kwalifikowania dokumentacji, przekazywania materiałów archiwalnych do archiwów
+          państwowych i brakowania dokumentacji niearchiwalnej.
         </li>
         <li>
           Masz prawo dostępu do swoich danych osobowych, ich sprostowania, usunięcia lub ograniczenia
-          przetwarzania oraz prawo do wniesienia sprzeciwu wobec przetwarzania, a także prawo do
-          przenoszenia danych. W przypadku jeśli wystąpisz do nas o realizację swoich uprawnień,
-          niezwłocznie zajmiemy się Twoją sprawą i nie później niż w terminie 30 dni zostaniesz
-          poinformowany o sposobie załatwienia Twojej sprawy; termin ten możemy jednak przedłużyć
-          o kolejne 2 miesiące, w przypadku gdyby Twoje żądanie okazało się bardziej skomplikowane.
-          Jeżeli termin zostanie wydłużony, zostaniesz o tym poinformowany. Jeśli jednak wymagania
+          przetwarzania oraz prawo do wniesienia sprzeciwu wobec przetwarzania, a także prawo do
+          przenoszenia danych. W przypadku jeśli wystąpisz do nas o realizację swoich uprawnień,
+          niezwłocznie zajmiemy się Twoją sprawą i nie później niż w terminie 30 dni zostaniesz
+          poinformowany o sposobie załatwienia Twojej sprawy; termin ten możemy jednak przedłużyć
+          o kolejne 2 miesiące, w przypadku gdyby Twoje żądanie okazało się bardziej skomplikowane.
+          Jeżeli termin zostanie wydłużony, zostaniesz o tym poinformowany. Jeśli jednak wymagania
           ustawowe uniemożliwią realizację Twoich uprawnień, otrzymasz od nas stosowne uzasadnienie.
         </li>
         <li>
-          Masz prawo do wniesienia w każdym momencie skargi do Prezesa Urzędu Ochrony Danych
+          Masz prawo do wniesienia w każdym momencie skargi do Prezesa Urzędu Ochrony Danych
           Osobowych, gdy uzna Pan/Pani, iż przetwarzanie danych osobowych Pani/Pana dotyczących
-          narusza przepisy Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 z 27 kwietnia
-          2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych i
-          w sprawie swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE.
+          narusza przepisy Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 z 27 kwietnia
+          2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych
+          i w sprawie swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE.
         </li>
         <li>
-          Podanie danych osobowych jest obligatoryjne w oparciu o przepisy prawa, a w pozostałym
+          Podanie danych osobowych jest obligatoryjne w oparciu o przepisy prawa, a w pozostałym
           zakresie jest dobrowolne. Konsekwencją niepodania danych jest brak kontaktu oraz
-          niewykonanie celu z pkt 3.
+          niewykonanie celu z pkt 3.
         </li>
         <li>
           Administrator danych nie ma zamiaru przekazywać danych osobowych do państwa trzeciego lub
@@ -418,39 +422,39 @@ const sections = [
       </ol>
 
       <h2 id="monitoring">
-        Informacja w sprawie monitoringu wizyjnego na terenie Domu Pomocy Społecznej
+        Informacja w sprawie monitoringu wizyjnego na terenie Domu Pomocy Społecznej
       </h2>
       <p>
-        Na podstawie art. 13 ust. 1 i 2 Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679
-        o ochronie danych osobowych z 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku
-        z przetwarzaniem ich danych osobowych i w sprawie swobodnego przepływu takich danych oraz
-        uchylenia dyrektywy 95/46/WE (Rozporządzenie ogólne w sprawie ODO) informujemy, że:
+        Na podstawie art. 13 ust. 1 i 2 Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679
+        o ochronie danych osobowych z 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych
+        w związku z przetwarzaniem ich danych osobowych i w sprawie swobodnego przepływu takich
+        danych oraz uchylenia dyrektywy 95/46/WE (Rozporządzenie ogólne w sprawie ODO) informujemy,
+        że:
       </p>
       <ol>
         <li>
           Administratorem Pani/Pana danych osobowych jest: <strong
-            >Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie</strong
-          > reprezentowany przez Dyrektora Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie, z siedzibą
-          ul. Wielbarska 2, 12-100 Szczytno.
+            >Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie</strong
+          > reprezentowany przez Dyrektora Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie, z siedzibą
+          {addressLine(contact.address)}.
         </li>
         <li>
-          W Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie został wyznaczony Inspektor Ochrony
-          Danych Osobowych, z którym kontakt jest możliwy pod adresem korespondencyjnym Dom Pomocy
-          Społecznej im. Jana Pawła II, ul. Wielbarska 2, 12-100 Szczytno, bądź za pomocą adresu
-          e-mail <a href="mailto:iod@dpsszczytno.pl">iod@dpsszczytno.pl</a>.
+          W Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie został wyznaczony Inspektor Ochrony
+          Danych Osobowych, z którym kontakt jest możliwy pod adresem korespondencyjnym {adres},
+          bądź za pomocą adresu e-mail <a href="mailto:iod@dpsszczytno.pl">iod@dpsszczytno.pl</a>.
         </li>
         <li>
-          Wszystkie dane rejestrowane poprzez kamery monitoringu wizyjnego są zapisywane i dostępne
+          Wszystkie dane rejestrowane poprzez kamery monitoringu wizyjnego są zapisywane i dostępne
           maksymalnie przez okres 30 dni.
         </li>
         <li>
-          Monitoring stosowany jest w celu ochrony mienia oraz zapewnienia bezpieczeństwa na terenie
+          Monitoring stosowany jest w celu ochrony mienia oraz zapewnienia bezpieczeństwa na terenie
           monitorowanym.
         </li>
         <li>
-          Podstawa prawna przetwarzania: art. 22<sup>2</sup> § 1 ustawy z dnia 26 czerwca 1974 roku —
-          Kodeks pracy oraz ustawa z dnia 10 maja 2018 r. o ochronie danych osobowych (Dz. U. z 2018 r.
-          poz. 1000 z późn. zm.).
+          Podstawa prawna przetwarzania: art. 22<sup>2</sup> § 1 ustawy z dnia 26 czerwca 1974 roku —
+          Kodeks pracy oraz ustawa z dnia 10 maja 2018 r. o ochronie danych osobowych (Dz. U.
+          z 2018 r. poz. 1000 z późn. zm.).
         </li>
         <li>
           Pani/Pana dane osobowe mogą zostać udostępniane wyłącznie organom uprawnionym do ich
@@ -462,7 +466,7 @@ const sections = [
         </li>
         <li>
           Wobec Pana/Pani osoby nie będą podejmowane zautomatyzowane decyzje (decyzje bez istotnego
-          udziału człowieka), w tym Pana/Pani dane osobowe nie będą podlegały profilowaniu.
+          udziału człowieka), w tym Pana/Pani dane osobowe nie będą podlegały profilowaniu.
         </li>
         <li>
           Przysługuje Pani/Panu prawo wniesienia skargi do organu nadzorczego oraz prawo dostępu do
@@ -470,7 +474,5 @@ const sections = [
         </li>
       </ol>
     </div>
-
-    <BackLink href="/dokumenty/" label="Wróć do Dokumentów" />
   </PageShell>
 </Base>

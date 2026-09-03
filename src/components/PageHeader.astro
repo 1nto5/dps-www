@@ -1,52 +1,22 @@
 ---
+/**
+ * The one `h1` of a page, with an optional lead. `breadcrumbs` draws the trail
+ * above the title on every page below the top level.
+ */
 import Breadcrumbs from "./Breadcrumbs.astro";
-
 interface Props {
-  /** A short label above the h1, for something the breadcrumb does not already
-   *  say: repeating the trail's last-but-one crumb here only says it twice. */
-  eyebrow?: string;
   title: string;
   lead?: string;
-  /** "hero" is the larger homepage scale; every other page uses the default. */
-  size?: "default" | "hero";
-  /** Drop the page-width wrapper when the header already sits inside a layout column. */
-  bare?: boolean;
-  /** Id for the h1, for sections that reference it with aria-labelledby. */
-  titleId?: string;
-  /** Show the trail from the home page down to here. Every page below the
-   *  top level sets it; the seven main-navigation routes do not need it. */
   breadcrumbs?: boolean;
   /** Label for the last crumb when the route map cannot know it — a news post. */
-  breadcrumbLabel?: string;
-  class?: string;
+  current?: string;
 }
-const {
-  eyebrow,
-  title,
-  lead,
-  size = "default",
-  bare = false,
-  titleId,
-  breadcrumbs = false,
-  breadcrumbLabel,
-  class: className,
-} = Astro.props;
-
-const hero = size === "hero";
-// Sentence case, no letter-spacing: the eyebrow is a short label, not a
-// heading, and small uppercase Polish with diacritics is the hardest thing on
-// the page to read. Weight and the honey colour carry it instead.
-const eyebrowClass = `${hero ? "mb-3" : "mb-2"} text-meta font-semibold text-honey`;
-const titleClass = hero ? "text-4xl md:text-5xl" : "text-3xl md:text-4xl";
-const leadClass = hero
-  ? "mt-5 max-w-xl text-lg leading-relaxed text-ink-soft text-pretty"
-  : "mt-4 max-w-column text-lg leading-relaxed text-ink-soft text-pretty";
+const { title, lead, breadcrumbs = false, current } = Astro.props;
 ---
 
-<div class:list={[!bare && "mx-auto max-w-6xl px-4 pb-8 pt-10 sm:px-6 md:pb-10 md:pt-14", className]}>
-  {breadcrumbs && <Breadcrumbs current={breadcrumbLabel} />}
-  {eyebrow && <p class={eyebrowClass}>{eyebrow}</p>}
-  <h1 id={titleId} class={titleClass}>{title}</h1>
-  {lead && <p class={leadClass}>{lead}</p>}
+<header class="mx-auto w-full max-w-wide px-5 pt-10 sm:px-8 md:pt-14">
+  {breadcrumbs && <Breadcrumbs current={current} />}
+  <h1 class="max-w-[22ch] text-4xl md:text-5xl">{title}</h1>
+  {lead && <p class="mt-5 max-w-[48ch] text-lg text-ink-soft">{lead}</p>}
   <slot />
-</div>
+</header>

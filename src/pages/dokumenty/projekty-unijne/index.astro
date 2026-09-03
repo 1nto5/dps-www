@@ -7,12 +7,11 @@
 import { Image } from "astro:assets";
 import Base from "../../../layouts/Base.astro";
 import PageHeader from "../../../components/PageHeader.astro";
-import Gallery from "../../../components/Gallery.astro";
 import PageShell from "../../../components/PageShell.astro";
-import SiblingNav from "../../../components/SiblingNav.astro";
-import SectionNav from "../../../components/SectionNav.astro";
-import LinkCard from "../../../components/LinkCard.astro";
-import { dokumentySections } from "../../../data/dokumenty-sections";
+import Toc from "../../../components/Toc.astro";
+import PageList from "../../../components/PageList.astro";
+import Figure from "../../../components/Figure.astro";
+import Gallery from "../../../components/Gallery.astro";
 import { projektyUnijnePages } from "../../../data/projekty-unijne-pages";
 
 import logoPower from "../../../assets/media/1196-UE.jpg";
@@ -29,9 +28,9 @@ import photoSprzet from "../../../assets/media/1205-IMG_20201022_102304794.jpg";
 import photoDozownik from "../../../assets/media/1206-IMG_20201021_140653511.jpg";
 import photoZamglawiacz from "../../../assets/media/1207-IMG_20201022_084222616.jpg";
 
-/** Rail table of contents. Labels are much shorter than the official project
-    names, which are reproduced in full in the headings themselves. */
-const sections = [
+/** Chapter labels are much shorter than the official project names, which are
+    reproduced in full in the headings themselves. */
+const toc = [
   { id: "pomagajmy-razem", label: "Pomagajmy Razem" },
   { id: "bezpieczenstwo-covid", label: "Bezpieczeństwo na czas Covid-19" },
   { id: "wsparcie-instytucji", label: "Wsparcie instytucji opieki" },
@@ -83,32 +82,13 @@ const photos = [
   <PageHeader
     breadcrumbs
     title="Projekty unijne"
-    lead="Projekty finansowane ze środków Unii Europejskiej, w których uczestniczy nasz Dom."
+    lead="Projekty finansowane ze środków Unii Europejskiej, w których uczestniczy nasz Dom."
   />
 
-  <SectionNav items={sections} />
-
   <PageShell>
-    <div slot="rail" class="space-y-8">
-      <SiblingNav
-        title="Dokumenty"
-        items={dokumentySections}
-        current="/dokumenty/projekty-unijne/"
-      />
-      <nav aria-label="Strony w dziale Projekty unijne">
-        <ul role="list" class="grid gap-4">
-          {
-            otherPages.map((page) => (
-              <li>
-                <LinkCard href={page.href} label={page.label} />
-              </li>
-            ))
-          }
-        </ul>
-      </nav>
-    </div>
+    <Toc slot="rail" items={toc} />
 
-    <div class="doc">
+    <div class="doc mt-subsection">
       <h2 id="pomagajmy-razem">Projekt „Pomagajmy Razem”</h2>
     </div>
 
@@ -128,136 +108,128 @@ const photos = [
 
     <div class="doc">
       <p>
-        Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie realizuje projekt grantowy pt. <strong
+        Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie realizuje projekt grantowy pt. <strong
           >„Pomagajmy Razem”</strong
-        > nr: POWR.02.08.00-00-0103/20, finansowany ze środków Programu Operacyjnego Wiedza Edukacja Rozwój,
-        w ramach II Osi priorytetowej: Efektywne polityki publiczne dla rynku pracy, gospodarki i edukacji
-        PO WER, Działanie 2.8 Rozwój usług społecznych świadczonych w środowisku lokalnym.
+        > nr: POWR.02.08.00-00-0103/20, finansowany ze środków Programu Operacyjnego Wiedza Edukacja
+        Rozwój, w ramach II Osi priorytetowej: Efektywne polityki publiczne dla rynku pracy,
+        gospodarki i edukacji PO WER, Działanie 2.8 Rozwój usług społecznych świadczonych
+        w środowisku lokalnym.
       </p>
       <p>
         <strong>Celem projektu</strong> jest łagodzenie skutków pandemii COVID-19 oraz przeciwdziałanie
-        jej negatywnym konsekwencjom, w szczególności dla osób znajdujących się w grupie ryzyka. Zaplanowane
+        jej negatywnym konsekwencjom, w szczególności dla osób znajdujących się w grupie ryzyka. Zaplanowane
         wsparcie ma na celu ochronę życia pensjonariuszy DPS poprzez ograniczenie skutków COVID-19.
       </p>
       <p>
         Projekt grantowy przyczyni się do ograniczenia wystąpienia negatywnych skutków COVID-19 oraz
-        zminimalizowania rozwoju epidemii wśród osób narażonych na zachorowania, w szczególności wśród
-        pensjonariuszy i pracowników domów pomocy społecznej na terenie województwa
+        zminimalizowania rozwoju epidemii wśród osób narażonych na zachorowania, w szczególności
+        wśród pensjonariuszy i pracowników domów pomocy społecznej na terenie województwa
         warmińsko-mazurskiego.
       </p>
 
       <h3>Informacja pierwotna</h3>
       <ul>
-        <li>Wartość projektu: <strong>610 613,28 zł</strong></li>
-        <li>Wkład Funduszy Europejskich: <strong>514 624,87 zł</strong></li>
-        <li>Okres realizacji projektu: 26 sierpnia 2020 r. – 30 listopada 2020 r.</li>
+        <li>Wartość projektu: <strong>610 613,28 zł</strong></li>
+        <li>Wkład Funduszy Europejskich: <strong>514 624,87 zł</strong></li>
+        <li>Okres realizacji projektu: 26 sierpnia 2020 r. – 30 listopada 2020 r.</li>
       </ul>
 
       <h3>Informacja po aktualizacji</h3>
       <ul>
-        <li>Wartość projektu: <strong>21 306 431,00 zł</strong></li>
-        <li>Wkład Funduszy Europejskich: <strong>17 957 060,04 zł</strong></li>
+        <li>Wartość projektu: <strong>21 306 431,00 zł</strong></li>
+        <li>Wkład Funduszy Europejskich: <strong>17 957 060,04 zł</strong></li>
         <li>
-          Otrzymany grant: Dom Pomocy Społecznej otrzymał grant w wysokości <strong
-            >631 888,14 zł</strong
+          Otrzymany grant: Dom Pomocy Społecznej otrzymał grant w wysokości <strong
+            >631 888,14 zł</strong
           > (wysokość grantu według aktualizacji)
         </li>
-        <li>Okres realizacji projektu: 26 sierpnia 2020 r. – 31 marca 2021 r.</li>
+        <li>Okres realizacji projektu: 26 sierpnia 2020 r. – 31 marca 2021 r.</li>
       </ul>
 
-      <h3>Zdjęcia z realizacji projektu</h3>
+      <h3>Zdjęcia z realizacji projektu</h3>
     </div>
 
     <div class="mt-block">
-      <Gallery
-        photos={photos}
-        sizes="(min-width: 1024px) 15rem, (min-width: 640px) 33vw, 50vw"
-      />
+      <Gallery photos={photos} sizes="(min-width: 64rem) 15rem, (min-width: 40rem) 33vw, 50vw" />
     </div>
 
     <div class="doc mt-section">
       <h2 id="bezpieczenstwo-covid">
-        Projekt „Zapewnienie bezpieczeństwa i opieki pacjentom oraz personelowi zakładów
+        Projekt „Zapewnienie bezpieczeństwa i opieki pacjentom oraz personelowi zakładów
         opiekuńczo-leczniczych, domów pomocy społecznej, zakładów pielęgnacyjno-opiekuńczych
-        i hospicjów na czas Covid-19”
+        i hospicjów na czas Covid-19”
       </h2>
       <p>
-        Powiat Szczycieński — Dom Pomocy Społecznej im. Jana Pawła II współrealizuje projekt
-        dofinansowany z Funduszy Europejskich „Zapewnienie bezpieczeństwa i opieki pacjentom oraz
+        Powiat Szczycieński — Dom Pomocy Społecznej im. Jana Pawła II współrealizuje projekt
+        dofinansowany z Funduszy Europejskich „Zapewnienie bezpieczeństwa i opieki pacjentom oraz
         personelowi zakładów opiekuńczo-leczniczych, domów pomocy społecznej, zakładów
-        pielęgnacyjno-opiekuńczych i hospicjów na czas Covid-19”.
+        pielęgnacyjno-opiekuńczych i hospicjów na czas Covid-19”.
       </p>
       <ul>
         <li>
-          Dofinansowanie projektu dla Powiatu Szczycieńskiego — Domu Pomocy Społecznej im. Jana Pawła
-          II: <strong>29 460,62 zł</strong>
+          Dofinansowanie projektu dla Powiatu Szczycieńskiego — Domu Pomocy Społecznej im. Jana
+          Pawła II: <strong>29 460,62 zł</strong>
         </li>
-        <li>Dofinansowanie projektu dla Powiatu Szczycieńskiego: <strong>30 415,96 zł</strong></li>
+        <li>Dofinansowanie projektu dla Powiatu Szczycieńskiego: <strong>30 415,96 zł</strong></li>
       </ul>
       <p>
-        Projekt realizowany jest przy udziale Ministerstwa Zdrowia i Narodowego Funduszu Zdrowia,
-        ze środków Europejskiego Funduszu Społecznego.
+        Projekt realizowany jest przy udziale Ministerstwa Zdrowia i Narodowego Funduszu Zdrowia, ze
+        środków Europejskiego Funduszu Społecznego.
       </p>
     </div>
 
-    <div class="mt-block grid gap-6 sm:grid-cols-2">
-      <Image
+    <div class="mt-block grid max-w-column gap-6 sm:grid-cols-2">
+      <Figure
         src={posterCovidDps}
         alt="Plakat informacyjny: Powiat Szczycieński — Dom Pomocy Społecznej im. Jana Pawła II współrealizuje projekt dofinansowany z Funduszy Europejskich na czas Covid-19. Dofinansowanie projektu 29 460,62 zł."
         widths={[400, 680]}
-        sizes="(min-width: 640px) 50vw, 100vw"
-        class="h-auto w-full rounded-lg border border-line"
-        loading="lazy"
+        sizes="(min-width: 40rem) 50vw, 100vw"
       />
-      <Image
+      <Figure
         src={posterCovidPowiat}
         alt="Plakat informacyjny: Powiat Szczycieński współrealizuje projekt dofinansowany z Funduszy Europejskich na czas Covid-19. Dofinansowanie projektu 30 415,96 zł."
         widths={[400, 680]}
-        sizes="(min-width: 640px) 50vw, 100vw"
-        class="h-auto w-full rounded-lg border border-line"
-        loading="lazy"
+        sizes="(min-width: 40rem) 50vw, 100vw"
       />
     </div>
 
     <div class="doc mt-section">
       <h2 id="wsparcie-instytucji">
-        Projekt „Wsparcie instytucji zajmujących się opieką nad osobami wymagającymi wsparcia z terenu
-        powiatu szczycieńskiego”
+        Projekt „Wsparcie instytucji zajmujących się opieką nad osobami wymagającymi wsparcia
+        z terenu powiatu szczycieńskiego”
       </h2>
       <p>
-        Numer projektu RPWM.11.02.03-28-0012/20, czas trwania projektu:
-        1 października 2020 r. – 31 grudnia 2020 r. Wnioskodawcą jest Powiat Szczycieński,
-        realizacja — Powiatowe Centrum Pomocy Rodzinie
-        w Szczytnie, w ramach Osi priorytetowej 11 — Włączenie społeczne, Poddziałanie 11.2.3 —
-        Ułatwienie dostępu do usług społecznych, w tym integracja ze środowiskiem lokalnym — projekty
-        konkursowe Regionalnego Programu Operacyjnego Województwa Warmińsko-Mazurskiego na lata
-        2014–2020, współfinansowanego ze środków Europejskiego Funduszu Społecznego.
+        Numer projektu RPWM.11.02.03-28-0012/20, czas trwania projektu: 1 października 2020 r. –
+        31 grudnia 2020 r. Wnioskodawcą jest Powiat Szczycieński, realizacja — Powiatowe Centrum
+        Pomocy Rodzinie w Szczytnie, w ramach Osi priorytetowej 11 — Włączenie społeczne,
+        Poddziałanie 11.2.3 — Ułatwienie dostępu do usług społecznych, w tym integracja ze
+        środowiskiem lokalnym — projekty konkursowe Regionalnego Programu Operacyjnego Województwa
+        Warmińsko-Mazurskiego na lata 2014–2020, współfinansowanego ze środków Europejskiego
+        Funduszu Społecznego.
       </p>
       <ul>
-        <li>Wartość projektu: <strong>976 185,90 zł</strong></li>
-        <li>Dofinansowanie projektu z EFS: <strong>927 185,90 zł</strong></li>
+        <li>Wartość projektu: <strong>976 185,90 zł</strong></li>
+        <li>Dofinansowanie projektu z EFS: <strong>927 185,90 zł</strong></li>
       </ul>
       <p>Instytucje objęte wsparciem:</p>
       <ul>
-        <li>Dom Pomocy Społecznej w Szczytnie z Filią w Spychowie,</li>
-        <li>Środowiskowy Dom Samopomocy w Szczytnie z Filią w Piasutnie,</li>
-        <li>Dom Dziecka nr 2 w Szczytnie,</li>
-        <li>Dom Dziecka w Szczytnie,</li>
-        <li>Centrum Administracyjne do Obsługi POW w Szczytnie,</li>
-        <li>Centrum Ekonomiczno-Administracyjne Domów dla Dzieci w Pasymiu,</li>
-        <li>Powiatowe Centrum Pomocy Rodzinie w Szczytnie.</li>
+        <li>Dom Pomocy Społecznej w Szczytnie z Filią w Spychowie,</li>
+        <li>Środowiskowy Dom Samopomocy w Szczytnie z Filią w Piasutnie,</li>
+        <li>Dom Dziecka nr 2 w Szczytnie,</li>
+        <li>Dom Dziecka w Szczytnie,</li>
+        <li>Centrum Administracyjne do Obsługi POW w Szczytnie,</li>
+        <li>Centrum Ekonomiczno-Administracyjne Domów dla Dzieci w Pasymiu,</li>
+        <li>Powiatowe Centrum Pomocy Rodzinie w Szczytnie.</li>
       </ul>
-    </div>
 
-    <div class="mt-block max-w-column">
-      <Image
+      <Figure
         src={posterWsparcie}
         alt="Plakat projektu „Wsparcie instytucji zajmujących się opieką nad osobami wymagającymi wsparcia z terenu powiatu szczycieńskiego” z logotypami Funduszy Europejskich, Rzeczypospolitej Polskiej, Unii Europejskiej i herbem powiatu szczycieńskiego."
         widths={[400, 680]}
-        sizes="min(100vw, 34rem)"
-        class="h-auto w-full max-w-scan rounded-lg border border-line"
-        loading="lazy"
+        sizes="(min-width: 48rem) 42rem, 100vw"
       />
+
+      <PageList items={otherPages} />
     </div>
   </PageShell>
 </Base>

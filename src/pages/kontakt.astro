@@ -1,181 +1,125 @@
 ---
+/**
+ * Every way of reaching the Dom, in one place: the sekretariat, the direct
+ * numbers of the residential units, the branch, how to get here, and the
+ * official channels. No map and no iframe — the way here is described in
+ * words, and the numbers come from data/contact.ts.
+ */
 import Base from "../layouts/Base.astro";
 import PageHeader from "../components/PageHeader.astro";
 import PageShell from "../components/PageShell.astro";
-import MapPin from "../components/icons/MapPin.astro";
-import { contact } from "../data/contact";
+import Toc from "../components/Toc.astro";
+import Button from "../components/Button.astro";
+import { contact, addressLines } from "../data/contact";
 
-const units = contact.units;
-
-// `inline-block py-1`: at this text size a bare inline box is 22px tall, under
-// the 24px minimum target of WCAG 2.2 SC 2.5.8, and these are phone numbers
-// and e-mail addresses — the primary actions of the page.
-const linkClass = "inline-block py-1 text-spruce underline hover:text-spruce-deep";
-const cardClass = "rounded-xl border border-line bg-card p-6";
-const termClass = "text-base font-medium text-muted";
-const mapLinkClass =
-  "inline-flex items-center gap-1.5 rounded-full border border-edge px-3 py-1 text-meta text-spruce hover:border-spruce hover:text-spruce-deep";
+const toc = [
+  { id: "sekretariat", label: "Sekretariat" },
+  { id: "telefony", label: "Telefony" },
+  { id: "spychowo", label: "Filia w Spychowie" },
+  { id: "dojazd", label: "Dojazd" },
+  { id: "epuap", label: "Sprawy urzędowe" },
+];
 ---
 
 <Base
   title="Kontakt"
   description="Adresy, telefony i adresy e-mail Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie oraz filii w Spychowie."
 >
-  <PageHeader
-    eyebrow="Kontakt"
-    title="Jak się z nami skontaktować i gdzie nas znaleźć?"
-  />
+  <PageHeader breadcrumbs title="Jak się z nami skontaktować i gdzie nas znaleźć?">
+    <p class="mt-8">
+      <Button href={contact.phone.href} phone>{contact.phone.label}</Button>
+    </p>
+  </PageHeader>
 
   <PageShell>
-    <div class="grid gap-6 md:grid-cols-2">
-      <section aria-labelledby="siedziba" class={cardClass}>
-        <h2 id="siedziba" class="text-2xl">Szczytno</h2>
-        <address class="mt-6 not-italic">
-          {contact.nameShort}<br />
-          {contact.address.street}<br />
-          {contact.address.postalCode} {contact.address.city}
-        </address>
-        <p class="mt-4">
-          <a class={mapLinkClass} href="https://www.google.com/maps/search/?api=1&query=Wielbarska+2%2C+12-100+Szczytno" rel="noopener" data-external="off">
-            <MapPin />
-            Zobacz ul. Wielbarską 2 w Google Maps
-          </a>
-        </p>
-      </section>
+    <Toc slot="rail" items={toc} />
 
-      <section aria-labelledby="filia" class={cardClass}>
-        <h2 id="filia" class="text-2xl">Filia w Spychowie</h2>
-        <address class="mt-6 not-italic">
-          {contact.spychowo.name}<br />
-          {contact.spychowo.address.street}<br />
-          {contact.spychowo.address.postalCode} {contact.spychowo.address.city}
-        </address>
-        <p class="mt-4">
-          <span class={termClass}>Telefon:</span>{" "}
-          <a class={linkClass} href={contact.spychowo.phone.href}>{contact.spychowo.phone.label}</a>
-        </p>
-        <p class="mt-4">
-          <a class={mapLinkClass} href="https://www.google.com/maps/search/?api=1&query=Sienkiewicza+3%2C+12-150+Spychowo" rel="noopener" data-external="off">
-            <MapPin />
-            Zobacz ul. Sienkiewicza 3 w Google Maps
-          </a>
-        </p>
-      </section>
+    <div class="doc">
+      <h2 id="sekretariat">Sekretariat</h2>
+      <address>
+        {contact.nameShort}<br />
+        {addressLines(contact.address)[0]}<br />
+        {addressLines(contact.address)[1]}
+      </address>
+      <dl>
+        <dt>Telefon</dt>
+        <dd><a href={contact.phone.href}>{contact.phone.label}</a></dd>
+        <dt>Faks</dt>
+        <dd>{contact.fax}</dd>
+        <dt>E-mail</dt>
+        <dd><a href={`mailto:${contact.email}`}>{contact.email}</a></dd>
+        <dt>Skrytka ePUAP</dt>
+        <dd>{contact.epuap}</dd>
+      </dl>
 
-      <section aria-labelledby="domy-mieszkalne" class:list={[cardClass, "md:col-span-2"]}>
-        <h2 id="domy-mieszkalne" class="text-2xl">Telefony</h2>
+      <h2 id="telefony">Telefony</h2>
+      {
+        contact.units.map((unit) => (
+          <>
+            <h3>{unit.name}</h3>
+            <ul>
+              {unit.phones.map((phone) => (
+                <li>
+                  <a href={phone.href}>{phone.label}</a>
+                </li>
+              ))}
+            </ul>
+          </>
+        ))
+      }
 
-        {/* The secretariat leads the list and is set apart as the front desk.
-            The tint used to be `paper` on a white card — 1.02:1, a difference
-            nobody could see — so it is moss with a hairline of its own. */}
-        <div class="mt-6 rounded-lg border border-line bg-moss p-5">
-          <h3 class="text-lg">Sekretariat</h3>
-          {/* `min-w-0` on each cell: a grid item's default minimum is the width
-              of its own content, so the unbreakable e-mail address would push
-              the whole row wider than the card at 320px. */}
-          <dl class="mt-3 grid gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-4">
-            <div class="min-w-0">
-              <dt class={termClass}>Telefon</dt>
-              <dd><a class={linkClass} href={contact.phone.href}>{contact.phone.label}</a></dd>
-            </div>
-            <div class="min-w-0">
-              <dt class={termClass}>Faks</dt>
-              <dd>{contact.fax}</dd>
-            </div>
-            <div class="min-w-0">
-              <dt class={termClass}>E-mail</dt>
-              <dd>
-                <a class:list={[linkClass, "break-words"]} href={`mailto:${contact.email}`}
-                  >{contact.email}</a
-                >
-              </dd>
-            </div>
-            <div class="min-w-0">
-              <dt class={termClass}>Skrytka ePUAP</dt>
-              <dd>{contact.epuap}</dd>
-            </div>
-          </dl>
-          <p id="epuap" class="mt-4 text-meta">
-            Pismo urzędowe można wysłać elektronicznie przez usługę{" "}
-            <a class={linkClass} href="https://www.gov.pl/web/gov/wyslij-pismo-ogolne"
-              >Wyślij pismo ogólne</a
-            >{" "}
-            na portalu gov.pl — jako adresata wskazuje się wtedy naszą skrytkę ePUAP
-            <span class="whitespace-nowrap">{contact.epuap}</span>. W zwykłych sprawach nie
-            trzeba jednak niczego podpisywać elektronicznie: wystarczy e-mail albo telefon.
-          </p>
-        </div>
+      <h2 id="spychowo">Filia w Spychowie</h2>
+      <address>
+        {contact.spychowo.name}<br />
+        {addressLines(contact.spychowo.address)[0]}<br />
+        {addressLines(contact.spychowo.address)[1]}
+      </address>
+      <dl>
+        <dt>Telefon</dt>
+        <dd>
+          <a href={contact.spychowo.phone.href}>{contact.spychowo.phone.label}</a>
+        </dd>
+      </dl>
 
-        <ul class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" role="list">
-          {
-            units.map((unit) => (
-              <li>
-                <h3 class="text-lg">{unit.name}</h3>
-                <ul role="list" class="mt-3 space-y-1">
-                  {unit.phones.map((phone) => (
-                    <li>
-                      <a class={linkClass} href={phone.href}>
-                        {phone.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </li>
-            ))
-          }
-        </ul>
-      </section>
+      <h2 id="dojazd">Dojazd</h2>
+      <p>
+        Wejście do budynku od ul. Sobieszczańskiego jest wyposażone w podjazd, który prowadzi do
+        windy przystosowanej dla osób z niepełnosprawnością.
+      </p>
+      <p>
+        Na terenie Domu można parkować pojazdy. Nie ma wyznaczonych i oznakowanych miejsc
+        parkingowych dla osób z niepełnosprawnością.
+      </p>
+      <p>Osoba z psem asystującym ma prawo wstępu do budynku.</p>
 
-      <section aria-labelledby="odwiedziny" class:list={[cardClass, "md:col-span-2"]}>
-        <h2 id="odwiedziny" class="text-2xl">Odwiedziny</h2>
-        <p class="mt-6 max-w-column">
-          Bliscy naszych Mieszkańców są mile widziani. Przed przyjazdem warto zadzwonić do domu
-          mieszkalnego, w którym mieszka odwiedzana osoba, albo do sekretariatu —{" "}
-          <a class={linkClass} href={contact.phone.href}>{contact.phone.label}</a>. Pracownicy powiedzą
-          wtedy, kiedy i gdzie najlepiej się spotkać.
-        </p>
-        <!-- Hours, place and rules come from the Dom (docs/pytania-do-domu.md). -->
-        <p class="mt-4 max-w-column">
-          Jeśli odwiedziny są pierwszym krokiem do zamieszkania u nas, drogę do przyjęcia
-          opisujemy na stronie{" "}
-          <a class={linkClass} href="/przyjecie-do-domu/">Jak zamieszkać w naszym Domu</a>.
-        </p>
-      </section>
+      <h2 id="epuap">Sprawy urzędowe</h2>
+      <p>
+        Pismo urzędowe można wysłać elektronicznie przez usługę <a
+          href="https://www.gov.pl/web/gov/wyslij-pismo-ogolne">Wyślij pismo ogólne</a
+        > na portalu gov.pl — jako adresata wskazuje się wtedy naszą skrytkę ePUAP
+        <span class="whitespace-nowrap">{contact.epuap}</span>. W zwykłych sprawach nie trzeba
+        jednak niczego podpisywać elektronicznie: wystarczy e-mail albo telefon.
+      </p>
 
-      <section aria-labelledby="iod" class={cardClass}>
-        <h2 id="iod" class="text-2xl">Inspektor Ochrony Danych</h2>
-        <p class="mt-6">
-          W sprawach dotyczących ochrony danych osobowych prosimy o kontakt z Inspektorem Ochrony
-          Danych:
-        </p>
-        <p class="mt-3">
-          <a class={linkClass} href="mailto:iod2@warmiainkaso.pl">iod2@warmiainkaso.pl</a>
-        </p>
-      </section>
+      <h3>Inspektor Ochrony Danych</h3>
+      <p>
+        W sprawach dotyczących ochrony danych osobowych prosimy o kontakt z Inspektorem Ochrony
+        Danych: <a href="mailto:iod2@warmiainkaso.pl">iod2@warmiainkaso.pl</a>.
+      </p>
 
-      <section aria-labelledby="dane-do-faktur" class={cardClass}>
-        <h2 id="dane-do-faktur" class="text-2xl">Dane do faktur</h2>
-        <div class="mt-6 grid gap-6 sm:grid-cols-2">
-          <div>
-            <h3 class="text-lg">Nabywca</h3>
-            <address class="mt-3 not-italic">
-              Powiat Szczycieński<br />
-              ul. Sienkiewicza 1<br />
-              12-100 Szczytno
-            </address>
-            <p class="mt-3"><span class={termClass}>NIP:</span> 745-18-11-678</p>
-          </div>
-          <div>
-            <h3 class="text-lg">Odbiorca</h3>
-            <address class="mt-3 not-italic">
-              {contact.nameShort}<br />
-              {contact.address.street}<br />
-              {contact.address.postalCode} {contact.address.city}
-            </address>
-            <p class="mt-3"><span class={termClass}>REGON:</span> 000963690</p>
-          </div>
-        </div>
-      </section>
+      <h3>Dane do faktur</h3>
+      <dl>
+        <dt>Nabywca</dt>
+        <dd>
+          Powiat Szczycieński, ul. Sienkiewicza 1, 12-100 Szczytno<br />
+          NIP 745-18-11-678
+        </dd>
+        <dt>Odbiorca</dt>
+        <dd>
+          {contact.nameShort}, {addressLines(contact.address).join(", ")}<br />
+          REGON 000963690
+        </dd>
+      </dl>
     </div>
   </PageShell>
 </Base>

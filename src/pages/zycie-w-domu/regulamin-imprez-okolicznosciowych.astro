@@ -2,12 +2,9 @@
 import Base from "../../layouts/Base.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import PageShell from "../../components/PageShell.astro";
-import SectionNav from "../../components/SectionNav.astro";
-import BackLink from "../../components/BackLink.astro";
+import Toc from "../../components/Toc.astro";
 
-/** Rail table of contents. The two headings are the regulations' full official
-    titles; the labels say which of the two a reader is heading for. */
-const sections = [
+const toc = [
   { id: "regulamin-imprez", label: "Regulamin imprez" },
   { id: "regulamin-wizerunku", label: "Regulamin wizerunku" },
 ];
@@ -20,16 +17,15 @@ const sections = [
   <PageHeader
     breadcrumbs
     title="Regulamin imprez okolicznościowych"
-    lead="Dwa regulaminy obowiązujące podczas uroczystości i spotkań organizowanych przez Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie oraz w filii w Spychowie."
+    lead="Dwa regulaminy obowiązujące podczas uroczystości i spotkań organizowanych przez Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie oraz w filii w Spychowie."
   />
 
-  <SectionNav items={sections} />
-
-  <PageShell narrow>
+  <PageShell>
+    <Toc slot="rail" items={toc} />
 
     <div class="doc">
       <h2 id="regulamin-imprez">
-        Regulamin imprez okolicznościowych organizowanych przez Dom Pomocy Społecznej im. Jana Pawła
+        Regulamin imprez okolicznościowych organizowanych przez Dom Pomocy Społecznej im. Jana Pawła
         II w Szczytnie
       </h2>
 
@@ -37,7 +33,7 @@ const sections = [
       <p>
         Niniejszy regulamin określa zasady utrzymania porządku i zapewnienia bezpieczeństwa osób
         uczestniczących w imprezach okolicznościowych organizowanych w ramach działalności Domu
-        Pomocy Społecznej im. Jana Pawła II w Szczytnie, zwanego dalej „DPS”.
+        Pomocy Społecznej im. Jana Pawła II w Szczytnie, zwanego dalej „DPS”.
       </p>
 
       <h3>§ 2</h3>
@@ -63,7 +59,9 @@ const sections = [
               wnoszenia broni lub innych niebezpiecznych przedmiotów (narzędzi) oraz materiałów
               wybuchowych i wyrobów pirotechnicznych,
             </li>
-            <li>wnoszenia napojów alkoholowych, środków odurzających lub substancji psychotropowych.</li>
+            <li>
+              wnoszenia napojów alkoholowych, środków odurzających lub substancji psychotropowych.
+            </li>
           </ul>
         </li>
         <li>
@@ -96,14 +94,14 @@ const sections = [
 
       <h2 id="regulamin-wizerunku">
         Regulamin utrwalania i rozpowszechniania wizerunku osób uczestniczących w imprezach
-        okolicznościowych organizowanych przez Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie
+        okolicznościowych organizowanych przez Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie
       </h2>
 
       <h3>§ 1</h3>
       <p>
         Niniejszy regulamin określa zasady utrwalania i upowszechniania wizerunku osób
         uczestniczących w imprezach okolicznościowych organizowanych w ramach działalności Domu
-        Pomocy Społecznej im. Jana Pawła II w Szczytnie, zwanego dalej „DPS”.
+        Pomocy Społecznej im. Jana Pawła II w Szczytnie, zwanego dalej „DPS”.
       </p>
 
       <h3>§ 2</h3>
@@ -126,17 +124,17 @@ const sections = [
       <h3>§ 3</h3>
       <ol>
         <li>
-          Każda osoba, podejmując decyzję o uczestnictwie w imprezie organizowanej przez DPS,
-          wyraża zezwolenie na nieodpłatne i nieograniczone w czasie rozpowszechnianie jej wizerunku
-          w zakresie określonym w § 2 ust. 2 niniejszego regulaminu, w rozumieniu art. 81 ustawy
-          z dnia 4 lutego 1994 r. o prawie autorskim i prawach pokrewnych (t.j. Dz.U. z 2006 r. Nr 90,
-          poz. 631 z późn. zm.) oraz ewentualnego przetwarzania w niezbędnym zakresie danych
-          osobowych w rozumieniu art. 23 ust. 1 pkt 1 ustawy z dnia 29 sierpnia 1997 r. o ochronie
-          danych osobowych (t.j. Dz.U. z 2014 r. poz. 1182 z późn. zm.), jeżeli okazałoby się to
+          Każda osoba, podejmując decyzję o uczestnictwie w imprezie organizowanej przez DPS, wyraża
+          zezwolenie na nieodpłatne i nieograniczone w czasie rozpowszechnianie jej wizerunku
+          w zakresie określonym w § 2 ust. 2 niniejszego regulaminu, w rozumieniu art. 81 ustawy
+          z dnia 4 lutego 1994 r. o prawie autorskim i prawach pokrewnych (t.j. Dz.U. z 2006 r. Nr
+          90, poz. 631 z późn. zm.) oraz ewentualnego przetwarzania w niezbędnym zakresie danych
+          osobowych w rozumieniu art. 23 ust. 1 pkt 1 ustawy z dnia 29 sierpnia 1997 r. o ochronie
+          danych osobowych (t.j. Dz.U. z 2014 r. poz. 1182 z późn. zm.), jeżeli okazałoby się to
           konieczne do rozpowszechniania wizerunku.
         </li>
         <li>
-          W celu zapewnienia wyrażenia zgody, o której mowa w ust. 1, w sposób wyraźny i świadomy,
+          W celu zapewnienia wyrażenia zgody, o której mowa w ust. 1, w sposób wyraźny i świadomy,
           konieczne jest:
           <ul>
             <li>
@@ -159,7 +157,5 @@ const sections = [
         </li>
       </ol>
     </div>
-
-    <BackLink href="/oferta/" label="Wróć do oferty Domu" />
   </PageShell>
 </Base>

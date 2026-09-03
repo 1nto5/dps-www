@@ -1,14 +1,18 @@
 ---
 /**
  * Data-protection notice for whistleblowers (source page 1962).
- * Legal wording reproduced without paraphrase.
+ * Legal wording reproduced without paraphrase; the Dom's own address and
+ * telephone come from `contact.ts`.
  */
 import Base from "../../../layouts/Base.astro";
 import PageHeader from "../../../components/PageHeader.astro";
 import PageShell from "../../../components/PageShell.astro";
-import SiblingNav from "../../../components/SiblingNav.astro";
-import BackLink from "../../../components/BackLink.astro";
+import PageList from "../../../components/PageList.astro";
+import { addressLine, contact } from "../../../data/contact";
 import { sygnalistaPages } from "../../../data/sygnalista-pages";
+
+/** The rail is a bare list of the subsection's pages — the blurbs would not fit. */
+const rail = sygnalistaPages.map(({ href, label }) => ({ href, label }));
 ---
 
 <Base
@@ -17,83 +21,78 @@ import { sygnalistaPages } from "../../../data/sygnalista-pages";
 >
   <PageHeader
     breadcrumbs
-    title="Klauzula informacyjna w związku z przetwarzaniem danych osobowych sygnalisty"
+    title="Klauzula informacyjna w związku z przetwarzaniem danych osobowych sygnalisty"
   />
 
   <PageShell>
-    <SiblingNav
-      slot="rail"
-      title="Sygnalista"
-      items={sygnalistaPages}
-      current="/dokumenty/sygnalista/klauzula-informacyjna/"
-    />
+    <PageList slot="rail" items={rail} current="/dokumenty/sygnalista/klauzula-informacyjna/" />
 
-    <div class="doc">
+    <div class="doc mt-subsection">
       <p>
-        W związku z otrzymanym zgłoszeniem naruszenia przepisów prawa, wypełniając obowiązek
-        informacyjny wynikający z art. 13 rozporządzenia PEiR (UE) nr 2016/679 (RODO), informujemy,
+        W związku z otrzymanym zgłoszeniem naruszenia przepisów prawa, wypełniając obowiązek
+        informacyjny wynikający z art. 13 rozporządzenia PEiR (UE) nr 2016/679 (RODO), informujemy,
         że:
       </p>
       <ol>
         <li>
           Administratorem Pani/Pana danych osobowych jest <strong
-            >Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie</strong
-          >, ul. Wielbarska 2, 12-100 Szczytno, telefon: <a href="tel:+48896242288">89 624 22 88</a>,
-          e-mail: <a href="mailto:szczytno@dps.pl">szczytno@dps.pl</a>.
+            >Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie</strong
+          >, {addressLine(contact.address)}, telefon:
+          <a href={contact.phone.href}>{contact.phone.label}</a>, e-mail:
+          <a href="mailto:szczytno@dps.pl">szczytno@dps.pl</a>.
         </li>
         <li>
-          Administrator wyznaczył Inspektora Ochrony Danych, z którym można skontaktować się pod
+          Administrator wyznaczył Inspektora Ochrony Danych, z którym można skontaktować się pod
           adresem e-mail: <a href="mailto:iod2@warmiainkaso.pl">iod2@warmiainkaso.pl</a>.
-          Z Inspektorem można kontaktować się we wszystkich sprawach związanych z ochroną danych
+          Z Inspektorem można kontaktować się we wszystkich sprawach związanych z ochroną danych
           osobowych.
         </li>
         <li>
-          Pani/a dane osobowe będą przetwarzane w celu przyjęcia zgłoszenia oraz przeprowadzania
+          Pani/a dane osobowe będą przetwarzane w celu przyjęcia zgłoszenia oraz przeprowadzania
           postępowania wyjaśniającego na podstawie obowiązku prawnego, jakiemu podlega administrator
-          na podstawie ustawy z dnia 14 czerwca 2024 r. o ochronie sygnalistów.
+          na podstawie ustawy z dnia 14 czerwca 2024 r. o ochronie sygnalistów.
         </li>
         <li>
-          Podanie danych jest dobrowolne, jednakże niezbędne do przyjęcia i rozpatrzenia zgłoszenia.
+          Podanie danych jest dobrowolne, jednakże niezbędne do przyjęcia i rozpatrzenia zgłoszenia.
         </li>
         <li>
-          W związku z postępowaniami wyjaśniającymi prowadzonymi przez organy publiczne lub
-          postępowaniami przygotowawczymi lub sądowymi prowadzonymi przez sądy, w tym w celu
-          zagwarantowania Pani/u prawa do obrony, może dojść do ujawnienia Pani/Pana danych, gdy takie
-          działanie jest koniecznym i proporcjonalnym obowiązkiem wynikającym z przepisów prawa. Przed
-          dokonaniem takiego ujawnienia, właściwy organ publiczny lub właściwy sąd powiadomi Panią/a,
-          przesyłając w postaci papierowej lub elektronicznej wyjaśnienie powodów ujawnienia danych
-          osobowych. Powiadomienie nie jest przekazywane, jeżeli może zagrozić postępowaniu
-          wyjaśniającemu lub postępowaniu przygotowawczemu, lub sądowemu.
+          W związku z postępowaniami wyjaśniającymi prowadzonymi przez organy publiczne lub
+          postępowaniami przygotowawczymi lub sądowymi prowadzonymi przez sądy, w tym w celu
+          zagwarantowania Pani/u prawa do obrony, może dojść do ujawnienia Pani/Pana danych, gdy
+          takie działanie jest koniecznym i proporcjonalnym obowiązkiem wynikającym z przepisów
+          prawa. Przed dokonaniem takiego ujawnienia, właściwy organ publiczny lub właściwy sąd
+          powiadomi Panią/a, przesyłając w postaci papierowej lub elektronicznej wyjaśnienie powodów
+          ujawnienia danych osobowych. Powiadomienie nie jest przekazywane, jeżeli może zagrozić
+          postępowaniu wyjaśniającemu lub postępowaniu przygotowawczemu, lub sądowemu.
         </li>
         <li>
-          Administrator zapewnia poufność Pani/a danych, w związku z otrzymanym zgłoszeniem. W związku
-          z tym dane mogą być udostępnione jedynie podmiotom uprawnionym do tego na podstawie
-          przepisów prawa oraz podmiotom, którym administrator powierzył przetwarzanie danych.
+          Administrator zapewnia poufność Pani/a danych, w związku z otrzymanym zgłoszeniem.
+          W związku z tym dane mogą być udostępnione jedynie podmiotom uprawnionym do tego na
+          podstawie przepisów prawa oraz podmiotom, którym administrator powierzył przetwarzanie
+          danych.
         </li>
         <li>
-          Dane osobowe przetwarzane w związku z przyjęciem zgłoszenia lub podjęciem działań
-          następczych oraz dokumenty związane z tym zgłoszeniem są przechowywane przez okres 3 lat po
-          zakończeniu roku kalendarzowego, w którym przekazano zgłoszenie lub zakończono działania
+          Dane osobowe przetwarzane w związku z przyjęciem zgłoszenia lub podjęciem działań
+          następczych oraz dokumenty związane z tym zgłoszeniem są przechowywane przez okres 3 lat po
+          zakończeniu roku kalendarzowego, w którym przekazano zgłoszenie lub zakończono działania
           następcze, lub po zakończeniu postępowań zainicjowanych tymi działaniami. Dane osobowe,
-          które nie mają znaczenia dla rozpatrywania zgłoszenia, nie są zbierane, a w razie
+          które nie mają znaczenia dla rozpatrywania zgłoszenia, nie są zbierane, a w razie
           przypadkowego zebrania są niezwłocznie usuwane. Usunięcie tych danych osobowych następuje
-          w terminie 14 dni od chwili ustalenia, że nie mają one znaczenia dla sprawy.
+          w terminie 14 dni od chwili ustalenia, że nie mają one znaczenia dla sprawy.
         </li>
         <li>
-          Posiada Pan/i prawo żądania dostępu do swoich danych osobowych, a także ich sprostowania
+          Posiada Pan/i prawo żądania dostępu do swoich danych osobowych, a także ich sprostowania
           (poprawiania). Przysługuje Pani/u także prawo do żądania usunięcia lub ograniczenia
-          przetwarzania, a także sprzeciwu na przetwarzanie, przy czym przysługuje ono jedynie
-          w sytuacji, jeżeli dalsze przetwarzanie nie jest niezbędne do wywiązania się przez
-          Administratora z obowiązku prawnego i nie występują inne nadrzędne prawne podstawy
+          przetwarzania, a także sprzeciwu na przetwarzanie, przy czym przysługuje ono jedynie
+          w sytuacji, jeżeli dalsze przetwarzanie nie jest niezbędne do wywiązania się przez
+          Administratora z obowiązku prawnego i nie występują inne nadrzędne prawne podstawy
           przetwarzania.
         </li>
         <li>
           Przysługuje Pani/Panu prawo wniesienia skargi na realizowane przez Administratora
-          przetwarzanie do Prezesa UODO (<a href="https://uodo.gov.pl/" data-external="off">uodo.gov.pl</a>).
+          przetwarzanie do Prezesa UODO (<a href="https://uodo.gov.pl/">uodo.gov.pl</a>).
         </li>
       </ol>
     </div>
-
-    <BackLink href="/dokumenty/sygnalista/" label="Wróć do działu Sygnalista" />
   </PageShell>
 </Base>

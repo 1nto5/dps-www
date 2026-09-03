@@ -1,0 +1,49 @@
+---
+/**
+ * The table of contents for one page: a list of the `h2` ids on it. The build
+ * fails if an id is missing (`scripts/check-section-nav.mjs` reads the
+ * `data-section-nav` hook). A tiny script marks the chapter being read.
+ */
+interface Props {
+  items: { id: string; label: string }[];
+  title?: string;
+}
+const { items, title = "Na tej stronie" } = Astro.props;
+---
+
+<nav class="toc" aria-label={title} data-section-nav>
+  <p class="mb-2 font-semibold">{title}</p>
+  <ul role="list">
+    {
+      items.map((item) => (
+        <li>
+          <a href={`#${item.id}`}>{item.label}</a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<script>
+  const toc = document.querySelector<HTMLElement>(".toc[data-section-nav]");
+  if (toc && "IntersectionObserver" in window) {
+    const links = [...toc.querySelectorAll<HTMLAnchorElement>("a[href^='#']")];
+    const targets = links
+      .map((a) => document.getElementById(decodeURIComponent(a.hash.slice(1))))
+      .filter((el): el is HTMLElement => el !== null);
+    const mark = (id: string) => {
+      for (const a of links) {
+        if (a.hash.slice(1) === id) a.setAttribute("aria-current", "location");
+        else a.removeAttribute("aria-current");
+      }
+    };
+    const io = new IntersectionObserver(
+      (entries) => {
+        const hit = entries.find((e) => e.isIntersecting);
+        if (hit) mark(hit.target.id);
+      },
+      { rootMargin: "-20% 0px -70% 0px" },
+    );
+    for (const t of targets) io.observe(t);
+  }
+</script>

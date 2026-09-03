@@ -21,5 +21,22 @@ export default defineConfig({
     // wrapper; the styling lives on `.doc .table-scroll` in global.css.
     rehypePlugins: [rehypeTableScroll],
   },
+  // Old addresses → the new ones. Static meta-refresh pages, built by Astro.
+  redirects: {
+    "/o-nas/": "/o-domu/",
+    "/oferta/": "/zycie-w-domu/",
+    "/oferta/regulamin-imprez-okolicznosciowych/": "/zycie-w-domu/regulamin-imprez-okolicznosciowych/",
+    "/przyjecie-do-domu/": "/zamieszkac-u-nas/",
+    "/filia-w-spychowie/": "/zycie-w-domu/spychowo/",
+    "/grupa-muzyczna/": "/zycie-w-domu/grupa-christopher/",
+    "/galeria/": "/zycie-w-domu/zdjecia/",
+    "/dokumenty/dotacje/2025/": "/dokumenty/dotacje/#rok-2025",
+    "/dokumenty/dotacje/2024/": "/dokumenty/dotacje/#rok-2024",
+    "/dokumenty/dotacje/2023/": "/dokumenty/dotacje/#rok-2023",
+    "/dokumenty/dotacje/2022/": "/dokumenty/dotacje/#rok-2022",
+    "/dokumenty/dotacje/2021/": "/dokumenty/dotacje/#rok-2021",
+    "/dokumenty/dotacje/2020/": "/dokumenty/dotacje/#rok-2020",
+    "/dokumenty/dotacje/2019-2018-2016/": "/dokumenty/dotacje/#rok-2019-2018-2016",
+  },
   integrations: [sitemap()],
 });

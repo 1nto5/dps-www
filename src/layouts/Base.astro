@@ -1,13 +1,9 @@
 ---
 import "../styles/global.css";
-import A11yTools from "../components/A11yTools.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-// Imported for the hashed URLs, so the two <link rel="preload"> tags below
-// point at exactly the files global.css asks for — a preload one character
-// off downloads the font twice.
-import frauncesFont from "../assets/fonts/fraunces-subset.woff2?url";
-import bodyFont from "../assets/fonts/source-sans-3-subset.woff2?url";
+import displayFont from "../assets/fonts/bricolage-grotesque-subset.woff2?url";
+import bodyFont from "../assets/fonts/golos-text-subset.woff2?url";
 import { contact } from "../data/contact";
 
 interface Props {
@@ -23,7 +19,7 @@ const fullTitle =
     : `${title} — DPS Szczytno`;
 const desc =
   description ??
-  "Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie — dom dla osób przewlekle psychicznie chorych. Filia w Spychowie.";
+  "Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie — dom dla osób przewlekle psychicznie chorych, z filią w Spychowie.";
 ---
 
 <!doctype html>
@@ -34,77 +30,46 @@ const desc =
     <title>{fullTitle}</title>
     <meta name="description" content={desc} />
     <link rel="canonical" href={canonical} />
-    {
-      /* Test-phase deploys (non-root base) must never be indexed under
-         the temporary github.io address. */
-      import.meta.env.BASE_URL !== "/" && <meta name="robots" content="noindex" />
-    }
+    {import.meta.env.BASE_URL !== "/" && <meta name="robots" content="noindex" />}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <!--
-      Both fonts are needed by the first line of every page, and the browser
-      would otherwise only discover them after parsing the stylesheet.
-      `crossorigin` is required even for our own files: fonts are always
-      fetched in CORS mode, and a preload without it is a second, wasted
-      request rather than a warm cache entry.
-    -->
-    <link rel="preload" as="font" type="font/woff2" href={frauncesFont} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={displayFont} crossorigin />
     <link rel="preload" as="font" type="font/woff2" href={bodyFont} crossorigin />
     <!--
-      One job, and it has to happen before the first paint: the reader's own
-      settings — contrast, text size, reduced motion — chosen in the
-      accessibility toolbar and kept in localStorage, because a static site has
-      no server to keep them in. A reader who asked for the black-and-yellow
-      page must never be shown a flash of the light one, and a deferred script
-      paints the light page first and repaints after. Parser-blocking in <head>
-      is the only place that beats first paint. Every value is checked against a
-      closed set before it reaches the document, so the attribute is never
-      written from the raw string and a tampered storage entry cannot smuggle
-      anything in. The read is wrapped in try/catch because Safari in private
-      mode throws on localStorage rather than returning null.
-
-      This script no longer hides anything. It used to arm a blanket hold over
-      every section so a slow connection could not paint content and then blink
-      it out; nothing above the fold is staged any more, so there is nothing to
-      hold and no failsafe to release.
-
-      Cancelling the cross-page view transition is NOT done here. It needs a
-      stylesheet that redeclares `@view-transition`, and the last such rule in
-      document order is the one that counts — from <head> it would land ahead
-      of Astro's own stylesheet link, which is appended last, and lose to it.
-      The script at the end of <body> does it instead: still long before any
-      navigation, which always waits for a click.
-
-      `dpsMotionOk` is defined here and nowhere else: the choreography below,
-      the lightbox crossfade and the toolbar all have to answer "is movement
-      allowed?" the same way, and three copies of that test would drift.
+      Before first paint: the reader's own text size and contrast, chosen in
+      the header and kept in localStorage. Values are checked against a closed
+      set so a tampered entry cannot reach the document.
     -->
     <script is:inline>
       (function () {
         var d = document.documentElement;
-        // Nothing else marks that scripting is live. The toolbar stays out of
-        // the page and out of the tab order until this lands, so a reader
-        // without JS is never offered controls that cannot work.
         d.setAttribute("data-js", "");
         try {
           var c = localStorage.getItem("dps-contrast");
           var f = localStorage.getItem("dps-font");
-          var m = localStorage.getItem("dps-motion");
-          var t = localStorage.getItem("dps-theme");
           if (c === "yellow" || c === "bw") d.setAttribute("data-contrast", c);
-          if (t === "dark" || t === "light") d.setAttribute("data-theme", t);
           if (f === "large" || f === "xlarge") d.setAttribute("data-font-size", f);
-          if (m === "reduce") d.setAttribute("data-motion", "reduce");
         } catch (e) {}
-
-        window.dpsMotionOk = function () {
-          var el = document.documentElement;
-          return (
-            !el.hasAttribute("data-contrast") &&
-            el.getAttribute("data-motion") !== "reduce" &&
-            !matchMedia("(prefers-reduced-motion: reduce)").matches
-          );
-        };
       })();
+    </script>
+    <!--
+      Press feedback: remember where a button was pressed so the bloom in CSS
+      can start there. Pure decoration; the button works without it.
+    -->
+    <script>
+      const SEL = ".btn, .tool, .menu-open";
+      document.addEventListener("pointerdown", (e) => {
+        const el = (e.target as Element).closest?.(SEL) as HTMLElement | null;
+        if (!el) return;
+        const r = el.getBoundingClientRect();
+        el.style.setProperty("--px", `${((e.clientX - r.left) / r.width) * 100}%`);
+        el.style.setProperty("--py", `${((e.clientY - r.top) / r.height) * 100}%`);
+        el.removeAttribute("data-press");
+        void el.offsetWidth;
+        el.setAttribute("data-press", "");
+      });
+      document.addEventListener("animationend", (e) => {
+        if (e.animationName === "bloom") (e.target as HTMLElement).removeAttribute("data-press");
+      });
     </script>
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={desc} />
@@ -119,8 +84,6 @@ const desc =
         "@type": "GovernmentOrganization",
         name: contact.name,
         url: "https://dpsszczytno.pl/",
-        // Schema.org asks for the international form; the label is already the
-        // national one, so the country code is all that is added.
         telephone: `+48 ${contact.phone.label}`,
         email: contact.email,
         address: {
@@ -136,392 +99,13 @@ const desc =
   <body class="flex min-h-svh flex-col">
     <a
       href="#tresc"
-      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-spruce focus:px-4 focus:py-2 focus:text-on-dark active:bg-spruce-deep"
+      class="skip sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-lake focus:px-4 focus:py-2 focus:text-on-dark"
       >Przejdź do treści</a
     >
-    <A11yTools />
     <Header />
-    <!-- tabindex="-1" lets the skip link move keyboard focus, not just the fragment. -->
     <main id="tresc" tabindex="-1" class="flex-1">
       <slot />
     </main>
     <Footer />
-    <!--
-      The whole-page entrance is not here. Every page rises once from CSS
-      (`main { animation: rise-in }` in global.css) with no markup and no
-      script, which is what finally covers the prose and legal pages, the news
-      posts and the 404 — and what makes a page added tomorrow arrive like the
-      rest without opting in to anything.
-
-      This script only adds the second beat: below the fold, the top-level
-      blocks of each root arrive in turn as the reader scrolls to them. Roots
-      are `main section, main [data-shell-content]`; `data-no-reveal` opts one
-      out. NOTHING ABOVE THE FOLD IS EVER STAGED — a background tab, a
-      throttled first frame, a failed script and JavaScript switched off all
-      end with a painted first screen by construction rather than by a safety
-      net.
-
-      The old rule still stands: long-form prose and legal text arrive as ONE
-      block, never a paragraph at a time. Legal text a reader may be reaching
-      for under pressure gets the page rise and nothing else — do not cut those
-      pages into sections in order to animate them.
-
-      Inline and parser-blocking on purpose. Astro's default `<script>` is a
-      deferred module, which runs only after the browser has already painted —
-      measured here at 18ms behind first paint locally and 18.7s behind it on a
-      throttled connection, because the module queues behind fonts and images.
-      Hiding content from there would blink it out in front of the reader. At
-      the end of <body> this runs during parsing, before the first paint, so
-      the staged state is the first thing painted and nothing ever flashes.
-      The cost is plain JS with no type checking; the script is small and
-      self-contained, and it is the only JavaScript the site ships.
-    -->
-    <script is:inline>
-      (function () {
-        // The site-wide predicate, set by the <head> script. The fallback only
-        // matters if that script never ran, in which case nothing was staged
-        // either and this one has nothing to do.
-        var motionOk = window.dpsMotionOk
-          ? window.dpsMotionOk()
-          : !matchMedia("(prefers-reduced-motion: reduce)").matches;
-        if (!motionOk) {
-          // Cross-document view transitions are declared in CSS and cannot be
-          // switched off from script; only a later `@view-transition` rule can
-          // override an earlier one. Appended here, at the end of <body>, this
-          // sheet lands after Astro's stylesheet link — from <head> it would
-          // land before it and lose. Same id the toolbar uses, so a runtime
-          // change finds it again.
-          if (!document.getElementById("dps-no-vt")) {
-            var s = document.createElement("style");
-            s.id = "dps-no-vt";
-            s.textContent = "@view-transition{navigation:none}";
-            document.head.appendChild(s);
-          }
-          return;
-        }
-        if (!("IntersectionObserver" in window)) return;
-
-        // One source for the rhythm: the tokens in global.css. This script
-        // never writes a duration, only a delay, so retuning the site is a
-        // CSS edit.
-        var cs = getComputedStyle(document.documentElement);
-        var STEP = parseFloat(cs.getPropertyValue("--stagger-step")) || 80;
-        var MAX_DELAY = parseFloat(cs.getPropertyValue("--stagger-max")) || 400;
-        var DUR_ENTER = parseFloat(cs.getPropertyValue("--dur-enter")) || 450;
-        // How long the longest entrance can honestly still be running. The
-        // failsafe below leaves anything younger than this alone, so it never
-        // snaps a block that is simply mid-gesture.
-        var SETTLE = MAX_DELAY + DUR_ENTER + 100;
-        // How far a block must travel into view before it plays. Used once, at
-        // load, to decide what is already on screen; the observer below uses
-        // the same 12% as a PERCENTAGE, which the browser re-resolves against
-        // the viewport on every computation — so a resize, an orientation
-        // change or the A++ text size cannot leave the line stale. A
-        // rootMargin in px could not: it is immutable once the observer exists.
-        var INSET = Math.round(innerHeight * 0.12);
-        // Roots: a <section>, or the PageShell content column on a page built
-        // from prose. `data-shell-content` already exists on every page except
-        // the homepage, whose sections sit straight inside <main> — so every
-        // route is covered with no new markup anywhere.
-        var ROOTS = "main section, main [data-shell-content]";
-
-        var staged = [];
-        var owner = new WeakMap();
-        var units = new Map();
-        var revealedAt = new WeakMap();
-
-        function kids(el) {
-          return Array.prototype.slice.call(el.children);
-        }
-
-        // sr-only text and other 1px boxes would spend a stagger step on
-        // something nobody can see.
-        function isVisible(el) {
-          var r = el.getBoundingClientRect();
-          return r.width > 1 && r.height > 1;
-        }
-
-        // Walk past wrappers holding a single element until a node with real
-        // siblings appears: that is the level worth choreographing. A card or
-        // photo grid contributes its items to the same sequence rather than
-        // running a second animation inside one already playing.
-        //
-        // `.doc` — long-form prose and legal text — is where the walk stops
-        // even when it is the only child. Stepping into it would turn the page
-        // into a paragraph-by-paragraph cascade, which is exactly what the rule
-        // above forbids; the pages that escaped it before did so only because
-        // they happened to carry a BackLink as a second child.
-        function revealUnits(root) {
-          var node = root;
-          while (
-            kids(node).length === 1 &&
-            !kids(node)[0].matches(ROOTS) &&
-            !kids(node)[0].classList.contains("doc")
-          )
-            node = kids(node)[0];
-          var out = [];
-          kids(node).forEach(function (child) {
-            // A block that is itself a root, or that contains one, plays its
-            // own entrance. This is what keeps `[data-shell-content]` from
-            // staging the sections inside it a second time.
-            if (child.matches("section") || child.querySelector("section")) return;
-            if (child.matches("ul, ol") && kids(child).length > 1) {
-              out.push.apply(out, kids(child));
-            } else {
-              out.push(child);
-            }
-          });
-          return out.filter(isVisible);
-        }
-
-        function hide(el, i) {
-          el.setAttribute("data-reveal", "");
-          el.style.animationDelay = Math.min(i * STEP, MAX_DELAY) + "ms";
-          staged.push(el);
-        }
-
-        // `instant` skips the gesture: keyboard focus landing on staged
-        // content, a bfcache restore, the failsafe.
-        function show(el, instant) {
-          if (instant) {
-            el.style.animationName = "none";
-            el.style.animationDelay = "0s";
-          } else if (!revealedAt.has(el)) {
-            revealedAt.set(el, Date.now());
-          }
-          el.classList.add("is-visible");
-        }
-
-        function reveal(root, instant) {
-          var u = units.get(root);
-          if (!u) return;
-          u.forEach(function (el) {
-            io.unobserve(el);
-            show(el, instant);
-          });
-        }
-
-        // A jump — the End key, a dragged scrollbar, a long fling — can carry
-        // the reader straight past a block without it ever intersecting, and
-        // the observer would then never report it. Whatever now sits above
-        // the viewport has been passed, not reached: it appears at once, with
-        // no gesture, so scrolling back up finds the page painted.
-        function revealPassed() {
-          units.forEach(function (u, r) {
-            if (
-              u.some(function (el) {
-                return el.getBoundingClientRect().bottom < 0;
-              })
-            ) {
-              reveal(r, true);
-            }
-          });
-        }
-
-        var io = new IntersectionObserver(
-          function (entries) {
-            entries.forEach(function (e) {
-              if (e.isIntersecting) reveal(owner.get(e.target));
-            });
-            revealPassed();
-          },
-          // Shrink the root's bottom edge by the same inset, so a block plays
-          // as the reader scrolls it into view rather than while it is still
-          // off-screen. As a percentage, so the browser re-resolves it against
-          // the viewport on every computation and a resize cannot leave it
-          // stale — a px margin is immutable once the observer exists.
-          { rootMargin: "0px 0px -12% 0px" },
-        );
-
-        try {
-          var roots = Array.prototype.slice
-            .call(document.querySelectorAll(ROOTS))
-            .filter(function (r) {
-              return (
-                !(r.parentElement && r.parentElement.closest("section")) &&
-                !r.hasAttribute("data-no-reveal")
-              );
-            });
-
-          roots.forEach(function (r) {
-            var u = revealUnits(r);
-            if (!u.length) return;
-            // Per UNIT, not per root: a content column starts above the fold
-            // and runs far below it, so classifying the column as a whole
-            // would leave every prose page with nothing on scroll. Whatever is
-            // already on screen has been carried in by `rise-in` on <main> and
-            // is never staged — which is what lets the cross-page crossfade
-            // dissolve into a painted page instead of an empty one, and what
-            // makes a background tab and a throttled first frame safe by
-            // construction rather than by a safety net.
-            var below = u.filter(function (el) {
-              return el.getBoundingClientRect().top > innerHeight - INSET;
-            });
-            if (!below.length) return;
-            below.forEach(function (el, i) {
-              hide(el, i);
-              owner.set(el, r);
-              // The UNITS are what is watched, never the root. A root is a
-              // <section> or the whole content column: its box starts at the
-              // top of the page and runs thousands of pixels down, so it
-              // intersects on the very first callback and would release every
-              // block below the fold one frame after load — the cascade would
-              // finish off-screen and a reader scrolling down would find a
-              // static page. A staged block, by definition, is below the line;
-              // watching it is what ties the gesture to the reader's scroll.
-              io.observe(el);
-            });
-            units.set(r, below);
-          });
-
-          // <main> is the skip link's target. If focus lands while the page
-          // rise is still playing, finish it at once rather than draw a focus
-          // ring on something at 30% opacity.
-          var mainEl = document.querySelector("main");
-          if (mainEl) {
-            mainEl.addEventListener(
-              "focusin",
-              function () {
-                mainEl.style.animation = "none";
-              },
-              { once: true, capture: true },
-            );
-          }
-
-          // Keyboard focus must never land on something the reader cannot see.
-          // Test the painted opacity, not the class: `show` marks every unit in
-          // a section visible at once while each waits out its stagger delay,
-          // so a unit can carry `is-visible` and still be fully transparent.
-          addEventListener("focusin", function (e) {
-            var el = e.target && e.target.closest && e.target.closest("[data-reveal]");
-            if (!el || parseFloat(getComputedStyle(el).opacity) >= 1) return;
-            var section = owner.get(el);
-            if (section) reveal(section, true);
-            else show(el, true);
-          });
-
-          function forcePainted() {
-            var now = Date.now();
-            staged.forEach(function (el) {
-              if (!el.classList.contains("is-visible")) return;
-              // A block told to appear a moment ago is transparent because it
-              // is waiting out its stagger delay, not because anything went
-              // wrong. Snapping it here would cancel the entrance it just
-              // started — so only blocks past the longest honest entrance are
-              // forced.
-              var t = revealedAt.get(el);
-              if (t && now - t < SETTLE) return;
-              if (parseFloat(getComputedStyle(el).opacity) < 1) show(el, true);
-            });
-          }
-          // Safety net: anything sitting in the viewport but still hidden after
-          // a beat is shown regardless, so a missed observer callback cannot
-          // leave content invisible. Blocks further down keep their entrance —
-          // which is why this walks the staged blocks rather than their roots:
-          // a content column is page-tall and always crosses the line, so
-          // testing the root would consume the whole cascade at 1.5s.
-          setTimeout(function () {
-            staged.forEach(function (el) {
-              if (el.classList.contains("is-visible")) return;
-              var rect = el.getBoundingClientRect();
-              // Same line the observer uses. Testing the raw viewport edge
-              // instead would fire for a block merely peeking in below the
-              // line, playing its entrance late and unprompted.
-              if (rect.top < innerHeight - INSET && rect.bottom > 0) reveal(owner.get(el));
-            });
-            // The old net only added a class, which with a transition
-            // guaranteed nothing: /oferta/ was measured with 24 of 38 units
-            // flagged visible and all 38 still below opacity 1. Anything
-            // already told to appear and still transparent now appears
-            // outright. A block further down keeps its entrance — it is
-            // transparent on purpose.
-            forcePainted();
-          }, 1500);
-          // A back/forward restore brings the DOM back as it was, mid-cascade
-          // and all, and re-runs no script. The reader has seen this page; it
-          // does not perform again. Cannot be tested against the dev server —
-          // its `no-store` headers defeat bfcache — so it is defensive.
-          // The observer only speaks when something crosses its line; a jump
-          // that lands where nothing crosses would leave passed blocks hidden.
-          var sweeping = false;
-          addEventListener(
-            "scroll",
-            function () {
-              if (sweeping) return;
-              sweeping = true;
-              requestAnimationFrame(function () {
-                sweeping = false;
-                revealPassed();
-              });
-            },
-            { passive: true },
-          );
-          addEventListener("pageshow", function (e) {
-            if (!e.persisted) return;
-            staged.forEach(function (el) {
-              show(el, true);
-            });
-          });
-          // A page opened in a background tab (cmd-click, session restore) may
-          // never have run its cascade: rAF and IntersectionObserver are both
-          // suspended there.
-          document.addEventListener("visibilitychange", function () {
-            if (!document.hidden) forcePainted();
-          });
-
-          // Arriving by anchor replays the gesture once, briefly, on the
-          // smallest honest target — not the full cascade, so hopping around a
-          // table of contents never replays an entrance each time. A block not
-          // yet revealed plays its full entrance instead.
-          var acknowledge = function () {
-            var id = decodeURIComponent(location.hash.slice(1));
-            if (!id || id === "tresc") return;
-            var el = document.getElementById(id);
-            if (!el) return;
-            var unit = el.closest("[data-reveal]");
-            var root = (unit && owner.get(unit)) || (el.closest && el.closest(ROOTS));
-            var u = root && units.get(root);
-            if (
-              u &&
-              u.some(function (x) {
-                return parseFloat(getComputedStyle(x).opacity) < 1;
-              })
-            ) {
-              // Never seen: a full entrance is a better answer than an
-              // acknowledgement. This is also why a deep link straight from
-              // the address bar plays no arrival gesture — by construction the
-              // target is below the fold, so it is staged.
-              reveal(root);
-              return;
-            }
-            // The smallest honest target: a section on a section page, the
-            // heading itself inside a block of prose — re-fading two screens
-            // of legal text would be a page load, not an acknowledgement.
-            // This is what gives the SectionNav pages with no <section>
-            // (/dostepnosc/, /deklaracja-dostepnosci/, /dokumenty/rodo/,
-            // sygnalista/wewnetrzna-procedura, projekty-unijne,
-            // regulamin-imprez) the acknowledgement they never had.
-            var target = el.closest("main section") || el;
-            // A block that has already been through the cascade still carries
-            // the choreography's inline `animation-delay` (up to 400ms), and
-            // one shown instantly carries `animation-name: none` as well. Both
-            // are inline, so both outrank the arrival rule in the stylesheet
-            // and would either delay the acknowledgement or cancel it outright.
-            target.style.animationName = "";
-            target.style.animationDelay = "";
-            target.removeAttribute("data-arriving");
-            void target.offsetWidth;
-            target.setAttribute("data-arriving", "");
-          };
-          addEventListener("hashchange", acknowledge);
-          if (location.hash) acknowledge();
-        } catch (err) {
-          // Content hidden for this effect must never survive a failure in it.
-          staged.forEach(function (el) {
-            show(el, true);
-          });
-        }
-      })();
-    </script>
   </body>
 </html>

@@ -1,0 +1,177 @@
+---
+/**
+ * How to come and live here: the statutory route into a public care home, and
+ * what the Dom provides once someone moves in. Every sentence is the sentence
+ * the Dom already published — nothing about cost, waiting time or visiting
+ * hours is added here; open questions live in docs/pytania-do-domu.md.
+ */
+import Base from "../layouts/Base.astro";
+import PageHeader from "../components/PageHeader.astro";
+import PageShell from "../components/PageShell.astro";
+import Toc from "../components/Toc.astro";
+import Brief from "../components/Brief.astro";
+import Button from "../components/Button.astro";
+import Figure from "../components/Figure.astro";
+import DocList from "../components/DocList.astro";
+import { contact } from "../data/contact";
+
+import treatmentRoom from "../assets/media/1182-2012-07-25-at-10-20-35.jpg";
+import twinRoom from "../assets/media/1185-2012-07-25-at-10-40-40.jpg";
+import diningRoom from "../assets/media/1187-2012-07-25-at-10-46-26.jpg";
+
+const toc = [
+  { id: "kto-moze", label: "Kto może zamieszkać" },
+  { id: "droga-do-przyjecia", label: "Droga do przyjęcia" },
+  { id: "koszty", label: "Odpłatność" },
+  { id: "co-zabrac", label: "Dokumenty" },
+  { id: "co-zapewniamy", label: "Co zapewniamy" },
+];
+
+const docs = [
+  {
+    href: "/dokumenty/pliki/1744-Regulamin-Organizacyjny-DPS-Szczytno.doc",
+    label: "Regulamin organizacyjny Domu",
+    format: "DOC",
+    size: "133 KB",
+  },
+];
+---
+
+<Base
+  title="Przyjęcie do Domu"
+  description="Jak zamieszkać w Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie: kto może zostać Mieszkańcem, jak wygląda droga do przyjęcia, jakie dokumenty warto przygotować i z kim się skontaktować."
+>
+  <PageHeader
+    breadcrumbs
+    title="Jak zamieszkać w naszym Domu"
+    lead="Droga do domu pomocy społecznej zaczyna się nie u nas, lecz w ośrodku pomocy społecznej w miejscu zamieszkania. Opisujemy ją krok po kroku, żeby wiadomo było, czego się spodziewać."
+  >
+    <p class="mt-8">
+      <Button href={contact.phone.href} phone>{contact.phone.label}</Button>
+    </p>
+  </PageHeader>
+
+  <PageShell>
+    <Toc slot="rail" items={toc} />
+
+    <Brief>
+      <li>Zasady są takie same w całej Polsce i opisuje je ustawa o pomocy społecznej.</li>
+      <li>
+        Za pobyt płaci Mieszkaniec, a jeśli jego dochód nie wystarcza, dopłacają kolejno rodzina
+        i gmina.
+      </li>
+      <li>Na każdym z tych etapów można do nas zadzwonić i zapytać o to, co budzi wątpliwości.</li>
+    </Brief>
+
+    <div class="doc mt-subsection">
+      <h2 id="kto-moze">Kto może zamieszkać w Domu?</h2>
+      <p>
+        Nasz Dom jest — jak nazywa to ustawa — domem dla osób przewlekle psychicznie chorych.
+        Mieszkają u nas dorosłe osoby chorujące psychicznie, które z powodu choroby potrzebują
+        całodobowej opieki i nie mogą jej otrzymać tam, gdzie mieszkały dotychczas.
+      </p>
+      <p>
+        Dom ma dwie siedziby: w Szczytnie przy ul. Wielbarskiej 2 oraz filię w Spychowie przy
+        ul. Sienkiewicza 3. Obie prowadzi ten sam Dom i obowiązują w nich te same zasady przyjęcia.
+        O tym, jak wygląda w nich codzienność, piszemy na stronach <a href="/zycie-w-domu/"
+          >Życie w Domu</a
+        > oraz <a href="/zycie-w-domu/spychowo/">Filia w Spychowie</a>.
+      </p>
+
+      <h2 id="droga-do-przyjecia">Jak wygląda droga do przyjęcia?</h2>
+      <p>
+        Zasady są takie same w całej Polsce i opisuje je ustawa o pomocy społecznej. Kolejne kroki
+        wyglądają tak:
+      </p>
+      <ol>
+        <li>
+          Wniosek o skierowanie do domu pomocy społecznej składa się w ośrodku pomocy społecznej
+          właściwym dla miejsca zamieszkania. Może to zrobić sama osoba zainteresowana albo jej
+          przedstawiciel ustawowy.
+        </li>
+        <li>
+          Pracownik socjalny przeprowadza wywiad środowiskowy i kompletuje dokumentację, w tym
+          opinię lekarską.
+        </li>
+        <li>Gmina wydaje decyzję o skierowaniu do domu pomocy społecznej.</li>
+        <li>Następnie wydawana jest decyzja o umieszczeniu w Domu.</li>
+        <li>Na koniec ustala się z Domem termin przyjęcia.</li>
+      </ol>
+      <p>
+        Na każdym z tych etapów można do nas zadzwonić i zapytać o to, co budzi wątpliwości.
+        Chętnie opowiemy, jak wygląda życie w Domu i co warto przygotować przed przyjazdem.
+      </p>
+
+      <h2 id="koszty">Ile kosztuje pobyt?</h2>
+      <p>
+        Za pobyt płaci Mieszkaniec, a jeśli jego dochód nie wystarcza, dopłacają kolejno rodzina
+        i gmina. Szczegółowe zasady określa ustawa o pomocy społecznej oraz decyzja gminy.
+      </p>
+      <p>
+        Wysokość opłaty ustala gmina w swojej decyzji, a nie Dom, dlatego o konkretną kwotę
+        najlepiej zapytać w ośrodku pomocy społecznej, który prowadzi sprawę.
+      </p>
+
+      <h2 id="co-zabrac">Jakie dokumenty warto przygotować?</h2>
+      <p>
+        Dokumentację kompletuje ośrodek pomocy społecznej, ale sprawa idzie sprawniej, gdy pod
+        ręką są:
+      </p>
+      <ul>
+        <li>dowód osobisty osoby, która ma zamieszkać w Domu,</li>
+        <li>decyzja o skierowaniu do domu pomocy społecznej,</li>
+        <li>dokumentacja medyczna, w tym opinia lekarska o stanie zdrowia,</li>
+        <li>decyzja o świadczeniach — emeryturze, rencie lub zasiłku.</li>
+      </ul>
+
+      <h2 id="co-zapewniamy">Co zapewniamy</h2>
+      <p>
+        Mieszkańcy znajdują u nas wykwalifikowaną, całodobową opiekę i własny kąt. Troszczymy się
+        o ich dobre samopoczucie, nie zapominając o indywidualności każdej osoby.
+      </p>
+      <p>
+        Wszechstronna opieka terapeutyczna i medyczna oraz zaangażowanie pracowników w tworzenie
+        jak najlepszej atmosfery zapewniają godne warunki życia, ze szczególnym poszanowaniem
+        prawa do wolności, intymności i poczucia bezpieczeństwa.
+      </p>
+
+      <h3>Usługi opiekuńcze i pielęgnacyjne</h3>
+      <Figure
+        src={treatmentRoom}
+        alt="Gabinet zabiegowy: pielęgniarka przy biurku, przeszklone szafy z lekami."
+      />
+      <ul>
+        <li>pomagamy w utrzymaniu higieny osobistej,</li>
+        <li>udzielamy pomocy we wszystkich czynnościach dnia codziennego,</li>
+        <li>zapewniamy całodobową opiekę pielęgniarską.</li>
+      </ul>
+      <p>
+        Nasi Mieszkańcy objęci są opieką lekarza psychiatry. Korzystają z usług psychologa
+        i rehabilitanta zatrudnionych w naszym Domu.
+      </p>
+
+      <h3>Potrzeby bytowe</h3>
+      <Figure
+        src={twinRoom}
+        alt="Dwie Mieszkanki siedzą w fotelach przy stoliku w swoim pokoju."
+      />
+      <ul>
+        <li>
+          dysponujemy pokojami jedno-, dwu- i trzyosobowymi oraz pokojami czteroosobowymi dla osób
+          leżących,
+        </li>
+        <li>zapewniamy urozmaicone posiłki, zgodne z dietą zaleconą przez lekarza,</li>
+        <li>pomagamy w zakupie odzieży i obuwia,</li>
+        <li>
+          zapewniamy bezpieczne przechowywanie środków finansowych i przedmiotów wartościowych.
+        </li>
+      </ul>
+      <Figure
+        src={diningRoom}
+        alt="Jadalnia Domu z drewnianymi stołami nakrytymi kolorowymi obrusami."
+      />
+      <p>Zasady, według których działa nasz Dom, opisuje regulamin organizacyjny:</p>
+      <DocList docs={docs} />
+    </div>
+  </PageShell>
+</Base>

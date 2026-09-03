@@ -7,19 +7,21 @@
 import Base from "../../../layouts/Base.astro";
 import PageHeader from "../../../components/PageHeader.astro";
 import PageShell from "../../../components/PageShell.astro";
-import SiblingNav from "../../../components/SiblingNav.astro";
+import PageList from "../../../components/PageList.astro";
+import Figure from "../../../components/Figure.astro";
 import DocList from "../../../components/DocList.astro";
-import ZoomImage from "../../../components/ZoomImage.astro";
-import BackLink from "../../../components/BackLink.astro";
 import { contact } from "../../../data/contact";
 import { sygnalistaPages } from "../../../data/sygnalista-pages";
 
 import scan from "../../../assets/media/2065-Screenshot-2024-10-02-at-13.03.49.png";
 
+/** The rail is a bare list of the subsection's pages — the blurbs would not fit. */
+const rail = sygnalistaPages.map(({ href, label }) => ({ href, label }));
+
 const docs = [
   {
     href: "/dokumenty/pliki/2004-SKM_224e24092412491-1.pdf",
-    label: "Informacja o osobie upoważnionej do przyjmowania zgłoszeń wewnętrznych — skan",
+    label: "Informacja o osobie upoważnionej do przyjmowania zgłoszeń wewnętrznych — skan",
     format: "PDF",
     size: "148 KB",
   },
@@ -33,46 +35,40 @@ const docs = [
   <PageHeader
     breadcrumbs
     title="Osoba upoważniona"
-    lead="Kto przyjmuje i weryfikuje zgłoszenia wewnętrzne w naszym Domu."
+    lead="Kto przyjmuje i weryfikuje zgłoszenia wewnętrzne w naszym Domu."
   />
 
   <PageShell>
-    <SiblingNav
-      slot="rail"
-      title="Sygnalista"
-      items={sygnalistaPages}
-      current="/dokumenty/sygnalista/osoba-upowazniona/"
-    />
+    <PageList slot="rail" items={rail} current="/dokumenty/sygnalista/osoba-upowazniona/" />
 
-    <div class="doc">
+    <div class="doc mt-subsection">
       <p>
-        Osobą upoważnioną do przyjmowania i weryfikacji zgłoszeń wewnętrznych w Domu Pomocy Społecznej
-        im. Jana Pawła II w Szczytnie jest <strong>Pani Marta Czestkowska</strong>, podczas
-        nieobecności zastępstwo pełni <strong>Pani Dorota Kocot</strong>.
+        Osobą upoważnioną do przyjmowania i weryfikacji zgłoszeń wewnętrznych w Domu Pomocy
+        Społecznej im. Jana Pawła II w Szczytnie jest <strong>Pani Marta Czestkowska</strong>,
+        podczas nieobecności zastępstwo pełni <strong>Pani Dorota Kocot</strong>.
       </p>
       <p>
         Zgłoszeń należy dokonywać pod numerem telefonu
         <a href={contact.phone.href}>{contact.phone.label}</a>.
       </p>
-      <p>Informację podpisała Dyrektor Domu Pomocy Społecznej w Szczytnie, mgr Dorota Sędzińska-Bruździak.</p>
+      <p>
+        Informację podpisała Dyrektor Domu Pomocy Społecznej w Szczytnie, mgr Dorota
+        Sędzińska-Bruździak.
+      </p>
 
       <h2>Skan informacji</h2>
-    </div>
 
-    <div class="mt-block max-w-3xl">
-      <ZoomImage
+      <Figure
         src={scan}
         alt="Skan informacji Dyrektora Domu Pomocy Społecznej w Szczytnie o osobie upoważnionej do przyjmowania i weryfikacji zgłoszeń wewnętrznych — treść przytoczona powyżej."
-        caption="Skan informacji o osobie upoważnionej"
+        caption="Skan informacji o osobie upoważnionej"
         widths={[600, 1024, 1656]}
-        sizes="(min-width: 768px) 720px, 100vw"
+        sizes="(min-width: 48rem) 42rem, 100vw"
       />
     </div>
 
     <div class="mt-block max-w-column">
       <DocList docs={docs} />
     </div>
-
-    <BackLink href="/dokumenty/sygnalista/" label="Wróć do działu Sygnalista" />
   </PageShell>
 </Base>

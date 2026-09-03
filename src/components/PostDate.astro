@@ -1,21 +1,11 @@
 ---
-/**
- * The publication date of a news post. One `Intl.DateTimeFormat` for the whole
- * site: three pages built their own, and a formatter is also the kind of thing
- * that quietly gains an option on one page and not the others.
- */
 interface Props {
   date: Date;
 }
 const { date } = Astro.props;
-
-const dateFormat = new Intl.DateTimeFormat("pl-PL", {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-});
+const dateFormat = new Intl.DateTimeFormat("pl-PL", { day: "numeric", month: "long", year: "numeric" });
 ---
 
-<p class="text-meta text-muted">
+<p class="text-meta text-ink-soft">
   <time datetime={date.toISOString().slice(0, 10)}>{dateFormat.format(date)}</time>
 </p>

@@ -1,19 +1,25 @@
 /**
- * The main navigation: the seven routes in the header bar and the mobile menu,
- * in the order they are read.
- *
- * `Header` renders it, `routes.ts` takes the breadcrumb labels of these seven
- * routes from it, and `/404/` builds its "where to go instead" tiles on top of
- * it. The footer is deliberately NOT generated from this list — it is a
- * different selection ("Na skróty"), and making it follow the navigation would
- * turn one edit into two unrelated changes.
+ * The main navigation, in the drawer menu: the same seven entries the
+ * production site has, in the same order, pointing at the new addresses.
+ * `Header` renders it; `routes.ts` takes these labels for the breadcrumbs.
  */
 export const mainNav = [
-  { href: "/o-nas/", label: "O nas" },
-  { href: "/oferta/", label: "Oferta" },
-  { href: "/filia-w-spychowie/", label: "Filia w Spychowie" },
+  { href: "/o-domu/", label: "O nas" },
+  { href: "/zycie-w-domu/", label: "Oferta" },
+  { href: "/zycie-w-domu/spychowo/", label: "Filia w Spychowie" },
   { href: "/aktualnosci/", label: "Aktualności" },
-  { href: "/galeria/", label: "Galeria" },
+  { href: "/zycie-w-domu/zdjecia/", label: "Galeria" },
   { href: "/dokumenty/", label: "Dokumenty" },
   { href: "/kontakt/", label: "Kontakt" },
 ] as const;
+
+/** The nav entry a pathname sits under: the longest matching prefix. */
+export function activeSection(pathname: string): string | undefined {
+  let best: string | undefined;
+  for (const item of mainNav) {
+    if (pathname.startsWith(item.href) && (!best || item.href.length > best.length)) {
+      best = item.href;
+    }
+  }
+  return best;
+}

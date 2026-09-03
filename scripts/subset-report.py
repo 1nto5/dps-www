@@ -28,18 +28,18 @@ OUT, ROOT = sys.argv[1], sys.argv[2]
 # The weight each family is actually rendered at, so the width comparison below
 # is made at the size the reader sees: headings are 560, body text is 400.
 SUBSETS = [
-    ("fraunces-subset.woff2", 560),
-    ("source-sans-3-subset.woff2", 400),
+    ("bricolage-grotesque-subset.woff2", 600),
+    ("golos-text-subset.woff2", 400),
 ]
 
 # Fallback faces, in the order `global.css` names them. macOS and Windows ship
 # the same Monotype files, so the metrics are the same on both; a machine
 # without them simply falls through to the next family in the stack.
 FALLBACKS = [
-    ("fraunces-subset.woff2", "Georgia", ["/System/Library/Fonts/Supplemental/Georgia.ttf",
-                                         "/Library/Fonts/Georgia.ttf",
-                                         "C:/Windows/Fonts/georgia.ttf"]),
-    ("source-sans-3-subset.woff2", "Arial", ["/System/Library/Fonts/Supplemental/Arial.ttf",
+    ("bricolage-grotesque-subset.woff2", "Arial", ["/System/Library/Fonts/Supplemental/Arial.ttf",
+                                         "/Library/Fonts/Arial.ttf",
+                                         "C:/Windows/Fonts/arial.ttf"]),
+    ("golos-text-subset.woff2", "Arial", ["/System/Library/Fonts/Supplemental/Arial.ttf",
                                              "/Library/Fonts/Arial.ttf",
                                              "C:/Windows/Fonts/arial.ttf"]),
 ]

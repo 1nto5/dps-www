@@ -1,56 +1,62 @@
 ---
+/**
+ * The one list page of the document section: every disclosure chapter in
+ * reading order, each with the sentence the old hub used on its card and the
+ * way in. Files live on the page that explains them, so nothing is listed
+ * twice; the statutory documents are downloaded from /o-domu/#dokumenty.
+ */
 import Base from "../../layouts/Base.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import PageShell from "../../components/PageShell.astro";
-import LinkCard from "../../components/LinkCard.astro";
-import { dokumentySections } from "../../data/dokumenty-sections";
+import Toc from "../../components/Toc.astro";
+import PageList from "../../components/PageList.astro";
+import { projektyUnijnePages } from "../../data/projekty-unijne-pages";
+import { sygnalistaPages } from "../../data/sygnalista-pages";
 
-/** Document hub: entry points to every public-disclosure section. No rail —
-    this page *is* the sibling list every page below it carries. */
-const sections = dokumentySections;
-
-/** Two documents of record that are not disclosure sections of their own: the
-    signed accessibility statement, and the Dom's statutory documents, which
-    live in a section of /o-nas/. */
-const related = [
-  { href: "/deklaracja-dostepnosci/", label: "Deklaracja dostępności" },
-  { href: "/o-nas/#dokumenty", label: "Statut, regulamin i schemat organizacyjny" },
+const toc = [
+  { id: "dotacje", label: "Dotacje" },
+  { id: "projekty-unijne", label: "Projekty unijne" },
+  { id: "zamowienia-publiczne", label: "Zamówienia publiczne" },
+  { id: "sygnalista", label: "Sygnalista" },
+  { id: "rodo", label: "RODO" },
 ];
 
-const linkClass = "inline-block py-1 text-spruce underline hover:text-spruce-deep";
+const dotacje = [{ href: "/dokumenty/dotacje/", label: "Dotacje" }];
+
+const zamowienia = [{ href: "/dokumenty/zamowienia-publiczne/", label: "Zamówienia publiczne" }];
+
+const rodo = [{ href: "/dokumenty/rodo/", label: "RODO" }];
 ---
 
 <Base
   title="Dokumenty"
   description="Dokumenty i informacje publiczne Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie: dotacje, projekty unijne, zamówienia publiczne, sygnalista, RODO, deklaracja dostępności."
 >
-  <PageHeader
-    eyebrow="Informacje publiczne"
-    title="Dokumenty"
-  />
+  <PageHeader breadcrumbs title="Dokumenty" />
 
   <PageShell>
-    <ul class="grid gap-4 sm:grid-cols-2" role="list">
-      {
-        sections.map((s) => (
-          <li>
-            <LinkCard href={s.href} label={s.label} text={s.text} />
-          </li>
-        ))
-      }
-    </ul>
+    <Toc slot="rail" items={toc} />
 
-    <h2 class="mt-section text-2xl">Powiązane</h2>
-    <ul role="list" class="mt-3">
-      {
-        related.map((item) => (
-          <li>
-            <a href={item.href} class={linkClass}>
-              {item.label}
-            </a>
-          </li>
-        ))
-      }
-    </ul>
+    <div class="doc mt-subsection">
+      <h2 id="dotacje">Dotacje</h2>
+      <p>Dotacje i dofinansowania otrzymane przez Dom, zestawione rok po roku.</p>
+      <PageList items={dotacje} />
+
+      <h2 id="projekty-unijne">Projekty unijne</h2>
+      <p>Zadania realizowane przy wsparciu funduszy Unii Europejskiej.</p>
+      <PageList items={projektyUnijnePages} />
+
+      <h2 id="zamowienia-publiczne">Zamówienia publiczne</h2>
+      <p>Ogłoszenia o postępowaniach, dokumentacja i informacje o wynikach.</p>
+      <PageList items={zamowienia} />
+
+      <h2 id="sygnalista">Sygnalista</h2>
+      <p>Procedura zgłaszania naruszeń prawa i zasady ochrony osób zgłaszających.</p>
+      <PageList items={sygnalistaPages} />
+
+      <h2 id="rodo">RODO</h2>
+      <p>Klauzula informacyjna o przetwarzaniu danych osobowych w naszym Domu.</p>
+      <PageList items={rodo} />
+    </div>
   </PageShell>
 </Base>

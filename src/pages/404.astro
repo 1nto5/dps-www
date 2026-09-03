@@ -1,37 +1,20 @@
 ---
+/**
+ * The way onwards from a dead address: the four sections of the site plus the
+ * contact page, built from the navigation so a renamed section reaches here
+ * too.
+ */
 import Base from "../layouts/Base.astro";
 import PageHeader from "../components/PageHeader.astro";
 import PageShell from "../components/PageShell.astro";
-import LinkCard from "../components/LinkCard.astro";
+import PageList from "../components/PageList.astro";
 import { contact } from "../data/contact";
 import { mainNav } from "../data/nav";
-import { routeLabels } from "../data/routes";
-
-/** The way onwards from a dead address: the main navigation, with the home
-    page in front of it and "Przyjęcie do Domu" — the one page people arrive
-    looking for that the navigation does not carry — after it. Built from the
-    nav so a renamed or added section reaches this page too. */
-const przyjecie: string = "/przyjecie-do-domu/";
-
-const blurbs: Record<string, string> = {
-  "/": "Krótko o Domu i ostatnie komunikaty.",
-  "/o-nas/": "Kierownictwo, statut i podstawy prawne działania Domu.",
-  "/oferta/": "Opieka, terapia zajęciowa i warunki bytowe.",
-  "/filia-w-spychowie/": "Nasz drugi dom, przy ul. Sienkiewicza 3.",
-  "/aktualnosci/": "Ważniejsze wiadomości z życia Domu i filii.",
-  "/galeria/": "Zdjęcia Domu, ogrodu i wspólnych wydarzeń.",
-  "/dokumenty/": "Dotacje, projekty unijne, zamówienia publiczne, RODO i sygnalista.",
-  "/kontakt/": "Adresy, telefony i adresy e-mail.",
-  [przyjecie]: "Kto może u nas zamieszkać i jak wygląda droga do przyjęcia.",
-};
 
 const links = [
-  { href: "/", label: routeLabels["/"]! },
-  ...mainNav,
-  ...(mainNav.some((item) => item.href === przyjecie)
-    ? []
-    : [{ href: przyjecie, label: routeLabels[przyjecie]! }]),
-].map((item) => ({ ...item, text: blurbs[item.href] }));
+  ...mainNav.map((item) => ({ href: item.href, label: item.label })),
+  { href: "/kontakt/", label: "Kontakt" },
+];
 ---
 
 <Base
@@ -39,31 +22,22 @@ const links = [
   description="Pod tym adresem nie ma strony. Skorzystaj z odnośników, aby wrócić na stronę główną lub do kontaktu."
 >
   <PageHeader
-    eyebrow="Błąd 404"
     title="Nie znaleziono tej strony"
     lead="Adres mógł się zmienić przy przenosinach naszej strony albo zawiera literówkę. Nic straconego — poniżej znajdziesz drogę dalej."
   />
 
   <PageShell>
-    <div class="doc">
-      <p>
-        Jeśli szukasz konkretnej informacji i nie możesz jej znaleźć, chętnie pomożemy. Zadzwoń pod
-        numer <a href={contact.phone.href}>{contact.phone.label}</a> lub napisz na adres
-        <a href={`mailto:${contact.email}`}>{contact.email}</a>.
-      </p>
+    <div class="max-w-column">
+      <PageList items={links} />
     </div>
-
-    <nav aria-labelledby="czeste-strony" class="mt-section">
-      <h2 id="czeste-strony" class="mb-6 text-2xl">Najczęściej odwiedzane strony</h2>
-      <ul role="list" class="grid gap-4 sm:grid-cols-2">
-        {
-          links.map((l) => (
-            <li>
-              <LinkCard href={l.href} label={l.label} text={l.text} />
-            </li>
-          ))
-        }
-      </ul>
-    </nav>
+    <p class="mt-block max-w-prose-measure text-ink-soft">
+      Jeśli szukasz konkretnej informacji i nie możesz jej znaleźć, chętnie pomożemy. Zadzwoń pod
+      numer <a href={contact.phone.href} class="font-semibold text-lake-deep underline"
+        >{contact.phone.label}</a
+      > lub napisz na adres <a
+        href={`mailto:${contact.email}`}
+        class="font-semibold text-lake-deep underline">{contact.email}</a
+      >.
+    </p>
   </PageShell>
 </Base>

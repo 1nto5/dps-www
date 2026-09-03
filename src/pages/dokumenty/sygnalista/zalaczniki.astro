@@ -5,39 +5,41 @@
 import Base from "../../../layouts/Base.astro";
 import PageHeader from "../../../components/PageHeader.astro";
 import PageShell from "../../../components/PageShell.astro";
-import SiblingNav from "../../../components/SiblingNav.astro";
+import PageList from "../../../components/PageList.astro";
 import DocList from "../../../components/DocList.astro";
-import BackLink from "../../../components/BackLink.astro";
 import { sygnalistaPages } from "../../../data/sygnalista-pages";
+
+/** The rail is a bare list of the subsection's pages — the blurbs would not fit. */
+const rail = sygnalistaPages.map(({ href, label }) => ({ href, label }));
 
 const docs = [
   {
     href: "/dokumenty/pliki/2018-Zalacznik-nr-1-Oswiadczenie.docx",
-    label: "Załącznik nr 1 — Oświadczenie",
+    label: "Załącznik nr 1 — Oświadczenie",
     format: "DOCX",
     size: "14 KB",
   },
   {
     href: "/dokumenty/pliki/2027-Zalacznik-nr-2-Zgloszenie-naruszenia-prawa.docx",
-    label: "Załącznik nr 2 — Zgłoszenie naruszenia prawa",
+    label: "Załącznik nr 2 — Zgłoszenie naruszenia prawa",
     format: "DOCX",
     size: "21 KB",
   },
   {
     href: "/dokumenty/pliki/2028-Zalacznik-nr-3-Protokol-rozmowy_spotkania.docx",
-    label: "Załącznik nr 3 — Protokół rozmowy lub spotkania",
+    label: "Załącznik nr 3 — Protokół rozmowy lub spotkania",
     format: "DOCX",
     size: "15 KB",
   },
   {
     href: "/dokumenty/pliki/2029-Zalacznik-nr-4-Potwierdzernie-przyjecia-zgloszenia-naruszenia-prawa.docx",
-    label: "Załącznik nr 4 — Potwierdzenie przyjęcia zgłoszenia naruszenia prawa",
+    label: "Załącznik nr 4 — Potwierdzenie przyjęcia zgłoszenia naruszenia prawa",
     format: "DOCX",
     size: "16 KB",
   },
   {
     href: "/dokumenty/pliki/2030-Zalacznik-nr-5-Rejestr-zgloszen-wewnetrznych.docx",
-    label: "Załącznik nr 5 — Rejestr zgłoszeń wewnętrznych",
+    label: "Załącznik nr 5 — Rejestr zgłoszeń wewnętrznych",
     format: "DOCX",
     size: "16 KB",
   },
@@ -55,21 +57,14 @@ const docs = [
   />
 
   <PageShell>
-    <SiblingNav
-      slot="rail"
-      title="Sygnalista"
-      items={sygnalistaPages}
-      current="/dokumenty/sygnalista/zalaczniki/"
-    />
+    <PageList slot="rail" items={rail} current="/dokumenty/sygnalista/zalaczniki/" />
 
-    <div class="doc">
-      <p>Poniższe wzory można pobrać i wypełnić:</p>
+    <div class="doc mt-subsection">
+      <p>Poniższe wzory można pobrać i wypełnić:</p>
     </div>
 
     <div class="mt-block max-w-column">
       <DocList docs={docs} />
     </div>
-
-    <BackLink href="/dokumenty/sygnalista/" label="Wróć do działu Sygnalista" />
   </PageShell>
 </Base>

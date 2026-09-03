@@ -1,0 +1,26 @@
+---
+/**
+ * A plain list of pages, one per row, with an optional sentence under each
+ * link. Replaces cards everywhere: a section's subpages, the footer's shortcuts,
+ * the four ways out of the 404 page.
+ */
+interface Props {
+  items: readonly { href: string; label: string; text?: string }[];
+  /** Marks the row the reader is on, so the same list serves as a sibling rail. */
+  current?: string;
+}
+const { items, current } = Astro.props;
+---
+
+<ul class="pages" role="list">
+  {
+    items.map((item) => (
+      <li>
+        <a href={item.href} aria-current={item.href === current ? "page" : undefined}>
+          <span>{item.label}</span>
+          {item.text && <p>{item.text}</p>}
+        </a>
+      </li>
+    ))
+  }
+</ul>

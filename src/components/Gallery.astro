@@ -1,23 +1,16 @@
 ---
 /**
- * Responsive photo grid. Pass imported images with meaningful alt text
- * (alt: "" only for genuinely decorative repeats). Every photo opens
- * enlarged in the shared Lightbox; without JS the link opens the
- * full-size image file directly.
+ * A photo grid. Every photo opens enlarged in the shared Lightbox; without JS
+ * the link opens the full-size image file.
  */
 import { Image, getImage } from "astro:assets";
 import type { ImageMetadata } from "astro";
 import Lightbox from "./Lightbox.astro";
-
 interface Props {
   photos: { src: ImageMetadata; alt: string }[];
-  /** Layout hint for the browser. The default is the full-width grid; a page
-   *  whose grid sits in a rail-narrowed column passes its own, or every
-   *  thumbnail is fetched at roughly twice the size it is drawn at. */
   sizes?: string;
 }
-const { photos, sizes = "(min-width: 640px) 33vw, 50vw" } = Astro.props;
-
+const { photos, sizes = "(min-width: 64rem) 14rem, 50vw" } = Astro.props;
 const items = await Promise.all(
   photos.map(async (p) => ({
     ...p,
@@ -26,20 +19,12 @@ const items = await Promise.all(
 );
 ---
 
-<p class="mb-3 text-base text-muted">Kliknij zdjęcie, aby je powiększyć.</p>
-<ul class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4" role="list" data-lightbox-group>
+<ul class="gallery" role="list" data-lightbox-group>
   {
     items.map((p) => (
       <li>
-        <a href={p.full.src} data-lightbox data-caption={p.alt} class="rounded-lg">
-          <Image
-            src={p.src}
-            alt={p.alt}
-            widths={[400, 700]}
-            sizes={sizes}
-            class="aspect-[4/3] w-full rounded-lg object-cover"
-            loading="lazy"
-          />
+        <a href={p.full.src} data-lightbox data-caption={p.alt} class="block rounded-lg">
+          <Image src={p.src} alt={p.alt} widths={[400, 700]} sizes={sizes} loading="lazy" />
         </a>
       </li>
     ))

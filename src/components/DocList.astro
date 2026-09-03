@@ -1,31 +1,20 @@
 ---
 /**
- * Accessible list of downloadable documents (PDF/DOC). Each entry states
- * format and size so screen-reader and low-bandwidth users know what opens.
- *
- * The `doc-list` class keeps the card immune to `.doc` prose styling (bullets
- * and indent) if it is ever rendered inside a `.doc` wrapper.
+ * Documents to download. Each row states the format and the size, so a reader
+ * knows what opens before it opens.
  */
 interface Props {
-  docs: { href: string; label: string; format: string; size?: string }[];
+  docs: readonly { href: string; label: string; format: string; size?: string }[];
 }
 const { docs } = Astro.props;
 ---
 
-<ul
-  class="doc-list list-none divide-y divide-line rounded-lg border border-edge bg-card pl-0"
-  role="list"
->
+<ul class="docs" role="list">
   {
     docs.map((d) => (
       <li>
-        <a
-          href={d.href}
-          class="flex items-baseline justify-between gap-4 px-4 py-3 hover:bg-moss"
-        >
-          <span class="font-medium text-spruce-deep underline">{d.label}</span>
-          <span class="shrink-0 text-base text-muted">{d.size ? `${d.format}, ${d.size}` : d.format}</span>
-        </a>
+        <a href={d.href}>{d.label}</a>
+        <span>{d.size ? `${d.format}, ${d.size}` : d.format}</span>
       </li>
     ))
   }

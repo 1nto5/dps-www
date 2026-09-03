@@ -10,8 +10,7 @@
  * się.
  *
  * The easy-to-read text below is a DRAFT written from facts already published
- * on /o-nas/, /oferta/, /filia-w-spychowie/ and the accessibility statement.
- * It is not signed off yet — see docs/pytania-do-domu.md.
+ * on the site. It is not signed off yet — see docs/pytania-do-domu.md.
  *
  * Nothing here may contradict /deklaracja-dostepnosci/, which states that the
  * Dom has no interpreter on site: the interpreter section describes a service
@@ -20,13 +19,13 @@
 import Base from "../layouts/Base.astro";
 import PageHeader from "../components/PageHeader.astro";
 import PageShell from "../components/PageShell.astro";
-import SectionNav from "../components/SectionNav.astro";
+import Toc from "../components/Toc.astro";
+import Brief from "../components/Brief.astro";
 import DocList from "../components/DocList.astro";
 import { contact } from "../data/contact";
 
-/** Rail table of contents. Every id here exists as a heading id below —
- *  `scripts/check-section-nav.mjs` fails the build if one drifts. */
-const sections = [
+/** Every id here exists as an `id` on an `h2` below — the build checks it. */
+const toc = [
   { id: "co-robimy", label: "Czym się zajmujemy" },
   { id: "jak-sie-skontaktowac", label: "Jak się skontaktować" },
   { id: "jezyk-migowy", label: "Nagranie w języku migowym" },
@@ -50,16 +49,20 @@ const docs = [
 >
   <PageHeader
     breadcrumbs
-    eyebrow="Dostępność"
     title="Informacja o zakresie działalności – tekst łatwy do czytania"
     lead="Na tej stronie krótko i prosto opisujemy, czym zajmuje się nasz Dom i jak się z nami skontaktować."
   />
 
-  <SectionNav items={sections} />
+  <PageShell>
+    <Toc slot="rail" items={toc} />
 
-  <PageShell narrow>
+    <Brief>
+      <li>Nasz Dom to Dom Pomocy Społecznej imienia Jana Pawła II w Szczytnie.</li>
+      <li>W naszym Domu mieszkają dorosłe osoby chorujące psychicznie.</li>
+      <li>Ten sam tekst możesz pobrać jako plik i wydrukować.</li>
+    </Brief>
 
-    <div class="doc">
+    <div class="doc mt-subsection">
       <h2 id="co-robimy">Czym zajmuje się nasz Dom?</h2>
       <!-- Draft. The final ETR text is written and signed off by the Dom; see docs/pytania-do-domu.md -->
       <p>Nasz Dom to Dom Pomocy Społecznej imienia Jana Pawła II w Szczytnie.</p>
@@ -158,6 +161,9 @@ const docs = [
 
       <h2 id="plik">Informacja do pobrania</h2>
       <p>Ten sam tekst możesz pobrać jako plik i wydrukować.</p>
+    </div>
+
+    <div class="mt-block">
       <DocList docs={docs} />
     </div>
   </PageShell>

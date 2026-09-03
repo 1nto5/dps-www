@@ -4,24 +4,24 @@
  * Structure follows the official Polish government template — the wrapper
  * keeps id="a11y-deklaracja" so automated validators can find the statement.
  *
- * Dates and the conformance status are carried over verbatim from the Dom's
- * last signed statement (source page 1328, drafted 23.09.2020). Only the Dom
- * may change them — a new publication date, a "zgodna" status or a new review
- * date requires a documented WCAG 2.1 AA audit of the relaunched site and the
- * Dom's sign-off, not a migration edit.
+ * Dates, the conformance status and every word inside #a11y-deklaracja are
+ * carried over verbatim from the Dom's last signed statement (source page
+ * 1328, drafted 23.09.2020). Only the Dom may change them — a new publication
+ * date, a "zgodna" status or a new review date requires a documented WCAG 2.1
+ * AA audit of the relaunched site and the Dom's sign-off, not a migration
+ * edit. The rebuild changed the wrapper around the statement and nothing else;
+ * points that no longer describe the new site are listed in
+ * docs/pytania-do-domu.md, not corrected here.
  */
 import Base from "../layouts/Base.astro";
 import PageHeader from "../components/PageHeader.astro";
 import PageShell from "../components/PageShell.astro";
-import SectionNav from "../components/SectionNav.astro";
-import SiblingNav from "../components/SiblingNav.astro";
+import Toc from "../components/Toc.astro";
 import DocList from "../components/DocList.astro";
-import BackLink from "../components/BackLink.astro";
-import { dokumentySections } from "../data/dokumenty-sections";
 
 /** Rail table of contents. Ids and labels only — the statement's own wording,
  *  dates and status are untouched. */
-const sections = [
+const toc = [
   { id: "status-zgodnosci", label: "Status zgodności" },
   { id: "przygotowanie-deklaracji", label: "Przygotowanie deklaracji" },
   { id: "skroty-klawiaturowe", label: "Skróty klawiaturowe" },
@@ -47,17 +47,12 @@ const docs = [
 >
   <PageHeader
     breadcrumbs
-    eyebrow="Dostępność"
     title="Deklaracja dostępności"
     lead="Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie dba o to, aby z naszej strony mógł swobodnie korzystać każdy."
   />
 
-  <SectionNav items={sections} />
-
   <PageShell>
-    <div slot="rail" class="space-y-8">
-      <SiblingNav title="Dokumenty" items={dokumentySections} />
-    </div>
+    <Toc slot="rail" items={toc} />
 
     <div id="a11y-deklaracja" class="doc">
       <p class="a11y-wstep">
@@ -205,10 +200,8 @@ const docs = [
       <h2 id="raport">Raport o stanie zapewniania dostępności</h2>
     </div>
 
-    <div class="mt-block max-w-column">
+    <div class="mt-block">
       <DocList docs={docs} />
     </div>
-
-    <BackLink href="/" label="Wróć na stronę główną" />
   </PageShell>
 </Base>

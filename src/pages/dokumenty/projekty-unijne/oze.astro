@@ -6,11 +6,10 @@
 import { Image } from "astro:assets";
 import Base from "../../../layouts/Base.astro";
 import PageHeader from "../../../components/PageHeader.astro";
-import Gallery from "../../../components/Gallery.astro";
 import PageShell from "../../../components/PageShell.astro";
-import SiblingNav from "../../../components/SiblingNav.astro";
-import ZoomImage from "../../../components/ZoomImage.astro";
-import BackLink from "../../../components/BackLink.astro";
+import PageList from "../../../components/PageList.astro";
+import Figure from "../../../components/Figure.astro";
+import Gallery from "../../../components/Gallery.astro";
 import { projektyUnijnePages } from "../../../data/projekty-unijne-pages";
 
 import boardProject from "../../../assets/media/1344-680-00186.jpg";
@@ -36,23 +35,41 @@ import p1680 from "../../../assets/media/1364-1680-001.jpg";
 import p298 from "../../../assets/media/1369-680-00298.jpg";
 
 const photos = [
-  { src: p140, alt: "Dziedziniec Domu Pomocy Społecznej przed rozpoczęciem prac — parking i budynek gospodarczy." },
+  {
+    src: p140,
+    alt: "Dziedziniec Domu Pomocy Społecznej przed rozpoczęciem prac — parking i budynek gospodarczy.",
+  },
   { src: p145, alt: "Rozpoczęte prace ziemne pod konstrukcję kolektorów słonecznych na dziedzińcu." },
   { src: p146, alt: "Wykop pod instalację poprowadzoną w kierunku budynku mieszkalnego." },
   { src: p153, alt: "Wykopy i hałdy ziemi na terenie parkingu w trakcie prac przygotowawczych." },
   { src: p155, alt: "Montaż pierwszych słupów nośnych konstrukcji pod kolektory słoneczne." },
   { src: p157, alt: "Pracownicy spawają stalową ramę konstrukcji wsporczej kolektorów." },
-  { src: p160, alt: "Gotowa stalowa rama konstrukcji z pierwszymi zamontowanymi profilami kolektorów." },
+  {
+    src: p160,
+    alt: "Gotowa stalowa rama konstrukcji z pierwszymi zamontowanymi profilami kolektorów.",
+  },
   { src: p163, alt: "Kolejne rzędy paneli kolektorów słonecznych układane na konstrukcji." },
   { src: p166, alt: "Montaż kolektorów słonecznych w słoneczny dzień, widok od strony alejki." },
-  { src: p167, alt: "Zamontowana instalacja kolektorów słonecznych na tle czerwonych dachów budynków Domu." },
-  { src: p173, alt: "Konstrukcja z kolektorami słonecznymi widziana od dołu, z tablicą informacyjną projektu." },
+  {
+    src: p167,
+    alt: "Zamontowana instalacja kolektorów słonecznych na tle czerwonych dachów budynków Domu.",
+  },
+  {
+    src: p173,
+    alt: "Konstrukcja z kolektorami słonecznymi widziana od dołu, z tablicą informacyjną projektu.",
+  },
   { src: p174, alt: "Kotłownia — zasobniki ciepłej wody i izolowane rurociągi instalacji solarnej." },
   { src: p295, alt: "Pracownicy montują panele kolektorów na konstrukcji nad parkingiem." },
-  { src: p296, alt: "Widok z góry na ukończoną instalację kolektorów słonecznych przy budynkach Domu." },
+  {
+    src: p296,
+    alt: "Widok z góry na ukończoną instalację kolektorów słonecznych przy budynkach Domu.",
+  },
   { src: p380, alt: "Kotłownia gazowa Domu Pomocy Społecznej po modernizacji instalacji." },
   { src: p1680, alt: "Węzeł cieplny z izolowanymi rurociągami i automatyką sterującą instalacją solarną." },
-  { src: p298, alt: "Rozdzielacze i naczynia wzbiorcze instalacji ciepłej wody w pomieszczeniu technicznym." },
+  {
+    src: p298,
+    alt: "Rozdzielacze i naczynia wzbiorcze instalacji ciepłej wody w pomieszczeniu technicznym.",
+  },
 ];
 ---
 
@@ -62,41 +79,35 @@ const photos = [
 >
   <PageHeader
     breadcrumbs
-    title="Projekt „Wykorzystanie OZE w Domu Pomocy Społecznej w Szczytnie”"
+    title="Projekt „Wykorzystanie OZE w Domu Pomocy Społecznej w Szczytnie”"
     lead="Instalacja kolektorów słonecznych współfinansowana ze środków Europejskiego Funduszu Rozwoju Regionalnego."
   />
 
   <PageShell>
-    <SiblingNav
-      slot="rail"
-      title="Projekty unijne"
-      items={projektyUnijnePages}
-      current="/dokumenty/projekty-unijne/oze/"
-    />
+    <PageList slot="rail" items={projektyUnijnePages} current="/dokumenty/projekty-unijne/oze/" />
 
-    <div class="max-w-3xl">
-      <ZoomImage
-        src={boardProject}
-        alt="Tablica informacyjna projektu: „Warmia i Mazury regionem zjednoczonej Europy”. Projekt współfinansowany ze środków Europejskiego Funduszu Rozwoju Regionalnego w ramach Regionalnego Programu Operacyjnego Warmia i Mazury na lata 2007–2013. Tytuł projektu: „Wykorzystanie OZE w Domu Pomocy Społecznej w Szczytnie”. Całkowita wartość projektu 347 357,96 PLN, kwota dofinansowania 276 902,36 PLN, beneficjent — Powiat Szczycieński, ul. Sienkiewicza 1, 12-100 Szczytno."
-        caption="Tablica informacyjna projektu „Wykorzystanie OZE w Domu Pomocy Społecznej w Szczytnie”"
-        widths={[400, 680]}
-        sizes="(min-width: 768px) 680px, 100vw"
-        loading="eager"
-      />
-    </div>
+    <Figure
+      src={boardProject}
+      alt="Tablica informacyjna projektu: „Warmia i Mazury regionem zjednoczonej Europy”. Projekt współfinansowany ze środków Europejskiego Funduszu Rozwoju Regionalnego w ramach Regionalnego Programu Operacyjnego Warmia i Mazury na lata 2007–2013. Tytuł projektu: „Wykorzystanie OZE w Domu Pomocy Społecznej w Szczytnie”. Całkowita wartość projektu 347 357,96 PLN, kwota dofinansowania 276 902,36 PLN, beneficjent — Powiat Szczycieński, ul. Sienkiewicza 1, 12-100 Szczytno."
+      caption="Tablica informacyjna projektu „Wykorzystanie OZE w Domu Pomocy Społecznej w Szczytnie”"
+      widths={[400, 680]}
+      sizes="(min-width: 48rem) 42rem, 100vw"
+      loading="eager"
+      class="mt-subsection max-w-column"
+    />
 
     <div class="doc mt-section">
       <h2>Cel projektu</h2>
       <p>
         Celem bezpośrednim realizacji przedsięwzięcia jest redukcja emisji zanieczyszczeń (ochrona
-        powietrza atmosferycznego) oraz zmniejszenie kosztów eksploatacyjnych w zakresie produkcji
+        powietrza atmosferycznego) oraz zmniejszenie kosztów eksploatacyjnych w zakresie produkcji
         energii.
       </p>
       <p>
         Celem ogólnym projektu jest ochrona środowiska przed zanieczyszczeniami poprzez zastosowanie
         odnawialnych źródeł energii, co prowadzi do wzrostu konkurencyjności gospodarki województwa
-        warmińsko-mazurskiego, jako opartej w dużej mierze na zasobach przyrodniczych, czystości
-        środowiska i potencjale turystycznym.
+        warmińsko-mazurskiego, jako opartej w dużej mierze na zasobach przyrodniczych, czystości
+        środowiska i potencjale turystycznym.
       </p>
     </div>
 
@@ -116,49 +127,39 @@ const photos = [
     />
 
     <div class="doc">
-      <h2>Podpisanie umowy o dofinansowanie</h2>
+      <h2>Podpisanie umowy o dofinansowanie</h2>
       <p>
-        W dniu 13 maja 2014 r. Starosta Szczycieński Jarosław Matłach wraz z Wicestarostą Sylwią
-        Jaskulską podpisali umowę z Adamem Krzyśkowem, prezesem WFOŚiGW w Olsztynie, na realizację
-        projektu montażu „solarów” w szczycieńskim DPS. Na przedsięwzięcie pn. „Wykorzystanie OZE
-        w Domu Pomocy Społecznej w Szczytnie” Powiat szczycieński pozyskał ponad 300 000,00 zł ze
-        środków Regionalnego Programu Operacyjnego Warmia i Mazury 2007–2013 z poddziałania
+        W dniu 13 maja 2014 r. Starosta Szczycieński Jarosław Matłach wraz z Wicestarostą Sylwią
+        Jaskulską podpisali umowę z Adamem Krzyśkowem, prezesem WFOŚiGW w Olsztynie, na realizację
+        projektu montażu „solarów” w szczycieńskim DPS. Na przedsięwzięcie pn. „Wykorzystanie OZE
+        w Domu Pomocy Społecznej w Szczytnie” Powiat szczycieński pozyskał ponad 300 000,00 zł ze
+        środków Regionalnego Programu Operacyjnego Warmia i Mazury 2007–2013 z poddziałania
         wykorzystywania odnawialnych źródeł energii. Wykonanie montażu „solarów”, dzięki któremu DPS
-        w Szczytnie znacznie zmniejszy koszty zużywania prądu, rozpocznie się w sierpniu bieżącego roku.
+        w Szczytnie znacznie zmniejszy koszty zużywania prądu, rozpocznie się w sierpniu bieżącego
+        roku.
       </p>
-    </div>
 
-    <div class="mt-block max-w-column">
-      <Image
+      <Figure
         src={photoUmowa}
         alt="Podpisanie umowy o dofinansowanie — uścisk dłoni prezesa WFOŚiGW w Olsztynie i Starosty Szczycieńskiego, obok Wicestarosta, w tle flagi Polski i Unii Europejskiej."
         widths={[400, 680]}
-        sizes="min(100vw, 34rem)"
-        class="h-auto w-full max-w-scan rounded-lg"
-        loading="lazy"
+        sizes="(min-width: 48rem) 42rem, 100vw"
       />
-    </div>
 
-    <div class="doc mt-section">
-      <h2>Informacja o projekcie</h2>
+      <h2>Informacja o projekcie</h2>
       <p>
-        W dniu 2 września 2014 r. w siedzibie Domu Pomocy Społecznej im. Jana Pawła II Dyrektor DPS p.
-        Dorota Sędzińska-Bruździak podpisała umowę z Wykonawcą dotyczącą projektu pn.: „Wykorzystanie
-        OZE (kolektory słoneczne) w Domu Pomocy Społecznej w Szczytnie”. Przedmiotem umowy było
-        wykonanie całkowitego zakresu robót określonych w Specyfikacji Istotnych Warunków Zamówienia.
-        Termin wykonania inwestycji przewidziano do 30 września 2014 r.
+        W dniu 2 września 2014 r. w siedzibie Domu Pomocy Społecznej im. Jana Pawła II Dyrektor DPS
+        p. Dorota Sędzińska-Bruździak podpisała umowę z Wykonawcą dotyczącą projektu pn.:
+        „Wykorzystanie OZE (kolektory słoneczne) w Domu Pomocy Społecznej w Szczytnie”. Przedmiotem
+        umowy było wykonanie całkowitego zakresu robót określonych w Specyfikacji Istotnych Warunków
+        Zamówienia. Termin wykonania inwestycji przewidziano do 30 września 2014 r.
       </p>
 
-      <h2>Zdjęcia z realizacji inwestycji</h2>
+      <h2>Zdjęcia z realizacji inwestycji</h2>
     </div>
 
     <div class="mt-block">
-      <Gallery
-        photos={photos}
-        sizes="(min-width: 1024px) 15rem, (min-width: 640px) 33vw, 50vw"
-      />
+      <Gallery photos={photos} sizes="(min-width: 64rem) 15rem, (min-width: 40rem) 33vw, 50vw" />
     </div>
-
-    <BackLink href="/dokumenty/projekty-unijne/" label="Wróć do Projektów unijnych" />
   </PageShell>
 </Base>

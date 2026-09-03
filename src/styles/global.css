@@ -1,216 +1,113 @@
 @import "tailwindcss";
 
-/* Both families are subset by `bun run fonts` (scripts/subset-fonts.sh) to the
-   characters this site actually uses: 215 KB across four files became 70 KB
-   across two, because Polish needs the `latin` and `latin-ext` slices of both
-   families at once and so downloaded all four every time.
-
-   The optical-size axis is kept: it is what keeps both the 54px hero and the
-   20px card titles drawn correctly, where a weight-only font would lock the
-   letterforms to one size. `bun run build` fails if any character on any page
-   is missing from the subsets. */
+/* ---------------------------------------------------------------------------
+   Fonts. Two families, both subset by `bun run fonts` to the characters the
+   site uses; `bun run build` fails if a page reaches past the subset.
+   Bricolage Grotesque draws every heading (its `opsz` axis keeps a 60px title
+   and a 22px subheading drawn correctly); Golos Text draws everything else.
+   ------------------------------------------------------------------------ */
 @font-face {
-  font-family: "Fraunces Variable";
+  font-family: "Bricolage Grotesque";
   font-style: normal;
-  font-weight: 100 900;
+  font-weight: 200 800;
   font-display: swap;
-  src: url("../assets/fonts/fraunces-subset.woff2") format("woff2");
+  src: url("../assets/fonts/bricolage-grotesque-subset.woff2") format("woff2");
 }
 @font-face {
-  font-family: "Source Sans 3 Variable";
+  font-family: "Golos Text";
   font-style: normal;
-  font-weight: 200 900;
+  font-weight: 400 900;
   font-display: swap;
-  src: url("../assets/fonts/source-sans-3-subset.woff2") format("woff2");
+  src: url("../assets/fonts/golos-text-subset.woff2") format("woff2");
 }
-
-/* Fallback faces for the `font-display: swap` gap. Georgia and Arial are both
-   wider and shorter than the fonts they stand in for, so text reflowed when
-   the real font arrived. These overrides scale the stand-in to the same
-   running width and the same line box, which turns the swap into a change of
-   letterform with nothing moving.
-
-   The numbers come from the fonts themselves — mean advance across the
-   lowercase alphabet at the weight each family is rendered at, plus the
-   ascent and descent the browser reads — and are printed by `bun run fonts`
-   whenever the subsets are rebuilt. */
+/* Metric-matched stand-ins for the swap gap, numbers printed by `bun run fonts`. */
 @font-face {
-  font-family: "Fraunces Fallback";
-  src: local("Georgia"), local("Times New Roman"), local("Times");
-  size-adjust: 110.76%;
-  ascent-override: 88.3%;
-  descent-override: 23.02%;
-  line-gap-override: 0%;
-}
-@font-face {
-  font-family: "Source Sans 3 Fallback";
+  font-family: "Bricolage Fallback";
   src: local("Arial"), local("Helvetica Neue"), local("Helvetica");
-  size-adjust: 96.47%;
-  ascent-override: 106.14%;
-  descent-override: 41.46%;
+  size-adjust: 101.02%;
+  ascent-override: 92.06%;
+  descent-override: 26.73%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Golos Fallback";
+  src: local("Arial"), local("Helvetica Neue"), local("Helvetica");
+  size-adjust: 110.96%;
+  ascent-override: 88.32%;
+  descent-override: 19.83%;
   line-gap-override: 0%;
 }
 
-@theme {
-  --color-paper: #fbfaf7;
-  --color-ink: #26312b;
-  --color-muted: #58635c;
-  --color-spruce: #2e5d4b;
-  --color-spruce-deep: #1f4438;
-  --color-honey: #96600f;
-  --color-line: #e5e1d8;
-  /* Control boundaries — 3.40:1 on paper, 3.55:1 on white (SC 1.4.11); `line`
-     stays the decorative hairline. */
-  --color-edge: #7f8b82;
-  --color-moss: #eef2ec;
-  --color-moss-deep: #d8e2d3;
-  /* ink at 85% on paper, resolved — 8.1:1 */
-  --color-ink-soft: #464f4a;
-
-  /* Non-surface colours that used to be written as literals at the point of
-     use: the lightbox's near-black ground and the two text colours that sit on
-     it. Kept here so nothing outside `@theme` names a colour. */
-  --color-overlay: #0f1411;
-  --color-on-overlay: #e8ebe8;
-  --color-on-dark: #ffffff;
-  /* The card surface, a token so every reader mode can repaint it. */
+/* ---------------------------------------------------------------------------
+   Tokens. Two colours with jobs that cannot be confused: `lake` means "you
+   can act on this" (links, buttons, the active nav item); `heather` means
+   "this is worth reading" (the "W skrócie" box, a pulled sentence). No third
+   accent. Contrast on paper: ink 15.6:1, ink-soft 7.6:1, lake 8.4:1,
+   heather 5.5:1, edge 4.1:1 — all past WCAG 2.1 AA.
+   ------------------------------------------------------------------------ */
+@theme static {
+  --color-paper: #fbfbf8;
+  --color-mist: #f1f3f1;
+  --color-mist-deep: #e1e6e3;
   --color-card: #ffffff;
+  --color-ink: #1b2430;
+  --color-ink-soft: #4a5560;
+  --color-lake: #244c63;
+  --color-lake-deep: #1a3a4d;
+  --color-heather: #7a5c8e;
+  --color-heather-soft: #efe9f4;
+  --color-line: #d6dad8;
+  --color-edge: #6f7c85;
+  --color-overlay: #0e1418;
+  --color-on-overlay: #eceeec;
+  --color-on-dark: #ffffff;
 
-  /* The one card lift, so the six card grids cannot drift apart. */
-  --shadow-card: 0 1px 2px color-mix(in srgb, var(--color-ink) 8%, transparent);
+  --font-display: "Bricolage Grotesque", "Bricolage Fallback", system-ui, sans-serif;
+  --font-body: "Golos Text", "Golos Fallback", system-ui, sans-serif;
 
-  --font-display: "Fraunces Variable", "Fraunces Fallback", Georgia, serif;
-  --font-body: "Source Sans 3 Variable", "Source Sans 3 Fallback", system-ui, sans-serif;
-
-  /* Three-step vertical rhythm, so a chapter boundary is visibly bigger than
-     a paragraph group. Named entries in the spacing scale, so every spacing
-     utility takes them: `mt-section`, `pt-section`, `gap-subsection`, and so
-     on. The third step is deliberately NOT here — see below. */
+  /* Three-step vertical rhythm: chapter, subsection, paragraph group. */
   --spacing-section: clamp(3.5rem, 8vw, 6rem);
   --spacing-subsection: clamp(2rem, 4vw, 3rem);
 
-  /* The one step below body size, and the only one: captions, rail labels,
-     table cells, document formats, dates. 0.9375rem is 16.875px at the site's
-     18px base — still above the 16px that a phone browser zooms in below.
-     Tailwind emits the `text-meta` utility, line height included, from this
-     pair. Nothing on the site may be smaller except the accessibility bar,
-     which is chrome and carries its own scale. */
+  /* The one step below body size: captions, dates, formats, nav on phones. */
   --text-meta: 0.9375rem;
   --text-meta--line-height: 1.5;
 
-  /* The page's content column. Named so `max-w-column` says what it is
-     instead of repeating 46rem in a dozen places. */
-  --container-column: 46rem;
-
-  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-  --default-transition-timing-function: var(--ease-out);
+  /* The page column and the wider column for a two-column shell. */
+  --container-column: 42rem;
+  --container-wide: 68rem;
 }
 
-/* The third spacing step, `block`, cannot live in `@theme`: a spacing entry
-   named `block` makes Tailwind generate `inline-block` as an `inline-size`
-   utility, which quietly takes the class name away from `display:
-   inline-block`. Measured: the homepage call-to-action button broke out of
-   the page at 1024px, and the footer links use the same class. So the value
-   is a plain custom property and the one utility that needs it is declared by
-   hand below. Add another one here if a page ever needs it — but only once a
-   page does: the five that were declared alongside `mt-block` on spec were
-   never used by anything. */
 :root {
   --spacing-block: 1.5rem;
-  /* The reading measure, narrower than the 46rem column: running text stops at
-     about 80 characters while tables, floated photos and card lists keep the
-     full column. Deliberately NOT a spacing token — it is a measure, and a
-     `max-w-*` utility for it would invite it onto things that are not prose. */
-  --measure-prose: 33rem;
-  /* The widest a low-resolution scan or poster may be drawn. Almost every
-     document image the Dom has is a 680px wide scan and no larger original
-     exists, so anything drawn past ~612px (34rem at the 18px base) is a
-     browser upscaling pixels it does not have. It is the width `PosterFigure`
-     has always used; named here so a scan, a poster and a press clipping all
-     stop at the same place instead of each page picking a number. */
-  --measure-scan: 34rem;
-  /* The focus ring is named rather than written at the point of use, because
-     the high-contrast modes below have to be able to move it off the palette
-     they have just repainted: a spruce ring is invisible once spruce has
-     become the page's own yellow. */
-  --focus-ring: var(--color-spruce);
+  /* Running text stops at about 62 characters. */
+  --measure-prose: 34rem;
+  --focus-ring: var(--color-lake);
+  --header-h: 5.5rem;
 }
 @utility mt-block {
   margin-top: var(--spacing-block);
 }
-/* Declared by hand for the same reason as `mt-block`: `--measure-scan` is a
-   measure, not a spacing step, and putting it in `@theme` would spray it
-   across every `max-w-*`, `w-*` and `p-*` scale. */
-@utility max-w-scan {
-  /* `min()` so the cap also does the job `max-w-full` used to do: below 34rem
-     of viewport the image still shrinks to its container instead of pushing
-     the page sideways. */
-  max-width: min(100%, var(--measure-scan));
+@utility max-w-prose-measure {
+  max-width: var(--measure-prose);
 }
 
-/* 112.5% of the 16px default = 18px, but it tracks the reader's own
-   browser text-size setting instead of overriding it. */
+/* 112.5% of the browser default: 18px, following the reader's own setting. */
 html {
   font-size: 112.5%;
-  /* Keeps the page from jumping ~15px when the lightbox locks scroll. */
   scrollbar-gutter: stable;
-  /* Anchor targets, the skip link and keyboard focus all scroll through this
-     property, so one declaration keeps every one of them clear of the sticky
-     header instead of landing underneath it. */
   scroll-padding-top: calc(var(--header-h) + 1rem);
-}
-
-/* Measured height of the sticky header: 85px above `sm`, 96px at the `lg`
-   breakpoint where the nav appears. The larger figure is used from `sm` up
-   because overshooting only drops an anchor target slightly lower, while
-   undershooting hides it behind the header.
-
-   Below `sm` the wordmark is allowed to wrap onto a second line — a fixed rem
-   size that grows with the reader's own text-size setting cannot be promised
-   one line — so the reserved height is the two-line case, not the 72px the
-   one-line header measured. */
-:root {
-  --header-h: 5rem;
-
-  /* Motion. Five durations, one stagger and one distance — every animation and
-     transition on the site uses one of them. It replaces nine literals
-     (700/650/550/260/250/180/150/120ms) and two stagger rhythms (70/85ms).
-
-     Plain custom properties rather than `@theme` entries, for the same reason
-     as `--spacing-block` and `--measure-scan` above: Tailwind has no
-     `duration-*` theme namespace, so a token there could only reach markup as
-     `duration-[var(--…)]`, an arbitrary value. Motion is declared in this file
-     and nowhere else. */
-  --dur-fast: 150ms; /* paint-only feedback: hover, focus, press */
-  --dur-panel: 180ms; /* a surface opening: mobile menu, lightbox */
-  --dur-move: 250ms; /* transform under the pointer; anchor acknowledgement */
-  --dur-enter: 450ms; /* the page, or one block, arriving */
-  --dur-exit: 120ms; /* the outgoing page: dead time after a click */
-  --stagger-step: 80ms;
-  --stagger-max: 400ms;
-  --rise: 14px;
-}
-@media (min-width: 640px) {
-  :root {
-    --header-h: 5.4rem;
-  }
 }
 
 body {
   font-family: var(--font-body);
   background: var(--color-paper);
   color: var(--color-ink);
-  line-height: 1.65;
-  /* A single long word — an e-mail address, a long Polish compound in an h1 —
-     breaks rather than pushing the page sideways at 320px. */
+  line-height: 1.6;
   overflow-wrap: break-word;
+  font-variant-numeric: tabular-nums;
 }
 
-/* In `@layer base` for the same reason the pressed state is, below: these are
-   defaults, and a heading that needs to say `font-body` — a small
-   sans-serif label in a card or in the footer that is still structurally a
-   heading — must be able to. Unlayered, they would beat every Tailwind
-   utility written on the element itself. */
 @layer base {
   h1,
   h2,
@@ -218,27 +115,27 @@ body {
   h4 {
     font-family: var(--font-display);
     font-optical-sizing: auto;
-    font-weight: 560;
-    /* "pretty" avoids orphans without the mid-width line breaks that
-       "balance" produces on long Polish headings. */
+    font-weight: 600;
     text-wrap: pretty;
     color: var(--color-ink);
   }
-  /* Leading tracks size inversely; tracking tightens as display sizes grow. */
   h1 {
-    line-height: 1.08;
-    letter-spacing: -0.021em;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
   }
   h2 {
-    line-height: 1.18;
+    line-height: 1.15;
     letter-spacing: -0.012em;
   }
   h3 {
-    line-height: 1.28;
-    letter-spacing: -0.005em;
+    line-height: 1.25;
   }
   h4 {
-    line-height: 1.32;
+    line-height: 1.3;
+  }
+  a:active,
+  button:active {
+    background-color: var(--color-mist-deep);
   }
 }
 
@@ -246,498 +143,694 @@ body {
   outline: 3px solid var(--focus-ring);
   outline-offset: 2px;
 }
-
-/* One underline offset for the whole site. It used to be written per link —
-   two pixels here, four there — so the same underline sat at two different
-   distances depending on the page. In `em`, so it tracks the text it belongs
-   to instead of drifting closer as the type grows; unlayered, so it beats
-   Tailwind's utilities and nobody has to remember it. */
 a {
-  text-underline-offset: 0.22em;
+  text-underline-offset: 0.2em;
 }
-
 ::selection {
-  background: var(--color-moss-deep);
+  background: var(--color-heather-soft);
   color: var(--color-ink);
 }
 
-/* Quiet state feedback: paint-only crossfades on pointer devices, and
-   pressed-state color that also reaches touch users. */
-@media (hover: hover) and (pointer: fine) {
-  a,
-  button,
-  summary,
-  /* The card surface that answers a hover on the link stretched across it —
-     it is not an <a> itself. Two shapes, the same two the pressed-state rule
-     below names. NOTE: LinkCard is a bare <a> and has no `data-card-link`; it
-     is covered by the `a` arm. Keeping this arm inside the hover gate is what
-     makes all three card types behave identically on the same device. */
-  :is(li, article):has(a[data-card-link]) {
-    /* Longhands, not the `transition` shorthand: a later rule that needs one
-       more property must be able to add it without silently dropping this
-       list. `box-shadow` and `text-decoration-color` are here because
-       `hover:shadow-card` (3 cards) and `hover:underline` (2 rail navs)
-       otherwise snapped while the border or colour beside them faded.
-       `outline-color` is deliberately absent — the focus ring is instant. */
-    transition-property: background-color, color, border-color, text-decoration-color, box-shadow;
-    transition-duration: var(--dur-fast);
-    transition-timing-function: var(--ease-out);
-  }
-}
-/* Pressed state is a background tint from the palette, never a `filter`: a
-   non-none filter turns the element into the containing block for its own
-   ::before, which collapsed the hit area of stretched card links mid-press.
-
-   Both rules live in `@layer base` on purpose. Unlayered CSS beats every
-   layer, so outside a layer these would win over Tailwind's own
-   `@layer utilities` — including `active:bg-*` written on a specific element.
-   A dark button would then take the light moss tint under the finger and its
-   white label would drop to 1.33:1, far below the 4.5:1 that WCAG 2.1 SC 1.4.3
-   requires. Inside `base` they stay the default press tint and any element
-   that needs a different one can simply say so with a utility. */
-@layer base {
-  a:active,
-  button:active,
-  summary:active {
-    background-color: var(--color-moss-deep);
-  }
-  /* The whole card acknowledges a press on its stretched link. Two shapes in
-     use: the card is the <li> itself, or an <article> filling the <li>. */
-  :is(li, article):has(a[data-card-link]:active) {
-    background-color: var(--color-moss);
-  }
-}
-
-/* Increased-contrast mode. The previous one-line version only collapsed
-   `muted` into `ink`, which left every other colour — and every border — at
-   the default palette, so the request was largely ignored. This is the whole
-   palette re-cut. Measured on white, the card surface — ink 17.1:1,
-   muted 12.2:1, spruce 11.5:1, spruce-deep 15.1:1 and honey 10.2:1 for text,
-   edge 7.1:1 and line 4.7:1 for boundaries; on `paper`, which is a shade
-   darker, the same colours read 16.4 / 11.7 / 11.0 / 14.5 / 9.8 and 6.8 / 4.5.
-   Every one of them is well past the 4.5:1 (text) and 3:1 (non-text) that
-   WCAG 2.1 asks for. Paper itself stays put: darkening the page as well would
-   only cancel the gain.
-
-   Scoped to `html:not([data-contrast])` so a contrast choice the reader makes
-   on the site itself would win over the system setting. Nothing writes that
-   attribute yet; the hook is here so adding the control later needs no
-   change to this block. */
-@media (prefers-contrast: more) {
-  html:not([data-contrast]) {
-    --color-ink: #131e18;
-    --color-muted: #2c3830;
-    --color-spruce: #194034;
-    --color-spruce-deep: #0f2b22;
-    --color-honey: #5c3a05;
-    --color-line: #6b7671;
-    --color-edge: #4f5b54;
-    --color-moss: #e7ece5;
-    --color-moss-deep: #c9d6c4;
-    /* The one softened text colour collapses into `ink`: a reader who has
-       asked the system for more contrast is asking for exactly this gap to
-       go away. It used to be an alpha of ink written as a utility class, which
-       no token swap could reach and which needed an override of its own here;
-       now it is a token like every other colour. */
-    --color-ink-soft: #131e18;
-  }
-  /* The band is already a full moss fill below; in this mode it takes the
-     re-cut moss with no further transparency. */
-  html:not([data-contrast]) .band {
-    --band-fill: var(--color-moss);
-  }
-}
-
 /* ---------------------------------------------------------------------------
-   Dark mode. Three states, chosen in the header: follow the system, dark,
-   light. The reader's own choice is `data-theme` on <html>, written by the
-   <head> script from `dps-theme` before the first paint; with no choice the
-   system setting decides through `prefers-color-scheme`. Both are shut off
-   by `:not([data-contrast])`: the two high-contrast modes are a complete
-   palette of their own and always win.
-
-   The same tokens as the light palette, re-cut for a near-black ground.
-   Measured on `paper` (#161b18): ink 14.2:1, ink-soft 11.6:1, muted 7.9:1,
-   spruce 8.9:1, spruce-deep 11.4:1, honey 8.3:1 for text and edge 4.9:1 for
-   control boundaries — all past the 4.5:1 and 3:1 of WCAG 2.1 AA; on the
-   card surface each reads about half a point lower and still passes. `line`
-   stays a decorative hairline, as in the light palette.
-   `on-dark` is the label on a spruce fill: spruce is now pale, so the label
-   is the page's own dark. Photographs are never touched.
+   Reader modes. Dark follows the system only (no switch on the site). The two
+   high-contrast modes are chosen in the header and win over everything.
    ------------------------------------------------------------------------ */
 @media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]):not([data-contrast]) {
-    --color-paper: #161b18;
-    --color-ink: #e6e9e5;
-    --color-ink-soft: #cfd4cf;
-    --color-muted: #a8b0aa;
-    --color-spruce: #8fc4ab;
-    --color-spruce-deep: #b5d9c5;
-    --color-honey: #e0a94a;
-    --color-line: #3a423d;
-    --color-edge: #7f8b82;
-    --color-moss: #1e2621;
-    --color-moss-deep: #2b3a31;
-    --color-card: #1d2320;
-    --color-overlay: #0a0d0b;
-    --color-on-overlay: #e8ebe8;
-    --color-on-dark: #10201a;
+  html:not([data-contrast]) {
+    --color-paper: #121719;
+    --color-mist: #1a2124;
+    --color-mist-deep: #263035;
+    --color-card: #1a2124;
+    --color-ink: #eceeec;
+    --color-ink-soft: #b0b8b5;
+    --color-lake: #8fbfda;
+    --color-lake-deep: #b9d9ea;
+    --color-heather: #c3a8d9;
+    --color-heather-soft: #2a2233;
+    --color-line: #2e383c;
+    --color-edge: #8a969d;
+    --color-overlay: #090c0e;
+    --color-on-overlay: #eceeec;
+    --color-on-dark: #121719;
     color-scheme: dark;
   }
 }
-html[data-theme="dark"]:not([data-contrast]) {
-  --color-paper: #161b18;
-  --color-ink: #e6e9e5;
-  --color-ink-soft: #cfd4cf;
-  --color-muted: #a8b0aa;
-  --color-spruce: #8fc4ab;
-  --color-spruce-deep: #b5d9c5;
-  --color-honey: #e0a94a;
-  --color-line: #3a423d;
-  --color-edge: #7f8b82;
-  --color-moss: #1e2621;
-  --color-moss-deep: #2b3a31;
-  --color-card: #1d2320;
-  --color-overlay: #0a0d0b;
-  --color-on-overlay: #e8ebe8;
-  --color-on-dark: #10201a;
-  color-scheme: dark;
-}
-/* The menu scrim is `bg-ink/40`; with ink now pale that is a light wash over
-   the page instead of a dimming of it. */
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]):not([data-contrast]) [data-menu][open]::before {
-    background: rgb(0 0 0 / 0.6);
+@media (prefers-contrast: more) {
+  html:not([data-contrast]) {
+    --color-ink-soft: var(--color-ink);
+    --color-edge: var(--color-ink);
+    --color-line: #8a9297;
   }
 }
-html[data-theme="dark"]:not([data-contrast]) [data-menu][open]::before {
-  background: rgb(0 0 0 / 0.6);
-}
-
-/* ---------------------------------------------------------------------------
-   Reader modes, chosen in the accessibility toolbar and re-applied by the
-   <head> script before the first paint.
-
-   The two high-contrast modes are the whole palette re-cut to two colours, so
-   every token that names a surface, a text colour or a boundary is answered
-   here — anything left out would keep its light value and punch a hole in a
-   black page. Measured ratios: #ffff00 on #000000 is 19.56:1 and #ffffff on
-   #000000 is 21:1, both far past the 7:1 of AAA. The one grey, `moss-deep`,
-   is #5a5a5a: yellow on it reads 6.52:1 and it reads 3.0:1 against the page
-   itself, so it can carry the "you are here" tint in the navigation and still
-   be seen as a shape. A darker grey cannot — #333333 measures 1.66:1 against
-   black and disappears.
-
-   `--color-on-dark` is the text drawn on a spruce fill (buttons, lightbox
-   chips). Spruce here IS the page's text colour, so its label has to flip to
-   the page's background: black.
-   ------------------------------------------------------------------------ */
+/* Black on yellow, the mode Polish public sites have offered for years. */
 html[data-contrast="yellow"] {
   --color-paper: #000000;
+  --color-mist: #1a1a00;
+  --color-mist-deep: #333300;
+  --color-card: #000000;
   --color-ink: #ffff00;
   --color-ink-soft: #ffff00;
-  --color-muted: #ffff00;
-  --color-spruce: #ffff00;
-  --color-spruce-deep: #ffff00;
-  --color-honey: #ffff00;
+  --color-lake: #ffff00;
+  --color-lake-deep: #ffff66;
+  --color-heather: #ffff00;
+  --color-heather-soft: #1a1a00;
   --color-line: #ffff00;
   --color-edge: #ffff00;
-  --color-moss: #000000;
-  --color-moss-deep: #5a5a5a;
-  --color-card: #000000;
   --color-overlay: #000000;
   --color-on-overlay: #ffff00;
   --color-on-dark: #000000;
-  /* The ring has to differ from both the text and the page, or it vanishes
-     into whichever it matches. */
   --focus-ring: #ffffff;
   color-scheme: dark;
 }
 html[data-contrast="bw"] {
-  --color-paper: #000000;
-  --color-ink: #ffffff;
-  --color-ink-soft: #ffffff;
-  --color-muted: #ffffff;
-  --color-spruce: #ffffff;
-  --color-spruce-deep: #ffffff;
-  --color-honey: #ffffff;
-  --color-line: #ffffff;
-  --color-edge: #ffffff;
-  --color-moss: #000000;
-  --color-moss-deep: #5a5a5a;
-  --color-card: #000000;
+  --color-paper: #ffffff;
+  --color-mist: #f2f2f2;
+  --color-mist-deep: #dddddd;
+  --color-card: #ffffff;
+  --color-ink: #000000;
+  --color-ink-soft: #000000;
+  --color-lake: #000000;
+  --color-lake-deep: #000000;
+  --color-heather: #000000;
+  --color-heather-soft: #f2f2f2;
+  --color-line: #000000;
+  --color-edge: #000000;
   --color-overlay: #000000;
   --color-on-overlay: #ffffff;
-  --color-on-dark: #000000;
-  --focus-ring: #ffff00;
-  color-scheme: dark;
+  --color-on-dark: #ffffff;
+  --focus-ring: #000000;
+  color-scheme: light;
 }
-
-/* Text size. The base is 112.5% (18px); these are 21px and 24px, and because
-   they are percentages of the reader's own browser setting rather than pixel
-   values, a reader who has already enlarged text keeps that gain on top. */
+html[data-contrast] img,
+html[data-contrast] video {
+  /* Photographs are never repainted; a thin line keeps them from floating. */
+  outline: 1px solid var(--color-line);
+}
 html[data-font-size="large"] {
-  font-size: 131.25%;
+  font-size: 130%;
 }
 html[data-font-size="xlarge"] {
   font-size: 150%;
 }
-
-/* Everything the token swap above cannot reach, because it is written as a
-   literal somewhere outside the palette. */
-/* The footer's tint is `bg-moss/60` — an alpha, so it would sit at 60% of
-   black over the page and read as a slightly different black. */
-html[data-contrast] footer {
-  background: var(--color-paper);
-}
-/* The menu scrim is `bg-ink/40`, which is 40% yellow: a yellow wash over the
-   page rather than a dimming of it. */
-html[data-contrast] [data-menu][open]::before {
-  background: rgb(0 0 0 / 0.7);
-}
-html[data-contrast] ::selection {
-  background: var(--color-ink);
-  color: var(--color-paper);
-}
-/* A shadow is a soft grey edge, which on a black page is nothing at all. The
-   card says it is being pointed at with its border instead. */
-html[data-contrast] .hover\:shadow-card:hover {
-  box-shadow: none;
-  border-color: var(--color-ink);
-}
-/* The band is a filled slab in every other mode; here the fill would be the
-   page itself, so what is left — and what has to be kept — is its rule. */
-html[data-contrast] .band {
-  --band-fill: var(--color-paper);
-}
-/* Photographs are never inverted, greyscaled or dimmed: a picture of the Dom
-   has to stay a picture of the Dom. What a black page takes away is the
-   photo's edge, so the frame gets one back. On `ArchImage` it goes on the
-   element carrying the arch radius, so the line follows the window shape. */
-html[data-contrast] [data-arch],
-html[data-contrast] [data-framed],
-html[data-contrast] a[data-lightbox],
-html[data-contrast] .lightbox img {
-  border: 2px solid var(--color-line);
-}
-/* Inside the lightbox the ring is normally paper, which is now the same black
-   as the backdrop. */
-html[data-contrast] .lightbox :focus-visible {
-  outline-color: var(--focus-ring);
+@media (forced-colors: active) {
+  :focus-visible {
+    outline-color: Highlight;
+  }
 }
 
 /* ---------------------------------------------------------------------------
-   The accessibility toolbar itself.
-
-   Hidden until the <head> script has marked scripting as live, so it never
-   flashes in and — more importantly — never sits in the tab order as a row of
-   controls that cannot do anything. `(scripting: none)` covers the browsers
-   that report it directly.
+   Header tools: A / A+ / A++ / Kontrast. Small chrome with its own scale.
    ------------------------------------------------------------------------ */
-html:not([data-js]) .a11y-bar {
+.tool {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  --bloom: color-mix(in srgb, var(--color-ink) 18%, transparent);
+  font-size: 0.8125rem;
+  line-height: 1;
+  padding: 0.5rem 0.6rem;
+  border: 0;
+  border-radius: 0.375rem;
+  color: var(--color-ink);
+  background: var(--color-mist);
+  cursor: pointer;
+}
+.tool:hover {
+  background: var(--color-mist-deep);
+}
+.tool[aria-pressed="true"] {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+html:not([data-js]) .tools {
   display: none;
 }
-@media (scripting: none) {
-  .a11y-bar {
-    display: none;
-  }
-}
-.a11y-bar {
-  background: var(--color-moss);
-  border-bottom: 1px solid var(--color-line);
+
+/* ---------------------------------------------------------------------------
+   Navigation: one button in the header, one drawer from the left. The drawer is
+   a <dialog>, so the platform traps focus and answers Escape.
+   ------------------------------------------------------------------------ */
+.menu-open {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  --bloom: color-mix(in srgb, var(--color-ink) 18%, transparent);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 0.85rem;
+  border: 0;
+  border-radius: 0.5rem;
+  background: var(--color-mist);
   color: var(--color-ink);
-  /* In rem, so the bar grows with A+ and A++ like the rest of the page. */
-  font-size: 0.8125rem;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
 }
-.a11y-bar-label {
-  color: var(--color-muted);
+.menu-open:hover {
+  background: var(--color-mist-deep);
 }
-.a11y-bar button {
+.menu {
+  margin: 0;
+  padding: 0;
+  inset: 0 auto 0 0;
+  width: min(22rem, 100%);
+  max-width: 100%;
+  height: 100%;
+  max-height: 100%;
+  border: 0;
+  border-right: 1px solid var(--color-line);
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+.menu::backdrop {
+  background: rgb(0 0 0 / 0.45);
+}
+.menu a {
+  display: block;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--color-line);
+  font-size: 1.2rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--color-ink);
+  text-decoration: none;
+}
+.menu a[aria-current] {
+  color: var(--color-lake);
+}
+
+/* ---------------------------------------------------------------------------
+   "W skrócie": three sentences at the top of every content page, in heather,
+   the colour that means "worth reading".
+   ------------------------------------------------------------------------ */
+.brief {
+  background: var(--color-heather-soft);
+  border-left: 4px solid var(--color-heather);
+  border-radius: 0 0.5rem 0.5rem 0;
+  padding: 1rem 1.25rem;
+  max-width: var(--container-column);
+}
+.brief > p:first-child {
+  font-family: var(--font-display);
+  font-weight: 600;
+  margin: 0 0 0.35rem;
+}
+.brief ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+.brief li {
+  margin: 0.25rem 0;
+}
+.brief li::marker {
+  color: var(--color-heather);
+}
+
+/* ---------------------------------------------------------------------------
+   Table of contents: the left rail on desktop, a list under the title on a
+   phone. The current chapter is marked by script; without it, plain links.
+   ------------------------------------------------------------------------ */
+.toc a {
+  display: block;
+  padding: 0.3rem 0 0.3rem 0.85rem;
+  border-left: 2px solid var(--color-line);
+  color: var(--color-ink-soft);
+  text-decoration: none;
+  font-size: var(--text-meta);
+  line-height: var(--text-meta--line-height);
+}
+.toc a:hover {
+  color: var(--color-ink);
+  border-left-color: var(--color-edge);
+}
+.toc a[aria-current] {
+  color: var(--color-ink);
+  border-left-color: var(--color-lake);
+  font-weight: 600;
+}
+
+/* A plain list of pages, one per row, replaces cards everywhere. */
+.pages {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.pages li {
+  border-top: 1px solid var(--color-line);
+}
+.pages li:last-child {
+  border-bottom: 1px solid var(--color-line);
+}
+.pages a {
+  display: block;
+  padding: 0.9rem 0;
+  color: var(--color-lake-deep);
+  text-decoration: none;
+  font-weight: 500;
+}
+.pages a > span {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+}
+.pages a:hover > span {
+  text-decoration-thickness: 2px;
+}
+.pages p {
+  margin: 0.1rem 0 0;
+  color: var(--color-ink-soft);
+  max-width: var(--measure-prose);
+}
+
+/* ---------------------------------------------------------------------------
+   Long-form prose. Everything a migrated document needs, in one class.
+   ------------------------------------------------------------------------ */
+.doc {
+  max-width: var(--container-column);
+}
+.doc > * {
+  max-width: var(--measure-prose);
+}
+.doc > :is(table, .table-scroll, figure, ul.pages, .brief, hr) {
+  max-width: none;
+}
+.doc h2 {
+  font-size: 1.6rem;
+  margin-top: var(--spacing-subsection);
+  margin-bottom: 0.6rem;
+}
+.doc h3 {
+  font-size: 1.2rem;
+  margin-top: 1.75rem;
+  margin-bottom: 0.4rem;
+}
+.doc h4 {
+  font-size: 1.05rem;
+  margin-top: 1.4rem;
+  margin-bottom: 0.3rem;
+}
+.doc p,
+.doc ul,
+.doc ol,
+.doc dl {
+  margin: 0.85rem 0;
+}
+.doc ul,
+.doc ol {
+  padding-left: 1.3rem;
+}
+.doc li {
+  margin: 0.3rem 0;
+}
+.doc li::marker {
+  color: var(--color-ink-soft);
+}
+.doc a {
+  color: var(--color-lake-deep);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+}
+.doc a:hover {
+  text-decoration-thickness: 2px;
+}
+.doc strong {
+  font-weight: 600;
+}
+.doc blockquote {
+  margin: 1.25rem 0;
+  padding: 0.25rem 0 0.25rem 1.1rem;
+  border-left: 3px solid var(--color-heather);
+  color: var(--color-ink-soft);
+}
+.doc hr {
+  border: 0;
+  border-top: 1px solid var(--color-line);
+  margin: var(--spacing-subsection) 0;
+}
+.doc figure {
+  margin: 1.5rem 0;
+}
+.doc figcaption,
+figcaption {
+  font-size: var(--text-meta);
+  line-height: var(--text-meta--line-height);
+  color: var(--color-ink-soft);
+  margin-top: 0.5rem;
+}
+.doc img {
+  border-radius: 0.5rem;
+}
+.doc address {
+  font-style: normal;
+}
+.doc dt {
+  font-weight: 600;
+}
+.doc dd {
+  margin: 0 0 0.6rem;
+}
+.doc table,
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-meta);
+  line-height: var(--text-meta--line-height);
+  margin: 1rem 0;
+}
+.doc th,
+.doc td,
+.table th,
+.table td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.6rem 0.6rem 0.6rem 0;
+  border-bottom: 1px solid var(--color-line);
+}
+.doc th,
+.table th {
+  font-weight: 600;
+  border-bottom: 2px solid var(--color-ink);
+}
+.table-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+}
+.table-scroll:focus-visible {
+  outline-offset: 4px;
+}
+
+/* ---------------------------------------------------------------------------
+   Documents to download: format and size after the label, in meta type.
+   ------------------------------------------------------------------------ */
+.docs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: var(--container-column);
+}
+.docs li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 0.7rem 0;
+  border-top: 1px solid var(--color-line);
+}
+.docs li:last-child {
+  border-bottom: 1px solid var(--color-line);
+}
+.docs a {
+  color: var(--color-lake-deep);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+}
+.docs a:hover {
+  text-decoration-thickness: 2px;
+}
+.docs span {
+  font-size: var(--text-meta);
+  color: var(--color-ink-soft);
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------------------
+   Buttons. One family for the whole site: `.btn` (secondary, outlined),
+   `.btn-primary` (the one action of a page), `.btn-phone` (the large number),
+   `.btn-quiet` (a control on a dark or busy ground: the lightbox). Every
+   button answers hover with a fill, press with a deeper fill, and — with
+   motion allowed — a soft bloom spreading from the point of the click
+   (`--px`/`--py` written by the pointer script in Base).
+   ------------------------------------------------------------------------ */
+.btn {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  /* WCAG 2.2 SC 2.5.8 asks for 24px; these are the site's own controls, used
-     by the readers who need them most, so they are held at 44px in both
-     directions — the AAA figure of SC 2.5.5 — even at the narrowest width.
-     `min-width` is in px rather than rem on purpose: it is a finger, not a
-     letter, so it must not shrink with anything. The height is in rem because
-     it has to grow with the text it contains once A++ is chosen. */
+  gap: 0.5rem;
   min-height: 2.75rem;
-  min-width: 44px;
-  padding: 0.25rem 0.25rem;
-  border: 1px solid var(--color-edge);
-  border-radius: 0.375rem;
-  background: transparent;
-  color: var(--color-ink);
+  padding: 0.7rem 1.2rem;
+  border-radius: 0.5rem;
+  font: inherit;
+  font-weight: 600;
   line-height: 1.2;
+  text-decoration: none;
+  border: 2px solid var(--color-lake);
+  color: var(--color-lake-deep);
+  background: transparent;
   cursor: pointer;
+  --bloom: color-mix(in srgb, var(--color-lake) 22%, transparent);
 }
-@media (min-width: 640px) {
-  .a11y-bar button {
-    padding-inline: 0.6rem;
-  }
+.btn:hover {
+  background: var(--color-mist-deep);
+  border-color: var(--color-lake-deep);
 }
-/* Below `sm` the bar has one width to fit into and no room to spare: at
-   390px the two groups have to share the first row, or the strip grows to
-   three rows and starts to feel like a page of its own above the header.
-   The text steps down one notch; nothing else about the controls changes,
-   and their 44px targets are untouched. */
-@media (max-width: 639px) {
-  .a11y-bar {
-    font-size: 0.75rem;
-  }
+.btn:active {
+  background: var(--color-mist-deep);
+  border-color: var(--color-lake-deep);
+  color: var(--color-lake-deep);
 }
-/* A label whose weight changes when it becomes pressed or current — the
-   toolbar buttons, the main navigation — would otherwise widen and push its
-   neighbours sideways. The label reserves the width of its bold spelling up
-   front with a hidden zero-height copy, so the weight can change in place.
-   `data-label` carries the same text as the element. The alternative-text
-   form of `content` keeps the copy out of the accessibility tree; the plain
-   form before it is the fallback for older engines. Display is left to the
-   element (a flex item in the toolbar, `inline-block` in the header), so the
-   responsive `hidden` utilities on the toolbar's twin labels keep working. */
-.label-steady {
-  text-align: center;
-}
-.label-steady::after {
-  content: attr(data-label);
-  content: attr(data-label) / "";
-  display: block;
-  height: 0;
-  overflow: hidden;
-  visibility: hidden;
-  font-weight: 600;
-  user-select: none;
-  pointer-events: none;
-}
-/* Fill, weight and border all change together: the pressed state is never
-   carried by colour alone (WCAG 2.1 SC 1.4.1). */
-.a11y-bar [aria-pressed="true"] {
-  background: var(--color-spruce-deep);
+.btn-primary {
+  background: var(--color-lake);
   color: var(--color-on-dark);
-  border-color: var(--color-spruce-deep);
-  font-weight: 600;
+  --bloom: color-mix(in srgb, var(--color-on-dark) 28%, transparent);
 }
-/* The toolbar was the only control family on the site with no hover state at
-   all: it inherited the 150ms transition and had nothing to transition to.
-   These are the site's own accessibility controls, held at 44px for the
-   readers who need them most. `:not([aria-pressed="true"])` keeps a pressed
-   control's fill, weight and border intact — the pressed state is never
-   carried by colour alone (SC 1.4.1) — and it also covers the
-   `[data-a11y-system]` button, which is always `aria-pressed="true"`.
-   `edge → spruce` strengthens the control boundary, never weakens it. */
-@media (hover: hover) and (pointer: fine) {
-  .a11y-bar button:not([aria-pressed="true"]):hover {
-    background: var(--color-card);
-    border-color: var(--color-spruce);
+.btn-primary:hover,
+.btn-primary:active {
+  background: var(--color-lake-deep);
+  border-color: var(--color-lake-deep);
+  color: var(--color-on-dark);
+}
+.btn-phone {
+  font-size: 1.35rem;
+  padding: 0.75rem 1.35rem;
+  letter-spacing: 0.01em;
+}
+.btn-quiet {
+  border-color: color-mix(in srgb, var(--color-on-overlay) 45%, transparent);
+  color: var(--color-on-overlay);
+  --bloom: color-mix(in srgb, var(--color-on-overlay) 30%, transparent);
+}
+.btn-quiet:hover {
+  background: color-mix(in srgb, var(--color-on-overlay) 14%, transparent);
+  border-color: var(--color-on-overlay);
+}
+.btn-quiet:active {
+  background: color-mix(in srgb, var(--color-on-overlay) 26%, transparent);
+  border-color: var(--color-on-overlay);
+  color: var(--color-on-overlay);
+}
+/* The bloom: one wide, soft disc of light drawn on ::after, centred on the
+   click point. Invisible until a press starts the animation. */
+.btn::after,
+.tool::after,
+.menu-open::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  --bloom-size: max(220%, 14rem);
+  width: var(--bloom-size);
+  aspect-ratio: 1;
+  left: var(--px, 50%);
+  top: var(--py, 50%);
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--bloom) 0, transparent 60%);
+  opacity: 0;
+  scale: 0;
+}
+
+/* ---------------------------------------------------------------------------
+   Photographs and the lightbox.
+   ------------------------------------------------------------------------ */
+.photo img {
+  width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  display: block;
+}
+.gallery {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  gap: 1rem;
+}
+.gallery button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  border-radius: 0.5rem;
+  cursor: zoom-in;
+}
+.gallery img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  display: block;
+}
+.lightbox {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  background: var(--color-overlay);
+  color: var(--color-on-overlay);
+}
+.lightbox::backdrop {
+  background: var(--color-overlay);
+}
+/* Three rows that never overlap: a bar, the photograph, a bar. The middle
+   row is the only one allowed to shrink, so the picture always fits in
+   whatever is left between the two bars. */
+.lightbox-frame {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  height: 100%;
+  min-height: 0;
+  gap: 1rem;
+  padding: 1rem;
+}
+@media (min-width: 40rem) {
+  .lightbox-frame {
+    gap: 1.25rem;
+    padding: 1.25rem 1.5rem;
   }
 }
-/* Already on because the operating system says so, and a press cannot change
-   that — so it does not offer the pointer of something that would. */
-.a11y-bar [data-a11y-system] {
-  cursor: default;
-}
-.a11y-bar-link {
-  display: inline-flex;
+.lightbox-bar {
+  display: flex;
   align-items: center;
-  min-height: 2.75rem;
-  color: var(--color-ink);
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
-.a11y-bar-link:hover {
-  color: var(--color-spruce-deep);
+.lightbox-counter {
+  margin: 0;
+  font-size: var(--text-meta);
+  line-height: var(--text-meta--line-height);
+  color: var(--color-on-overlay);
 }
-/* Below `sm` the bar has to stay inside two rows on a 390px phone, and the
-   link is the one control here that is also in the footer's "Na skróty"
-   list — so it is the one that goes. */
-@media (max-width: 639px) {
-  .a11y-bar-link {
-    display: none;
-  }
+.lightbox figure {
+  margin: 0;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-/* Windows High Contrast repaints the whole page from the user's own colours,
-   which is a contrast choice already made and one this bar must not fight.
-   Text size and reduced motion are orthogonal to it and stay. */
-@media (forced-colors: active) {
-  .a11y-bar [data-a11y-group="contrast"] {
-    display: none;
-  }
+.lightbox img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  border-radius: 0.5rem;
 }
-/* Cross-page transitions (MPA View Transitions API). The outgoing page
-   dissolves ON TOP of the incoming one, which is already playing its own
-   `rise-in`: the arriving page is never faded as a whole.
+.lightbox-figcaption {
+  margin: 0;
+  flex: 1 1 100%;
+  text-align: center;
+  text-wrap: balance;
+}
+.lightbox-nav {
+  display: flex;
+  gap: 0.75rem;
+  margin-inline: auto;
+}
+.lightbox .btn {
+  min-height: 3rem;
+}
+.lightbox :focus-visible {
+  outline-color: var(--color-on-overlay);
+}
 
-   That ordering is the point. Fading the incoming root used to dissolve the
-   old page into a column the reveal script had blanked before first paint, and
-   the real entrance then played a second later as an unrelated beat — which is
-   what read as "the transition did not happen". Browsers with no cross-document
-   support (Firefox, Safari before 18.2) simply cut, and still get `rise-in`.
-
-   Fallback if the `z-index` stacking ever fails to hold in a real foreground
-   tab: restore a two-sided crossfade — `::view-transition-new(root) {
-   animation: vt-fade-in var(--dur-fast) var(--ease-out) both }`, keeping
-   `mix-blend-mode` at the UA default — and drop the `z-index`. Do NOT also
-   suppress `rise-in`: a short incoming fade layered over the page rise is
-   acceptable, a white flash is not. */
-@view-transition {
-  navigation: auto;
-}
-/* Lifted out of the root snapshot so they hold still while the page under them
-   changes. The header is `sticky top-0` and the bar sits at the document top
-   with every navigation landing at scroll 0, so both are in the same viewport
-   position on both sides. The FOOTER is deliberately NOT named: its document
-   position differs by hundreds of pixels between a short page and a long one,
-   so a named group would snap or slide. Exactly one element per document may
-   carry a given name — a duplicate skips the whole transition, silently. */
-header {
-  view-transition-name: site-header;
-}
-.a11y-bar {
-  view-transition-name: a11y-bar;
+/* ---------------------------------------------------------------------------
+   Motion. One gesture — a quiet rise with a fade, the way the page itself
+   arrives — at three speeds: --dur-fast for state feedback, --dur-panel for a
+   surface opening, --dur-enter for something arriving. --dur-press is the
+   soft bloom after a press. One easing. Everything below is gated on
+   prefers-reduced-motion and switched off in the contrast modes.
+   ------------------------------------------------------------------------ */
+:root {
+  --dur-fast: 300ms;
+  --dur-panel: 500ms;
+  --dur-enter: 350ms;
+  --dur-press: 800ms;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 }
 @media (prefers-reduced-motion: no-preference) {
-  /* REQUIRED. The UA stylesheet blends both snapshots with `plus-lighter`,
-     which is correct for a symmetric cross-fade (the two opacities sum to 1)
-     and wrong here: the incoming page is held at full opacity, so an additive
-     blend would flash the whole viewport white at the start of every
-     navigation.
-
-     The named groups need it for a different reason: their animation is
-     switched off below, so BOTH snapshots sit at opacity 1 for the length of
-     the transition. `plus-lighter` would then composite the header and the
-     accessibility bar with themselves — paper clips to pure white, and the
-     dark ground lifts to a washed grey. The UA rule is written against the
-     universal selector, so it reaches every named group too. */
+  html:not([data-contrast]) {
+    scroll-behavior: smooth;
+  }
+  /* State feedback: a link's underline, a button's fill, the Toc's marker
+     crossfade slowly enough to be seen, never snap. */
+  html:not([data-contrast]) :is(a, button, .toc a, .nav-link) {
+    transition-property: color, background-color, border-color, text-decoration-color, text-decoration-thickness;
+    transition-duration: var(--dur-fast);
+    transition-timing-function: var(--ease-out);
+  }
+  /* Press feedback: one soft, wide bloom of light spreading from the click
+     point and dissolving. The pointer script sets `data-press` on pointerdown
+     and takes it off when the bloom has faded. */
+  html:not([data-contrast]) :is(.btn, .tool, .menu-open)[data-press]::after {
+    animation: bloom var(--dur-press) var(--ease-out);
+  }
+  /* Surfaces opening: the drawer rises into place from the left, the
+     lightbox rises the way the page does; both backdrops fade in. */
+  html:not([data-contrast]) .menu[open] {
+    animation: slide-in var(--dur-panel) var(--ease-out);
+  }
+  html:not([data-contrast]) .menu[open]::backdrop,
+  html:not([data-contrast]) .lightbox[open]::backdrop {
+    animation: fade-in var(--dur-panel) var(--ease-out);
+  }
+  html:not([data-contrast]) .lightbox[open] {
+    animation: rise-in var(--dur-panel) var(--ease-out);
+  }
+  /* The page arriving: one quiet rise of <main>, once per load. */
+  html:not([data-contrast]) main {
+    animation: rise-in var(--dur-enter) var(--ease-out);
+  }
+  /* Arriving at a chapter by anchor: the heading glows and lets it go. */
+  html:not([data-contrast]) :is(h2, h3, section)[id]:target {
+    animation: arrive-in 1600ms var(--ease-out);
+  }
+  /* Between pages: the old page dissolves, the new one arrives with its own
+     rise; the header holds still. `mix-blend-mode: normal` because the UA
+     default is additive and would flash white. */
+  @view-transition {
+    navigation: auto;
+  }
   ::view-transition-old(root),
   ::view-transition-new(root),
   ::view-transition-old(site-header),
-  ::view-transition-new(site-header),
-  ::view-transition-old(a11y-bar),
-  ::view-transition-new(a11y-bar) {
+  ::view-transition-new(site-header) {
     mix-blend-mode: normal;
   }
   ::view-transition-old(root) {
-    animation: vt-fade-out var(--dur-exit) var(--ease-out) both;
-    z-index: 1;
+    animation: fade-out 220ms var(--ease-out);
   }
   ::view-transition-new(root) {
-    animation: none;
+    animation: fade-in 420ms var(--ease-out);
   }
-  /* Only the active-page pill differs between headers; it should change with
-     the page, not cross-fade on the UA's own ~250ms clock. */
-  ::view-transition-group(site-header),
   ::view-transition-old(site-header),
-  ::view-transition-new(site-header),
-  ::view-transition-group(a11y-bar),
-  ::view-transition-old(a11y-bar),
-  ::view-transition-new(a11y-bar) {
+  ::view-transition-new(site-header) {
     animation: none;
   }
-  @keyframes vt-fade-out {
-    to {
-      opacity: 0;
-    }
+  header {
+    view-transition-name: site-header;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -745,704 +838,65 @@ header {
     navigation: none;
   }
 }
-
-/* The site's one entrance gesture. `main` plays it on every page — all 32,
-   prose pages and 404 included — with no markup, no JavaScript and no
-   per-page opt-in, so a page added tomorrow has it too. It covers what
-   nothing keyed off <section> could reach: the breadcrumb, the h1, the lead
-   and the PageShell rail.
-
-   It is deliberately ONE short movement, not a cascade. Legal text a reader
-   may be reaching for under pressure must never fade in a block at a time —
-   the rule at Base.astro's choreography comment still stands, and this rule
-   is what covers those pages instead of leaving them static.
-
-   An animation, never a transition: `transition` is a shorthand and would
-   replace the state-feedback list above on any element it touches.
-   `@media screen` keeps it off paper. The reduced-motion and toolbar kills
-   below neutralise it correctly — they set animation-duration but never
-   fill-mode, so a 0.01ms run with `both` lands on the visible end state. */
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(-2rem);
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
 @keyframes rise-in {
   from {
     opacity: 0;
-    transform: translateY(var(--rise));
+    transform: translateY(10px);
   }
 }
-@media screen and (prefers-reduced-motion: no-preference) {
-  main {
-    animation: rise-in var(--dur-enter) var(--ease-out) both;
-  }
-  /* The homepage photo arrives a beat after the page around it — the same
-     gesture, one step later. Everything else the hero used to stagger by hand
-     is now part of the page rise, so the homepage h1 and every other h1 on the
-     site finally move identically. */
-  .hero-enter-photo {
-    animation: rise-in var(--dur-enter) var(--ease-out) var(--stagger-step) backwards;
-  }
-}
-
-/* Below the fold, a block still arrives as the reader reaches it — the
-   cascade the reader likes, kept exactly where they like it. Nothing on the
-   first screen is staged, so a background tab, a throttled first frame, a
-   failed script and JavaScript switched off all end with a painted page by
-   construction rather than by a safety net.
-
-   The staged (transparent) state is the one rule here that can hide content,
-   so it is also the one that must not survive a choice the reader makes
-   mid-visit: scoped away from both toolbar settings, so turning on high
-   contrast or reduced motion brings it back on the spot. */
-@media screen and (prefers-reduced-motion: no-preference) and (scripting: enabled) {
-  html:not([data-motion="reduce"]):not([data-contrast]) [data-reveal] {
+@keyframes bloom {
+  0% {
     opacity: 0;
+    scale: 0.2;
   }
-  html:not([data-motion="reduce"]):not([data-contrast]) [data-reveal].is-visible {
+  25% {
     opacity: 1;
-    /* `animation-delay` is set inline by the choreography. An animation
-       cannot collide with the state-feedback transition the way the old
-       `transition` shorthand did — verified: the homepage cards asked for
-       `transition-colors` and computed to opacity/transform only. */
-    animation: rise-in var(--dur-enter) var(--ease-out) backwards;
+  }
+  100% {
+    opacity: 0;
+    scale: 1;
   }
 }
-
-/* Arriving at a section by anchor (in-page links, the "#" targets used by
-   headings) acknowledges the jump with one short rise — the reveal gesture
-   without the cascade, so hopping around a long page never replays a full
-   entrance each time.
-
-   Its OWN keyframe, identical in shape to `rise-in` and deliberately not the
-   same name. On a page whose anchor targets are themselves staged blocks
-   (/dostepnosc/ and the other tables of contents with no <section>) the target
-   already carries `[data-reveal].is-visible`, which names `rise-in` too — and
-   an element cannot restart an animation it is already named for, so the
-   acknowledgement would compute to "no change" and nothing would move. A
-   different name is what makes the restart real.
-
-   The second selector is the same rule at a weight that beats the staged one
-   (one class heavier); without it the staged block keeps `--dur-enter` and no
-   arrival plays at all. The inline `animation-delay` the choreography leaves
-   behind is cleared from script, because an inline style outranks any
-   stylesheet. */
 @keyframes arrive-in {
   from {
-    opacity: 0;
-    transform: translateY(var(--rise));
-  }
-}
-@media screen and (prefers-reduced-motion: no-preference) {
-  html:not([data-motion="reduce"]):not([data-contrast]) [data-arriving],
-  html:not([data-motion="reduce"]):not([data-contrast]) [data-reveal].is-visible[data-arriving] {
-    animation: arrive-in var(--dur-move) var(--ease-out) backwards;
+    background-color: var(--color-heather-soft);
+    box-shadow: 0 0 0 8px var(--color-heather-soft);
   }
 }
 
-/* Card photos breathe on hover; the card clips the overflow. */
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .photo-zoom img,
-  a[data-lightbox] img {
-    transition: transform var(--dur-move) var(--ease-out);
-  }
-  .photo-zoom:hover img,
-  a[data-lightbox]:hover img {
-    transform: scale(1.03);
-  }
-}
-/* The thumbnail's image scales, but the box around it acknowledged nothing —
-   and on a coarse pointer, where the scale is excluded, nothing at all. A ring
-   rather than a border, so the image is not nudged; a box-shadow rather than an
-   outline, so the global :focus-visible ring stays distinguishable from hover.
-   The anchor's `overflow: hidden` clips its children, not its own shadow. */
-@media (hover: hover) and (pointer: fine) {
-  a[data-lightbox]:hover {
-    box-shadow: 0 0 0 2px var(--color-spruce);
-  }
-}
-
-/* Mobile menu panel: entrance only, via @starting-style; closing is an
-   instant dismissal (deliberate close = snappy response). */
-@media (prefers-reduced-motion: no-preference) {
-  details[open] .menu-panel {
-    transition:
-      opacity var(--dur-panel) var(--ease-out),
-      transform var(--dur-panel) var(--ease-out);
-    transform-origin: top right;
-  }
-  @starting-style {
-    details[open] .menu-panel {
-      opacity: 0;
-      transform: scale(0.97);
-    }
-  }
-}
-
-/* Reduced motion kills movement (animations), but keeps the paint-only
-   150ms colour crossfades — gentler, not zero, state feedback. */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
-  }
-}
-/* The same kill, for the two choices the reader can make on the site itself:
-   "Ogranicz animacje" in the toolbar, and either high-contrast mode — a page
-   re-cut to two colours has no room for a fade, and every one of the
-   `no-preference` blocks above would otherwise keep playing, because the
-   system query they are written against has not changed. Attribute selectors
-   cannot be added to a media query, so this is a second selector list rather
-   than a second condition. */
-html[data-motion="reduce"] *,
-html[data-motion="reduce"] *::before,
-html[data-motion="reduce"] *::after,
-html[data-contrast] *,
-html[data-contrast] *::before,
-html[data-contrast] *::after {
-  animation-duration: 0.01ms !important;
-  animation-iteration-count: 1 !important;
-  transition-duration: 0.01ms !important;
-  scroll-behavior: auto !important;
-}
-/* Windows High Contrast and the other forced-colors modes repaint the page
-   from the reader's own two or three colours — the same situation as the
-   toolbar's contrast modes above, and with the same conclusion: a page re-cut
-   that way has no room for a fade. It is imposed by the operating system
-   rather than chosen here, and it is orthogonal to `prefers-reduced-motion`,
-   so neither of the blocks above reaches it. */
-@media (forced-colors: active) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* Lightbox (click-to-enlarge images) */
-a[data-lightbox] {
-  display: block;
-  position: relative;
-  cursor: zoom-in;
-  overflow: hidden;
-  /* Radius comes from the utility class on the anchor; an unlayered
-     declaration here would beat Tailwind's layered .rounded-* rules. */
-}
-/* Touch has no `cursor: zoom-in`, so the affordance has to be drawn: a small
-   chip in the corner of every thumbnail that opens the lightbox. Painted from
-   CSS rather than added to each component's markup, so one rule covers both
-   the gallery grid and single zoomable images — and, being generated content,
-   it stays out of the accessibility tree and leaves the link's name alone. */
-/* Two pseudo-elements over the same 1.6rem box, not one: the plate and the
-   glyph have to be able to take different colours in forced-colors mode, and a
-   glyph baked into the plate's `background` shorthand is a picture the browser
-   cannot recolour. So the plate is the `::before` and the arrows are the
-   `::after`, drawn as a mask over a flat token colour — in the mask only the
-   alpha of the data-URI matters, which is why the stroke inside it is plain
-   black rather than a colour anyone should read as the design's. */
-a[data-lightbox]::before,
-a[data-lightbox]::after {
-  content: "";
-  position: absolute;
-  right: 0.4rem;
-  bottom: 0.4rem;
-  width: 1.6rem;
-  height: 1.6rem;
-  pointer-events: none;
-}
-a[data-lightbox]::before {
-  border-radius: 0.375rem;
-  background-color: color-mix(in srgb, var(--color-paper) 90%, transparent);
-  /* Hairline and shadow: the chip is nearly white and several of the images
-     it sits on are too (document scans, press clippings, a bright sky). */
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--color-ink) 12%, transparent),
-    0 1px 3px color-mix(in srgb, var(--color-ink) 25%, transparent);
-}
-a[data-lightbox]::after {
-  /* The arrows themselves. `stroke='%23000'` in the URI below is not a design
-     colour — the shape is used as a mask, so only its alpha is read; the paint
-     is `--color-spruce-deep` on this line. */
-  background-color: var(--color-spruce-deep);
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3h5v5M8 17H3v-5M17 3l-6 6M3 17l6-6'/%3E%3C/svg%3E");
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3h5v5M8 17H3v-5M17 3l-6 6M3 17l6-6'/%3E%3C/svg%3E");
-  mask-size: 0.95rem;
-  mask-position: center;
-  mask-repeat: no-repeat;
-  -webkit-mask-size: 0.95rem;
-  -webkit-mask-position: center;
-  -webkit-mask-repeat: no-repeat;
-}
-.lightbox {
-  border: none;
-  padding: 0;
-  background: transparent;
-  /* Sized by the viewport's own edges rather than in `vw`/`vh`, so nothing
-     depends on how those units treat the gutter that `scrollbar-gutter:
-     stable` reserves, nor on the UA's own modal max-width. The gutter strip
-     that used to show beside the backdrop is dealt with below. */
-  inset: 0;
-  margin: 0;
-  width: auto;
-  height: auto;
-  max-width: none;
-  max-height: none;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-}
-.lightbox[open] {
-  display: flex;
-}
-.lightbox::backdrop {
-  background: color-mix(in srgb, var(--color-overlay) 92%, transparent);
-}
-/* The gutter that `scrollbar-gutter: stable` reserves sits outside the initial
-   containing block, so neither the dialog nor its backdrop can paint there —
-   it showed as a pale strip down the right edge. The canvas paints it, so the
-   canvas takes the backdrop's own composited colour while the dialog is open.
-   (Setting a background on `html` also stops `body`'s from propagating to the
-   canvas, which is what made the strip paper-coloured.) */
-html:has(.lightbox[open]) {
-  background-color: color-mix(in srgb, var(--color-overlay) 92%, var(--color-paper));
-}
-@media (prefers-reduced-motion: no-preference) {
-  .lightbox[open] figure {
-    animation: lightbox-in var(--dur-panel) var(--ease-out);
-  }
-  .lightbox[open]::backdrop {
-    animation: lightbox-backdrop-in var(--dur-panel) var(--ease-out);
-  }
-  @keyframes lightbox-in {
-    from {
-      opacity: 0;
-      transform: scale(0.96);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
-  @keyframes lightbox-backdrop-in {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-}
-.lightbox figure {
-  margin: 0;
-  max-width: min(92vw, 70rem);
-  max-height: 92vh;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-.lightbox img {
-  max-width: 100%;
-  max-height: 84vh;
-  object-fit: contain;
-  border-radius: 0.5rem;
-}
-.lightbox figcaption {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  color: var(--color-on-overlay);
-  font-size: var(--text-meta);
-  min-height: 1.5rem;
-}
-/* Solid chips, not a 12% white wash: these controls sit over photographs that
-   are frequently bright, and a translucent glyph disappeared into them. */
-.lightbox-close,
-.lightbox-nav {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.75rem;
-  height: 2.75rem;
-  border-radius: 999px;
-  background: var(--color-spruce-deep);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-on-dark) 28%, transparent);
-  color: var(--color-on-dark);
-  cursor: pointer;
-  flex: none;
-}
-.lightbox-close:hover,
-.lightbox-nav:hover {
-  background: var(--color-spruce);
-}
-/* The site-wide pressed tint is a light moss, which would swallow a white
-   glyph, so these keep a dark press of their own. Not a workaround any more —
-   the site-wide rule now sits in `@layer base` and is overridable — just the
-   pressed colour these controls want. */
-.lightbox-close:active,
-.lightbox-nav:active {
-  background: var(--color-spruce);
-}
-.lightbox-close {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-}
-.lightbox-nav[hidden] {
-  display: none;
-}
-@media (max-width: 640px) {
-  .lightbox {
-    gap: 0;
-  }
-  .lightbox-nav {
-    position: absolute;
-    bottom: 1rem;
-    z-index: 1;
-  }
-  .lightbox-prev {
-    left: 1rem;
-  }
-  .lightbox-next {
-    right: 1rem;
-  }
-  .lightbox figure {
-    max-width: 100%;
-    padding: 0 0.75rem;
-  }
-}
-/* The global focus ring is spruce, which has almost no contrast against the
-   near-black backdrop, so inside the dialog it switches to paper. */
-.lightbox :focus-visible {
-  outline: 3px solid var(--color-paper);
-  outline-offset: 3px;
-}
-
-/* When a page ends with a full-bleed tinted band, the footer joins it
-   directly instead of leaving a bare paper gap. */
-body:has(main > .pre-footer:last-child) footer {
-  margin-top: 0;
-  border-top: 0;
-}
-
-/* Section table of contents. One element at every width: a <details> panel
-   that starts open and can be closed again, on small screens above the text
-   and on wide screens in the rail. No script, so it works with JavaScript
-   off — and the chevron always tells the truth about the open state. */
-[data-section-nav] details[open] [data-section-nav-chevron] {
-  transform: rotate(180deg);
-}
-
-/* ---------------------------------------------------------------------------
-   Corner radius, so the site keeps two of them instead of collecting five.
-
-   `rounded-xl` — a standalone bordered card sitting on the page: a tile in a
-   grid (`LinkCard`), a news card, a rail contact card, the collapsed table of
-   contents, a framed photo.
-
-   `rounded-lg` — anything nested inside one of those, or smaller than one: the
-   panels inside a card, row lists (`DocList`), images and posters, buttons.
-
-   Everything else keeps whatever its own component says: `rounded` for the
-   small chips in the navigation and the accessibility bar, `rounded-full` for
-   the map pill, `999px` for the lightbox controls and the ArchImage window.
-   ------------------------------------------------------------------------ */
-
-/* Chapter band. The section sits inside a 46rem grid column that is not
-   centred in the viewport once the rail appears, so the usual
-   `margin-inline: calc(50% - 50vw)` full-bleed would land off-centre and
-   overhang one edge. Painting the colour outwards with a very large shadow
-   spread and clipping it back to the section's own top and bottom edges
-   reaches both viewport edges from any horizontal position, and — unlike a
-   negative margin — cannot add a single pixel of horizontal scroll.
-
-   The fill is the full moss, not 40% of it: over paper, moss at 40% measured
-   1.03:1 against the page — a band nobody could see, so the "chapter starts
-   here" signal it exists to give was not being given at all. The hairline top
-   and bottom draw the boundary itself, which the fill alone never did. */
-.band {
-  --band-fill: var(--color-moss);
-  background-color: var(--band-fill);
-  box-shadow: 0 0 0 100vmax var(--band-fill);
-  clip-path: inset(0 -100vmax);
-  border-block: 1px solid var(--color-line);
-  padding-block: var(--spacing-subsection);
-}
-
-/* Long-form migrated content (prose) */
-.doc {
-  max-width: 46rem;
-}
-/* Running text stops at ~80 characters (Source Sans 3 at 18px ≈ 7.46px per
-   character in Polish prose → 33rem); tables, floated photos and DocList
-   cards keep the full 46rem column. Lists get the measure plus their own
-   1.4rem indent, so the text edge of a bullet lines up with the paragraphs
-   above and below it rather than stopping short of them. */
-.doc > :is(p, dl, blockquote) {
-  max-width: var(--measure-prose);
-}
-.doc > ol,
-.doc > ul:not(.doc-list) {
-  max-width: calc(var(--measure-prose) + 1.4rem);
-}
-.doc h2 {
-  font-size: 1.5rem;
-  margin: 2.25rem 0 0.75rem;
-}
-.doc h3 {
-  font-size: 1.2rem;
-  margin: 1.75rem 0 0.5rem;
-}
-/* A prose block opening with a heading must not push itself away from
-   whatever placed it: the wrapper already carries the spacing (`mt-section`
-   between chapters, `mt-block` between a block and its figure), and the
-   heading's own 2.25rem on top of that read as a hole. Pages used to answer
-   this one at a time with `mt-0!`. */
-.doc > :first-child {
-  margin-block-start: 0;
-}
-.doc p,
-.doc ul,
-.doc ol {
-  margin: 0 0 1rem;
-}
-.doc ul {
-  list-style: disc;
-  padding-left: 1.4rem;
-}
-.doc ol {
-  list-style: decimal;
-  padding-left: 1.4rem;
-}
-/* Card-style component lists keep their own layout inside prose. */
-.doc ul.doc-list {
-  list-style: none;
-  padding-left: 0;
-}
-.doc a {
-  color: var(--color-spruce);
-  text-decoration: underline;
-}
-.doc a:hover {
-  color: var(--color-spruce-deep);
-}
-.doc strong {
-  font-weight: 600;
-}
-/* Wide tables scroll inside their own container so the page itself never scrolls
-   sideways. The wrapper is what scrolls; the <table> keeps its table display and
-   therefore its semantics (a `display: block` table is announced as a plain
-   block by screen readers). Markdown tables get the wrapper from the
-   `rehype-table-scroll` plugin; hand-written HTML in `.doc` must add it too. */
-.doc .table-scroll {
-  overflow-x: auto;
-  max-width: 100%;
-  margin: 1.25rem 0;
-}
-.doc .table-scroll:focus-visible {
-  outline: 3px solid var(--focus-ring);
-  outline-offset: 2px;
-}
-.doc table {
-  width: 100%;
-  min-width: 32rem;
-  border-collapse: collapse;
-  font-size: var(--text-meta);
-}
-.doc th,
-.doc td {
-  border: 1px solid var(--color-line);
-  padding: 0.5rem 0.75rem;
-  text-align: left;
-  vertical-align: top;
-}
-.doc th {
-  background: var(--color-moss);
-  font-weight: 600;
-}
-
-/* Print: nothing staged for the reveal may stay transparent on paper, and
-   chrome that only serves the screen (sticky header, menu, in-page TOC,
-   lightbox, zoom chips) is dropped. The footer stays: address and phone are
-   exactly what a printout is for. */
 @media print {
-  [data-reveal],
-  [data-arriving] {
-    opacity: 1 !important;
-    transform: none !important;
-    animation: none !important;
-    transition: none !important;
-  }
-  body > header,
-  [data-menu],
-  nav[aria-label="Spis treści strony"],
-  .lightbox,
-  a[data-lightbox]::before,
-  a[data-lightbox]::after {
+  .menu-open,
+  .tools,
+  .menu,
+  .skip {
     display: none !important;
   }
-  body {
-    background: none;
-    color: var(--color-ink);
-  }
-  .doc,
-  main {
-    max-width: none;
-    margin: 0;
-    padding: 0;
-  }
-  .doc a[href^="http"]::after {
-    content: " (" attr(href) ")";
-    font-size: 0.85em;
-    word-break: break-all;
-  }
-  h1, h2, h3 { break-after: avoid; }
-  figure, img, li { break-inside: avoid; }
 }
 
-/* The rail is `position: sticky`, so on a short wide window — a laptop in
-   landscape, or any window at 200% zoom — it is taller than the strip left
-   between the sticky header and the bottom of the screen, and the last items
-   of an eleven-entry table of contents simply could not be reached: the rail
-   stopped moving with the page while its own overflow had nowhere to go.
-   Capping it to that strip and letting it scroll on its own fixes it, and
-   `overscroll-behavior: contain` keeps a flick inside the rail from carrying
-   on into the page behind it. Only from `lg`, the width where the rail
-   becomes a column at all. */
-@media (min-width: 1024px) {
-  [data-shell-rail] {
-    /* The band's full-bleed shadow (below) belongs to a later sibling and
-       would paint over the rail's cards; lifting the sticky rail one level
-       keeps it on top. */
-    z-index: 1;
-    max-height: calc(100svh - var(--header-h) - 3rem);
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    scrollbar-gutter: stable;
-  }
-}
-
-/* Windows High Contrast and the other forced-colors modes throw the whole
-   palette away and repaint from the user's own small set of system colours.
-   Four things go missing when that happens, and each is restored here in
-   system colours rather than in ours.
-
-   The wordmark is the exception that keeps its own colours: it is two solid
-   shapes whose meaning IS the contrast between them, and forced to a single
-   system colour it collapses into one blob. */
-@media (forced-colors: active) {
-  header a[href="/"] svg {
-    forced-color-adjust: none;
-  }
-  /* The current page in the main navigation is marked with a background tint
-     and an inset shadow, and forced-colors drops both — leaving no way to tell
-     where you are. A border and an underline are drawn from system colours and
-     survive. Scoped to `header`: breadcrumbs and the rail's sibling list use
-     `aria-current` too, and they mark the current page in other ways.
-     The 3px border is taken out of the link's own `py-2` (0.5rem) padding, so
-     nothing in the bar shifts down. */
-  header a[aria-current="page"] {
-    border-bottom: 3px solid Highlight;
-    padding-bottom: calc(0.5rem - 3px);
-    text-decoration: underline;
-    text-decoration-thickness: 3px;
-    text-underline-offset: 4px;
-  }
-  /* Background colours are dropped, so the band would be invisible; its edges
-     are drawn instead. */
-  .band {
-    border-block: 1px solid CanvasText;
-  }
-  /* The enlarged photo has no frame of its own — against a forced Canvas
-     backdrop a light image would bleed straight into the page. */
-  .lightbox figure {
-    outline: 1px solid CanvasText;
-  }
-  /* The zoom chip: the plate takes the system surface with a real border
-     (its box-shadow hairline is dropped), and the arrows the system text
-     colour, which is what the two-pseudo-element split above is for. */
-  a[data-lightbox]::before {
-    background-color: Canvas;
-    border: 1px solid CanvasText;
-    box-shadow: none;
-  }
-  a[data-lightbox]::after {
-    background-color: CanvasText;
-  }
-}
-
-/* Outgoing links get a small north-east arrow so the reader knows the page
-   leaves the site (the Google Maps and BIP links say so in their own text and
-   opt out with data-external="off"). The arrow is a masked SVG, not a glyph:
-   U+2197 is outside the font subset and would fall back to a stranger face.
-   The alt text gives screen readers the same information. */
-a[href^="http"]:not([data-external="off"])::after {
-  content: "" / " (serwis zewnętrzny)";
-  display: inline-block;
-  width: 0.7em;
-  height: 0.7em;
-  margin-left: 0.2em;
-  vertical-align: 0.05em;
-  background-color: currentColor;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 14L14 6M8 6h6v6'/%3E%3C/svg%3E")
-    center / contain no-repeat;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 14L14 6M8 6h6v6'/%3E%3C/svg%3E")
-    center / contain no-repeat;
-}
-@media print {
-  a[href^="http"]:not([data-external="off"])::after {
-    display: none;
-  }
-}
-
-/* ---------------------------------------------------------------------------
-   The light / dark switch in the header. Hidden without scripting for the
-   same reason as the toolbar. A segmented control: three 44px targets sharing
-   one `edge` boundary, so it reads as one control with three positions.
-   ------------------------------------------------------------------------ */
-html:not([data-js]) .theme-switch {
-  display: none;
-}
-@media (scripting: none) {
-  .theme-switch {
-    display: none;
-  }
-}
-.theme-switch {
-  display: inline-flex;
-  flex: none;
-  border: 1px solid var(--color-edge);
-  border-radius: 0.5rem;
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
   overflow: hidden;
-}
-.theme-switch button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.75rem;
-  min-height: 2.75rem;
-  background: transparent;
-  color: var(--color-ink);
-  cursor: pointer;
-}
-.theme-switch button + button {
-  border-left: 1px solid var(--color-edge);
-}
-.theme-switch button:hover {
-  background: var(--color-moss-deep);
-  color: var(--color-spruce-deep);
-}
-.theme-switch button svg {
-  width: 1.25rem;
-  height: 1.25rem;
-}
-/* Fill and border together, never a hue alone (WCAG 2.1 SC 1.4.1). */
-.theme-switch [aria-pressed="true"] {
-  background: var(--color-spruce-deep);
-  color: var(--color-on-dark);
-}
-/* The ring would be clipped by `overflow: hidden`; draw it inside instead. */
-.theme-switch button:focus-visible {
-  outline-offset: -3px;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }

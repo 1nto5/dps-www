@@ -1,0 +1,189 @@
+---
+/**
+ * The section page about the Dom itself: who runs it, who lives here, the two
+ * buildings, the people in charge and the law the Dom works under. The text is
+ * the old `/o-nas/` page word for word; only the layout is new.
+ */
+import Base from "../layouts/Base.astro";
+import PageHeader from "../components/PageHeader.astro";
+import PageShell from "../components/PageShell.astro";
+import Toc from "../components/Toc.astro";
+import Brief from "../components/Brief.astro";
+import Figure from "../components/Figure.astro";
+import Gallery from "../components/Gallery.astro";
+import DocList from "../components/DocList.astro";
+import { dokumentyUstrojowe } from "../data/dokumenty-ustrojowe";
+
+import buildingGarden from "../assets/media/1377-1-1.jpg";
+import buildingMonument from "../assets/media/1375-2-1.jpg";
+import roomSingle from "../assets/media/1186-2012-07-25-at-10-43-511.jpg";
+import roomShared from "../assets/media/1185-2012-07-25-at-10-40-40.jpg";
+import commonRoom from "../assets/media/1188-2012-07-25-at-10-18-46-1-1.jpg";
+import diningRoom from "../assets/media/1187-2012-07-25-at-10-46-26.jpg";
+import treatmentRoom from "../assets/media/1182-2012-07-25-at-10-20-35.jpg";
+
+/** Every id below exists as an `id` on an `h2` — the build checks it. */
+const toc = [
+  { id: "nasz-dom", label: "Nasz dom" },
+  { id: "dla-kogo", label: "Dla kogo" },
+  { id: "budynki", label: "Mieszkania i budynki" },
+  { id: "kierownictwo", label: "Kierownictwo" },
+  { id: "podstawa-prawna", label: "Podstawa prawna" },
+  { id: "dokumenty", label: "Dokumenty" },
+];
+
+const management = [
+  { role: "Dyrektor", name: "mgr Dorota Sędzińska-Bruździak" },
+  { role: "Główna księgowa", name: "Beata Brzózy" },
+  { role: "Kierownik Działu Administracyjno-Usługowego", name: "Dorota Kocot" },
+  { role: "Kierownik Mieszkania I", name: "Barbara Suprynowicz" },
+  { role: "Kierownik Mieszkania II", name: "Dariusz Jasiński" },
+  { role: "Kierownik Mieszkania III", name: "Marta Deptuła" },
+];
+
+const legalBasis = [
+  "Ustawy o finansach publicznych (t.j. Dz. U. z 2019 r., poz. 869)",
+  "Ustawy o samorządzie powiatowym (t.j. Dz. U. z 2019 r., poz. 511)",
+  "Ustawy o pracownikach samorządowych (t.j. Dz. U. z 2019 r., poz. 1282)",
+  "Ustawy o pomocy społecznej (t.j. Dz. U. z 2018 r., poz. 1508)",
+  "Rozporządzenia w sprawie domów pomocy społecznej (t.j. Dz. U. z 2018 r., poz. 734)",
+  "Decyzji nr PS.II.UR.3013-19.06 Wojewody Warmińsko-Mazurskiego z 13 lutego 2007 r. w sprawie zezwolenia na prowadzenie domu pomocy społecznej dla osób przewlekle psychicznie chorych",
+];
+
+const interiors = [
+  {
+    src: roomSingle,
+    alt: "Mieszkaniec siedzi na tapczanie w swoim pokoju jednoosobowym; przy oknie telewizor i stolik.",
+  },
+  { src: roomShared, alt: "Dwie Mieszkanki siedzą w fotelach przy stoliku w swoim pokoju." },
+  {
+    src: commonRoom,
+    alt: "Mieszkańcy i terapeutka przy wspólnym stole w świetlicy, w tle regały z książkami.",
+  },
+  { src: diningRoom, alt: "Jasna jadalnia z drewnianymi krzesłami i stołami nakrytymi obrusami" },
+  {
+    src: treatmentRoom,
+    alt: "Gabinet zabiegowy: pielęgniarka przy biurku, przeszklone szafy z lekami.",
+  },
+];
+---
+
+<Base
+  title="O nas"
+  description="Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie — dom dla osób przewlekle psychicznie chorych. Kim jesteśmy, jak mieszkamy, kto nami kieruje i na jakiej podstawie działamy."
+>
+  <PageHeader
+    breadcrumbs
+    title="O nas"
+    lead="Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie jest domem dla osób przewlekle psychicznie chorych. Razem z filią w Spychowie zapewniamy Mieszkańcom całodobową opiekę."
+  />
+
+  <PageShell>
+    <Toc slot="rail" items={toc} />
+
+    <Brief>
+      <li>Jesteśmy jednostką organizacyjną Powiatu Szczycieńskiego.</li>
+      <li>Nasz Dom przeznaczony jest dla osób przewlekle psychicznie chorych.</li>
+      <li>Zapewniamy opiekę całodobową w Szczytnie i w filii w Spychowie.</li>
+    </Brief>
+
+    <div class="doc mt-subsection">
+      <h2 id="nasz-dom">Nasz dom</h2>
+      <p>
+        Jesteśmy jednostką organizacyjną Powiatu Szczycieńskiego. Nasz Dom stoi przy ulicy
+        Wielbarskiej w Szczytnie, w otoczeniu ogrodu, a od 2001 roku prowadzimy także filię
+        w Spychowie.
+      </p>
+      <p>
+        Troszczymy się o dobre samopoczucie naszych Mieszkańców, nie zapominając
+        o indywidualności każdego z nich. Wszechstronna opieka terapeutyczna i medyczna oraz
+        zaangażowanie pracowników zapewniają godne warunki życia, ze szczególnym poszanowaniem
+        prawa do wolności, intymności i poczucia bezpieczeństwa.
+      </p>
+      <p>
+        Podejmujemy działania zmierzające do integracji osób chorujących psychicznie ze
+        środowiskiem lokalnym. Nasi Mieszkańcy bywają gośćmi kawiarni, korzystają z plaży
+        miejskiej i należą do Klubu Miłośników Kina. Współpracujemy również z uczniami
+        okolicznych szkół.
+      </p>
+    </div>
+
+    <div class="mt-block">
+      <Figure
+        src={buildingGarden}
+        alt="Budynek Domu Pomocy Społecznej w Szczytnie z czerwonym dachem, widziany od strony ogrodu z kwitnącymi hortensjami"
+        loading="eager"
+      />
+    </div>
+
+    <div class="doc mt-section">
+      <h2 id="dla-kogo">Dla kogo jest nasz dom</h2>
+      <p>
+        Nasz Dom przeznaczony jest dla osób przewlekle psychicznie chorych. Zapewniamy opiekę
+        całodobową w Szczytnie i w filii w Spychowie.
+      </p>
+      <p>
+        Mieszkańcy objęci są opieką lekarza psychiatry oraz korzystają z usług psychologa
+        i rehabilitanta zatrudnionych w Domu. Zapewniamy wsparcie wykwalifikowanych
+        terapeutów, którzy dbają o to, aby Mieszkańcy aktywnie spędzali czas i rozwijali swoje
+        zainteresowania.
+      </p>
+      <p>
+        Szczegółowy zakres usług opiekuńczych, pielęgnacyjnych i wspomagających opisujemy na
+        stronie <a href="/zycie-w-domu/">Życie w Domu</a>. O życiu codziennym w Spychowie piszemy
+        na stronie <a href="/zycie-w-domu/spychowo/">Filia w Spychowie</a>.
+      </p>
+
+      <h2 id="budynki">Mieszkania i budynki</h2>
+      <p>
+        Dom w Szczytnie podzielony jest na trzy mieszkania — Mieszkanie I, II i III — z których
+        każde ma własnego kierownika i zespół opiekunów. Dysponujemy pokojami jedno-, dwu-
+        i trzyosobowymi oraz pokojami czteroosobowymi dla osób leżących.
+      </p>
+      <p>
+        Poza pokojami Mieszkańcy korzystają ze wspólnych przestrzeni: świetlic, biblioteki,
+        jadalni, kaplicy, pracowni terapeutycznych i gabinetów zabiegowych. Wokół budynków
+        rozciąga się ogród z alejkami i ławkami, a przy Domu stoi pomnik patrona — świętego
+        Jana Pawła II.
+      </p>
+    </div>
+
+    <div class="mt-block">
+      <Gallery photos={interiors} />
+    </div>
+
+    <div class="mt-block">
+      <Figure
+        src={buildingMonument}
+        alt="Pomnik świętego Jana Pawła II w ogrodzie przed głównym budynkiem Domu, obok ławki i strzyżone żywopłoty"
+      />
+    </div>
+
+    <div class="doc mt-section">
+      <h2 id="kierownictwo">Kierownictwo Domu</h2>
+      <dl>
+        {
+          management.map((person) => (
+            <>
+              <dt>{person.role}</dt>
+              <dd>{person.name}</dd>
+            </>
+          ))
+        }
+      </dl>
+
+      <h2 id="podstawa-prawna">Podstawa prawna działania</h2>
+      <p>Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie funkcjonuje na podstawie:</p>
+      <ol>
+        {legalBasis.map((item) => <li>{item}</li>)}
+      </ol>
+
+      <h2 id="dokumenty">Dokumenty</h2>
+      <p>Podstawowe dokumenty ustrojowe Domu do pobrania:</p>
+    </div>
+
+    <div class="mt-block">
+      <DocList docs={dokumentyUstrojowe} />
+    </div>
+  </PageShell>
+</Base>

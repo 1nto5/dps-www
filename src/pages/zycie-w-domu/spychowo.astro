@@ -1,0 +1,104 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import PageShell from "../../components/PageShell.astro";
+import Toc from "../../components/Toc.astro";
+import Brief from "../../components/Brief.astro";
+import { contact } from "../../data/contact";
+
+const toc = [
+  { id: "o-filii", label: "O filii" },
+  { id: "pomieszczenia", label: "Wspólne pomieszczenia" },
+  { id: "zajecia", label: "Zajęcia terapeutyczne" },
+  { id: "spolecznosc", label: "Społeczność lokalna" },
+  { id: "kontakt", label: "Kontakt do filii" },
+];
+
+const rooms = [
+  "gabinet zabiegowy",
+  "świetlica",
+  "kaplica",
+  "stołówka",
+  "palarnia",
+  "pracownia terapeutyczna",
+];
+
+const therapies = [
+  "zajęcia plastyczne",
+  "robótki ręczne",
+  "zajęcia świetlicowe",
+  "czytelnictwo i twórczość literacka",
+  "muzykoterapia",
+  "prace ogrodnicze, wycieczki i spacery",
+];
+---
+
+<Base
+  title="Filia w Spychowie"
+  description={`Filia Domu Pomocy Społecznej im. Jana Pawła II w Spychowie — opieka pielęgnacyjna i zajęcia terapeutyczne. ${contact.spychowo.address.city}, ${contact.spychowo.address.street}, tel. ${contact.spychowo.phone.label}.`}
+>
+  <PageHeader
+    breadcrumbs
+    title="Filia w Spychowie"
+    lead="Mniejszy dom pośród mazurskich lasów. Od 2001 roku Mieszkańcy znajdują tu opiekę i codzienny rytm zajęć."
+  />
+
+  <PageShell>
+    <Toc slot="rail" items={toc} />
+
+    <Brief>
+      <li>Filia w Spychowie istnieje od 2001 roku i jest domem dla Mieszkańców.</li>
+      <li>Wsparcie duchowe zapewnia kapłan z tutejszej parafii.</li>
+      <li>Sprawy formalne prowadzi sekretariat w Szczytnie.</li>
+    </Brief>
+
+    <div class="doc mt-subsection">
+      <h2 id="o-filii">O filii</h2>
+      <p>
+        Filia w Spychowie istnieje od 2001 roku i jest domem dla Mieszkańców. Opieka pielęgniarska
+        jest tu przez całą dobę, a dzień ma swój rytm: wspólne posiłki w stołówce, zajęcia
+        w pracowni terapeutycznej, msza w kaplicy i czas dla siebie we własnym pokoju. Pomagamy
+        w codziennych czynnościach tyle, ile potrzeba — i tak, żeby każdy zachował swoje
+        przyzwyczajenia.
+      </p>
+      <p>
+        Zakres usług pielęgnacyjnych, opiekuńczych i wspomagających oraz warunki bytowe określa
+        Regulamin Organizacyjny Domu.
+      </p>
+
+      <h2 id="pomieszczenia">Wspólne pomieszczenia</h2>
+      <p>Oprócz własnych pokoi Mieszkańcy korzystają także z pozostałych pomieszczeń domu:</p>
+      <ul>
+        {rooms.map((room) => <li>{room}</li>)}
+      </ul>
+      <p>Wsparcie duchowe zapewnia kapłan z tutejszej parafii.</p>
+
+      <h2 id="zajecia">Zajęcia terapeutyczne</h2>
+      <ul>
+        {therapies.map((item) => <li>{item}</li>)}
+      </ul>
+
+      <h2 id="spolecznosc">Życie ze społecznością lokalną</h2>
+      <p>
+        Pracownicy domu i Mieszkańcy dokładają starań, by utrzymywać dobre kontakty ze środowiskiem
+        lokalnym, szczególnie ze szkołą i miejscowymi zakładami pracy. Dom odwiedzają różne zespoły
+        muzyczne i rozrywkowe — między innymi aktorzy Teatru ArtRe z Krakowa — a także dzieci
+        i młodzież z okolicznościowymi przedstawieniami oraz Mieszkańcy i uczestnicy placówek
+        o podobnym profilu działalności.
+      </p>
+
+      <h2 id="kontakt">Kontakt do filii</h2>
+      <address>
+        {contact.spychowo.name}<br />
+        {contact.spychowo.address.street}<br />
+        {contact.spychowo.address.postalCode} {contact.spychowo.address.city}
+      </address>
+      <p>
+        Telefon: <a href={contact.spychowo.phone.href}>{contact.spychowo.phone.label}</a>
+      </p>
+      <p>
+        Sprawy formalne prowadzi <a href="/kontakt/">sekretariat w Szczytnie</a>.
+      </p>
+    </div>
+  </PageShell>
+</Base>

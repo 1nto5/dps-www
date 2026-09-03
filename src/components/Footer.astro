@@ -1,95 +1,55 @@
 ---
-import Button from "./Button.astro";
 import { contact, addressLine } from "../data/contact";
-
 const year = new Date().getFullYear();
 ---
 
-<footer class="mt-16 border-t border-line bg-moss/60">
-  <div class="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-3">
+<footer class="mt-section border-t border-line bg-mist">
+  <div class="mx-auto grid max-w-wide gap-10 px-5 py-12 sm:px-8 md:grid-cols-3">
     <div>
-      <h2 class="font-display text-lg font-semibold">Dom Pomocy Społecznej<br />im. Jana Pawła II w Szczytnie</h2>
-      <!--
-        `inline-block py-1` on every inline link: at this text size the bare
-        inline box is 22px tall, under the 24px minimum target of WCAG 2.2
-        SC 2.5.8, and the telephone number is a primary action here.
-      -->
-      <address class="mt-3 text-base not-italic text-muted">
+      <h2 class="text-lg">Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie</h2>
+      <address class="mt-3 not-italic text-ink-soft">
         {addressLine(contact.address)}<br />
-        tel. <a
-          href={contact.phone.href}
-          class="inline-block py-1 underline hover:text-spruce-deep">{contact.phone.label}</a
-        ><br />
-        <a
-          href={`mailto:${contact.email}`}
-          class="inline-block py-1 underline hover:text-spruce-deep"
-          >{contact.email}</a
+        tel. <a href={contact.phone.href} class="inline-block py-1 underline">{contact.phone.label}</a><br />
+        <a href={`mailto:${contact.email}`} class="inline-block py-1 underline">{contact.email}</a>
+      </address>
+      <h2 class="mt-6 text-lg">Filia w Spychowie</h2>
+      <address class="mt-3 not-italic text-ink-soft">
+        {addressLine(contact.spychowo.address)}<br />
+        tel. <a href={contact.spychowo.phone.href} class="inline-block py-1 underline"
+          >{contact.spychowo.phone.label}</a
         >
       </address>
-      <p class="mt-2 text-base text-muted">
-        <a
-          href="/kontakt/#epuap"
-          class="inline-block py-1 underline hover:text-spruce-deep"
-          >Jak wysłać pismo elektronicznie</a
-        >
-      </p>
     </div>
     <div>
-      <!--
-        A heading, so the footer's three blocks are landmarks a screen reader
-        can jump between instead of three unlabelled columns. `font-body` and
-        the neutral leading/tracking are needed because the global `h2` rule
-        switches to Fraunces and tightens the line box: without them the same
-        words would suddenly be set in the display face.
-      -->
-      <h2 class="font-body font-semibold leading-normal tracking-normal">Na skróty</h2>
-      <ul role="list" class="mt-3 space-y-2 text-base">
-        <li><a href="/przyjecie-do-domu/" class="inline-block py-1.5 underline hover:text-spruce-deep">Przyjęcie do Domu</a></li>
-        <li><a href="/grupa-muzyczna/" class="inline-block py-1.5 underline hover:text-spruce-deep">Grupa wokalna „Christopher”</a></li>
-        <li><a href="/dostepnosc/" class="inline-block py-1.5 underline hover:text-spruce-deep">Tekst łatwy do czytania</a></li>
-        <li><a href="/deklaracja-dostepnosci/" class="inline-block py-1.5 underline hover:text-spruce-deep">Deklaracja dostępności</a></li>
-        <li><a href="/dokumenty/rodo/" class="inline-block py-1.5 underline hover:text-spruce-deep">Ochrona danych osobowych (RODO)</a></li>
-        <li><a href="/dokumenty/sygnalista/" class="inline-block py-1.5 underline hover:text-spruce-deep">Zgłoszenia sygnalistów</a></li>
-        <li><a href="/dokumenty/zamowienia-publiczne/" class="inline-block py-1.5 underline hover:text-spruce-deep">Zamówienia publiczne</a></li>
-        <li><a href="/kontakt/" class="inline-block py-1.5 underline hover:text-spruce-deep">Kontakt i adres</a></li>
+      <h2 class="font-body text-base font-semibold">Na skróty</h2>
+      <ul role="list" class="mt-3 space-y-1">
+        <li><a href="/zamieszkac-u-nas/" class="inline-block py-1 underline">Przyjęcie do Domu</a></li>
+        <li><a href="/kontakt/" class="inline-block py-1 underline">Kontakt i adres</a></li>
+        <li><a href="/dostepnosc/" class="inline-block py-1 underline">Tekst łatwy do czytania</a></li>
+        <li><a href="/deklaracja-dostepnosci/" class="inline-block py-1 underline">Deklaracja dostępności</a></li>
+        <li><a href="/dokumenty/rodo/" class="inline-block py-1 underline">Ochrona danych osobowych (RODO)</a></li>
+        <li><a href="/dokumenty/sygnalista/" class="inline-block py-1 underline">Zgłoszenia sygnalistów</a></li>
+        <li><a href="/dokumenty/zamowienia-publiczne/" class="inline-block py-1 underline">Zamówienia publiczne</a></li>
       </ul>
     </div>
     <div>
-      <h2 class="font-body font-semibold leading-normal tracking-normal">Biuletyn Informacji Publicznej</h2>
-      <Button href={contact.bip} variant="quiet" class="mt-3">
-        <span class="font-display">BIP</span>
-        Biuletyn Informacji Publicznej Domu (serwis zewnętrzny)
-      </Button>
-      <p class="mt-2 text-base text-muted">
-        Strona centralna:
-        <a
-          href="https://www.bip.gov.pl/"
-          class="inline-block py-1 underline hover:text-spruce-deep">www.bip.gov.pl</a
-        >.
+      <h2 class="font-body text-base font-semibold">Biuletyn Informacji Publicznej</h2>
+      <p class="mt-3 text-ink-soft">
+        <a href={contact.bip} class="inline-block py-1 underline">BIP Domu (serwis zewnętrzny)</a><br />
+        <a href="https://www.bip.gov.pl/" class="inline-block py-1 underline">Strona centralna BIP</a>
       </p>
-      <p class="mt-2 text-base text-muted">
-        W sprawie dostępu do informacji publicznej prosimy o kontakt z
-        <a href="/kontakt/" class="inline-block py-1 underline hover:text-spruce-deep"
-          >sekretariatem</a
-        >.
+      <p class="mt-3 text-ink-soft">
+        W sprawie dostępu do informacji publicznej prosimy o kontakt z
+        <a href="/kontakt/" class="inline-block py-1 underline">sekretariatem</a>.
       </p>
     </div>
   </div>
   <div class="border-t border-line">
     <div
-      class="mx-auto flex max-w-6xl flex-wrap items-baseline justify-between gap-x-6 gap-y-1 px-4 py-4 text-base text-muted sm:px-6"
+      class="mx-auto flex max-w-wide flex-wrap items-baseline justify-between gap-x-6 gap-y-1 px-5 py-4 text-meta text-ink-soft sm:px-8"
     >
-      <p>
-        © {year} Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie. Jednostka organizacyjna Powiatu
-        Szczycieńskiego.
-      </p>
-      <p>
-        Projekt i wykonanie:
-        <a
-          href="https://adrianantosiak.pl"
-          class="inline-block py-1 underline hover:text-spruce-deep">Adrian Antosiak</a
-        >
-      </p>
+      <p>© {year} Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie. Jednostka organizacyjna Powiatu Szczycieńskiego.</p>
+      <p>Projekt i wykonanie: <a href="https://adrianantosiak.pl" class="inline-block py-1 underline">Adrian Antosiak</a></p>
     </div>
   </div>
 </footer>

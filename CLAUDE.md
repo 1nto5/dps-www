@@ -5,7 +5,7 @@ branch in Spychowo). Replaces an old WordPress/Elementor site.
 
 ## Stack and commands
 
-Astro 5 + Tailwind 4 (`@tailwindcss/vite`) + Bun. Package manager is **bun** (`bun.lock`).
+Astro 5 + Tailwind 4 (`@tailwindcss/vite`) + Bun. Fonts are subset by `bun run fonts`. Package manager is **bun** (`bun.lock`).
 
 - `bun run dev` — dev server
 - `bun run build` — static build into `dist/`, then four checks that fail the build:
@@ -23,35 +23,35 @@ iframe. No JavaScript unless a feature genuinely cannot work without it.
 
 - `src/layouts/Base.astro` — the only layout. Props: `title`, `description`. It renders
   `<html lang="pl">`, the skip link, `Header`, `<main id="tresc">`, `Footer` and
-  JSON-LD. Every page uses it.
-- `src/components/` — `PageHeader` (`eyebrow?`, `title`, `lead?`), `ArchImage`
-  (signature arch-window frame; `src` is an imported `ImageMetadata`), `Gallery`
-  (`photos: {src, alt}[]`), `DocList` (`docs: {href, label, format, size?}[]`),
-  `Button` (`variant`: `primary` — the one action of a page, `secondary` — the
-  alternative beside it, `quiet` — a small chip for a link that is not the page's
-  point), `LinkCard`, `RailContactCard`, `PosterFigure`, `BackLink` (always placed
-  **outside** `.doc`, so prose link styling never reaches it), `NewsCard`, `PostDate`,
-  `A11yTools` (the accessibility toolbar).
-- **Images:** `ArchImage` is portrait-and-square only (`aspect` ≤ 1, validated at build
-  time); landscape photos use `FramedImage`.
+  JSON-LD. Every page uses it. A parser-blocking `<head>` script applies the reader's
+  text size and contrast before first paint.
+- `src/components/` — `PageHeader` (`title`, `lead?`, `breadcrumbs?`, `current?`; the
+  one `h1`), `PageShell` (rail slot on the left, content on the right), `Toc` (the
+  page's `h2` ids; build fails on a missing id), `PageList` (a plain list of pages, one
+  per row — the only "card"), `Brief` (the „W skrócie" box, 2–3 `<li>`, at the top of
+  every content page), `Figure` (a photo in its natural rectangle with a caption),
+  `Gallery` + `Lightbox`, `DocList`, `Button` (`primary` — the one action of a page,
+  `secondary`; `phone` for the large number), `Breadcrumbs`, `PostDate`, `Header`
+  (brand, four sections, A / A+ / A++ / Kontrast tools, the phone, the mobile bottom
+  bar and the `<dialog>` menu), `Footer`.
 - `src/pages/` — one `.astro` file per URL. `trailingSlash: "always"`, `build.format:
-"directory"` — internal links must end with `/`. Besides the sections above it holds
-  `/dostepnosc/` (what the Dom does in practice for accessibility — distinct from the
-  signed statement at `/deklaracja-dostepnosci/`) and `/przyjecie-do-domu/` (how someone
-  is admitted).
-- `src/data/` — the shared facts, so no page writes them twice: `contact.ts` is the
-  **only** place a telephone number or a postal address is written (numbers in the
-  format `89 624 22 88` — spaces, no parentheses, no `+48`; the `tel:` href is derived,
-  never typed), plus `nav.ts`, `routes.ts` and the per-section document lists.
+  "directory"` — internal links must end with `/`. Four sections, named the way
+  readers think: `/zamieszkac-u-nas/`, `/zycie-w-domu/` (with `spychowo/`,
+  `grupa-christopher/`, `zdjecia/`, `regulamin-imprez-okolicznosciowych/`), `/o-domu/`,
+  `/dokumenty/` (with `dotacje/` as one page, `projekty-unijne/`, `rodo/`,
+  `sygnalista/`, `zamowienia-publiczne/`). Outside the sections: `/kontakt/`,
+  `/aktualnosci/`, `/dostepnosc/` (easy-to-read text), `/deklaracja-dostepnosci/` (the
+  signed statement). Old URLs redirect from `astro.config.mjs`.
+- `src/data/` — the shared facts: `contact.ts` is the **only** place a telephone number
+  or a postal address is written (`89 624 22 88` — spaces, no `+48`; the `tel:` href is
+  derived), `nav.ts` (the four sections and `activeSection()`), `routes.ts`
+  (breadcrumb labels, one line per URL), and the per-section document lists.
 - `src/content/aktualnosci/` — news posts, schema in `src/content.config.ts`. Markdown
-  tables are wrapped by the `rehype-table-scroll` plugin (`src/lib/`, registered in
-  `astro.config.mjs`) so a wide table scrolls in its own region instead of pushing the
-  page sideways; hand-written HTML tables in `.doc` need the same
-  `<div class="table-scroll" tabindex="0" role="region" aria-label="…">` by hand.
-- `docs/pytania-do-domu.md` — the running list of open questions for the Dom: anything
-  the site cannot state until someone there confirms it. Add to it rather than guessing.
-- `src/assets/media/` — images, named `<mediaId>-<basename>`, imported in frontmatter
-  and rendered through `ArchImage`/`Gallery`/`astro:assets`. Never `<img src="http…">`.
+  tables are wrapped by `rehype-table-scroll` (`src/lib/`); hand-written HTML tables in
+  `.doc` need `<div class="table-scroll" tabindex="0" role="region" aria-label="…">`.
+- `docs/pytania-do-domu.md` — open questions for the Dom. Add to it rather than guessing.
+- `src/assets/media/` — images, imported in frontmatter and rendered through
+  `Figure`/`Gallery`/`astro:assets`. Never `<img src="http…">`.
 - `public/dokumenty/pliki/` — PDF/DOC downloads, linked as `/dokumenty/pliki/<file>`.
 
 ## Content conventions
@@ -59,123 +59,59 @@ iframe. No JavaScript unless a feature genuinely cannot work without it.
 - All visible content is **Polish**, with correct orthography and diacritics. Code,
   comments, identifiers, commit messages: English.
 - Tone: calm, warm, dignified — a home, not an office. Sentence-case headings, no
-  emoji, no numbered section markers.
+  emoji, no numbered section markers. Paragraphs of at most four sentences.
+- **Copy comes from the production site, never from us.** Every visible sentence is a
+  sentence the Dom published (the old WordPress site, carried over in git history on
+  `main`). Titles, leads and section headings keep their original wording. `Brief`
+  („W skrócie") may only quote two or three sentences already on the page; a page that
+  has none suitable simply has no `Brief`. Photo captions only where the Dom wrote one.
 - Vocabulary for people, identical on every page: capitalised **„Mieszkańcy"** (never
-  „podopieczni", „pensjonariusze"), **„osoby chorujące psychicznie"** (never „osoby
-  chorych psychicznie"), **„osoby z niepełnosprawnościami"** (never „osoby
-  niepełnosprawne"). The Dom is **„Dom"**, never „placówka" or „baza mieszkaniowa". The
-  only exception is the statutory type of the facility — „dom dla osób przewlekle
-  psychicznie chorych" — which is quoted as the law words it.
-- Migrated WordPress HTML is stripped of Elementor wrappers, classes, inline styles and
-  empty paragraphs, then placed inside `<div class="doc">` (long-form prose styling).
-- Exactly one `h1` per page, and it comes from `PageHeader`. Body content starts at
-  `h2`, with no skipped levels.
+  „podopieczni", „pensjonariusze"), **„osoby chorujące psychicznie"**, **„osoby z
+  niepełnosprawnościami"**. The Dom is **„Dom"**, never „placówka". The only exception
+  is the statutory type — „dom dla osób przewlekle psychicznie chorych" — quoted as the
+  law words it.
+- Long-form and legal text sits inside `<div class="doc">`, whole.
+- Exactly one `h1` per page, from `PageHeader`. Body content starts at `h2`, no skips.
 
 ## Design tokens
 
 Defined in `src/styles/global.css` under `@theme` — use these, never invent colors:
-`paper`, `ink`, `ink-soft`, `muted`, `spruce`, `spruce-deep`, `honey`, `line`, `edge`,
-`moss`, `card` (the card surface), `overlay` / `on-overlay` (the lightbox ground and the
-text on it), `on-dark`, and `focus-ring`; `font-display` = Fraunces, `font-body` =
-Source Sans 3. Contrast is handled by the tokens. No animations or transitions on
-motion-sensitive elements.
+`paper` (ground), `mist` / `mist-deep` (second ground, pressed state), `card`, `ink`,
+`ink-soft`, `lake` / `lake-deep` (the **only** action colour: links, buttons, the
+active nav item), `heather` / `heather-soft` (the **only** emphasis colour: `Brief`,
+a pulled sentence), `line` (decorative hairline), `edge` (a control's boundary, 3:1),
+`overlay` / `on-overlay` (the lightbox), `on-dark`. `font-display` = Bricolage
+Grotesque (headings, automatic), `font-body` = Golos Text. Dark mode follows the
+system only; the two contrast modes (`data-contrast` = `yellow` / `bw`) win over it.
 
-`line` is decoration — a hairline that separates or frames. `edge` is the boundary of a
-control the reader can operate (button, menu button, panel, chip): it meets the 3:1 of
-WCAG 2.1 SC 1.4.11, and its hover colour is never weaker than its resting one.
+**Type scale.** `text-meta` for captions, dates, formats and the phone bar; `text-base`
+for body; `text-lg` for a lead; `text-xl` … `text-5xl` for headings. No `text-sm`,
+no arbitrary sizes, no `font-bold` in body text, no uppercase-plus-tracking labels.
 
-**Type scale.** Four roles, and nothing outside them: `text-meta` for metadata,
-captions, labels, dates, table cells and navigation; `text-base` for body text;
-`text-lg` for a page lead; `text-xl` … `text-5xl` for headings. Do not use `text-sm` or
-`text-xs` (nothing on the site may go below `text-meta` — the accessibility bar is
-chrome and carries its own scale), do not write arbitrary sizes like `text-[15px]`, do
-not use `font-bold` (headings carry their weight themselves; `font-semibold` is the
-heaviest body weight), and no uppercase-plus-tracking labels. Link underlines get their
-offset from one global rule — never add `underline-offset-*` on an element.
+**Width.** `max-w-wide` (68rem) is the page, `max-w-column` (42rem) the content
+column, `--measure-prose` (34rem, `max-w-prose-measure`) the running-text measure.
 
-**Measure and width.** `max-w-column` (the `--container-column` token, 46rem) is the
-page's content column. `--measure-prose` (33rem) is the narrower reading measure for
-running text; tables, floated photos and card lists keep the full column. It is
-deliberately not a spacing token, so there is no `max-w-` utility that could drift onto
-things that are not prose.
+**Spacing.** `mt-section`, `mt-subsection`, `mt-block`. **Radius.** `rounded-lg` only.
 
-**Spacing.** Three steps, and they are named: `mt-section` between the top-level blocks
-of a page, `mt-subsection` inside one, `mt-block` between a paragraph group and the next
-thing. Prefer them to raw numbers, so a chapter boundary always reads as bigger than a
-paragraph gap.
+**Inline SVG** never carries a hex fill or stroke: `currentColor` or a token.
 
-**Radius.** `rounded-xl` for cards, `rounded-lg` for panels, images and buttons. Nothing
-else.
-
-**Inline SVG** never carries a hex fill or stroke: use `currentColor`, or a token
-through `var()`. An icon with a baked-in colour goes invisible in the high-contrast
-modes.
-
-**Non-breaking spaces** (U+00A0) belong in visible Polish text only — after a one-letter
-preposition, inside a phone number. Never inside an attribute value (`class`, `href`,
-`alt` metadata keys), where they are invisible and break matching.
+**Non-breaking spaces** (U+00A0) belong in visible Polish text only.
 
 ## Motion
 
-One clock. Every duration is a token in `src/styles/global.css` — `--dur-fast`
-(150ms, paint-only feedback: hover, focus, press), `--dur-panel` (180ms, a
-surface opening), `--dur-move` (250ms, a transform under the pointer, and the
-anchor acknowledgement), `--dur-enter` (450ms, the page or one block arriving),
-`--dur-exit` (120ms, the outgoing page) — plus `--stagger-step` (80ms),
-`--stagger-max` (400ms) and `--rise` (14px). `--ease-out` is the only easing.
-They are plain `:root` properties, not `@theme` entries, because Tailwind has
-no `duration-*` namespace.
-
-**Motion is declared in `global.css` and nowhere else.** No `transition-*`,
-`duration-*`, `ease-*` or `animate-*` utility in a template, and no ms literal
-outside the token block.
-
-**One entrance gesture**, `@keyframes rise-in`. `main` plays it once on every
-page, from CSS, with no markup and no JavaScript — that is how the prose pages,
-404 and the news posts are covered, and it is why a page added tomorrow needs no
-opt-in. Below the fold the choreography stages top-level blocks of each root
-(`main section`, `main [data-shell-content]`) and plays the same keyframe as the
-reader scrolls. **Nothing above the fold is ever hidden by script**;
-`data-no-reveal` opts a root out.
-
-It is a CSS **animation**, never a `transition`: a `transition` shorthand on an
-element replaces the state-feedback transition under it and silently kills that
-element's hover crossfade.
-
-**Long-form prose and legal text arrive as one block, never a paragraph at a
-time.** The accessibility statement and the migrated document pages get the
-whole-page rise and nothing else. Do not cut them into sections to animate them.
-`.doc` is a single unit to the choreography, which is what enforces this.
-
-Arriving by anchor acknowledges the jump with `@keyframes arrive-in` — the same
-movement as `rise-in`, deliberately under a **different name**, because a target
-that is itself a staged block is already named for `rise-in` and cannot restart
-an animation it is running.
-
-**Cross-page transitions**: `header` and `.a11y-bar` carry a
-`view-transition-name` so they hold still. The footer deliberately does not —
-its document position differs between a short page and a long one. Exactly one
-element per document may carry a given name; a duplicate skips the whole
-transition, silently. Every `::view-transition-old/new()` we touch is forced to
-`mix-blend-mode: normal`, because the UA default `plus-lighter` is additive: the
-incoming root is held at full opacity, and the named groups have their animation
-switched off, so both of their snapshots sit at full opacity too. Cancelling the
-transition for a reader who asked for less movement needs a **later**
-`@view-transition` rule than the one in `global.css`, so that stylesheet is
-injected at the end of `<body>`, never from `<head>` — Astro appends its own
-stylesheet link last, and a rule in `<head>` would lose to it.
-
-**Movement is never the reason something is unreadable.** The staged state
-exists only under `@media screen and (prefers-reduced-motion: no-preference) and
-(scripting: enabled)` and only outside `[data-motion="reduce"]` and
-`[data-contrast]`; forced-colors kills it too. It is released by keyboard focus,
-by a 1500ms failsafe that forces paint rather than merely adding a class, on a
-bfcache restore, on `visibilitychange`, and by the script's own `catch`.
-
-**No `position: fixed` element inside `<main>`.** `main` carries a `transform`
-for 450ms, which would make it that element's containing block. Today the
-lightbox `<dialog>` is appended to `document.body` and the menu scrim lives
-inside `header`; both are outside `main`, and must stay there.
+One gesture — a quiet rise with a fade, the way `main` arrives — and one clock,
+declared in `global.css` and nowhere else: `--dur-fast` (300ms, state feedback),
+`--dur-panel` (500ms, a surface opening), `--dur-enter` (350ms, the page arriving),
+`--dur-press` (800ms, the bloom after a press), `--ease-out` the only easing. What
+moves: links and buttons crossfade their colour, a pressed button blooms softly from
+the click point (`--px`/`--py` written by the pointer script in `Base`; `data-press`
+while it runs), the drawer rises in from the left, the lightbox rises, `main` rises
+once per load, a heading reached by anchor glows briefly (`:target`), anchors scroll smoothly,
+and pages crossfade through a cross-document view transition with the header held
+still (`view-transition-name: site-header` — exactly one element may carry it). All
+of it sits under `prefers-reduced-motion: no-preference` and outside `[data-contrast]`.
+No `transition-*`, `duration-*` or `animate-*` utility in a template, ever, and no
+`position: fixed` element inside `<main>` (it carries a transform while rising).
 
 ## Accessibility (WCAG 2.1 AA — a legal duty here)
 
@@ -187,14 +123,9 @@ declaration, so regressions are a compliance problem, not just a bug.
 - Link text meaningful on its own — never a bare "kliknij tutaj"; document links state
   format and size.
 - Visible focus states come from the global `:focus-visible` rule — do not remove them.
-- The accessibility toolbar (`A11yTools`) writes `data-contrast`, `data-font-size` and
-  `data-motion` on `<html>`, and the header's `ThemeSwitch` writes `data-theme`
-  (`dark` / `light`; absent = follow `prefers-color-scheme`); all are remembered in
-  `localStorage` under the `dps-*` keys. The dark palette is a token re-cut in
-  `global.css`, and the high-contrast modes always win over it.
-  Two consequences for every change you make: a new colour must be expressed through a
-  token, or the contrast modes cannot repaint it; and the contrast modes must never
-  invert photographs — they repaint interface colours, never image content.
+- The header tools write `data-contrast` and `data-font-size` on `<html>`, remembered
+  in `localStorage` under `dps-contrast` and `dps-font`. A new colour must be a token,
+  or the contrast modes cannot repaint it; the contrast modes never touch photographs.
 - The accessibility statement keeps `id="a11y-deklaracja"` and the `a11y-*` class hooks
   required by the government template. Its dates and its "częściowo zgodna" status are
   carried over from the Dom's last signed statement — never edit them without a
