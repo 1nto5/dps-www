@@ -121,6 +121,13 @@
      full column. Deliberately NOT a spacing token — it is a measure, and a
      `max-w-*` utility for it would invite it onto things that are not prose. */
   --measure-prose: 33rem;
+  /* The widest a low-resolution scan or poster may be drawn. Almost every
+     document image the Dom has is a 680px wide scan and no larger original
+     exists, so anything drawn past ~612px (34rem at the 18px base) is a
+     browser upscaling pixels it does not have. It is the width `PosterFigure`
+     has always used; named here so a scan, a poster and a press clipping all
+     stop at the same place instead of each page picking a number. */
+  --measure-scan: 34rem;
   /* The focus ring is named rather than written at the point of use, because
      the high-contrast modes below have to be able to move it off the palette
      they have just repainted: a spruce ring is invisible once spruce has
@@ -134,6 +141,15 @@
 }
 @utility mt-block {
   margin-top: var(--spacing-block);
+}
+/* Declared by hand for the same reason as `mt-block`: `--measure-scan` is a
+   measure, not a spacing step, and putting it in `@theme` would spray it
+   across every `max-w-*`, `w-*` and `p-*` scale. */
+@utility max-w-scan {
+  /* `min()` so the cap also does the job `max-w-full` used to do: below 34rem
+     of viewport the image still shrinks to its container instead of pushing
+     the page sideways. */
+  max-width: min(100%, var(--measure-scan));
 }
 
 /* 112.5% of the 16px default = 18px, but it tracks the reader's own

@@ -28,6 +28,18 @@ const {
   loading = "lazy",
 } = Astro.props;
 const full = await getImage({ src, width: 1800, format: "webp" });
+
+/**
+ * Most of these scans are 680px wide and no larger original exists, so a page
+ * that gave one the full column drew it at roughly 1.4 device pixels per image
+ * pixel and it looked soft. The cap is read from the source metadata rather
+ * than asked of the caller, so no page has to remember it — and `sizes` is
+ * rewritten to match, or the browser would still be shopping for a candidate
+ * far wider than the box. The lightbox is unaffected: enlarging is the whole
+ * point there, and it always loads the full file.
+ */
+const capped = src.width <= 700;
+const renderedSizes = capped ? "min(100vw, 34rem)" : sizes;
 ---
 
 <a href={full.src} data-lightbox data-caption={caption ?? alt} class="rounded-lg">
@@ -35,8 +47,12 @@ const full = await getImage({ src, width: 1800, format: "webp" });
     src={src}
     alt={alt}
     widths={widths}
-    sizes={sizes}
-    class:list={["w-full rounded-lg border border-line", className]}
+    sizes={renderedSizes}
+    class:list={[
+      "w-full rounded-lg border border-line",
+      capped && "max-w-scan",
+      className,
+    ]}
     loading={loading}
   />
 </a>

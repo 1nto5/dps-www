@@ -5,8 +5,8 @@
  * used to name its own widths and classes — so the same kind of poster was
  * served at three different sizes depending on the year page.
  *
- * One width for all of them: 34rem is 612px at the site's 18px base, and the
- * second candidate is that doubled, for a high-density screen.
+ * One width for all of them: `max-w-scan` (34rem = 612px at the site's 18px
+ * base), and the second candidate is that doubled, for a high-density screen.
  */
 import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
@@ -27,7 +27,7 @@ const { src, alt, caption } = Astro.props;
     widths={[480, 612, 1224]}
     sizes="(min-width: 768px) 34rem, 100vw"
     loading="lazy"
-    class="w-full max-w-[34rem] rounded-lg border border-line bg-white"
+    class="w-full max-w-scan rounded-lg border border-line bg-white"
   />
   {caption && <figcaption class="mt-2 text-meta text-muted">{caption}</figcaption>}
 </figure>

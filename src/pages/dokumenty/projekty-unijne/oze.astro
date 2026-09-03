@@ -100,12 +100,18 @@ const photos = [
       </p>
     </div>
 
+    {/* A 680×126 logo strip drawn at its own pixel width leaves the lettering
+        one device pixel tall on an ordinary screen. Drawn at half that, the
+        same file becomes the 2× candidate for the size it is shown at, and the
+        wordmarks read cleanly. The logos themselves are untouched — grant
+        publicity rules do not allow redrawing them. */}
     <Image
       src={logoRpo}
       alt="Logotypy: Program Regionalny — Narodowa Strategia Spójności, herb powiatu szczycieńskiego, herb województwa warmińsko-mazurskiego, Unia Europejska — Europejski Fundusz Rozwoju Regionalnego."
-      widths={[680]}
-      sizes="(min-width: 768px) 680px, 100vw"
-      class="my-8 h-auto w-full max-w-[680px]"
+      width={340}
+      height={63}
+      densities={[1, 2]}
+      class="my-8 h-auto max-w-full"
       loading="lazy"
     />
 
@@ -127,8 +133,8 @@ const photos = [
         src={photoUmowa}
         alt="Podpisanie umowy o dofinansowanie — uścisk dłoni prezesa WFOŚiGW w Olsztynie i Starosty Szczycieńskiego, obok Wicestarosta, w tle flagi Polski i Unii Europejskiej."
         widths={[400, 680]}
-        sizes="(min-width: 768px) 680px, 100vw"
-        class="h-auto w-full rounded-lg"
+        sizes="min(100vw, 34rem)"
+        class="h-auto w-full max-w-scan rounded-lg"
         loading="lazy"
       />
     </div>

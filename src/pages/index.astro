@@ -10,7 +10,10 @@ import { contact, addressLine } from "../data/contact";
 
 import heroPhoto from "../assets/media/1377-1-1.jpg";
 import offerPhoto from "../assets/media/1188-2012-07-25-at-10-18-46-1-1.jpg";
-import branchPhoto from "../assets/media/1185-2012-07-25-at-10-40-40.jpg";
+/** No photograph of the Spychowo branch exists yet, and every card in this
+    grid carries one, so the Szczytno building stands in until the Dom sends
+    photographs of the branch (see docs/pytania-do-domu.md). */
+import branchPhoto from "../assets/media/1376-3.jpg";
 import musicPhoto from "../assets/media/1168-christopherGroup.jpg";
 
 const cards = [
@@ -18,21 +21,21 @@ const cards = [
     href: "/oferta/",
     title: "Oferta",
     photo: offerPhoto,
-    alt: "Mieszkańcy i terapeutka przy wspólnym stole w domowej bibliotece",
+    alt: "Mieszkańcy i terapeutka przy wspólnym stole w świetlicy, w tle regały z książkami.",
     text: "Zapewniamy całodobową opiekę, wsparcie pielęgniarskie i medyczne oraz zajęcia terapeutyczne dostosowane do możliwości każdego Mieszkańca. Dbamy o warunki bytowe, posiłki i codzienny rytm dnia, który daje poczucie bezpieczeństwa.",
   },
   {
     href: "/filia-w-spychowie/",
     title: "Filia w Spychowie",
     photo: branchPhoto,
-    alt: "Dwie Mieszkanki rozmawiające przy stoliku w swoim pokoju",
+    alt: "Biały budynek Domu z czerwonym dachem i drewniana altana w ogrodzie",
     text: "Filia w Spychowie działa od 2001 roku i jest domem dla Mieszkańców. Poza pokojami do dyspozycji są świetlica, kaplica, stołówka i pracownia terapeutyczna.",
   },
   {
     href: "/grupa-muzyczna/",
     title: "Grupa wokalna „Christopher”",
     photo: musicPhoto,
-    alt: "Zespół muzyczny Domu podczas występu na plenerowej scenie",
+    alt: "Pięciu członków grupy wokalnej „Christopher” śpiewa na plenerowej scenie pod żółtym namiotem.",
     text: "Nasza grupa wokalna gra i śpiewa na uroczystościach w Domu oraz na przeglądach poza nim. Wspólne próby to dla Mieszkańców sposób na kontakt z ludźmi i na własną twórczość.",
   },
   {
@@ -79,7 +82,7 @@ const newsAsList = latest.length < 3;
       </PageHeader>
       {
         /* The column is capped instead of the frame: a `max-h` clamp would
-           override the declared 3/4 ratio and flatten the arch. */
+           override the declared 4/5 ratio and flatten the arch. */
       }
       <div class="hero-enter-photo mx-auto w-full max-w-md md:max-w-[26rem]">
         <ArchImage
@@ -89,7 +92,8 @@ const newsAsList = latest.length < 3;
           fetchpriority="high"
           widths={[480, 800, 1200]}
           sizes="(min-width: 768px) 26rem, 100vw"
-          aspect="3/4"
+          aspect="4/5"
+          position="42% 50%"
         />
       </div>
     </div>

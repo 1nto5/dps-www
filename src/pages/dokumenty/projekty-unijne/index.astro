@@ -111,12 +111,17 @@ const photos = [
       <h2 id="pomagajmy-razem">Projekt „Pomagajmy Razem”</h2>
     </div>
 
+    {/* Half the source's pixel width, so the 605px file serves as the 2×
+        candidate and the wordmarks stay legible instead of sitting one device
+        pixel tall. The logos are reproduced as issued — grant publicity rules
+        do not allow redrawing them. */}
     <Image
       src={logoPower}
       alt="Logotypy: Fundusze Europejskie Wiedza Edukacja Rozwój, flaga Rzeczypospolitej Polskiej, Unia Europejska Europejski Fundusz Społeczny."
-      widths={[605]}
-      sizes="(min-width: 640px) 605px, 100vw"
-      class="my-6 h-auto w-full max-w-[605px]"
+      width={302}
+      height={39}
+      densities={[1, 2]}
+      class="my-6 h-auto max-w-full"
       loading="eager"
     />
 
@@ -248,8 +253,8 @@ const photos = [
         src={posterWsparcie}
         alt="Plakat projektu „Wsparcie instytucji zajmujących się opieką nad osobami wymagającymi wsparcia z terenu powiatu szczycieńskiego” z logotypami Funduszy Europejskich, Rzeczypospolitej Polskiej, Unii Europejskiej i herbem powiatu szczycieńskiego."
         widths={[400, 680]}
-        sizes="(min-width: 768px) 680px, 100vw"
-        class="h-auto w-full rounded-lg border border-line"
+        sizes="min(100vw, 34rem)"
+        class="h-auto w-full max-w-scan rounded-lg border border-line"
         loading="lazy"
       />
     </div>

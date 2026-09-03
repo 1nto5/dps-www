@@ -35,7 +35,7 @@ const {
   alt,
   aspect = "4/5",
   position,
-  widths = [480, 800, 1200],
+  widths = [480, 800, 1200, 1600],
   sizes = "(min-width: 768px) 50vw, 100vw",
   class: className = "",
   loading = "lazy",
@@ -64,6 +64,72 @@ if (frameWidth / frameHeight > 1) {
     )} = ${(frameWidth / frameHeight).toFixed(2)}. Use FramedImage for landscape photos.`,
   );
 }
+
+/**
+ * `sizes` describes the *box*, but `object-cover` scales the photo until the
+ * box's short side is covered and throws the rest away. A 4:3 source in a 4:5
+ * frame has to be drawn 4/3 ÷ 4/5 = 1.67 times wider than the box before the
+ * crop, so a browser told "26rem" downloads a candidate a third too small and
+ * the photo renders soft. The overflow factor is exactly that ratio, and it is
+ * knowable at build time because the source's real pixel size travels with the
+ * import.
+ *
+ * Rather than rewrite the numbers in `sizes` (which would mean re-implementing
+ * every CSS length unit), each entry keeps its media query and its length is
+ * wrapped in `calc(<length> * factor)` — `sizes` takes `calc()`, so
+ * `(min-width: 768px) calc(26rem * 1.67), calc(100vw * 1.67)` stays valid and
+ * stays correct in whatever unit the caller wrote.
+ *
+ * Astro never generates a candidate wider than the source, so a factor that
+ * asks for more than the file holds simply yields the file's own width.
+ */
+const overflowFactor = (() => {
+  const sourceRatio = src.width / src.height;
+  const frameRatio = frameWidth / frameHeight;
+  if (!(sourceRatio > 0) || !(frameRatio > 0)) return 1;
+  return sourceRatio > frameRatio ? sourceRatio / frameRatio : 1;
+})();
+
+/**
+ * The commas that separate `sizes` entries are the ones at nesting depth zero;
+ * a comma inside `min(100vw, 34rem)` belongs to the function, not to the list.
+ */
+function splitEntries(value: string): string[] {
+  const out: string[] = [];
+  let depth = 0;
+  let start = 0;
+  for (let i = 0; i < value.length; i++) {
+    const ch = value[i];
+    if (ch === "(") depth++;
+    else if (ch === ")") depth--;
+    else if (ch === "," && depth === 0) {
+      out.push(value.slice(start, i));
+      start = i + 1;
+    }
+  }
+  out.push(value.slice(start));
+  return out;
+}
+
+/** `(min-width: 768px) 50vw, 100vw` → `(min-width: 768px) calc(50vw * 1.67), calc(100vw * 1.67)` */
+function scaleSizes(value: string, factor: number): string {
+  if (!(factor > 1.001)) return value;
+  const scale = factor.toFixed(3).replace(/0+$/, "").replace(/\.$/, "");
+  return splitEntries(value)
+    .map((entry) => {
+      const trimmed = entry.trim();
+      if (!trimmed) return trimmed;
+      // A media condition, when present, is parenthesised and comes first; the
+      // length is whatever follows it.
+      const match = /^(\((?:[^()]|\([^()]*\))*\)\s*)?(.+)$/.exec(trimmed);
+      if (!match) return trimmed;
+      const [, condition = "", length] = match;
+      return `${condition}calc(${length.trim()} * ${scale})`;
+    })
+    .join(", ");
+}
+
+const coverSizes = scaleSizes(sizes, overflowFactor);
 ---
 
 <div
@@ -75,7 +141,7 @@ if (frameWidth / frameHeight > 1) {
     src={src}
     alt={alt}
     widths={widths}
-    sizes={sizes}
+    sizes={coverSizes}
     loading={loading}
     fetchpriority={fetchpriority}
     class="h-full w-full object-cover"

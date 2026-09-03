@@ -50,11 +50,20 @@ const legalBasis = [
 ];
 
 const interiors = [
-  { src: roomSingle, alt: "Pokój jednoosobowy Mieszkańca z tapczanem, telewizorem i biurkiem" },
-  { src: roomShared, alt: "Pokój dwuosobowy z fotelami, stolikiem i kwiatami na komodzie" },
-  { src: commonRoom, alt: "Mieszkańcy przy stole w świetlicy z regałami pełnymi książek" },
+  {
+    src: roomSingle,
+    alt: "Mieszkaniec siedzi na tapczanie w swoim pokoju jednoosobowym; przy oknie telewizor i stolik.",
+  },
+  { src: roomShared, alt: "Dwie Mieszkanki siedzą w fotelach przy stoliku w swoim pokoju." },
+  {
+    src: commonRoom,
+    alt: "Mieszkańcy i terapeutka przy wspólnym stole w świetlicy, w tle regały z książkami.",
+  },
   { src: diningRoom, alt: "Jasna jadalnia z drewnianymi krzesłami i stołami nakrytymi obrusami" },
-  { src: treatmentRoom, alt: "Gabinet zabiegowy, w którym pielęgniarka przygotowuje leki" },
+  {
+    src: treatmentRoom,
+    alt: "Gabinet zabiegowy: pielęgniarka przy biurku, przeszklone szafy z lekami.",
+  },
 ];
 ---
 
@@ -158,7 +167,7 @@ const interiors = [
         <div class="mb-6 w-full max-w-xs md:mb-4 md:w-64 md:float-left md:mr-8">
           <FramedImage
               src={choirOnStage}
-              alt="Pięciu Mieszkańców z grupy wokalnej Christopher śpiewa na plenerowej scenie pod żółto-czerwonym namiotem"
+              alt="Pięciu członków grupy wokalnej „Christopher” śpiewa na plenerowej scenie pod żółtym namiotem."
               sizes="(min-width: 768px) 16rem, 100vw"
             />
         </div>

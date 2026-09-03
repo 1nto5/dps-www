@@ -8,8 +8,8 @@ import Gallery from "../components/Gallery.astro";
 import RailContactCard from "../components/RailContactCard.astro";
 import { contact } from "../data/contact";
 
-import nursingRoom from "../assets/media/1182-2012-07-25-at-10-20-35.jpg";
-import library from "../assets/media/1188-2012-07-25-at-10-18-46-1-1.jpg";
+import treatmentRoom from "../assets/media/1182-2012-07-25-at-10-20-35.jpg";
+import commonRoom from "../assets/media/1188-2012-07-25-at-10-18-46-1-1.jpg";
 import twinRoom from "../assets/media/1185-2012-07-25-at-10-40-40.jpg";
 import diningRoom from "../assets/media/1187-2012-07-25-at-10-46-26.jpg";
 import singleRoom from "../assets/media/1186-2012-07-25-at-10-43-511.jpg";
@@ -31,11 +31,11 @@ const galleryPhotos = [
   },
   {
     src: singleRoom,
-    alt: "Pokój jednoosobowy Mieszkańca z tapczanem, telewizorem i widokiem przez okno.",
+    alt: "Mieszkaniec siedzi na tapczanie w swoim pokoju jednoosobowym; przy oknie telewizor i stolik.",
   },
   {
-    src: library,
-    alt: "Mieszkańcy przy stole w bibliotece, wokół regały z książkami.",
+    src: commonRoom,
+    alt: "Mieszkańcy i terapeutka przy wspólnym stole w świetlicy, w tle regały z książkami.",
   },
 ];
 ---
@@ -73,8 +73,8 @@ const galleryPhotos = [
         <h2 id="dom">Dom, w którym czuć troskę</h2>
         <div class="mb-6 w-full max-w-xs md:mb-4 md:w-64 md:float-right md:ml-8">
           <ArchImage
-            src={nursingRoom}
-            alt="Gabinet pielęgniarski w Domu — pielęgniarka przy biurku, przeszklone szafy z lekami."
+            src={singleRoom}
+            alt="Mieszkaniec siedzi na tapczanie w swoim pokoju jednoosobowym; przy oknie telewizor i stolik."
             aspect="4/5"
             sizes="(min-width: 768px) 16rem, 100vw"
             loading="eager"
@@ -114,9 +114,10 @@ const galleryPhotos = [
         <h2 id="opieka">Usługi opiekuńcze i pielęgnacyjne</h2>
         <div class="mb-6 w-full max-w-xs md:mb-4 md:w-64 md:float-left md:mr-8">
           <ArchImage
-            src={singleRoom}
-            alt="Mieszkaniec w swoim pokoju jednoosobowym, przy oknie tapczan, telewizor i biurko."
+            src={treatmentRoom}
+            alt="Gabinet zabiegowy: pielęgniarka przy biurku, przeszklone szafy z lekami."
             aspect="4/5"
+            position="72% 50%"
             sizes="(min-width: 768px) 16rem, 100vw"
           />
         </div>
@@ -133,10 +134,10 @@ const galleryPhotos = [
         <h2 id="wspomagajace">Usługi wspomagające</h2>
         <div class="mb-6 w-full max-w-xs md:mb-4 md:w-64 md:float-right md:ml-8">
           <ArchImage
-            src={library}
-            alt="Mieszkańcy i terapeutka przy wspólnym stole w bibliotece Domu."
+            src={commonRoom}
+            alt="Mieszkańcy i terapeutka przy wspólnym stole w świetlicy, w tle regały z książkami."
             aspect="4/5"
-            position="75% 50%"
+            position="45% 50%"
             sizes="(min-width: 768px) 16rem, 100vw"
           />
         </div>
@@ -168,7 +169,7 @@ const galleryPhotos = [
         <div class="mb-6 w-full max-w-xs md:mb-4 md:w-64 md:float-left md:mr-8">
           <ArchImage
             src={twinRoom}
-            alt="Pokój dwuosobowy — dwie Mieszkanki siedzą w fotelach przy stoliku."
+            alt="Dwie Mieszkanki siedzą w fotelach przy stoliku w swoim pokoju."
             aspect="1/1"
             sizes="(min-width: 768px) 16rem, 100vw"
           />

@@ -245,3 +245,33 @@ o imię i nazwisko inspektora, jeśli mamy je podawać.
   „placówka" — bo to jest dom, a nie urząd. Nie zmieniamy tego sami, bo to obowiązujący
   dokument. Prosimy o rozważenie zmiany „placówce" na „Domu" przy najbliższej nowelizacji
   regulaminu.
+
+---
+
+## 9. Zdjęcia
+
+### 9.1. Zdjęcia filii w Spychowie
+
+Na stronie `/filia-w-spychowie/` nie ma dziś ani jednego zdjęcia. Jedyna fotografia,
+którą tam mieliśmy, okazała się wnętrzem Domu w Szczytnie, więc ją usunęliśmy — nie
+chcemy pokazywać Szczytna jako Spychowa. Z tego samego powodu kafelek filii na stronie
+głównej pokazuje na razie budynek w Szczytnie.
+
+Prosimy o kilka zdjęć z filii: budynek od zewnątrz, ogród, świetlicę, pracownię
+terapeutyczną, kaplicę albo stołówkę. Wystarczą zwykłe zdjęcia zrobione telefonem, byle
+ostre i przy dziennym świetle. Przy każdym zdjęciu prosimy o jedno zdanie, co ono
+przedstawia — z tego zdania robimy opis dla osób korzystających z czytnika ekranu.
+
+### 9.2. Zgoda na publikację wizerunku
+
+Na zdjęciach przeniesionych ze starej strony widać rozpoznawalne osoby: Mieszkańców
+w swoich pokojach, Mieszkańców i terapeutkę przy stole w świetlicy oraz członków grupy
+wokalnej „Christopher” na scenie. Nie wiemy, czy do tych zdjęć są zgody na publikację
+wizerunku.
+
+Pytania:
+
+- Czy osoby widoczne na tych zdjęciach wyraziły zgodę na publikację wizerunku i czy Dom
+  ma te zgody na piśmie?
+- Jeśli którejś zgody brakuje — czy zdjęcie usuwamy ze strony, czy Dom zgodę uzupełni?
+- Czy któraś z tych osób ma opiekuna prawnego, który zgodę podpisuje w jej imieniu?

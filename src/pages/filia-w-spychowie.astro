@@ -3,11 +3,8 @@ import Base from "../layouts/Base.astro";
 import PageHeader from "../components/PageHeader.astro";
 import PageShell from "../components/PageShell.astro";
 import SectionNav from "../components/SectionNav.astro";
-import ArchImage from "../components/ArchImage.astro";
 import RailContactCard from "../components/RailContactCard.astro";
 import { contact, addressLines } from "../data/contact";
-
-import twinRoom from "../assets/media/1185-2012-07-25-at-10-40-40.jpg";
 
 /** Rail table of contents. Labels are shorter than the headings they point at. */
 const sections = [
@@ -68,21 +65,13 @@ const rooms = [
     </div>
 
     <section aria-labelledby="o-filii">
-      <div class="doc flow-root">
+      {
+        /* No photo of its own: the only interior we had turned out to be
+           a Szczytno room, so the text takes the full column until the Dom
+           sends photographs of the branch (see docs/pytania-do-domu.md). */
+      }
+      <div class="doc">
         <h2 id="o-filii">O filii</h2>
-        {
-          /* Square, not 4/5: the two Mieszkanki sit too far apart in the
-             source for a 4/5 crop to hold both faces. */
-        }
-        <div class="mb-6 w-full max-w-xs md:mb-4 md:w-64 md:float-right md:ml-8">
-          <ArchImage
-            src={twinRoom}
-            alt="Dwie Mieszkanki rozmawiające przy stoliku w swoim pokoju."
-            aspect="1/1"
-            sizes="(min-width: 768px) 16rem, 100vw"
-            loading="eager"
-          />
-        </div>
         <p>
           Filia w Spychowie istnieje od 2001 roku i jest domem dla Mieszkańców. Opieka
           pielęgniarska jest tu przez całą dobę, a dzień ma swój rytm: wspólne posiłki
