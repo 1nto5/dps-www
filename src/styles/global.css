@@ -73,6 +73,8 @@
   --color-overlay: #0f1411;
   --color-on-overlay: #e8ebe8;
   --color-on-dark: #ffffff;
+  /* The card surface, a token so every reader mode can repaint it. */
+  --color-card: #ffffff;
 
   /* The one card lift, so the six card grids cannot drift apart. */
   --shadow-card: 0 1px 2px color-mix(in srgb, var(--color-ink) 8%, transparent);
@@ -101,8 +103,7 @@
   --container-column: 46rem;
 
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
-  --default-transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  --default-transition-timing-function: var(--ease-out);
 }
 
 /* The third spacing step, `block`, cannot live in `@theme`: a spacing entry
@@ -133,11 +134,6 @@
      they have just repainted: a spruce ring is invisible once spruce has
      become the page's own yellow. */
   --focus-ring: var(--color-spruce);
-  /* The card surface. Thirty-one places still say `bg-white`, which no token
-     swap can reach; the high-contrast block overrides that class through this
-     variable, and a later phase can migrate the class itself to `bg-card`
-     without touching the modes again. */
-  --color-card: #ffffff;
 }
 @utility mt-block {
   margin-top: var(--spacing-block);
@@ -175,10 +171,24 @@ html {
    one-line header measured. */
 :root {
   --header-h: 5rem;
-  /* How long one element takes to rise and fade in. The single knob for the
-     pace of the whole reveal; the gap between consecutive elements is `STEP`
-     in the choreography script and should move with it. */
-  --reveal-duration: 700ms;
+
+  /* Motion. Five durations, one stagger and one distance — every animation and
+     transition on the site uses one of them. It replaces nine literals
+     (700/650/550/260/250/180/150/120ms) and two stagger rhythms (70/85ms).
+
+     Plain custom properties rather than `@theme` entries, for the same reason
+     as `--spacing-block` and `--measure-scan` above: Tailwind has no
+     `duration-*` theme namespace, so a token there could only reach markup as
+     `duration-[var(--…)]`, an arbitrary value. Motion is declared in this file
+     and nowhere else. */
+  --dur-fast: 150ms; /* paint-only feedback: hover, focus, press */
+  --dur-panel: 180ms; /* a surface opening: mobile menu, lightbox */
+  --dur-move: 250ms; /* transform under the pointer; anchor acknowledgement */
+  --dur-enter: 450ms; /* the page, or one block, arriving */
+  --dur-exit: 120ms; /* the outgoing page: dead time after a click */
+  --stagger-step: 80ms;
+  --stagger-max: 400ms;
+  --rise: 14px;
 }
 @media (min-width: 640px) {
   :root {
@@ -256,11 +266,22 @@ a {
 @media (hover: hover) and (pointer: fine) {
   a,
   button,
-  summary {
-    transition:
-      background-color 150ms var(--ease-out),
-      color 150ms var(--ease-out),
-      border-color 150ms var(--ease-out);
+  summary,
+  /* The card surface that answers a hover on the link stretched across it —
+     it is not an <a> itself. Two shapes, the same two the pressed-state rule
+     below names. NOTE: LinkCard is a bare <a> and has no `data-card-link`; it
+     is covered by the `a` arm. Keeping this arm inside the hover gate is what
+     makes all three card types behave identically on the same device. */
+  :is(li, article):has(a[data-card-link]) {
+    /* Longhands, not the `transition` shorthand: a later rule that needs one
+       more property must be able to add it without silently dropping this
+       list. `box-shadow` and `text-decoration-color` are here because
+       `hover:shadow-card` (3 cards) and `hover:underline` (2 rail navs)
+       otherwise snapped while the border or colour beside them faded.
+       `outline-color` is deliberately absent — the focus ring is instant. */
+    transition-property: background-color, color, border-color, text-decoration-color, box-shadow;
+    transition-duration: var(--dur-fast);
+    transition-timing-function: var(--ease-out);
   }
 }
 /* Pressed state is a background tint from the palette, never a `filter`: a
@@ -325,6 +346,72 @@ a {
   html:not([data-contrast]) .band {
     --band-fill: var(--color-moss);
   }
+}
+
+/* ---------------------------------------------------------------------------
+   Dark mode. Three states, chosen in the header: follow the system, dark,
+   light. The reader's own choice is `data-theme` on <html>, written by the
+   <head> script from `dps-theme` before the first paint; with no choice the
+   system setting decides through `prefers-color-scheme`. Both are shut off
+   by `:not([data-contrast])`: the two high-contrast modes are a complete
+   palette of their own and always win.
+
+   The same tokens as the light palette, re-cut for a near-black ground.
+   Measured on `paper` (#161b18): ink 14.2:1, ink-soft 11.6:1, muted 7.9:1,
+   spruce 8.9:1, spruce-deep 11.4:1, honey 8.3:1 for text and edge 4.9:1 for
+   control boundaries — all past the 4.5:1 and 3:1 of WCAG 2.1 AA; on the
+   card surface each reads about half a point lower and still passes. `line`
+   stays a decorative hairline, as in the light palette.
+   `on-dark` is the label on a spruce fill: spruce is now pale, so the label
+   is the page's own dark. Photographs are never touched.
+   ------------------------------------------------------------------------ */
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]):not([data-contrast]) {
+    --color-paper: #161b18;
+    --color-ink: #e6e9e5;
+    --color-ink-soft: #cfd4cf;
+    --color-muted: #a8b0aa;
+    --color-spruce: #8fc4ab;
+    --color-spruce-deep: #b5d9c5;
+    --color-honey: #e0a94a;
+    --color-line: #3a423d;
+    --color-edge: #7f8b82;
+    --color-moss: #1e2621;
+    --color-moss-deep: #2b3a31;
+    --color-card: #1d2320;
+    --color-overlay: #0a0d0b;
+    --color-on-overlay: #e8ebe8;
+    --color-on-dark: #10201a;
+    color-scheme: dark;
+  }
+}
+html[data-theme="dark"]:not([data-contrast]) {
+  --color-paper: #161b18;
+  --color-ink: #e6e9e5;
+  --color-ink-soft: #cfd4cf;
+  --color-muted: #a8b0aa;
+  --color-spruce: #8fc4ab;
+  --color-spruce-deep: #b5d9c5;
+  --color-honey: #e0a94a;
+  --color-line: #3a423d;
+  --color-edge: #7f8b82;
+  --color-moss: #1e2621;
+  --color-moss-deep: #2b3a31;
+  --color-card: #1d2320;
+  --color-overlay: #0a0d0b;
+  --color-on-overlay: #e8ebe8;
+  --color-on-dark: #10201a;
+  color-scheme: dark;
+}
+/* The menu scrim is `bg-ink/40`; with ink now pale that is a light wash over
+   the page instead of a dimming of it. */
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]):not([data-contrast]) [data-menu][open]::before {
+    background: rgb(0 0 0 / 0.6);
+  }
+}
+html[data-theme="dark"]:not([data-contrast]) [data-menu][open]::before {
+  background: rgb(0 0 0 / 0.6);
 }
 
 /* ---------------------------------------------------------------------------
@@ -398,16 +485,6 @@ html[data-font-size="xlarge"] {
 
 /* Everything the token swap above cannot reach, because it is written as a
    literal somewhere outside the palette. */
-html[data-contrast] .bg-white {
-  background-color: var(--color-card) !important;
-}
-html[data-contrast] .hover\:bg-white:hover {
-  background-color: var(--color-card) !important;
-}
-html[data-contrast] .text-white,
-html[data-contrast] .focus\:text-white:focus {
-  color: var(--color-on-dark) !important;
-}
 /* The footer's tint is `bg-moss/60` — an alpha, so it would sit at 60% of
    black over the page and read as a slightly different black. */
 html[data-contrast] footer {
@@ -541,6 +618,20 @@ html:not([data-js]) .a11y-bar {
   border-color: var(--color-spruce-deep);
   font-weight: 600;
 }
+/* The toolbar was the only control family on the site with no hover state at
+   all: it inherited the 150ms transition and had nothing to transition to.
+   These are the site's own accessibility controls, held at 44px for the
+   readers who need them most. `:not([aria-pressed="true"])` keeps a pressed
+   control's fill, weight and border intact — the pressed state is never
+   carried by colour alone (SC 1.4.1) — and it also covers the
+   `[data-a11y-system]` button, which is always `aria-pressed="true"`.
+   `edge → spruce` strengthens the control boundary, never weakens it. */
+@media (hover: hover) and (pointer: fine) {
+  .a11y-bar button:not([aria-pressed="true"]):hover {
+    background: var(--color-card);
+    border-color: var(--color-spruce);
+  }
+}
 /* Already on because the operating system says so, and a press cannot change
    that — so it does not offer the pointer of something that would. */
 .a11y-bar [data-a11y-system] {
@@ -573,35 +664,67 @@ html:not([data-js]) .a11y-bar {
     display: none;
   }
 }
-/* Cross-page transitions (MPA View Transitions API): the content cross-fades
-   while the header stays put. Browsers without support simply navigate;
-   reduced motion turns it off.
+/* Cross-page transitions (MPA View Transitions API). The outgoing page
+   dissolves ON TOP of the incoming one, which is already playing its own
+   `rise-in`: the arriving page is never faded as a whole.
 
-   A pure crossfade, with no rise on the incoming page. The arriving page then
-   plays its own reveal choreography from the top, and a transform underneath
-   that read as the whole page sliding a second time. The outgoing fade is
-   short — 120ms — because it is dead time between a click and the new page:
-   long enough to soften the cut, not long enough to feel like waiting. */
+   That ordering is the point. Fading the incoming root used to dissolve the
+   old page into a column the reveal script had blanked before first paint, and
+   the real entrance then played a second later as an unrelated beat — which is
+   what read as "the transition did not happen". Browsers with no cross-document
+   support (Firefox, Safari before 18.2) simply cut, and still get `rise-in`.
+
+   Fallback if the `z-index` stacking ever fails to hold in a real foreground
+   tab: restore a two-sided crossfade — `::view-transition-new(root) {
+   animation: vt-fade-in var(--dur-fast) var(--ease-out) both }`, keeping
+   `mix-blend-mode` at the UA default — and drop the `z-index`. Do NOT also
+   suppress `rise-in`: a short incoming fade layered over the page rise is
+   acceptable, a white flash is not. */
 @view-transition {
   navigation: auto;
 }
+/* Lifted out of the root snapshot so they hold still while the page under them
+   changes. The header is `sticky top-0` and the bar sits at the document top
+   with every navigation landing at scroll 0, so both are in the same viewport
+   position on both sides. The FOOTER is deliberately NOT named: its document
+   position differs by hundreds of pixels between a short page and a long one,
+   so a named group would snap or slide. Exactly one element per document may
+   carry a given name — a duplicate skips the whole transition, silently. */
 header {
   view-transition-name: site-header;
 }
+.a11y-bar {
+  view-transition-name: a11y-bar;
+}
 @media (prefers-reduced-motion: no-preference) {
+  /* REQUIRED. The UA stylesheet blends both snapshots with `plus-lighter`,
+     which is correct for a symmetric cross-fade (the two opacities sum to 1)
+     and wrong here: the incoming page is held at full opacity, so an additive
+     blend would flash the whole viewport white at the start of every
+     navigation. */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    mix-blend-mode: normal;
+  }
   ::view-transition-old(root) {
-    animation: vt-fade-out 120ms var(--ease-out) both;
+    animation: vt-fade-out var(--dur-exit) var(--ease-out) both;
+    z-index: 1;
   }
   ::view-transition-new(root) {
-    animation: vt-fade-in 260ms var(--ease-out) both;
+    animation: none;
+  }
+  /* Only the active-page pill differs between headers; it should change with
+     the page, not cross-fade on the UA's own ~250ms clock. */
+  ::view-transition-group(site-header),
+  ::view-transition-old(site-header),
+  ::view-transition-new(site-header),
+  ::view-transition-group(a11y-bar),
+  ::view-transition-old(a11y-bar),
+  ::view-transition-new(a11y-bar) {
+    animation: none;
   }
   @keyframes vt-fade-out {
     to {
-      opacity: 0;
-    }
-  }
-  @keyframes vt-fade-in {
-    from {
       opacity: 0;
     }
   }
@@ -612,73 +735,62 @@ header {
   }
 }
 
-/* Page-load sequence for the hero (homepage): headline block and photo
-   fade up once, staggered. CSS animation, transform/opacity only. */
-@media (prefers-reduced-motion: no-preference) {
-  .hero-enter > * {
-    animation: rise-in 550ms var(--ease-out) backwards;
-  }
-  .hero-enter > *:nth-child(2) {
-    animation-delay: 70ms;
-  }
-  .hero-enter > *:nth-child(3) {
-    animation-delay: 140ms;
-  }
-  .hero-enter > *:nth-child(4) {
-    animation-delay: 210ms;
-  }
-  .hero-enter-photo {
-    animation: rise-in 650ms var(--ease-out) 140ms backwards;
-  }
-  @keyframes rise-in {
-    from {
-      opacity: 0;
-      transform: translateY(14px);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
-}
+/* The site's one entrance gesture. `main` plays it on every page — all 32,
+   prose pages and 404 included — with no markup, no JavaScript and no
+   per-page opt-in, so a page added tomorrow has it too. It covers what
+   nothing keyed off <section> could reach: the breadcrumb, the h1, the lead
+   and the PageShell rail.
 
-/* Scroll reveal: the same gesture as the hero above, applied to the pieces
-   of every section below the fold — each element rises and fades in turn
-   rather than the section appearing as one slab. Slightly quicker than the
-   hero because it plays while the reader is scrolling, not standing still.
-   Hidden state applies only when JS runs and motion is allowed, so content
-   is never lost without JS or with reduced motion. */
-/* Held from the very first paint by the <head> script, until the choreography
-   script has staged each section's own contents. Without this the reader sees
-   content appear and then blink out on a slow connection. The class only ever
-   exists when JavaScript runs and motion is allowed, and it removes itself
-   after 2.5s if the choreography never arrives. */
-/* `PageShell` puts a wrapper between `main` and the sections, so the hold has
-   to reach one level deeper as well. Same rule, same release — the
-   choreography script itself already selects `main section` at any depth. */
-@media screen {
-  .reveal-armed main > section:not([data-no-reveal]),
-  .reveal-armed main [data-shell-content] section:not([data-no-reveal]) {
+   It is deliberately ONE short movement, not a cascade. Legal text a reader
+   may be reaching for under pressure must never fade in a block at a time —
+   the rule at Base.astro's choreography comment still stands, and this rule
+   is what covers those pages instead of leaving them static.
+
+   An animation, never a transition: `transition` is a shorthand and would
+   replace the state-feedback list above on any element it touches.
+   `@media screen` keeps it off paper. The reduced-motion and toolbar kills
+   below neutralise it correctly — they set animation-duration but never
+   fill-mode, so a 0.01ms run with `both` lands on the visible end state. */
+@keyframes rise-in {
+  from {
     opacity: 0;
+    transform: translateY(var(--rise));
+  }
+}
+@media screen and (prefers-reduced-motion: no-preference) {
+  main {
+    animation: rise-in var(--dur-enter) var(--ease-out) both;
+  }
+  /* The homepage photo arrives a beat after the page around it — the same
+     gesture, one step later. Everything else the hero used to stagger by hand
+     is now part of the page rise, so the homepage h1 and every other h1 on the
+     site finally move identically. */
+  .hero-enter-photo {
+    animation: rise-in var(--dur-enter) var(--ease-out) var(--stagger-step) backwards;
   }
 }
 
-/* The staged (transparent) state is the one rule here that can hide content
-   outright, so it is also the one that must not survive a choice the reader
-   makes mid-visit. Scoped away from both toolbar settings: a reader who turns
-   on high contrast or reduced motion while a section is still staged gets it
-   back on the spot, without waiting for the script to catch up. */
+/* Below the fold, a block still arrives as the reader reaches it — the
+   cascade the reader likes, kept exactly where they like it. Nothing on the
+   first screen is staged, so a background tab, a throttled first frame, a
+   failed script and JavaScript switched off all end with a painted page by
+   construction rather than by a safety net.
+
+   The staged (transparent) state is the one rule here that can hide content,
+   so it is also the one that must not survive a choice the reader makes
+   mid-visit: scoped away from both toolbar settings, so turning on high
+   contrast or reduced motion brings it back on the spot. */
 @media screen and (prefers-reduced-motion: no-preference) and (scripting: enabled) {
   html:not([data-motion="reduce"]):not([data-contrast]) [data-reveal] {
     opacity: 0;
-    transform: translateY(14px);
-    transition:
-      opacity var(--reveal-duration) var(--ease-out),
-      transform var(--reveal-duration) var(--ease-out);
   }
   html:not([data-motion="reduce"]):not([data-contrast]) [data-reveal].is-visible {
     opacity: 1;
-    transform: none;
+    /* `animation-delay` is set inline by the choreography. An animation
+       cannot collide with the state-feedback transition the way the old
+       `transition` shorthand did — verified: the homepage cards asked for
+       `transition-colors` and computed to opacity/transform only. */
+    animation: rise-in var(--dur-enter) var(--ease-out) backwards;
   }
 }
 
@@ -688,13 +800,7 @@ header {
    entrance each time. */
 @media screen and (prefers-reduced-motion: no-preference) {
   [data-arriving] {
-    animation: arrive 250ms var(--ease-out) backwards;
-  }
-  @keyframes arrive {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
+    animation: rise-in var(--dur-move) var(--ease-out) backwards;
   }
 }
 
@@ -702,11 +808,21 @@ header {
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .photo-zoom img,
   a[data-lightbox] img {
-    transition: transform 250ms var(--ease-out);
+    transition: transform var(--dur-move) var(--ease-out);
   }
   .photo-zoom:hover img,
   a[data-lightbox]:hover img {
     transform: scale(1.03);
+  }
+}
+/* The thumbnail's image scales, but the box around it acknowledged nothing —
+   and on a coarse pointer, where the scale is excluded, nothing at all. A ring
+   rather than a border, so the image is not nudged; a box-shadow rather than an
+   outline, so the global :focus-visible ring stays distinguishable from hover.
+   The anchor's `overflow: hidden` clips its children, not its own shadow. */
+@media (hover: hover) and (pointer: fine) {
+  a[data-lightbox]:hover {
+    box-shadow: 0 0 0 2px var(--color-spruce);
   }
 }
 
@@ -715,8 +831,8 @@ header {
 @media (prefers-reduced-motion: no-preference) {
   details[open] .menu-panel {
     transition:
-      opacity 180ms var(--ease-out),
-      transform 180ms var(--ease-out);
+      opacity var(--dur-panel) var(--ease-out),
+      transform var(--dur-panel) var(--ease-out);
     transform-origin: top right;
   }
   @starting-style {
@@ -755,6 +871,21 @@ html[data-contrast] *::after {
   animation-iteration-count: 1 !important;
   transition-duration: 0.01ms !important;
   scroll-behavior: auto !important;
+}
+/* Windows High Contrast and the other forced-colors modes repaint the page
+   from the reader's own two or three colours — the same situation as the
+   toolbar's contrast modes above, and with the same conclusion: a page re-cut
+   that way has no room for a fade. It is imposed by the operating system
+   rather than chosen here, and it is orthogonal to `prefers-reduced-motion`,
+   so neither of the blocks above reaches it. */
+@media (forced-colors: active) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* Lightbox (click-to-enlarge images) */
@@ -847,10 +978,10 @@ html:has(.lightbox[open]) {
 }
 @media (prefers-reduced-motion: no-preference) {
   .lightbox[open] figure {
-    animation: lightbox-in 180ms var(--ease-out);
+    animation: lightbox-in var(--dur-panel) var(--ease-out);
   }
   .lightbox[open]::backdrop {
-    animation: lightbox-backdrop-in 180ms var(--ease-out);
+    animation: lightbox-backdrop-in var(--dur-panel) var(--ease-out);
   }
   @keyframes lightbox-in {
     from {
@@ -1104,7 +1235,6 @@ body:has(main > .pre-footer:last-child) footer {
    lightbox, zoom chips) is dropped. The footer stays: address and phone are
    exactly what a printout is for. */
 @media print {
-  .reveal-armed main section,
   [data-reveal],
   [data-arriving] {
     opacity: 1 !important;
@@ -1232,4 +1362,55 @@ a[href^="http"]:not([data-external="off"])::after {
   a[href^="http"]:not([data-external="off"])::after {
     display: none;
   }
+}
+
+/* ---------------------------------------------------------------------------
+   The light / dark switch in the header. Hidden without scripting for the
+   same reason as the toolbar. A segmented control: three 44px targets sharing
+   one `edge` boundary, so it reads as one control with three positions.
+   ------------------------------------------------------------------------ */
+html:not([data-js]) .theme-switch {
+  display: none;
+}
+@media (scripting: none) {
+  .theme-switch {
+    display: none;
+  }
+}
+.theme-switch {
+  display: inline-flex;
+  flex: none;
+  border: 1px solid var(--color-edge);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+.theme-switch button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  min-height: 2.75rem;
+  background: transparent;
+  color: var(--color-ink);
+  cursor: pointer;
+}
+.theme-switch button + button {
+  border-left: 1px solid var(--color-edge);
+}
+.theme-switch button:hover {
+  background: var(--color-moss-deep);
+  color: var(--color-spruce-deep);
+}
+.theme-switch button svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+/* Fill and border together, never a hue alone (WCAG 2.1 SC 1.4.1). */
+.theme-switch [aria-pressed="true"] {
+  background: var(--color-spruce-deep);
+  color: var(--color-on-dark);
+}
+/* The ring would be clipped by `overflow: hidden`; draw it inside instead. */
+.theme-switch button:focus-visible {
+  outline-offset: -3px;
 }

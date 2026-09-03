@@ -85,7 +85,9 @@ const desc =
           var c = localStorage.getItem("dps-contrast");
           var f = localStorage.getItem("dps-font");
           var m = localStorage.getItem("dps-motion");
+          var t = localStorage.getItem("dps-theme");
           if (c === "yellow" || c === "bw") d.setAttribute("data-contrast", c);
+          if (t === "dark" || t === "light") d.setAttribute("data-theme", t);
           if (f === "large" || f === "xlarge") d.setAttribute("data-font-size", f);
           if (m === "reduce") d.setAttribute("data-motion", "reduce");
         } catch (e) {}
@@ -107,29 +109,7 @@ const desc =
           s.id = "dps-no-vt";
           s.textContent = "@view-transition{navigation:none}";
           document.head.appendChild(s);
-          return;
         }
-        // Same guard as the choreography script at the end of <body>: without
-        // an observer nothing would ever reveal these sections again, so they
-        // must never be hidden in the first place.
-        if (!("IntersectionObserver" in window)) return;
-        // Focus reaching the content before the choreography has staged it —
-        // a skip link on a slow connection, or restored focus after a
-        // back/forward — releases the hold immediately, so the focus ring is
-        // never drawn on something the reader cannot see. Capture phase: the
-        // hold has to go before anything else reacts to the focus.
-        document.addEventListener(
-          "focusin",
-          function (e) {
-            var t = e.target;
-            if (t && t.closest && t.closest("main")) d.classList.remove("reveal-armed");
-          },
-          true,
-        );
-        d.classList.add("reveal-armed");
-        setTimeout(function () {
-          d.classList.remove("reveal-armed");
-        }, 2500);
       })();
     </script>
     <meta property="og:title" content={fullTitle} />
@@ -162,7 +142,7 @@ const desc =
   <body class="flex min-h-svh flex-col">
     <a
       href="#tresc"
-      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-spruce focus:px-4 focus:py-2 focus:text-white active:bg-spruce-deep"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-spruce focus:px-4 focus:py-2 focus:text-on-dark active:bg-spruce-deep"
       >Przejdź do treści</a
     >
     <A11yTools />

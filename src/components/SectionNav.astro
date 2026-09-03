@@ -1,15 +1,13 @@
 ---
 /**
- * Table of contents for one page's own sections. Pages pass the list
+ * In-page submenu: the sections of one page, as a single row of links placed
+ * directly under `PageHeader`, above the content. Pages pass the list
  * explicitly rather than having it introspected from the headings, so labels
  * can be shorter than the headings they point at.
  *
- * One element at every width: a <details> panel above the text on small
- * screens and in the rail on wide ones. It is open by default and can be
- * closed again at every width — it used to be forced open by CSS in the rail
- * while still reporting itself as a closed disclosure, which is exactly the
- * false state WCAG 2.1 SC 4.1.2 forbids. No script: with JavaScript off it
- * still opens and closes.
+ * It is a plain row at every width and wraps onto more lines when the labels
+ * do not fit — nothing to open or close, no script. The row is framed by two
+ * hairlines so it reads as a strip of the page, not as a second main menu.
  *
  * Every `id` here must exist on the rendered page; `scripts/check-section-nav.mjs`
  * fails the build if one drifts.
@@ -21,42 +19,19 @@ interface Props {
 const { items, title = "Na tej stronie" } = Astro.props;
 ---
 
-<nav aria-label="Spis treści strony" data-section-nav>
-  <details open class="rounded-xl border border-edge bg-white lg:rounded-none lg:border-0 lg:bg-transparent">
-    <summary
-      class="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-meta font-semibold text-muted lg:px-0 lg:py-0 [&::-webkit-details-marker]:hidden"
-    >
-      {title}
-      <svg
-        data-section-nav-chevron
-        width="16"
-        height="16"
-        viewBox="0 0 20 20"
-        fill="none"
-        aria-hidden="true"
-        class="shrink-0"
-      >
-        <path
-          d="M5 8l5 5 5-5"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"></path>
-      </svg>
-    </summary>
-    <ol role="list" class="border-t border-line px-4 pb-3 pt-2 lg:mt-3 lg:border-t-0 lg:px-0 lg:pb-0 lg:pt-0">
+<nav aria-label="Spis treści strony" data-section-nav class="mx-auto mb-8 max-w-6xl px-4 sm:px-6 md:mb-10">
+  <div class="flex flex-wrap items-baseline gap-x-6 gap-y-2 border-y border-line py-3 text-meta">
+    <p class="font-semibold text-muted">{title}</p>
+    <ol role="list" class="flex flex-wrap gap-x-6 gap-y-2">
       {
         items.map((item) => (
           <li>
-            <a
-              href={`#${item.id}`}
-              class="block py-1.5 text-meta text-ink-soft hover:text-spruce-deep hover:underline"
-            >
+            <a href={`#${item.id}`} class="text-ink-soft hover:text-spruce-deep hover:underline">
               {item.label}
             </a>
           </li>
         ))
       }
     </ol>
-  </details>
+  </div>
 </nav>

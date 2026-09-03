@@ -125,7 +125,10 @@ declaration, so regressions are a compliance problem, not just a bug.
   format and size.
 - Visible focus states come from the global `:focus-visible` rule — do not remove them.
 - The accessibility toolbar (`A11yTools`) writes `data-contrast`, `data-font-size` and
-  `data-motion` on `<html>` and remembers them in `localStorage` under the `dps-*` keys.
+  `data-motion` on `<html>`, and the header's `ThemeSwitch` writes `data-theme`
+  (`dark` / `light`; absent = follow `prefers-color-scheme`); all are remembered in
+  `localStorage` under the `dps-*` keys. The dark palette is a token re-cut in
+  `global.css`, and the high-contrast modes always win over it.
   Two consequences for every change you make: a new colour must be expressed through a
   token, or the contrast modes cannot repaint it; and the contrast modes must never
   invert photographs — they repaint interface colours, never image content.

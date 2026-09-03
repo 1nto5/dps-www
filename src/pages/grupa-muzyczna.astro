@@ -36,8 +36,9 @@ const members = [
     lead="Śpiewamy razem od 2005 roku — dla siebie, dla sąsiadów i dla każdego, kto ma ochotę posłuchać."
   />
 
+  <SectionNav items={sections} />
+
   <PageShell narrow>
-    <SectionNav slot="rail" items={sections} />
 
     <div class="grid items-start gap-10 md:grid-cols-2">
       <div class="doc">
@@ -142,7 +143,7 @@ const members = [
               caption="Skan artykułu „Muzyka z naszych stron”"
               widths={[504, 680]}
               sizes="(min-width: 640px) 28rem, 100vw"
-              class="bg-white"
+              class="bg-card"
             />
             <figcaption class="mt-2 text-meta text-muted">
               „Muzyka z naszych stron” — reportaż o zespole, autorka Katarzyna Mikulak.
@@ -182,7 +183,7 @@ const members = [
               caption="Skan artykułu „Seniorska impreza”, 13 lipca 2006"
               widths={[504, 680]}
               sizes="(min-width: 640px) 28rem, 100vw"
-              class="bg-white"
+              class="bg-card"
             />
             <figcaption class="mt-2 text-meta text-muted">
               „Seniorska impreza”, 13 lipca 2006 — występ na Powiatowym Dniu Emeryta

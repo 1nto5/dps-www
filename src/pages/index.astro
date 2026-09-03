@@ -125,7 +125,7 @@ const newsAsList = latest.length < 3;
     <ul class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4" role="list">
       {
         cards.map((card) => (
-          <li class="photo-zoom relative flex flex-col overflow-hidden rounded-xl border border-line bg-white transition-colors duration-150 hover:border-spruce/40 hover:shadow-card focus-within:border-spruce/40">
+          <li class="photo-zoom relative flex flex-col overflow-hidden rounded-xl border border-line bg-card transition-colors duration-150 hover:border-spruce/40 hover:shadow-card focus-within:border-spruce/40">
             <Image
               src={card.photo}
               alt={card.alt}

@@ -1,5 +1,6 @@
 ---
 import { mainNav as nav } from "../data/nav";
+import ThemeSwitch from "./ThemeSwitch.astro";
 // Strip the deploy base (github.io test phase) so active-page detection
 // works the same as on the production domain.
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
@@ -63,6 +64,7 @@ const currentState = (href: string) => (path === href ? "page" : isActive(href) 
       </span>
     </a>
 
+    <div class="flex items-center gap-2 sm:gap-3 lg:gap-4">
     <nav aria-label="Nawigacja główna" class="hidden lg:block">
       <ul role="list" class="flex items-center gap-1">
         {
@@ -88,6 +90,8 @@ const currentState = (href: string) => (path === href ? "page" : isActive(href) 
         }
       </ul>
     </nav>
+
+    <ThemeSwitch />
 
     <!--
       The scrim is the `::before`: a fixed, translucent layer painted while the
@@ -141,6 +145,7 @@ const currentState = (href: string) => (path === href ? "page" : isActive(href) 
         </ul>
       </nav>
     </details>
+    </div>
   </div>
 </header>
 

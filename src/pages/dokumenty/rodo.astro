@@ -32,9 +32,10 @@ const sections = [
     lead="Informacje o przetwarzaniu danych osobowych w Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie."
   />
 
+  <SectionNav items={sections} />
+
   <PageShell>
     <div slot="rail" class="space-y-8">
-      <SectionNav items={sections} />
       <SiblingNav title="Dokumenty" items={dokumentySections} current="/dokumenty/rodo/" />
     </div>
 

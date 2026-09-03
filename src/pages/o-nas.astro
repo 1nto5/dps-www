@@ -77,8 +77,9 @@ const interiors = [
     lead="Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie jest domem dla osób przewlekle psychicznie chorych. Razem z filią w Spychowie zapewniamy Mieszkańcom całodobową opiekę."
   />
 
-  <PageShell>
-    <SectionNav slot="rail" items={sections} />
+  <SectionNav items={sections} />
+
+  <PageShell narrow>
 
     <section aria-labelledby="nasz-dom">
       <div class="doc flow-root">
@@ -206,7 +207,7 @@ const interiors = [
     <section class="mt-section" aria-labelledby="kierownictwo">
       <div class="doc">
         <h2 id="kierownictwo">Kierownictwo Domu</h2>
-        <dl class="mt-4 divide-y divide-line rounded-lg border border-line bg-white">
+        <dl class="mt-4 divide-y divide-line rounded-lg border border-line bg-card">
           {
             management.map((person) => (
               <div class="grid gap-1 px-4 py-3 sm:grid-cols-2 sm:gap-6">
