@@ -35,19 +35,20 @@
     <div role="group" aria-labelledby="a11y-size-label" class="flex items-center gap-1 sm:gap-1.5">
       <span id="a11y-size-label" class="a11y-bar-label sr-only sm:not-sr-only">Rozmiar tekstu</span>
       <button type="button" data-a11y-font="" aria-pressed="true" aria-label="A: rozmiar tekstu standardowy"
-        >A</button
+        ><span class="label-steady" data-label="A">A</span></button
       >
       <button
         type="button"
         data-a11y-font="large"
         aria-pressed="false"
-        aria-label="A+: rozmiar tekstu większy">A+</button
+        aria-label="A+: rozmiar tekstu większy"><span class="label-steady" data-label="A+">A+</span></button
       >
       <button
         type="button"
         data-a11y-font="xlarge"
         aria-pressed="false"
-        aria-label="A++: rozmiar tekstu największy">A++</button
+        aria-label="A++: rozmiar tekstu największy"
+        ><span class="label-steady" data-label="A++">A++</span></button
       >
     </div>
 
@@ -59,7 +60,7 @@
     >
       <span id="a11y-contrast-label" class="a11y-bar-label sr-only sm:not-sr-only">Kontrast</span>
       <button type="button" data-a11y-contrast="" aria-pressed="true" aria-label="Standardowy kontrast"
-        >Standardowy</button
+        ><span class="label-steady" data-label="Standardowy">Standardowy</span></button
       >
       <!--
         Two spellings of the same label: the phone width cannot hold the long
@@ -72,18 +73,30 @@
         data-a11y-contrast="yellow"
         aria-pressed="false"
         aria-label="Czarno-żółty: wysoki kontrast, żółty tekst na czarnym tle"
-        ><span class="sm:hidden">Żółty</span><span class="hidden sm:inline">Czarno-żółty</span></button
+        ><span class="label-steady sm:hidden" data-label="Żółty">Żółty</span><span
+          class="label-steady hidden sm:inline-block"
+          data-label="Czarno-żółty">Czarno-żółty</span
+        ></button
       >
       <button
         type="button"
         data-a11y-contrast="bw"
         aria-pressed="false"
         aria-label="Czarno-biały: wysoki kontrast, biały tekst na czarnym tle"
-        ><span class="sm:hidden">Biały</span><span class="hidden sm:inline">Czarno-biały</span></button
+        ><span class="label-steady sm:hidden" data-label="Biały">Biały</span><span
+          class="label-steady hidden sm:inline-block"
+          data-label="Czarno-biały">Czarno-biały</span
+        ></button
       >
     </div>
 
-    <button type="button" data-a11y-motion="reduce" aria-pressed="false">Ogranicz animacje</button>
+    <button
+      type="button"
+      data-a11y-motion="reduce"
+      aria-pressed="false"
+      aria-label="Ogranicz animacje"
+      ><span class="label-steady" data-label="Ogranicz animacje">Ogranicz animacje</span></button
+    >
     <!--
       Attached by the script only when the system itself asks for reduced
       motion. Then the button is already pressed and cannot be un-pressed —

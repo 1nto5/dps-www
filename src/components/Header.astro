@@ -81,7 +81,7 @@ const currentState = (href: string) => (path === href ? "page" : isActive(href) 
                     : "text-ink",
                 ]}
               >
-                {item.label}
+                <span class="label-steady inline-block" data-label={item.label}>{item.label}</span>
               </a>
             </li>
           ))

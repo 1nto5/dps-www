@@ -494,6 +494,29 @@ html:not([data-js]) .a11y-bar {
     font-size: 0.75rem;
   }
 }
+/* A label whose weight changes when it becomes pressed or current — the
+   toolbar buttons, the main navigation — would otherwise widen and push its
+   neighbours sideways. The label reserves the width of its bold spelling up
+   front with a hidden zero-height copy, so the weight can change in place.
+   `data-label` carries the same text as the element. The alternative-text
+   form of `content` keeps the copy out of the accessibility tree; the plain
+   form before it is the fallback for older engines. Display is left to the
+   element (a flex item in the toolbar, `inline-block` in the header), so the
+   responsive `hidden` utilities on the toolbar's twin labels keep working. */
+.label-steady {
+  text-align: center;
+}
+.label-steady::after {
+  content: attr(data-label);
+  content: attr(data-label) / "";
+  display: block;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  font-weight: 600;
+  user-select: none;
+  pointer-events: none;
+}
 /* Fill, weight and border all change together: the pressed state is never
    carried by colour alone (WCAG 2.1 SC 1.4.1). */
 .a11y-bar [aria-pressed="true"] {
