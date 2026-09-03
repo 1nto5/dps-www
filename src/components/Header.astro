@@ -35,7 +35,10 @@ const currentState = (href: string) => (path === href ? "page" : isActive(href) 
   <div
     class="relative mx-auto flex max-w-6xl items-center justify-between gap-4 bg-paper px-4 py-3 sm:gap-6 sm:px-6 sm:py-4"
   >
-    <a href="/" class="flex min-w-0 items-center gap-2.5 no-underline sm:gap-3">
+    <a
+      href="/"
+      class="flex min-w-0 items-center gap-2.5 no-underline hover:text-spruce-deep sm:gap-3"
+    >
       <svg viewBox="0 0 32 40" aria-hidden="true" class="h-7 w-auto shrink-0 sm:h-9">
         <path d="M2 40V16a14 14 0 0 1 28 0v24z" fill="var(--color-spruce)"></path>
         <path d="M11 40V23a5 5 0 0 1 10 0v17z" fill="var(--color-paper)"></path>

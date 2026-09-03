@@ -701,9 +701,20 @@ header {
      which is correct for a symmetric cross-fade (the two opacities sum to 1)
      and wrong here: the incoming page is held at full opacity, so an additive
      blend would flash the whole viewport white at the start of every
-     navigation. */
+     navigation.
+
+     The named groups need it for a different reason: their animation is
+     switched off below, so BOTH snapshots sit at opacity 1 for the length of
+     the transition. `plus-lighter` would then composite the header and the
+     accessibility bar with themselves — paper clips to pure white, and the
+     dark ground lifts to a washed grey. The UA rule is written against the
+     universal selector, so it reaches every named group too. */
   ::view-transition-old(root),
-  ::view-transition-new(root) {
+  ::view-transition-new(root),
+  ::view-transition-old(site-header),
+  ::view-transition-new(site-header),
+  ::view-transition-old(a11y-bar),
+  ::view-transition-new(a11y-bar) {
     mix-blend-mode: normal;
   }
   ::view-transition-old(root) {
@@ -797,10 +808,31 @@ header {
 /* Arriving at a section by anchor (in-page links, the "#" targets used by
    headings) acknowledges the jump with one short rise — the reveal gesture
    without the cascade, so hopping around a long page never replays a full
-   entrance each time. */
+   entrance each time.
+
+   Its OWN keyframe, identical in shape to `rise-in` and deliberately not the
+   same name. On a page whose anchor targets are themselves staged blocks
+   (/dostepnosc/ and the other tables of contents with no <section>) the target
+   already carries `[data-reveal].is-visible`, which names `rise-in` too — and
+   an element cannot restart an animation it is already named for, so the
+   acknowledgement would compute to "no change" and nothing would move. A
+   different name is what makes the restart real.
+
+   The second selector is the same rule at a weight that beats the staged one
+   (one class heavier); without it the staged block keeps `--dur-enter` and no
+   arrival plays at all. The inline `animation-delay` the choreography leaves
+   behind is cleared from script, because an inline style outranks any
+   stylesheet. */
+@keyframes arrive-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--rise));
+  }
+}
 @media screen and (prefers-reduced-motion: no-preference) {
-  [data-arriving] {
-    animation: rise-in var(--dur-move) var(--ease-out) backwards;
+  html:not([data-motion="reduce"]):not([data-contrast]) [data-arriving],
+  html:not([data-motion="reduce"]):not([data-contrast]) [data-reveal].is-visible[data-arriving] {
+    animation: arrive-in var(--dur-move) var(--ease-out) backwards;
   }
 }
 

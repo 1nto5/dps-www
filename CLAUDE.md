@@ -8,11 +8,12 @@ branch in Spychowo). Replaces an old WordPress/Elementor site.
 Astro 5 + Tailwind 4 (`@tailwindcss/vite`) + Bun. Package manager is **bun** (`bun.lock`).
 
 - `bun run dev` — dev server
-- `bun run build` — static build into `dist/`, then three checks that fail the build:
+- `bun run build` — static build into `dist/`, then four checks that fail the build:
   `check-section-nav` (every page with a `SectionNav` really has the sections it lists),
   `check-font-coverage` (every character on the site exists in the subset fonts),
-  `check-download-links` (every document link resolves, and no file is orphaned).
-  All three live in `scripts/`.
+  `check-download-links` (every document link resolves, and no file is orphaned),
+  `check-media-orphans` (every image in `src/assets/media/` is actually used).
+  All four live in `scripts/`.
 - `bunx astro check` — type-check; must be clean for files you touch
 
 Never add a client-side framework, external font/CDN/analytics/Maps request, or an
@@ -113,6 +114,68 @@ modes.
 **Non-breaking spaces** (U+00A0) belong in visible Polish text only — after a one-letter
 preposition, inside a phone number. Never inside an attribute value (`class`, `href`,
 `alt` metadata keys), where they are invisible and break matching.
+
+## Motion
+
+One clock. Every duration is a token in `src/styles/global.css` — `--dur-fast`
+(150ms, paint-only feedback: hover, focus, press), `--dur-panel` (180ms, a
+surface opening), `--dur-move` (250ms, a transform under the pointer, and the
+anchor acknowledgement), `--dur-enter` (450ms, the page or one block arriving),
+`--dur-exit` (120ms, the outgoing page) — plus `--stagger-step` (80ms),
+`--stagger-max` (400ms) and `--rise` (14px). `--ease-out` is the only easing.
+They are plain `:root` properties, not `@theme` entries, because Tailwind has
+no `duration-*` namespace.
+
+**Motion is declared in `global.css` and nowhere else.** No `transition-*`,
+`duration-*`, `ease-*` or `animate-*` utility in a template, and no ms literal
+outside the token block.
+
+**One entrance gesture**, `@keyframes rise-in`. `main` plays it once on every
+page, from CSS, with no markup and no JavaScript — that is how the prose pages,
+404 and the news posts are covered, and it is why a page added tomorrow needs no
+opt-in. Below the fold the choreography stages top-level blocks of each root
+(`main section`, `main [data-shell-content]`) and plays the same keyframe as the
+reader scrolls. **Nothing above the fold is ever hidden by script**;
+`data-no-reveal` opts a root out.
+
+It is a CSS **animation**, never a `transition`: a `transition` shorthand on an
+element replaces the state-feedback transition under it and silently kills that
+element's hover crossfade.
+
+**Long-form prose and legal text arrive as one block, never a paragraph at a
+time.** The accessibility statement and the migrated document pages get the
+whole-page rise and nothing else. Do not cut them into sections to animate them.
+`.doc` is a single unit to the choreography, which is what enforces this.
+
+Arriving by anchor acknowledges the jump with `@keyframes arrive-in` — the same
+movement as `rise-in`, deliberately under a **different name**, because a target
+that is itself a staged block is already named for `rise-in` and cannot restart
+an animation it is running.
+
+**Cross-page transitions**: `header` and `.a11y-bar` carry a
+`view-transition-name` so they hold still. The footer deliberately does not —
+its document position differs between a short page and a long one. Exactly one
+element per document may carry a given name; a duplicate skips the whole
+transition, silently. Every `::view-transition-old/new()` we touch is forced to
+`mix-blend-mode: normal`, because the UA default `plus-lighter` is additive: the
+incoming root is held at full opacity, and the named groups have their animation
+switched off, so both of their snapshots sit at full opacity too. Cancelling the
+transition for a reader who asked for less movement needs a **later**
+`@view-transition` rule than the one in `global.css`, so that stylesheet is
+injected at the end of `<body>`, never from `<head>` — Astro appends its own
+stylesheet link last, and a rule in `<head>` would lose to it.
+
+**Movement is never the reason something is unreadable.** The staged state
+exists only under `@media screen and (prefers-reduced-motion: no-preference) and
+(scripting: enabled)` and only outside `[data-motion="reduce"]` and
+`[data-contrast]`; forced-colors kills it too. It is released by keyboard focus,
+by a 1500ms failsafe that forces paint rather than merely adding a class, on a
+bfcache restore, on `visibilitychange`, and by the script's own `catch`.
+
+**No `position: fixed` element inside `<main>`.** `main` carries a `transform`
+for 450ms, which would make it that element's containing block. Today the
+lightbox `<dialog>` is appended to `document.body` and the menu scrim lives
+inside `header`; both are outside `main`, and must stay there.
 
 ## Accessibility (WCAG 2.1 AA — a legal duty here)
 

@@ -28,7 +28,7 @@ const { post, headingLevel: Heading, list } = Astro.props;
 
 <li class="relative flex">
   <article
-    class="flex w-full flex-col rounded-xl border border-line bg-card p-6 transition-colors duration-150 hover:border-spruce/40 hover:shadow-card focus-within:border-spruce/40"
+    class="flex w-full flex-col rounded-xl border border-line bg-card p-6 hover:border-spruce/40 hover:shadow-card focus-within:border-spruce/40"
   >
     <PostDate date={post.data.date} />
     <Heading class:list={["mt-2", list ? "text-2xl" : "text-xl"]}>

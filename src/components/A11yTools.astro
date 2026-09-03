@@ -173,21 +173,20 @@
         existing.remove();
       }
       if (off) {
-        root.classList.remove("reveal-armed");
         // The staged elements are mid-choreography and carry a stagger delay
         // of up to 400ms as an inline style. Simply letting the CSS stop
         // applying would leave them transparent for that delay — the reader
         // would ask for high contrast and watch part of the page arrive
-        // afterwards. So the delay is dropped and the change is made with
-        // transitions switched off, in two passes around one reflow.
+        // afterwards. With an animation there is nothing to prime: naming the
+        // animation `none` and zeroing the delay is enough.
         const staged = document.querySelectorAll<HTMLElement>("[data-reveal]");
         for (const el of staged) {
-          el.style.transitionDelay = "";
-          el.style.transitionProperty = "none";
+          el.style.animationName = "none";
+          el.style.animationDelay = "0s";
           el.classList.add("is-visible");
         }
-        void document.body.offsetWidth;
-        for (const el of staged) el.style.transitionProperty = "";
+        // <main> may still be playing the whole-page rise.
+        document.querySelector<HTMLElement>("main")?.style.setProperty("animation", "none");
       }
     };
 
