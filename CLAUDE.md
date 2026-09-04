@@ -32,7 +32,7 @@ iframe. No JavaScript unless a feature genuinely cannot work without it.
   every content page), `Figure` (a photo in its natural rectangle with a caption),
   `Gallery` + `Lightbox`, `DocList`, `Button` (`primary` — the one action of a page,
   `secondary`; `phone` for the large number), `Breadcrumbs`, `PostDate`, `Header`
-  (brand, four sections, A / A+ / A++ / Kontrast tools, the phone, the mobile bottom
+  (brand, four sections, A / A+ / A++ / Kontrast / Ruch / theme tools, the phone, the mobile bottom
   bar and the `<dialog>` menu), `Footer`.
 - `src/pages/` — one `.astro` file per URL. `trailingSlash: "always"`, `build.format:
   "directory"` — internal links must end with `/`. Four sections, named the way
@@ -109,7 +109,9 @@ while it runs), the drawer rises in from the left, the lightbox rises, `main` ri
 once per load, a heading reached by anchor glows briefly (`:target`), anchors scroll smoothly,
 and pages crossfade through a cross-document view transition with the header held
 still (`view-transition-name: site-header` — exactly one element may carry it). All
-of it sits under `prefers-reduced-motion: no-preference` and outside `[data-contrast]`.
+of it sits under `prefers-reduced-motion: no-preference`, outside `[data-contrast]` and
+outside `[data-motion="reduce"]` (the „Ruch" button; the header script also cancels the
+cross-document view transition with an appended `@view-transition` rule).
 No `transition-*`, `duration-*` or `animate-*` utility in a template, ever, and no
 `position: fixed` element inside `<main>` (it carries a transform while rising).
 
@@ -123,8 +125,9 @@ declaration, so regressions are a compliance problem, not just a bug.
 - Link text meaningful on its own — never a bare "kliknij tutaj"; document links state
   format and size.
 - Visible focus states come from the global `:focus-visible` rule — do not remove them.
-- The header tools write `data-contrast` and `data-font-size` on `<html>`, remembered
-  in `localStorage` under `dps-contrast` and `dps-font`. A new colour must be a token,
+- The header tools write `data-contrast`, `data-font-size`, `data-motion` and `data-theme`
+  on `<html>`, remembered in `localStorage` under `dps-contrast`, `dps-font`, `dps-motion`
+  and `dps-theme`. A new colour must be a token,
   or the contrast modes cannot repaint it; the contrast modes never touch photographs.
 - The accessibility statement keeps `id="a11y-deklaracja"` and the `a11y-*` class hooks
   required by the government template. Its dates and its "częściowo zgodna" status are

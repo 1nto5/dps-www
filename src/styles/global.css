@@ -784,7 +784,7 @@ figcaption {
    arrives — at three speeds: --dur-fast for state feedback, --dur-panel for a
    surface opening, --dur-enter for something arriving. --dur-press is the
    soft bloom after a press. One easing. Everything below is gated on
-   prefers-reduced-motion and switched off in the contrast modes.
+   prefers-reduced-motion and switched off in the contrast modes and by the „Ruch" button.
    ------------------------------------------------------------------------ */
 :root {
   --dur-fast: 300ms;
@@ -794,12 +794,12 @@ figcaption {
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 }
 @media (prefers-reduced-motion: no-preference) {
-  html:not([data-contrast]) {
+  html:not([data-contrast]):not([data-motion="reduce"]) {
     scroll-behavior: smooth;
   }
   /* State feedback: a link's underline, a button's fill, the Toc's marker
      crossfade slowly enough to be seen, never snap. */
-  html:not([data-contrast]) :is(a, button, .toc a, .nav-link) {
+  html:not([data-contrast]):not([data-motion="reduce"]) :is(a, button, .toc a, .nav-link) {
     transition-property: color, background-color, border-color, text-decoration-color, text-decoration-thickness;
     transition-duration: var(--dur-fast);
     transition-timing-function: var(--ease-out);
@@ -807,33 +807,33 @@ figcaption {
   /* Press feedback: one soft, wide bloom of light spreading from the click
      point and dissolving. The pointer script sets `data-press` on pointerdown
      and takes it off when the bloom has faded. */
-  html:not([data-contrast]) :is(.btn, .tool, .menu-open)[data-press]::after {
+  html:not([data-contrast]):not([data-motion="reduce"]) :is(.btn, .tool, .menu-open)[data-press]::after {
     animation: bloom var(--dur-press) var(--ease-out);
   }
   /* Surfaces opening: the drawer rises into place from the left, the
      lightbox rises the way the page does; both backdrops fade in. */
-  html:not([data-contrast]) .menu[open] {
+  html:not([data-contrast]):not([data-motion="reduce"]) .menu[open] {
     animation: slide-in var(--dur-panel) var(--ease-out);
   }
-  html:not([data-contrast]) .menu[open]::backdrop,
-  html:not([data-contrast]) .lightbox[open]::backdrop {
+  html:not([data-contrast]):not([data-motion="reduce"]) .menu[open]::backdrop,
+  html:not([data-contrast]):not([data-motion="reduce"]) .lightbox[open]::backdrop {
     animation: fade-in var(--dur-panel) var(--ease-out);
   }
-  html:not([data-contrast]) .lightbox[open] {
+  html:not([data-contrast]):not([data-motion="reduce"]) .lightbox[open] {
     animation: rise-in var(--dur-panel) var(--ease-out);
   }
   /* The theme icon changing hands: the new one rises in after a press. The
      page itself crossfades through a same-document view transition, using the
      root animations declared below. */
-  html:not([data-contrast]) .tool-theme[data-theme-changed] svg {
+  html:not([data-contrast]):not([data-motion="reduce"]) .tool-theme[data-theme-changed] svg {
     animation: rise-in var(--dur-fast) var(--ease-out);
   }
   /* The page arriving: one quiet rise of <main>, once per load. */
-  html:not([data-contrast]) main {
+  html:not([data-contrast]):not([data-motion="reduce"]) main {
     animation: rise-in var(--dur-enter) var(--ease-out);
   }
   /* Arriving at a chapter by anchor: the heading glows and lets it go. */
-  html:not([data-contrast]) :is(h2, h3, section)[id]:target {
+  html:not([data-contrast]):not([data-motion="reduce"]) :is(h2, h3, section)[id]:target {
     animation: arrive-in 1600ms var(--ease-out);
   }
   /* Between pages: the old page dissolves, the new one arrives with its own

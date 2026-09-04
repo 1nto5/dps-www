@@ -34,7 +34,7 @@ const active = activeSection(path);
 
     <div class="flex items-center gap-4">
       <div class="tools flex items-center gap-1" data-tools>
-        <span class="sr-only" id="tools-label">Rozmiar tekstu, kontrast i motyw</span>
+        <span class="sr-only" id="tools-label">Rozmiar tekstu, kontrast, ruch i motyw</span>
         <div role="group" aria-labelledby="tools-label" class="flex gap-1">
           <button type="button" class="tool" data-font="" aria-pressed="true">
             <span aria-hidden="true">A</span><span class="sr-only">Tekst standardowy</span>
@@ -48,6 +48,14 @@ const active = activeSection(path);
           <button type="button" class="tool" data-contrast="yellow" aria-pressed="false">
             Kontrast
           </button>
+          <button type="button" class="tool" data-motion aria-pressed="false">
+            <span aria-hidden="true">Ruch</span><span class="sr-only">Ogranicz ruch</span>
+          </button>
+          <!--
+            Shown only when the system itself asks for reduced motion: the
+            button is then pressed and cannot be released, so it says why.
+          -->
+          <span id="motion-system-note" class="sr-only" hidden>Wynika z ustawień systemu</span>
           <button type="button" class="tool tool-theme" data-theme-cycle>
             <svg data-icon="system" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="3" y="4" width="18" height="13" rx="2" />
@@ -129,7 +137,34 @@ const active = activeSection(path);
     for (const b of tools.querySelectorAll("[data-contrast]")) {
       b.setAttribute("aria-pressed", String(contrast !== ""));
     }
+    for (const b of tools.querySelectorAll("[data-motion]")) {
+      b.setAttribute("aria-pressed", String(systemReduce || root.getAttribute("data-motion") === "reduce"));
+    }
+    applyMotion();
   };
+
+  // The reader's own choice, or the system's. Cross-document view transitions
+  // are declared in CSS and only a later `@view-transition` rule can cancel
+  // them, so the cancel is appended at the end of <body>, after the stylesheet.
+  const systemReduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const motionOff = () => systemReduce || root.getAttribute("data-motion") === "reduce";
+  const applyMotion = () => {
+    const existing = document.getElementById("dps-no-vt");
+    if (motionOff() && !existing) {
+      const style = document.createElement("style");
+      style.id = "dps-no-vt";
+      style.textContent = "@view-transition{navigation:none}";
+      document.body.append(style);
+    } else if (!motionOff() && existing) existing.remove();
+  };
+  if (systemReduce) {
+    const note = document.getElementById("motion-system-note");
+    const button = tools?.querySelector("[data-motion]");
+    if (note && button) {
+      note.removeAttribute("hidden");
+      button.setAttribute("aria-describedby", "motion-system-note");
+    }
+  }
 
   tools?.addEventListener("click", (event) => {
     const button = (event.target as Element).closest("button");
@@ -151,6 +186,17 @@ const active = activeSection(path);
       write("dps-contrast", on ? "yellow" : "");
       if (status) status.textContent = on ? "Włączono wysoki kontrast" : "Wyłączono wysoki kontrast";
     }
+    if (button.hasAttribute("data-motion")) {
+      if (systemReduce) {
+        if (status) status.textContent = "Ograniczenie ruchu wynika z ustawień systemu";
+        return;
+      }
+      const on = root.getAttribute("data-motion") !== "reduce";
+      if (on) root.setAttribute("data-motion", "reduce");
+      else root.removeAttribute("data-motion");
+      write("dps-motion", on ? "reduce" : "");
+      if (status) status.textContent = on ? "Ograniczono ruch na stronie" : "Przywrócono animacje";
+    }
     if (button.hasAttribute("data-theme-cycle")) {
       const current = root.getAttribute("data-theme") ?? "";
       const next = THEMES[(THEMES.indexOf(current as (typeof THEMES)[number]) + 1) % THEMES.length];
@@ -166,7 +212,7 @@ const active = activeSection(path);
       // The new theme is wiped in as a circle growing from the press, through
       // a same-document view transition; a keyboard press starts from the
       // button's centre. Speed and easing come from the motion tokens.
-      const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const reduced = motionOff();
       if (!reduced && !root.hasAttribute("data-contrast") && "startViewTransition" in document) {
         const r = button.getBoundingClientRect();
         const x = event.clientX || r.left + r.width / 2;
