@@ -1,10 +1,10 @@
 ---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
 import Button from "../components/Button.astro";
 import Figure from "../components/Figure.astro";
 import PageList from "../components/PageList.astro";
-import PostDate from "../components/PostDate.astro";
-import { getCollection } from "astro:content";
 import { contact, addressLine } from "../data/contact";
 
 import heroPhoto from "../assets/media/1377-1-1.jpg";
@@ -14,29 +14,58 @@ import musicPhoto from "../assets/media/1168-christopherGroup.jpg";
 
 /** The four ways into the site, named the way the production site names them. */
 const sections = [
-  { href: "/zycie-w-domu/", label: "Oferta" },
-  { href: "/zycie-w-domu/spychowo/", label: "Filia Domu Pomocy w Spychowie" },
-  { href: "/zycie-w-domu/grupa-christopher/", label: "Grupa wokalna „Christopher”" },
-  { href: "/o-domu/", label: "O nas" },
+  {
+    href: "/zycie-w-domu/",
+    label: "Oferta",
+    photo: offerPhoto,
+    alt: "Mieszkańcy i terapeutka przy wspólnym stole w świetlicy, w tle regały z książkami.",
+  },
+  {
+    href: "/zycie-w-domu/spychowo/",
+    label: "Filia Domu Pomocy w Spychowie",
+    photo: branchPhoto,
+    alt: "Biały budynek Domu z czerwonym dachem i drewniana altana w ogrodzie",
+  },
+  {
+    href: "/zycie-w-domu/grupa-christopher/",
+    label: "Grupa wokalna „Christopher”",
+    photo: musicPhoto,
+    alt: "Pięciu członków grupy wokalnej „Christopher” śpiewa na plenerowej scenie pod żółtym namiotem.",
+  },
+  {
+    href: "/o-domu/",
+    label: "O nas",
+    photo: heroPhoto,
+    alt: "Budynek Domu Pomocy Społecznej w Szczytnie z czerwonym dachem, widziany zza kwitnących hortensji",
+  },
 ];
 
 const posts = (await getCollection("aktualnosci")).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 );
-const latest = posts.slice(0, 3);
+const dateFormat = new Intl.DateTimeFormat("pl-PL", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+const latest = posts.slice(0, 3).map((post) => ({
+  href: `/aktualnosci/${post.id}/`,
+  label: post.data.title,
+  text: dateFormat.format(post.data.date),
+}));
 ---
 
 <Base
   title="Strona główna"
   description="Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie — całodobowa opieka dla osób przewlekle psychicznie chorych, wraz z filią w Spychowie."
 >
-  <section class="mx-auto max-w-wide px-5 pt-10 sm:px-8 md:pt-14" aria-labelledby="hero-title">
+  <section class="mx-auto max-w-6xl px-5 py-12 sm:px-8 md:py-16" aria-labelledby="hero-title">
     <div class="grid items-center gap-10 md:grid-cols-2 md:gap-14">
       <div>
         <h1 id="hero-title" class="text-4xl md:text-5xl">
           Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie
         </h1>
-        <p class="mt-5 max-w-[44ch] text-lg text-ink-soft">
+        <p class="mt-6 max-w-[44ch] text-lg text-ink-soft">
           Nasz Dom przeznaczony jest dla osób przewlekle psychicznie chorych. Zapewniamy opiekę
           całodobową dla 196 osób.
         </p>
@@ -54,91 +83,90 @@ const latest = posts.slice(0, 3);
     </div>
   </section>
 
-  <section class="mx-auto mt-section max-w-wide px-5 sm:px-8" aria-labelledby="o-domu">
-    <div class="max-w-column">
-      <h2 id="o-domu" class="text-2xl md:text-3xl">
-        Witamy na stronie Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie
-      </h2>
-      <p class="mt-4">
-        Dom Pomocy Społecznej w Szczytnie zamieszkuje 171 Mieszkańców, a filię w Spychowie 25
-        Mieszkańców.
-      </p>
-      <p class="mt-4">
-        Mieszkańcy w naszym Domu znajdują dobrą i wysoce wykwalifikowaną, całodobową opiekę.
-        Troszczymy się też o dobre samopoczucie naszych Mieszkańców, nie zapominając
-        o indywidualności każdego z nich. Zapewniamy wsparcie wykwalifikowanych terapeutów, którzy
-        dbają o to, aby Mieszkańcy aktywnie spędzali swój czas i rozwijali swoje zainteresowania.
-      </p>
-      <p class="mt-4">
-        Wszechstronna opieka terapeutyczna i medyczna oraz zaangażowanie pracowników w stworzenie
-        jak najlepszej atmosfery zapewniają godne warunki życia ze szczególnym poszanowaniem prawa
-        do wolności, intymności i poczucia bezpieczeństwa. Podejmujemy działania zmierzające do
-        integracji osób chorujących psychicznie ze środowiskiem lokalnym.
-      </p>
-      <p class="mt-6">
-        <a href="/o-domu/" class="font-semibold text-lake-deep underline">O nas</a>
-      </p>
-    </div>
-  </section>
-
-  <section class="mx-auto mt-section max-w-wide px-5 sm:px-8" aria-labelledby="czym-sie-zajmujemy">
-    <h2 id="czym-sie-zajmujemy" class="text-2xl md:text-3xl">Strony naszego Domu</h2>
-    <div class="mt-6 grid gap-10 lg:grid-cols-[1fr_20rem] lg:gap-14">
-      <PageList items={sections} />
-      <div class="grid gap-6 sm:grid-cols-3 lg:grid-cols-1">
-        <Figure
-          src={offerPhoto}
-          alt="Mieszkańcy i terapeutka przy wspólnym stole w świetlicy, w tle regały z książkami."
-          sizes="(min-width: 64rem) 20rem, (min-width: 40rem) 33vw, 100vw"
-          widths={[400, 700]}
-        />
-        <Figure
-          src={branchPhoto}
-          alt="Biały budynek Domu z czerwonym dachem i drewniana altana w ogrodzie"
-          sizes="(min-width: 64rem) 20rem, (min-width: 40rem) 33vw, 100vw"
-          widths={[400, 700]}
-        />
-        <Figure
-          src={musicPhoto}
-          alt="Pięciu członków grupy wokalnej „Christopher” śpiewa na plenerowej scenie pod żółtym namiotem."
-          sizes="(min-width: 64rem) 20rem, (min-width: 40rem) 33vw, 100vw"
-          widths={[400, 700]}
-        />
+  <section class="border-y border-line bg-sand" aria-labelledby="o-domu">
+    <div class="mx-auto max-w-6xl px-5 py-12 sm:px-8 md:py-16">
+      <div class="max-w-prose">
+        <h2 id="o-domu" class="text-2xl md:text-3xl">
+          Witamy na stronie Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie
+        </h2>
+        <p class="mt-5">
+          Dom Pomocy Społecznej w Szczytnie zamieszkuje 171 Mieszkańców, a filię w Spychowie 25
+          Mieszkańców.
+        </p>
+        <p class="mt-4">
+          Mieszkańcy w naszym Domu znajdują dobrą i wysoce wykwalifikowaną, całodobową opiekę.
+          Troszczymy się też o dobre samopoczucie naszych Mieszkańców, nie zapominając
+          o indywidualności każdego z nich. Zapewniamy wsparcie wykwalifikowanych terapeutów, którzy
+          dbają o to, aby Mieszkańcy aktywnie spędzali swój czas i rozwijali swoje zainteresowania.
+        </p>
+        <p class="mt-4">
+          Wszechstronna opieka terapeutyczna i medyczna oraz zaangażowanie pracowników w stworzenie
+          jak najlepszej atmosfery zapewniają godne warunki życia ze szczególnym poszanowaniem prawa
+          do wolności, intymności i poczucia bezpieczeństwa. Podejmujemy działania zmierzające do
+          integracji osób chorujących psychicznie ze środowiskiem lokalnym.
+        </p>
+        <p class="mt-6">
+          <a href="/o-domu/" class="font-semibold underline">O nas</a>
+        </p>
       </div>
     </div>
   </section>
 
+  <section class="mx-auto max-w-6xl px-5 py-12 sm:px-8 md:py-16" aria-labelledby="strony-domu">
+    <h2 id="strony-domu" class="text-2xl md:text-3xl">Strony naszego Domu</h2>
+    <ul role="list" class="mt-8 grid gap-8 sm:grid-cols-2 sm:gap-10">
+      {
+        sections.map((section) => (
+          <li>
+            <a href={section.href} class="block no-underline">
+              <Image
+                src={section.photo}
+                alt={section.alt}
+                widths={[400, 700]}
+                sizes="(min-width: 40rem) 32rem, 100vw"
+                class="aspect-[4/3] w-full rounded-md object-cover"
+              />
+              <span class="mt-4 block font-display text-xl font-semibold underline">
+                {section.label}
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
   {
     latest.length > 0 && (
-      <section class="mx-auto mt-section max-w-wide px-5 sm:px-8" aria-labelledby="aktualnosci">
-        <div class="flex flex-wrap items-baseline justify-between gap-4">
-          <h2 id="aktualnosci" class="text-2xl md:text-3xl">Aktualności</h2>
-          <a href="/aktualnosci/" class="font-semibold text-lake-deep underline">
+      <section
+        class="mx-auto max-w-6xl px-5 pb-12 sm:px-8 md:pb-16"
+        aria-labelledby="aktualnosci-skrot"
+      >
+        <div class="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
+          <h2 id="aktualnosci-skrot" class="text-2xl md:text-3xl">
+            Aktualności
+          </h2>
+          <a href="/aktualnosci/" class="font-semibold underline">
             Wszystkie aktualności
           </a>
         </div>
-        <ul class="mt-6 max-w-column" role="list">
-          {latest.map((post) => (
-            <li class="border-t border-line py-4 last:border-b">
-              <PostDate date={post.data.date} />
-              <a href={`/aktualnosci/${post.id}/`} class="mt-1 inline-block text-lg font-semibold text-lake-deep underline">
-                {post.data.title}
-              </a>
-            </li>
-          ))}
-        </ul>
+        <div class="mt-6 max-w-prose">
+          <PageList items={latest} />
+        </div>
       </section>
     )
   }
 
-  <section class="mt-section border-y border-line bg-mist" aria-labelledby="kontakt-skrot">
-    <div class="mx-auto grid max-w-wide gap-8 px-5 py-10 sm:px-8 md:grid-cols-[1fr_auto] md:items-center">
+  <section class="border-t border-line bg-sand" aria-labelledby="kontakt-skrot">
+    <div
+      class="mx-auto grid max-w-6xl gap-8 px-5 py-12 sm:px-8 md:grid-cols-[1fr_auto] md:items-center md:py-16"
+    >
       <div>
         <h2 id="kontakt-skrot" class="text-2xl">Kontakt</h2>
-        <address class="mt-3 not-italic text-ink-soft">
+        <address class="mt-3 text-ink-soft">
           {addressLine(contact.address)}<br />
-          tel. <a href={contact.phone.href} class="text-lake-deep underline">{contact.phone.label}</a><br />
-          <a href={`mailto:${contact.email}`} class="text-lake-deep underline">{contact.email}</a>
+          tel. <a href={contact.phone.href}>{contact.phone.label}</a><br />
+          <a href={`mailto:${contact.email}`}>{contact.email}</a>
         </address>
       </div>
       <p><Button href="/kontakt/">Pełne dane kontaktowe</Button></p>

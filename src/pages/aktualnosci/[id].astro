@@ -4,6 +4,7 @@ import Base from "../../layouts/Base.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import PageShell from "../../components/PageShell.astro";
 import PostDate from "../../components/PostDate.astro";
+import Figure from "../../components/Figure.astro";
 
 export async function getStaticPaths() {
   const entries = await getCollection("aktualnosci");
@@ -24,7 +25,18 @@ const { Content } = await render(entry);
   <PageShell>
     <PostDate date={entry.data.date} />
 
-    <div class="doc mt-block">
+    {
+      entry.data.cover && (
+        <Figure
+          src={entry.data.cover}
+          alt={entry.data.coverAlt ?? ""}
+          loading="eager"
+          class="mt-8 max-w-prose"
+        />
+      )
+    }
+
+    <div class="prose mt-8">
       <Content />
     </div>
   </PageShell>

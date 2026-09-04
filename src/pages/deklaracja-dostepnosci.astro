@@ -16,6 +16,7 @@
 import Base from "../layouts/Base.astro";
 import PageHeader from "../components/PageHeader.astro";
 import PageShell from "../components/PageShell.astro";
+import SubNav from "../components/SubNav.astro";
 import Toc from "../components/Toc.astro";
 import DocList from "../components/DocList.astro";
 
@@ -48,9 +49,12 @@ const docs = [
   <PageHeader breadcrumbs title="Deklaracja dostępności" />
 
   <PageShell>
-    <Toc slot="rail" items={toc} />
+    <Fragment slot="aside">
+      <SubNav />
+      <Toc items={toc} />
+    </Fragment>
 
-    <div id="a11y-deklaracja" class="doc">
+    <div id="a11y-deklaracja" class="prose">
       <p class="a11y-wstep">
         <span class="a11y-podmiot">Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie</span>
         zobowiązuje się zapewnić dostępność
@@ -188,7 +192,7 @@ const docs = [
       <h2 id="raport">Raport o stanie zapewniania dostępności</h2>
     </div>
 
-    <div class="mt-block">
+    <div class="mt-8">
       <DocList docs={docs} />
     </div>
   </PageShell>

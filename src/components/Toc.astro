@@ -1,64 +1,27 @@
 ---
 /**
- * The table of contents for one page: a list of the `h2` ids on it. The build
- * fails if an id is missing (`scripts/check-section-nav.mjs` reads the
- * `data-section-nav` hook). A tiny script marks the chapter being read.
+ * „Na tej stronie" — the `h2` ids of one page, for pages long enough to have
+ * four or more of them. Every id here has to exist on the page.
  */
 interface Props {
-  items: { id: string; label: string }[];
+  items: readonly { id: string; label: string }[];
   title?: string;
 }
+
 const { items, title = "Na tej stronie" } = Astro.props;
 ---
 
-<nav class="toc" aria-label={title} data-section-nav>
-  <p class="mb-2 font-semibold">{title}</p>
-  <ul role="list">
-    {
-      items.map((item) => (
-        <li>
-          <a href={`#${item.id}`}>{item.label}</a>
-        </li>
-      ))
-    }
-  </ul>
-</nav>
-
-<script>
-  // The chapter being read is the last heading that has passed a line a
-  // third of the way down the viewport; before the first heading, the first.
-  const toc = document.querySelector<HTMLElement>(".toc[data-section-nav]");
-  if (toc) {
-    const links = [...toc.querySelectorAll<HTMLAnchorElement>("a[href^='#']")];
-    const targets = links
-      .map((a) => document.getElementById(decodeURIComponent(a.hash.slice(1))))
-      .filter((el): el is HTMLElement => el !== null);
-    const mark = (id: string) => {
-      for (const a of links) {
-        if (decodeURIComponent(a.hash.slice(1)) === id) a.setAttribute("aria-current", "location");
-        else a.removeAttribute("aria-current");
-      }
-    };
-    const update = () => {
-      const line = window.innerHeight / 3;
-      let current = targets[0];
-      for (const t of targets) {
-        if (t.getBoundingClientRect().top <= line) current = t;
-      }
-      if (current) mark(current.id);
-    };
-    let ticking = false;
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        ticking = false;
-        update();
-      });
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
-    window.addEventListener("hashchange", onScroll);
-    update();
-  }
-</script>
+{
+  items.length > 0 && (
+    <nav class="rail" aria-label={title}>
+      <p class="rail-title">{title}</p>
+      <ul role="list">
+        {items.map((item) => (
+          <li>
+            <a href={`#${item.id}`}>{item.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}

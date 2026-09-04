@@ -1,18 +1,13 @@
 ---
 /**
- * Data-protection notice for whistleblowers (source page 1962).
- * Legal wording reproduced without paraphrase; the Dom's own address and
- * telephone come from `contact.ts`.
+ * Data-protection notice for whistleblowers. Legal wording reproduced without
+ * paraphrase; the Dom's own address and telephone come from `contact.ts`.
  */
 import Base from "../../layouts/Base.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import PageShell from "../../components/PageShell.astro";
-import PageList from "../../components/PageList.astro";
+import SubNav from "../../components/SubNav.astro";
 import { addressLine, contact } from "../../data/contact";
-import { sygnalistaPages } from "../../data/sygnalista-pages";
-
-/** The rail is a bare list of the subsection's pages — the blurbs would not fit. */
-const rail = sygnalistaPages.map(({ href, label }) => ({ href, label }));
 ---
 
 <Base
@@ -25,9 +20,9 @@ const rail = sygnalistaPages.map(({ href, label }) => ({ href, label }));
   />
 
   <PageShell>
-    <PageList slot="rail" items={rail} current="/sygnalista/klauzula-informacyjna/" />
+    <SubNav slot="aside" />
 
-    <div class="doc mt-subsection">
+    <div class="prose">
       <p>
         W związku z otrzymanym zgłoszeniem naruszenia przepisów prawa, wypełniając obowiązek
         informacyjny wynikający z art. 13 rozporządzenia PEiR (UE) nr 2016/679 (RODO), informujemy,

@@ -1,9 +1,11 @@
 ---
 /**
- * The one `h1` of a page, with an optional lead. `breadcrumbs` draws the trail
- * above the title on every page below the top level.
+ * The one `h1` of a page, with the trail above it and an optional lead below.
+ * Anything passed as a child sits under the lead — usually the one button of
+ * the page.
  */
 import Breadcrumbs from "./Breadcrumbs.astro";
+
 interface Props {
   title: string;
   lead?: string;
@@ -11,12 +13,13 @@ interface Props {
   /** Label for the last crumb when the route map cannot know it — a news post. */
   current?: string;
 }
+
 const { title, lead, breadcrumbs = false, current } = Astro.props;
 ---
 
-<header class="mx-auto w-full max-w-wide px-5 pt-10 sm:px-8 md:pt-14">
+<header class="mx-auto w-full max-w-6xl px-5 pt-12 pb-8 sm:px-8 md:pt-16">
   {breadcrumbs && <Breadcrumbs current={current} />}
   <h1 class="max-w-[22ch] text-4xl md:text-5xl">{title}</h1>
-  {lead && <p class="mt-5 max-w-[48ch] text-lg text-ink-soft">{lead}</p>}
+  {lead && <p class="mt-5 max-w-prose text-lg text-ink-soft">{lead}</p>}
   <slot />
 </header>

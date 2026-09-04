@@ -1,18 +1,14 @@
 ---
 /**
- * Whistleblower section landing page. Source page 1938 has no body content of
- * its own on the live site, so this page is nothing but the way into the four
- * subpages that do. Nothing is written here that the Dom has not published.
+ * Whistleblower section landing page. The production page has no body content
+ * of its own — it is nothing but the way into the four subpages that do.
  */
 import Base from "../../layouts/Base.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import PageShell from "../../components/PageShell.astro";
+import SubNav from "../../components/SubNav.astro";
 import PageList from "../../components/PageList.astro";
-import { dokumentySections } from "../../data/dokumenty-sections";
 import { sygnalistaPages } from "../../data/sygnalista-pages";
-
-/** The rail is a bare list of the section's pages — the blurbs would not fit. */
-const rail = dokumentySections.map(({ href, label }) => ({ href, label }));
 
 /** The rows here are the pages below, so the index skips its own entry. */
 const subpages = sygnalistaPages.slice(1);
@@ -25,9 +21,9 @@ const subpages = sygnalistaPages.slice(1);
   <PageHeader breadcrumbs title="Sygnalista" />
 
   <PageShell>
-    <PageList slot="rail" items={rail} current="/sygnalista/" />
+    <SubNav slot="aside" />
 
-    <div class="mt-subsection">
+    <div class="max-w-prose">
       <PageList items={subpages} />
     </div>
   </PageShell>

@@ -2,8 +2,8 @@
 /**
  * Every way of reaching the Dom, in one place: the sekretariat, the direct
  * numbers of the residential units, the branch, how to get here, and the
- * official channels. No map and no iframe — the way here is described in
- * words, and the numbers come from data/contact.ts.
+ * official channels. No map and no iframe — the way here is described in words,
+ * and the numbers come from data/contact.ts.
  */
 import Base from "../layouts/Base.astro";
 import PageHeader from "../components/PageHeader.astro";
@@ -20,6 +20,9 @@ const toc = [
   { id: "iod", label: "Inspektor Ochrony Danych" },
   { id: "faktury", label: "Dane do faktur" },
 ];
+
+const home = addressLines(contact.address);
+const branch = addressLines(contact.spychowo.address);
 ---
 
 <Base
@@ -28,19 +31,19 @@ const toc = [
 >
   <PageHeader breadcrumbs title="Kontakt">
     <p class="mt-8">
-      <Button href={contact.phone.href} phone>{contact.phone.label}</Button>
+      <Button href={contact.phone.href}>{contact.phone.label}</Button>
     </p>
   </PageHeader>
 
   <PageShell>
-    <Toc slot="rail" items={toc} />
+    <Toc slot="aside" items={toc} />
 
-    <div class="doc">
+    <div class="prose">
       <h2 id="sekretariat">Sekretariat</h2>
       <address>
         {contact.nameShort}<br />
-        {addressLines(contact.address)[0]}<br />
-        {addressLines(contact.address)[1]}
+        {home[0]}<br />
+        {home[1]}
       </address>
       <dl>
         <dt>Telefon</dt>
@@ -73,8 +76,8 @@ const toc = [
       <h2 id="spychowo">Filia w Spychowie</h2>
       <address>
         {contact.spychowo.name}<br />
-        {addressLines(contact.spychowo.address)[0]}<br />
-        {addressLines(contact.spychowo.address)[1]}
+        {branch[0]}<br />
+        {branch[1]}
       </address>
       <dl>
         <dt>Telefon</dt>
@@ -89,8 +92,8 @@ const toc = [
         windy przystosowanej dla osób z niepełnosprawnością.
       </p>
       <p>
-        Na terenie Domu można parkować pojazdy. Nie ma oznakowanych miejsc
-        parkingowych dla osób z niepełnosprawnością.
+        Na terenie Domu można parkować pojazdy. Nie ma oznakowanych miejsc parkingowych dla osób z
+        niepełnosprawnością.
       </p>
       <p>Osoba z psem asystującym ma prawo wstępu do budynku.</p>
 
@@ -109,7 +112,7 @@ const toc = [
         </dd>
         <dt>Odbiorca</dt>
         <dd>
-          {contact.nameShort}, {addressLines(contact.address).join(", ")}<br />
+          {contact.nameShort}, {home.join(", ")}<br />
           REGON 000963690
         </dd>
       </dl>

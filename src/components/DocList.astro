@@ -1,20 +1,23 @@
 ---
 /**
- * Documents to download. Each row states the format and the size, so a reader
- * knows what opens before it opens.
+ * Documents to download. The format and the size are part of the link text, so
+ * a reader — and a screen reader announcing links out of context — knows what
+ * opens before it opens.
  */
 interface Props {
   docs: readonly { href: string; label: string; format: string; size?: string }[];
 }
+
 const { docs } = Astro.props;
 ---
 
 <ul class="docs" role="list">
   {
-    docs.map((d) => (
+    docs.map((doc) => (
       <li>
-        <a href={d.href}>{d.label}</a>
-        <span>{d.size ? `${d.format}, ${d.size}` : d.format}</span>
+        <a href={doc.href}>
+          {doc.label} <span>({doc.size ? `${doc.format}, ${doc.size}` : doc.format})</span>
+        </a>
       </li>
     ))
   }

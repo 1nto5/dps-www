@@ -1,5 +1,5 @@
 /**
- * Pages of the „Projekty unijne" subsection, for the `SiblingNav` rail. The
+ * Pages of the „Projekty unijne" subsection, for the `SubNav` rail. The
  * index itself is listed first, so the rail is a complete map of the subsection
  * rather than a list of everything except where you are.
  */

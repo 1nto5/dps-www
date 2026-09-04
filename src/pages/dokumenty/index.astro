@@ -1,0 +1,29 @@
+---
+/**
+ * The document hub. The Dom's own site has no page above these four, so there
+ * is nothing to carry over but the names: no lead, no blurbs.
+ */
+import Base from "../../layouts/Base.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import PageShell from "../../components/PageShell.astro";
+import PageList from "../../components/PageList.astro";
+import SubNav from "../../components/SubNav.astro";
+import { mainNav } from "../../data/nav";
+
+const children = mainNav.find((item) => item.href === "/dokumenty/")?.children ?? [];
+---
+
+<Base
+  title="Dokumenty"
+  description="Dokumenty Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie: dotacje, projekty unijne, RODO i zgłoszenia sygnalistów."
+>
+  <PageHeader breadcrumbs title="Dokumenty" />
+
+  <PageShell>
+    <SubNav slot="aside" />
+
+    <div class="max-w-prose">
+      <PageList items={children} />
+    </div>
+  </PageShell>
+</Base>

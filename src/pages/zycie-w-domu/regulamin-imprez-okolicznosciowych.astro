@@ -2,12 +2,7 @@
 import Base from "../../layouts/Base.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import PageShell from "../../components/PageShell.astro";
-import Toc from "../../components/Toc.astro";
-
-const toc = [
-  { id: "regulamin-imprez", label: "Regulamin imprez" },
-  { id: "regulamin-wizerunku", label: "Regulamin wizerunku" },
-];
+import SubNav from "../../components/SubNav.astro";
 ---
 
 <Base
@@ -21,9 +16,9 @@ const toc = [
   />
 
   <PageShell>
-    <Toc slot="rail" items={toc} />
+    <SubNav slot="aside" />
 
-    <div class="doc">
+    <div class="prose">
       <h2 id="regulamin-imprez">
         Regulamin imprez okolicznościowych organizowanych przez Dom Pomocy Społecznej im. Jana Pawła
         II w Szczytnie

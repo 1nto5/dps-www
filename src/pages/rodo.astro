@@ -1,13 +1,14 @@
 ---
 /**
- * RODO — six data-protection notices migrated verbatim from the old site
- * (page 1234). Legal wording must not be paraphrased. The Dom's own address
- * and telephone come from `contact.ts`, so a corrected number cannot go stale
- * here; every other detail is the notice as signed.
+ * RODO — six data-protection notices migrated verbatim from the old site.
+ * Legal wording must not be paraphrased. The Dom's own address and telephone
+ * come from `contact.ts`, so a corrected number cannot go stale here; every
+ * other detail is the notice as signed.
  */
 import Base from "../layouts/Base.astro";
 import PageHeader from "../components/PageHeader.astro";
 import PageShell from "../components/PageShell.astro";
+import SubNav from "../components/SubNav.astro";
 import Toc from "../components/Toc.astro";
 import { addressLine, contact } from "../data/contact";
 
@@ -34,9 +35,12 @@ const adres = `${contact.nameShort}, ${addressLine(contact.address)}`;
   />
 
   <PageShell>
-    <Toc slot="rail" items={toc} />
+    <Fragment slot="aside">
+      <SubNav />
+      <Toc items={toc} />
+    </Fragment>
 
-    <div class="doc mt-subsection">
+    <div class="prose">
       <h2 id="pracownik">Informacja o przetwarzaniu danych osobowych dla pracownika</h2>
       <p>
         Zgodnie z art. 13 ust. 1 i 2 Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679

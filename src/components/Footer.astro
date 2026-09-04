@@ -1,48 +1,83 @@
 ---
-import { contact, addressLine } from "../data/contact";
+/**
+ * Three columns of facts, all of them from `data/contact.ts`, and one bottom
+ * line with the two statements every public institution has to keep in reach.
+ */
+import { contact, addressLines } from "../data/contact";
+import { mainNav } from "../data/nav";
+
 const year = new Date().getFullYear();
+const home = addressLines(contact.address);
+const branch = addressLines(contact.spychowo.address);
 ---
 
-<footer class="mt-section border-t border-line bg-mist">
-  <div class="mx-auto grid max-w-wide gap-10 px-5 py-12 sm:px-8 md:grid-cols-3">
+<footer class="mt-auto border-t border-line bg-sand">
+  <div class="mx-auto grid max-w-6xl gap-10 px-5 py-12 sm:px-8 md:grid-cols-3 md:py-16">
     <div>
-      <h2 class="text-lg">Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie</h2>
-      <address class="mt-3 not-italic text-ink-soft">
-        {addressLine(contact.address)}<br />
-        tel. <a href={contact.phone.href} class="inline-block py-1 underline">{contact.phone.label}</a><br />
-        <a href={`mailto:${contact.email}`} class="inline-block py-1 underline">{contact.email}</a>
+      <h2 class="text-lg">{contact.name}</h2>
+      <address class="mt-3 text-ink-soft">
+        {home[0]}<br />
+        {home[1]}
       </address>
-      <h2 class="mt-6 text-lg">Filia w Spychowie</h2>
-      <address class="mt-3 not-italic text-ink-soft">
-        {addressLine(contact.spychowo.address)}<br />
-        tel. <a href={contact.spychowo.phone.href} class="inline-block py-1 underline"
-          >{contact.spychowo.phone.label}</a
-        >
+
+      <h2 class="mt-8 text-lg">{contact.spychowo.name}</h2>
+      <address class="mt-3 text-ink-soft">
+        {branch[0]}<br />
+        {branch[1]}<br />
+        tel. <a href={contact.spychowo.phone.href}>{contact.spychowo.phone.label}</a>
       </address>
     </div>
+
     <div>
-      <h2 class="font-body text-base font-semibold">Na skróty</h2>
-      <ul role="list" class="mt-3 space-y-1">
-        <li><a href="/kontakt/" class="inline-block py-1 underline">Kontakt i adres</a></li>
-        <li><a href="/deklaracja-dostepnosci/" class="inline-block py-1 underline">Deklaracja dostępności</a></li>
-        <li><a href="/rodo/" class="inline-block py-1 underline">Ochrona danych osobowych (RODO)</a></li>
-        <li><a href="/sygnalista/" class="inline-block py-1 underline">Zgłoszenia sygnalistów</a></li>
-      </ul>
-    </div>
-    <div>
-      <h2 class="font-body text-base font-semibold">Informacja publiczna</h2>
+      <h2 class="text-lg">Kontakt</h2>
+      <dl class="mt-3 text-ink-soft">
+        <dt class="sr-only">Telefon</dt>
+        <dd>tel. <a href={contact.phone.href}>{contact.phone.label}</a></dd>
+        <dt class="sr-only">Faks</dt>
+        <dd>faks {contact.fax}</dd>
+        <dt class="sr-only">E-mail</dt>
+        <dd class="mt-2"><a href={`mailto:${contact.email}`}>{contact.email}</a></dd>
+        <dt class="sr-only">Skrytka ePUAP</dt>
+        <dd class="mt-2">ePUAP {contact.epuap}</dd>
+      </dl>
+
+      <h2 class="mt-8 text-lg">Informacja publiczna</h2>
       <p class="mt-3 text-ink-soft">
-        W sprawie dostępu do informacji publicznej prosimy o kontakt z
-        <a href="/kontakt/" class="inline-block py-1 underline">sekretariatem</a>.
+        W sprawie dostępu do informacji publicznej prosimy o kontakt z
+        <a href="/kontakt/">sekretariatem</a>.
       </p>
     </div>
+
+    <div>
+      <h2 class="text-lg">Strony serwisu</h2>
+      <nav aria-label="Menu w stopce">
+        <ul role="list" class="mt-3 space-y-1">
+          {
+            mainNav.map((item) => (
+              <li>
+                <a href={item.href} class="inline-block py-1">
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
   </div>
+
   <div class="border-t border-line">
     <div
-      class="mx-auto flex max-w-wide flex-wrap items-baseline justify-between gap-x-6 gap-y-1 px-5 py-4 text-meta text-ink-soft sm:px-8"
+      class="mx-auto flex max-w-6xl flex-wrap items-baseline justify-between gap-x-8 gap-y-2 px-5 py-4 text-sm text-ink-soft sm:px-8"
     >
-      <p>© {year} Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie. Jednostka organizacyjna Powiatu Szczycieńskiego.</p>
-      <p>Projekt i wykonanie: <a href="https://adrianantosiak.pl" class="inline-block py-1 underline">Adrian Antosiak</a></p>
+      <p>
+        © {year}
+        {contact.name}. Jednostka organizacyjna Powiatu Szczycieńskiego.
+      </p>
+      <p class="flex flex-wrap gap-x-6">
+        <a href="/deklaracja-dostepnosci/">Deklaracja dostępności</a>
+        <a href="/rodo/">RODO</a>
+      </p>
     </div>
   </div>
 </footer>

@@ -7,8 +7,8 @@
 import Base from "../../layouts/Base.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import PageShell from "../../components/PageShell.astro";
+import SubNav from "../../components/SubNav.astro";
 import Toc from "../../components/Toc.astro";
-import Brief from "../../components/Brief.astro";
 import Figure from "../../components/Figure.astro";
 import PageList from "../../components/PageList.astro";
 
@@ -54,15 +54,12 @@ const podstrony = [
   <PageHeader breadcrumbs title="Oferta" />
 
   <PageShell>
-    <Toc slot="rail" items={toc} />
+    <Fragment slot="aside">
+      <SubNav />
+      <Toc items={toc} />
+    </Fragment>
 
-    <Brief>
-      <li>Nasz Dom przeznaczony jest dla osób przewlekle psychicznie chorych.</li>
-      <li>Zapewniamy opiekę całodobową dla 196 osób.</li>
-      <li>Współpracujemy też z uczniami lokalnych szkół.</li>
-    </Brief>
-
-    <div class="doc mt-subsection">
+    <div class="prose">
       <p>
         Nasz Dom przeznaczony jest dla osób przewlekle psychicznie chorych. Zapewniamy opiekę
         całodobową dla 196 osób. Dom Pomocy Społecznej w Szczytnie zamieszkuje 171 Mieszkańców,

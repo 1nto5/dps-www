@@ -1,360 +1,151 @@
 ---
 /**
- * The site header: the name, the reader's tools and the telephone in the
- * first row; the sections in a second row from `lg` up. Below `lg` the
- * sections live in a <dialog> drawer that slides in from the right, behind
- * one "Menu" button. The four public-disclosure pages sit behind one
- * "Dokumenty" dropdown — a <details>, so it needs no script. Every setting a reader can change — text size, colours,
- * motion — sits behind one "Dostępność" button, in a small <dialog> panel.
+ * Two rows. A thin bar with the telephone and the reader's tools — text size
+ * and contrast — and the main row with the name of the Dom and the six
+ * sections. From `md` up the sections are a flat row of links; below that they
+ * live behind one „Menu" button, in a native <dialog>. No dropdowns anywhere.
  */
-import { mainNav, activeSection, ownPage } from "../data/nav";
-import type { NavItem } from "../data/nav";
+import { mainNav, activeSection } from "../data/nav";
 import { contact } from "../data/contact";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const path = Astro.url.pathname.startsWith(base)
   ? Astro.url.pathname.slice(base.length) || "/"
   : Astro.url.pathname;
-const active = activeSection(path);
-
-const links = [{ href: "/", label: "Strona główna" }, ...mainNav];
-const current = (href?: string) =>
-  href === "/" ? (path === "/" ? "page" : undefined) : href && href === active ? "page" : undefined;
-// A submenu's own button is marked whenever the reader is on one of its pages.
-const groupCurrent = (item: NavItem) =>
-  item.children?.some((child) => child.href === active) ? "true" : undefined;
+const section = activeSection(path);
+const current = (href: string) => (href === section?.href ? "page" : undefined);
 ---
 
-<header class="relative z-30 border-b border-line">
-  <div class="mx-auto max-w-wide px-5 sm:px-8">
-    <div class="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 py-4">
-      <a href="/" class="text-ink no-underline">
-        <span class="block font-display text-lg font-bold leading-tight sm:text-xl">Dom Pomocy Społecznej</span>
-        <span class="block text-meta text-ink-soft">im. Jana Pawła II w Szczytnie</span>
-      </a>
+<header>
+  <div class="border-b border-line bg-sand">
+    <div
+      class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-5 py-2 sm:px-8"
+    >
+      <p>
+        <span class="text-sm text-ink-soft">Telefon:</span>
+        <a href={contact.phone.href} class="font-semibold">{contact.phone.label}</a>
+      </p>
 
-      <div class="ml-auto flex items-center gap-2 sm:gap-3">
-        <a
-          href={contact.phone.href}
-          class="hidden font-semibold text-lake-deep no-underline sm:mr-2 sm:inline-block"
-          >{contact.phone.label}</a
-        >
-        <button
-          type="button"
-          class="chip"
-          data-a11y-open
-          aria-haspopup="dialog"
-          aria-expanded="false"
-          hidden
-        >
-          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10" />
-            <circle cx="12" cy="7.5" r="1.25" fill="currentColor" stroke="none" />
-            <path d="M7.5 10.5l3 .8v3.2l-1.5 4M16.5 10.5l-3 .8v3.2l1.5 4M10.5 14.5h3" />
-          </svg>
-          <span>Dostępność</span>
-          <span class="chip-dot" data-a11y-dot hidden><span class="sr-only">, ustawienia zmienione</span></span>
-        </button>
-        <button type="button" class="chip menu-open" data-menu-open aria-haspopup="dialog" aria-expanded="false">
-          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" fill="none">
-            <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-          </svg>
-          <span>Menu</span>
-        </button>
+      <div class="flex flex-wrap items-center gap-2" data-tools hidden>
+        <div class="flex items-center gap-1" role="group" aria-label="Wielkość tekstu">
+          <button type="button" class="tool" data-font="normal" aria-pressed="true">
+            <span>A</span><span class="sr-only"> — tekst standardowy</span>
+          </button>
+          <button type="button" class="tool" data-font="large" aria-pressed="false">
+            <span>A+</span><span class="sr-only"> — tekst większy</span>
+          </button>
+          <button type="button" class="tool" data-font="xlarge" aria-pressed="false">
+            <span>A++</span><span class="sr-only"> — tekst największy</span>
+          </button>
+        </div>
+        <button type="button" class="tool" data-contrast aria-pressed="false">Kontrast</button>
       </div>
     </div>
+  </div>
 
-    <nav aria-label="Sekcje strony" class="site-nav hidden lg:block">
-      <ul role="list" class="-mx-3 flex flex-wrap">
-        {
-          links.map((item) =>
-            item.children ? (
-              <li class="site-nav-group">
-                <details name="site-nav">
-                  <summary class="site-nav-link" aria-current={groupCurrent(item)}>
-                    {item.label}
-                    <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none">
-                      <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-                    </svg>
-                  </summary>
-                  <ul role="list" class="site-nav-panel">
-                    {item.children.map((child) => (
-                      <li>
-                        <a href={child.href} aria-current={current(child.href)}>
-                          {child.label}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </details>
-              </li>
-            ) : (
+  <div class="border-b border-line">
+    <div
+      class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-8 gap-y-4 px-5 py-4 sm:px-8 max-md:flex-nowrap"
+    >
+      <a href="/" class="no-underline">
+        <span class="block font-display text-xl leading-tight font-semibold text-ink"
+          >Dom Pomocy Społecznej</span
+        >
+        <span class="block text-sm text-ink-soft">im. Jana Pawła II w Szczytnie</span>
+      </a>
+
+      <div class="md:hidden">
+        <button type="button" class="tool" data-menu-open aria-haspopup="dialog" aria-expanded="false">
+          Menu
+        </button>
+      </div>
+
+      <nav aria-label="Menu główne" class="hidden md:block">
+        <ul role="list" class="flex flex-wrap gap-x-6">
+          {
+            mainNav.map((item) => (
               <li>
-                <a href={item.href} class="site-nav-link" aria-current={current(item.href)}>
+                <a href={item.href} class="nav-link" aria-current={current(item.href)}>
                   {item.label}
                 </a>
               </li>
-            ),
-          )
-        }
-      </ul>
-    </nav>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
   </div>
+
+  <dialog class="menu" data-menu aria-label="Menu główne">
+    <div class="mx-auto max-w-6xl">
+      <div class="flex justify-end">
+        <button type="button" class="tool" data-menu-close>Zamknij</button>
+      </div>
+      <nav aria-label="Menu główne">
+        <ul role="list" class="mt-3">
+          {
+            mainNav.map((item) => (
+              <li>
+                <a href={item.href} aria-current={current(item.href)}>
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+  </dialog>
 </header>
 
-<dialog class="menu" aria-label="Menu strony" data-menu>
-  <div class="flex min-h-full flex-col px-5 py-4">
-    <div class="flex items-center justify-end">
-      <button type="button" class="chip" data-menu-close>
-        <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" fill="none">
-          <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-        </svg>
-        <span>Zamknij</span>
-      </button>
-    </div>
-    <ul role="list" class="mt-4">
-      {
-        links.map((item) =>
-          item.children ? (
-            <li class="menu-group">
-              {
-                ownPage(item) ? (
-                  <a href={item.href} aria-current={current(item.href)}>
-                    {item.label}
-                  </a>
-                ) : (
-                  <p>{item.label}</p>
-                )
-              }
-              <ul role="list">
-                {item.children.slice(ownPage(item) ? 1 : 0).map((child) => (
-                  <li>
-                    <a href={child.href} aria-current={current(child.href)}>
-                      {child.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ) : (
-            <li>
-              <a href={item.href} aria-current={current(item.href)}>
-                {item.label}
-              </a>
-            </li>
-          ),
-        )
-      }
-    </ul>
-    <p class="mt-8 text-ink-soft">
-      Zadzwoń: <a href={contact.phone.href} class="font-semibold text-lake-deep">{contact.phone.label}</a>
-    </p>
-  </div>
-</dialog>
-
-<dialog class="a11y" aria-labelledby="a11y-title" data-a11y>
-  <form method="dialog" class="flex flex-col gap-5 p-4 sm:p-5" data-a11y-form>
-    <div class="flex items-center justify-between gap-4">
-      <h2 id="a11y-title" class="font-display text-lg font-bold">Dostępność</h2>
-      <button type="submit" class="chip">
-        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none">
-          <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-        </svg>
-        <span>Zamknij</span>
-      </button>
-    </div>
-
-    <fieldset class="a11y-group">
-      <legend>Rozmiar tekstu</legend>
-      <div class="segments">
-        <label class="segment"><input type="radio" name="font" value="" /><span aria-hidden="true">A</span><span class="sr-only">Standardowy</span></label>
-        <label class="segment"><input type="radio" name="font" value="large" /><span aria-hidden="true">A+</span><span class="sr-only">Większy</span></label>
-        <label class="segment"><input type="radio" name="font" value="xlarge" /><span aria-hidden="true">A++</span><span class="sr-only">Największy</span></label>
-      </div>
-    </fieldset>
-
-    <fieldset class="a11y-group">
-      <legend>Kolory</legend>
-      <div class="segments">
-        <label class="segment"><input type="radio" name="colors" value="" /><span>System</span></label>
-        <label class="segment"><input type="radio" name="colors" value="light" /><span>Jasne</span></label>
-        <label class="segment"><input type="radio" name="colors" value="dark" /><span>Ciemne</span></label>
-        <label class="segment"><input type="radio" name="colors" value="yellow" /><span>Kontrast</span></label>
-      </div>
-    </fieldset>
-
-    <fieldset class="a11y-group">
-      <legend>Ruch</legend>
-      <label class="switch">
-        <input type="checkbox" name="motion" value="reduce" aria-describedby="motion-system-note" />
-        <span>Ogranicz animacje</span>
-      </label>
-      <p id="motion-system-note" class="mt-2 text-meta text-ink-soft" hidden>
-        Włączone na stałe, bo tak ustawiono w systemie.
-      </p>
-    </fieldset>
-
-    <div class="flex flex-wrap items-center justify-between gap-3 border-t border-line pt-3">
-      <button type="button" class="chip" data-a11y-reset>Przywróć domyślne</button>
-      <a href="/deklaracja-dostepnosci/" class="text-meta">Deklaracja dostępności</a>
-    </div>
-    <p class="sr-only" aria-live="polite" data-a11y-status></p>
-  </form>
-</dialog>
-
 <script>
-  const root = document.documentElement;
+  // The reader's tools. They do nothing without JavaScript, so they stay hidden
+  // until this runs; the values themselves are applied by the inline script in
+  // Base, before first paint.
+  const doc = document.documentElement;
+  const tools = document.querySelector<HTMLElement>("[data-tools]");
+  const fontButtons = [...document.querySelectorAll<HTMLButtonElement>("[data-font]")];
+  const contrastButton = document.querySelector<HTMLButtonElement>("[data-contrast]");
 
-  const write = (key: string, value: string) => {
+  function remember(key: string, value: string | null) {
     try {
-      if (value) localStorage.setItem(key, value);
-      else localStorage.removeItem(key);
+      if (value === null) localStorage.removeItem(key);
+      else localStorage.setItem(key, value);
     } catch {
-      /* private mode: the choice just does not follow the reader */
+      // A browser with storage switched off still gets the setting for this page.
     }
-  };
-
-  /* ---- The accessibility panel ------------------------------------------ */
-  const panel = document.querySelector<HTMLDialogElement>("[data-a11y]");
-  const openA11y = document.querySelector<HTMLButtonElement>("[data-a11y-open]");
-  const form = panel?.querySelector<HTMLFormElement>("[data-a11y-form]");
-  const status = panel?.querySelector<HTMLElement>("[data-a11y-status]");
-  const dot = document.querySelector<HTMLElement>("[data-a11y-dot]");
-
-  const systemReduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const motionOff = () => systemReduce || root.getAttribute("data-motion") === "reduce";
-
-  // Cross-document view transitions are declared in CSS and only a later
-  // `@view-transition` rule can cancel them, so the cancel is appended at the
-  // end of <body>, after the stylesheet.
-  const applyMotion = () => {
-    const existing = document.getElementById("dps-no-vt");
-    if (motionOff() && !existing) {
-      const style = document.createElement("style");
-      style.id = "dps-no-vt";
-      style.textContent = "@view-transition{navigation:none}";
-      document.body.append(style);
-    } else if (!motionOff() && existing) existing.remove();
-  };
-
-  const state = () => ({
-    font: root.getAttribute("data-font-size") ?? "",
-    colors: root.hasAttribute("data-contrast") ? "yellow" : (root.getAttribute("data-theme") ?? ""),
-    motion: root.getAttribute("data-motion") === "reduce",
-  });
-
-  // The form shows what <html> carries; the dot on the button says something
-  // was changed from the defaults.
-  const sync = () => {
-    if (!form) return;
-    const s = state();
-    for (const input of form.querySelectorAll<HTMLInputElement>("input[type=radio]")) {
-      input.checked = input.value === (input.name === "font" ? s.font : s.colors);
-    }
-    const motion = form.querySelector<HTMLInputElement>("input[name=motion]");
-    if (motion) {
-      motion.checked = systemReduce || s.motion;
-      motion.disabled = systemReduce;
-    }
-    if (dot) dot.hidden = !(s.font || s.colors || s.motion);
-    applyMotion();
-  };
-
-  const say = (text: string) => {
-    if (status) status.textContent = text;
-  };
-
-  const setFont = (font: string) => {
-    if (font) root.setAttribute("data-font-size", font);
-    else root.removeAttribute("data-font-size");
-    write("dps-font", font);
-    say("Rozmiar tekstu: " + (font === "large" ? "większy" : font === "xlarge" ? "największy" : "standardowy"));
-  };
-
-  const colorName = (c: string) =>
-    c === "light" ? "jasne" : c === "dark" ? "ciemne" : c === "yellow" ? "kontrast" : "jak w systemie";
-
-  const setColors = (colors: string, event?: Event) => {
-    const apply = () => {
-      if (colors === "yellow") {
-        root.setAttribute("data-contrast", "yellow");
-      } else {
-        root.removeAttribute("data-contrast");
-        if (colors) root.setAttribute("data-theme", colors);
-        else root.removeAttribute("data-theme");
-      }
-      // The wipe applies this later, so the form is refreshed here too.
-      sync();
-    };
-    write("dps-contrast", colors === "yellow" ? "yellow" : "");
-    if (colors !== "yellow") write("dps-theme", colors);
-    // The new colours are wiped in as a circle growing from the panel,
-    // through a same-document view transition, when motion is allowed.
-    const from = root.hasAttribute("data-contrast");
-    if (!motionOff() && !from && colors !== "yellow" && "startViewTransition" in document) {
-      const r = ((event?.target as Element | null)?.closest("label") ?? panel)!.getBoundingClientRect();
-      const x = r.left + r.width / 2;
-      const y = r.top + r.height / 2;
-      const reach = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
-      const style = getComputedStyle(root);
-      const duration = parseFloat(style.getPropertyValue("--dur-panel")) || 500;
-      const easing = style.getPropertyValue("--ease-out").trim() || "ease-out";
-      root.setAttribute("data-theme-switch", "");
-      const transition = document.startViewTransition(apply);
-      transition.ready
-        .then(() => {
-          root.animate(
-            { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${reach}px at ${x}px ${y}px)`] },
-            { duration, easing, pseudoElement: "::view-transition-new(root)" },
-          );
-        })
-        .catch(() => {});
-      transition.finished.finally(() => root.removeAttribute("data-theme-switch")).catch(() => {});
-    } else apply();
-    say("Kolory: " + colorName(colors));
-  };
-
-  const setMotion = (reduce: boolean) => {
-    if (reduce) root.setAttribute("data-motion", "reduce");
-    else root.removeAttribute("data-motion");
-    write("dps-motion", reduce ? "reduce" : "");
-    say(reduce ? "Ograniczono ruch na stronie" : "Przywrócono animacje");
-  };
-
-  if (panel && openA11y && form) {
-    openA11y.hidden = false;
-    if (systemReduce) document.getElementById("motion-system-note")?.removeAttribute("hidden");
-
-    form.addEventListener("change", (event) => {
-      const input = event.target as HTMLInputElement;
-      if (input.name === "font") setFont(input.value);
-      else if (input.name === "colors") setColors(input.value, event);
-      else if (input.name === "motion") setMotion(input.checked);
-      sync();
-    });
-    form.querySelector("[data-a11y-reset]")?.addEventListener("click", () => {
-      setFont("");
-      setColors("");
-      setMotion(false);
-      sync();
-      say("Przywrócono ustawienia domyślne");
-    });
-    openA11y.addEventListener("click", () => {
-      sync();
-      panel.showModal();
-      openA11y.setAttribute("aria-expanded", "true");
-    });
-    panel.addEventListener("click", (e) => {
-      if (e.target === panel) panel.close();
-    });
-    panel.addEventListener("close", () => {
-      openA11y.setAttribute("aria-expanded", "false");
-      openA11y.focus({ preventScroll: true });
-    });
-    sync();
   }
 
-  /* ---- The drawer ------------------------------------------------------ */
+  function syncFont() {
+    const size = doc.getAttribute("data-font-size") ?? "normal";
+    for (const button of fontButtons) {
+      button.setAttribute("aria-pressed", String(button.dataset.font === size));
+    }
+  }
+
+  for (const button of fontButtons) {
+    button.addEventListener("click", () => {
+      const size = button.dataset.font!;
+      if (size === "normal") doc.removeAttribute("data-font-size");
+      else doc.setAttribute("data-font-size", size);
+      remember("dps-font", size === "normal" ? null : size);
+      syncFont();
+    });
+  }
+
+  contrastButton?.addEventListener("click", () => {
+    const on = doc.getAttribute("data-contrast") === "high";
+    if (on) doc.removeAttribute("data-contrast");
+    else doc.setAttribute("data-contrast", "high");
+    remember("dps-contrast", on ? null : "high");
+    contrastButton.setAttribute("aria-pressed", String(!on));
+  });
+
+  syncFont();
+  contrastButton?.setAttribute("aria-pressed", String(doc.getAttribute("data-contrast") === "high"));
+  tools?.removeAttribute("hidden");
+
+  // The menu below `md`.
   const menu = document.querySelector<HTMLDialogElement>("[data-menu]");
   const open = document.querySelector<HTMLButtonElement>("[data-menu-open]");
   if (menu && open) {
@@ -363,17 +154,7 @@ const groupCurrent = (item: NavItem) =>
       open.setAttribute("aria-expanded", "true");
     });
     menu.querySelector("[data-menu-close]")?.addEventListener("click", () => menu.close());
-    // A press on the backdrop (the dialog box itself, outside the panel) closes.
-    menu.addEventListener("click", (e) => {
-      if (e.target === menu) menu.close();
-    });
-    menu.addEventListener("close", () => {
-      open.setAttribute("aria-expanded", "false");
-      open.focus({ preventScroll: true });
-    });
-    addEventListener("pagehide", () => {
-      if (menu.open) menu.close();
-      if (panel?.open) panel.close();
-    });
+    menu.addEventListener("click", (e) => e.target === menu && menu.close());
+    menu.addEventListener("close", () => open.setAttribute("aria-expanded", "false"));
   }
 </script>

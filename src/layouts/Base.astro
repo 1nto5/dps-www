@@ -1,9 +1,11 @@
 ---
+/**
+ * The only layout. Every page renders through it: the skip link, the header,
+ * one <main id="tresc"> and the footer.
+ */
 import "../styles/global.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-import displayFont from "../assets/fonts/bricolage-grotesque-subset.woff2?url";
-import bodyFont from "../assets/fonts/golos-text-subset.woff2?url";
 import { contact } from "../data/contact";
 
 interface Props {
@@ -12,9 +14,11 @@ interface Props {
 }
 
 const { title, description } = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const fullTitle =
-  Astro.url.pathname === "/"
+  Astro.url.pathname === `${base}/`
     ? "Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie"
     : `${title} — DPS Szczytno`;
 const desc =
@@ -31,13 +35,11 @@ const desc =
     <meta name="description" content={desc} />
     <link rel="canonical" href={canonical} />
     {import.meta.env.BASE_URL !== "/" && <meta name="robots" content="noindex" />}
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="preload" as="font" type="font/woff2" href={displayFont} crossorigin />
-    <link rel="preload" as="font" type="font/woff2" href={bodyFont} crossorigin />
+    <link rel="icon" href={`${base}/favicon.svg`} type="image/svg+xml" />
     <!--
-      Before first paint: the reader's own text size and contrast, chosen in
-      the header and kept in localStorage. Values are checked against a closed
-      set so a tampered entry cannot reach the document.
+      Before first paint: the reader's own text size and contrast, chosen in the
+      header and kept in localStorage. Both are checked against a closed set, so
+      a tampered entry cannot reach the document.
     -->
     <script is:inline>
       (function () {
@@ -46,34 +48,10 @@ const desc =
         try {
           var c = localStorage.getItem("dps-contrast");
           var f = localStorage.getItem("dps-font");
-          var t = localStorage.getItem("dps-theme");
-          var m = localStorage.getItem("dps-motion");
-          if (c === "yellow" || c === "bw") d.setAttribute("data-contrast", c);
+          if (c === "high") d.setAttribute("data-contrast", c);
           if (f === "large" || f === "xlarge") d.setAttribute("data-font-size", f);
-          if (t === "light" || t === "dark") d.setAttribute("data-theme", t);
-          if (m === "reduce") d.setAttribute("data-motion", m);
         } catch (e) {}
       })();
-    </script>
-    <!--
-      Press feedback: remember where a button was pressed so the bloom in CSS
-      can start there. Pure decoration; the button works without it.
-    -->
-    <script>
-      const SEL = ".btn, .chip";
-      document.addEventListener("pointerdown", (e) => {
-        const el = (e.target as Element).closest?.(SEL) as HTMLElement | null;
-        if (!el) return;
-        const r = el.getBoundingClientRect();
-        el.style.setProperty("--px", `${((e.clientX - r.left) / r.width) * 100}%`);
-        el.style.setProperty("--py", `${((e.clientY - r.top) / r.height) * 100}%`);
-        el.removeAttribute("data-press");
-        void el.offsetWidth;
-        el.setAttribute("data-press", "");
-      });
-      document.addEventListener("animationend", (e) => {
-        if (e.animationName === "bloom") (e.target as HTMLElement).removeAttribute("data-press");
-      });
     </script>
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={desc} />
@@ -101,11 +79,7 @@ const desc =
     />
   </head>
   <body class="flex min-h-svh flex-col">
-    <a
-      href="#tresc"
-      class="skip sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-lake focus:px-4 focus:py-2 focus:text-on-dark"
-      >Przejdź do treści</a
-    >
+    <a href="#tresc" class="skip-link">Przejdź do treści</a>
     <Header />
     <main id="tresc" tabindex="-1" class="flex-1">
       <slot />

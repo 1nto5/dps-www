@@ -1,0 +1,49 @@
+---
+/**
+ * „W tej sekcji" — the other pages around this one. It works out its own list
+ * from the address of the page, so a page only has to place it:
+ *
+ *   <SubNav slot="aside" />
+ *
+ * Inside „Sygnalista" and „Projekty unijne" the list is that subsection's own
+ * pages; everywhere else it is the section from `nav.ts` — the section's own
+ * page first, then its children. A page in a section without children renders
+ * nothing at all.
+ */
+import { sectionPages, type NavItem } from "../data/nav";
+import { sygnalistaPages } from "../data/sygnalista-pages";
+import { projektyUnijnePages } from "../data/projekty-unijne-pages";
+
+interface Props {
+  title?: string;
+}
+
+const { title = "W tej sekcji" } = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const path = Astro.url.pathname.startsWith(base)
+  ? Astro.url.pathname.slice(base.length) || "/"
+  : Astro.url.pathname;
+
+let items: readonly NavItem[];
+if (path.startsWith("/sygnalista/")) items = sygnalistaPages;
+else if (path.startsWith("/projekty-unijne/")) items = projektyUnijnePages;
+else items = sectionPages(path);
+---
+
+{
+  items.length > 0 && (
+    <aside class="rail" aria-label={title}>
+      <p class="rail-title">{title}</p>
+      <ul role="list">
+        {items.map((item) => (
+          <li>
+            <a href={item.href} aria-current={item.href === path ? "page" : undefined}>
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </aside>
+  )
+}

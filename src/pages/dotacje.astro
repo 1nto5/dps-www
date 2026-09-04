@@ -9,6 +9,7 @@
 import Base from "../layouts/Base.astro";
 import PageHeader from "../components/PageHeader.astro";
 import PageShell from "../components/PageShell.astro";
+import SubNav from "../components/SubNav.astro";
 import Toc from "../components/Toc.astro";
 import Figure from "../components/Figure.astro";
 import DocList from "../components/DocList.astro";
@@ -64,7 +65,10 @@ const posterSizes = "(min-width: 48rem) 42rem, 100vw";
   />
 
   <PageShell>
-    <Toc slot="rail" items={toc} title="Lata" />
+    <Fragment slot="aside">
+      <SubNav />
+      <Toc items={toc} title="Lata" />
+    </Fragment>
 
     <Figure
       src={emblem}
@@ -72,10 +76,10 @@ const posterSizes = "(min-width: 48rem) 42rem, 100vw";
       widths={[480, 800]}
       sizes="(min-width: 48rem) 22rem, 70vw"
       loading="eager"
-      class="mt-subsection max-w-prose-measure"
+      class="mt-8 max-w-prose"
     />
 
-    <div class="doc mt-subsection">
+    <div class="prose mt-8">
       <h2 id="rok-2025">Dotacje 2025</h2>
 
       <h3>Dofinansowano ze środków budżetu państwa</h3>
@@ -196,11 +200,11 @@ const posterSizes = "(min-width: 48rem) 42rem, 100vw";
       <h3>Do pobrania</h3>
     </div>
 
-    <div class="mt-block max-w-column">
+    <div class="mt-8 max-w-prose">
       <DocList docs={docs2024} />
     </div>
 
-    <div class="doc mt-section">
+    <div class="prose mt-16">
       <h2 id="rok-2023">Dotacje 2023</h2>
 
       <h3>Dofinansowanie ze środków rezerwy celowej budżetu państwa</h3>
@@ -217,7 +221,7 @@ const posterSizes = "(min-width: 48rem) 42rem, 100vw";
       <p><strong>Środki z funduszu przeznaczono na wypłatę dodatków dla pracowników.</strong></p>
     </div>
 
-    <div class="doc mt-section">
+    <div class="prose mt-16">
       <h2 id="rok-2022">Dotacje 2022</h2>
 
       <h3>Fundusz Przeciwdziałania COVID-19 — dyżury od sierpnia do września 2022</h3>

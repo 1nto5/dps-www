@@ -1,102 +1,61 @@
 @import "tailwindcss";
 
 /* ---------------------------------------------------------------------------
-   Fonts. Two families, both subset by `bun run fonts` to the characters the
-   site uses; `bun run build` fails if a page reaches past the subset.
-   Bricolage Grotesque draws every heading (its `opsz` axis keeps a 60px title
-   and a 22px subheading drawn correctly); Golos Text draws everything else.
+   Fonts. Self-hosted, no external request: the packages ship the woff2 files
+   and Vite copies the ones the browser asks for into the build. Fraunces draws
+   the headings, Source Sans 3 everything else.
    ------------------------------------------------------------------------ */
-@font-face {
-  font-family: "Bricolage Grotesque";
-  font-style: normal;
-  font-weight: 200 800;
-  font-display: swap;
-  src: url("../assets/fonts/bricolage-grotesque-subset.woff2") format("woff2");
-}
-@font-face {
-  font-family: "Golos Text";
-  font-style: normal;
-  font-weight: 400 900;
-  font-display: swap;
-  src: url("../assets/fonts/golos-text-subset.woff2") format("woff2");
-}
-/* Metric-matched stand-ins for the swap gap, numbers printed by `bun run fonts`. */
-@font-face {
-  font-family: "Bricolage Fallback";
-  src: local("Arial"), local("Helvetica Neue"), local("Helvetica");
-  size-adjust: 101.02%;
-  ascent-override: 92.06%;
-  descent-override: 26.73%;
-  line-gap-override: 0%;
-}
-@font-face {
-  font-family: "Golos Fallback";
-  src: local("Arial"), local("Helvetica Neue"), local("Helvetica");
-  size-adjust: 110.96%;
-  ascent-override: 88.32%;
-  descent-override: 19.83%;
-  line-gap-override: 0%;
+@import "@fontsource-variable/fraunces";
+@import "@fontsource-variable/source-sans-3";
+
+/* ---------------------------------------------------------------------------
+   Tokens — the whole palette of the site. `--color-*: initial` first clears
+   Tailwind's default colours, so a stray `text-slate-600` simply does not
+   compile and nobody can quietly widen the palette.
+
+   One green means "you can act on this" (links, buttons, the active menu
+   entry). One clay means "this is the emphasised thing on the page". Nothing
+   else carries colour. Contrast on paper: ink 13.8:1, ink-soft 6.7:1,
+   pine 7.6:1, clay 6.3:1, and white on a pine fill 8.1:1 — all past
+   WCAG 2.1 AA.
+   ------------------------------------------------------------------------ */
+@theme static {
+  --color-*: initial;
+
+  --color-paper: #faf8f3;
+  --color-sand: #f0ece2;
+  --color-ink: #1f2a2e;
+  --color-ink-soft: #4d5a5f;
+  --color-pine: #1f5a46;
+  --color-pine-deep: #153f31;
+  --color-clay: #8a4b2f;
+  --color-line: #d9d3c5;
+  --color-white: #ffffff;
+  /* Text drawn on a pine fill. A pair, not a new colour: high contrast flips it. */
+  --color-on-pine: #ffffff;
+
+  --font-display: "Fraunces Variable", Georgia, "Times New Roman", serif;
+  --font-body: "Source Sans 3 Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Captions, dates, formats, breadcrumbs. */
+  --text-sm: 0.9rem;
+  --text-sm--line-height: 1.5;
+  /* Headings are set tighter than running text. */
+  --text-lg--line-height: 1.6;
+  --text-xl--line-height: 1.35;
+  --text-2xl--line-height: 1.25;
+  --text-3xl--line-height: 1.2;
+  --text-4xl--line-height: 1.12;
+  --text-5xl--line-height: 1.05;
 }
 
 /* ---------------------------------------------------------------------------
-   Tokens. Two colours with jobs that cannot be confused: `lake` means "you
-   can act on this" (links, buttons, the active nav item); `heather` means
-   "this is worth reading" (the "W skrócie" box, a pulled sentence). No third
-   accent. Contrast on paper: ink 15.6:1, ink-soft 7.6:1, lake 8.4:1,
-   heather 5.5:1, edge 4.1:1 — all past WCAG 2.1 AA.
+   Base.
    ------------------------------------------------------------------------ */
-@theme static {
-  --color-paper: #fbfbf8;
-  --color-mist: #f1f3f1;
-  --color-mist-deep: #e1e6e3;
-  --color-card: #ffffff;
-  --color-ink: #1b2430;
-  --color-ink-soft: #4a5560;
-  --color-lake: #244c63;
-  --color-lake-deep: #1a3a4d;
-  --color-heather: #7a5c8e;
-  --color-heather-soft: #efe9f4;
-  --color-line: #d6dad8;
-  --color-edge: #6f7c85;
-  --color-overlay: #0e1418;
-  --color-on-overlay: #eceeec;
-  --color-on-dark: #ffffff;
-
-  --font-display: "Bricolage Grotesque", "Bricolage Fallback", system-ui, sans-serif;
-  --font-body: "Golos Text", "Golos Fallback", system-ui, sans-serif;
-
-  /* Three-step vertical rhythm: chapter, subsection, paragraph group. */
-  --spacing-section: clamp(3.5rem, 8vw, 6rem);
-  --spacing-subsection: clamp(2rem, 4vw, 3rem);
-
-  /* The one step below body size: captions, dates, formats, nav on phones. */
-  --text-meta: 0.9375rem;
-  --text-meta--line-height: 1.5;
-
-  /* The page column and the wider column for a two-column shell. */
-  --container-column: 42rem;
-  --container-wide: 68rem;
-}
-
-:root {
-  --spacing-block: 1.5rem;
-  /* Running text stops at about 62 characters. */
-  --measure-prose: 34rem;
-  --focus-ring: var(--color-lake);
-  --header-h: 5.5rem;
-}
-@utility mt-block {
-  margin-top: var(--spacing-block);
-}
-@utility max-w-prose-measure {
-  max-width: var(--measure-prose);
-}
-
-/* 112.5% of the browser default: 18px, following the reader's own setting. */
 html {
-  font-size: 112.5%;
-  scrollbar-gutter: stable;
-  scroll-padding-top: calc(var(--header-h) + 1rem);
+  font-size: 112.5%; /* 18px */
+  scroll-padding-top: 2rem;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -105,7 +64,6 @@ body {
   color: var(--color-ink);
   line-height: 1.6;
   overflow-wrap: break-word;
-  font-variant-numeric: tabular-nums;
 }
 
 @layer base {
@@ -114,130 +72,34 @@ body {
   h3,
   h4 {
     font-family: var(--font-display);
-    font-optical-sizing: auto;
     font-weight: 600;
-    text-wrap: pretty;
+    font-optical-sizing: auto;
+    text-wrap: balance;
+    letter-spacing: -0.012em;
     color: var(--color-ink);
   }
-  h1 {
-    line-height: 1.05;
-    letter-spacing: -0.02em;
+
+  a {
+    color: var(--color-pine);
+    text-underline-offset: 0.18em;
   }
-  h2 {
-    line-height: 1.15;
-    letter-spacing: -0.012em;
+  a:hover {
+    color: var(--color-pine-deep);
   }
-  h3 {
-    line-height: 1.25;
+
+  ::selection {
+    background: var(--color-sand);
+    color: var(--color-ink);
   }
-  h4 {
-    line-height: 1.3;
-  }
-  a:active,
-  button:active {
-    background-color: var(--color-mist-deep);
+
+  address {
+    font-style: normal;
   }
 }
 
 :focus-visible {
-  outline: 3px solid var(--focus-ring);
+  outline: 3px solid var(--color-pine);
   outline-offset: 2px;
-}
-a {
-  text-underline-offset: 0.2em;
-}
-::selection {
-  background: var(--color-heather-soft);
-  color: var(--color-ink);
-}
-
-/* ---------------------------------------------------------------------------
-   Reader modes. The theme button in the header writes `data-theme` on <html>:
-   nothing means "follow the system", `light` and `dark` pin one side. Every
-   token picks its side with light-dark(), so the choice is one property —
-   `color-scheme`. The two high-contrast modes are chosen in the header and win
-   over everything.
-   ------------------------------------------------------------------------ */
-html:not([data-contrast]) {
-  color-scheme: light dark;
-  --color-paper: light-dark(#fbfbf8, #121719);
-  --color-mist: light-dark(#f1f3f1, #1a2124);
-  --color-mist-deep: light-dark(#e1e6e3, #263035);
-  --color-card: light-dark(#ffffff, #1a2124);
-  --color-ink: light-dark(#1b2430, #eceeec);
-  --color-ink-soft: light-dark(#4a5560, #b0b8b5);
-  --color-lake: light-dark(#244c63, #8fbfda);
-  --color-lake-deep: light-dark(#1a3a4d, #b9d9ea);
-  --color-heather: light-dark(#7a5c8e, #c3a8d9);
-  --color-heather-soft: light-dark(#efe9f4, #2a2233);
-  --color-line: light-dark(#d6dad8, #2e383c);
-  --color-edge: light-dark(#6f7c85, #8a969d);
-  --color-overlay: light-dark(#0e1418, #090c0e);
-  --color-on-overlay: #eceeec;
-  --color-on-dark: light-dark(#ffffff, #121719);
-}
-html[data-theme="light"]:not([data-contrast]) {
-  color-scheme: light;
-}
-html[data-theme="dark"]:not([data-contrast]) {
-  color-scheme: dark;
-}
-@media (prefers-contrast: more) {
-  html:not([data-contrast]) {
-    --color-ink-soft: var(--color-ink);
-    --color-edge: var(--color-ink);
-    --color-line: #8a9297;
-  }
-}
-/* Black on yellow, the mode Polish public sites have offered for years. */
-html[data-contrast="yellow"] {
-  --color-paper: #000000;
-  --color-mist: #1a1a00;
-  --color-mist-deep: #333300;
-  --color-card: #000000;
-  --color-ink: #ffff00;
-  --color-ink-soft: #ffff00;
-  --color-lake: #ffff00;
-  --color-lake-deep: #ffff66;
-  --color-heather: #ffff00;
-  --color-heather-soft: #1a1a00;
-  --color-line: #ffff00;
-  --color-edge: #ffff00;
-  --color-overlay: #000000;
-  --color-on-overlay: #ffff00;
-  --color-on-dark: #000000;
-  --focus-ring: #ffffff;
-  color-scheme: dark;
-}
-html[data-contrast="bw"] {
-  --color-paper: #ffffff;
-  --color-mist: #f2f2f2;
-  --color-mist-deep: #dddddd;
-  --color-card: #ffffff;
-  --color-ink: #000000;
-  --color-ink-soft: #000000;
-  --color-lake: #000000;
-  --color-lake-deep: #000000;
-  --color-heather: #000000;
-  --color-heather-soft: #f2f2f2;
-  --color-line: #000000;
-  --color-edge: #000000;
-  --color-overlay: #000000;
-  --color-on-overlay: #ffffff;
-  --color-on-dark: #ffffff;
-  --focus-ring: #000000;
-  color-scheme: light;
-}
-html[data-contrast] img,
-html[data-contrast] video {
-  /* Photographs are never repainted; a thin line keeps them from floating. */
-  outline: 1px solid var(--color-line);
-}
-html[data-font-size="large"] {
-  font-size: 130%;
-}
-html[data-font-size="xlarge"] {
-  font-size: 150%;
 }
 @media (forced-colors: active) {
   :focus-visible {
@@ -246,317 +108,216 @@ html[data-font-size="xlarge"] {
 }
 
 /* ---------------------------------------------------------------------------
-   Header chips: "Dostępność", "Menu", "Zamknij", "Przywróć domyślne". One
-   shape for every small control in the chrome, tall enough for a thumb.
+   Reader settings, written on <html> by the header buttons and applied before
+   first paint by the inline script in Base. High contrast is the black-and-
+   yellow mode Polish public sites have offered for years; it repaints every
+   token, and photographs are left alone.
    ------------------------------------------------------------------------ */
-.chip {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  --bloom: color-mix(in srgb, var(--color-ink) 18%, transparent);
+html[data-contrast="high"] {
+  --color-paper: #000000;
+  --color-sand: #000000;
+  --color-white: #000000;
+  --color-ink: #ffff00;
+  --color-ink-soft: #ffff00;
+  --color-pine: #ffff00;
+  --color-pine-deep: #ffffff;
+  --color-clay: #ffff00;
+  --color-line: #ffffff;
+  --color-on-pine: #000000;
+  color-scheme: dark;
+}
+html[data-contrast="high"] img {
+  /* A thin line keeps a photograph from floating on the black ground. */
+  outline: 1px solid var(--color-line);
+}
+
+html[data-font-size="large"] {
+  font-size: 137.5%;
+}
+html[data-font-size="xlarge"] {
+  font-size: 162.5%;
+}
+
+/* ---------------------------------------------------------------------------
+   Skip link: off-screen until it takes focus, then the first thing on the page.
+   ------------------------------------------------------------------------ */
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 60;
+  transform: translateY(-130%);
+  padding: 0.75rem 1.25rem;
+  background: var(--color-pine);
+  color: var(--color-on-pine);
+  border-radius: 0 0 var(--radius-md) 0;
+  text-decoration: none;
+}
+.skip-link:focus {
+  transform: none;
+}
+
+/* ---------------------------------------------------------------------------
+   Buttons. Two of them: `btn-primary` is the one action of a page,
+   `btn-secondary` the alternative beside it. Colour is the only thing that
+   answers a hover.
+   ------------------------------------------------------------------------ */
+.btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
+  justify-content: center;
+  gap: 0.5rem;
   min-height: 2.75rem;
-  padding: 0.5rem 0.9rem;
-  border: 0;
-  border-radius: 0.5rem;
-  background: var(--color-mist);
-  color: var(--color-ink);
-  font: inherit;
+  padding: 0.65rem 1.4rem;
+  border: 2px solid var(--color-pine);
+  border-radius: var(--radius-md);
   font-weight: 600;
+  line-height: 1.3;
+  text-decoration: none;
   cursor: pointer;
 }
-.chip:hover {
-  background: var(--color-mist-deep);
+.btn-primary {
+  background: var(--color-pine);
+  color: var(--color-on-pine);
 }
-/* From `lg` the sections sit in the header row, so the drawer button goes. */
-@media (min-width: 64rem) {
-  .menu-open {
-    display: none;
-  }
+.btn-primary:hover {
+  background: var(--color-pine-deep);
+  border-color: var(--color-pine-deep);
+  color: var(--color-on-pine);
 }
-/* The mark on "Dostępność" when something differs from the defaults. */
-.chip-dot {
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 50%;
-  background: var(--color-heather);
+.btn-secondary {
+  background: transparent;
+  color: var(--color-pine);
+}
+.btn-secondary:hover {
+  background: var(--color-sand);
+  color: var(--color-pine-deep);
 }
 
 /* ---------------------------------------------------------------------------
-   The sections, in a row under the name from `lg` up. The current one is
-   underlined in lake, the way a link is.
+   Header controls: the text-size and contrast buttons, and the „Menu" button.
+   One shape, tall enough for a thumb.
    ------------------------------------------------------------------------ */
-.site-nav-link {
-  display: block;
-  padding: 0.75rem 0.75rem 0.85rem;
-  font-family: var(--font-display);
-  font-weight: 600;
-  color: var(--color-ink);
-  text-decoration: none;
-  border-bottom: 3px solid transparent;
-}
-.site-nav-link:hover {
-  color: var(--color-lake);
-}
-.site-nav-link[aria-current] {
-  color: var(--color-lake);
-  border-bottom-color: var(--color-lake);
-}
-
-/* One entry in that row is a dropdown, not a link: a <details>, so it opens
-   without a script. The panel hangs under its own summary. */
-.site-nav-group {
-  position: relative;
-}
-.site-nav-group summary {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  cursor: pointer;
-  list-style: none;
-}
-.site-nav-group summary::-webkit-details-marker {
-  display: none;
-}
-.site-nav-group summary svg {
-  flex: none;
-}
-.site-nav-group details[open] summary svg {
-  transform: rotate(180deg);
-}
-.site-nav-panel {
-  position: absolute;
-  z-index: 20;
-  top: 100%;
-  right: 0.25rem;
-  min-width: 14rem;
-  padding: 0.35rem 0;
-  border: 1px solid var(--color-edge);
-  border-radius: var(--radius-lg);
-  background: var(--color-card);
-  box-shadow: 0 12px 28px rgb(0 0 0 / 0.12);
-}
-.site-nav-panel a {
-  display: block;
-  padding: 0.55rem 1rem;
-  font-family: var(--font-display);
-  font-weight: 600;
-  color: var(--color-ink);
-  text-decoration: none;
-}
-.site-nav-panel a:hover {
-  background: var(--color-mist);
-  color: var(--color-lake);
-}
-.site-nav-panel a[aria-current] {
-  color: var(--color-lake);
-}
-
-/* ---------------------------------------------------------------------------
-   The accessibility panel: a small <dialog> at the top right, full width on
-   a phone. Segmented radios for text size and colours, one switch for motion.
-   ------------------------------------------------------------------------ */
-.a11y {
-  margin: 0.75rem 0.75rem 0 auto;
-  padding: 0;
-  width: min(24rem, calc(100% - 1.5rem));
-  max-height: calc(100% - 1.5rem);
-  border: 1px solid var(--color-line);
-  border-radius: 0.5rem;
-  background: var(--color-paper);
-  color: var(--color-ink);
-  box-shadow: 0 1rem 2.5rem rgb(0 0 0 / 0.18);
-}
-@media (min-width: 40rem) {
-  .a11y {
-    margin: 1rem 2rem 0 auto;
-  }
-}
-/* Inside the panel the chips are compact: they are settings, not the page. */
-.a11y .chip {
-  min-height: 2.25rem;
-  padding: 0.35rem 0.7rem;
-  font-size: var(--text-meta);
-  line-height: var(--text-meta--line-height);
-}
-.a11y::backdrop {
-  background: rgb(0 0 0 / 0.25);
-}
-.a11y-group {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  min-width: 0;
-}
-.a11y-group legend {
-  padding: 0;
-  margin-bottom: 0.5rem;
-  font-family: var(--font-display);
-  font-size: var(--text-meta);
-  line-height: var(--text-meta--line-height);
-  font-weight: 600;
-}
-.segments {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem;
-}
-.segment {
-  position: relative;
+.tool {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-height: 2.25rem;
-  min-width: 2.75rem;
-  padding: 0.35rem 0.7rem;
-  font-size: var(--text-meta);
-  line-height: var(--text-meta--line-height);
-  border: 2px solid var(--color-edge);
-  border-radius: 0.5rem;
-  background: var(--color-card);
+  min-width: 2.25rem;
+  padding: 0.25rem 0.7rem;
+  /* Pine, not the hairline: this border is the only thing that says „control",
+     so it has to clear 3:1 against both the white fill and the bar behind it. */
+  border: 1px solid var(--color-pine);
+  border-radius: var(--radius-md);
+  background: var(--color-white);
   color: var(--color-ink);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  line-height: 1.2;
   cursor: pointer;
 }
-.segment input {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  margin: 0;
-  cursor: pointer;
+.tool:hover {
+  border-color: var(--color-pine-deep);
+  color: var(--color-pine-deep);
 }
-.segment:hover {
-  background: var(--color-mist);
-}
-.segment:has(input:checked) {
-  background: var(--color-ink);
-  border-color: var(--color-ink);
-  color: var(--color-paper);
-}
-.segment:has(input:focus-visible) {
-  outline: 3px solid var(--focus-ring);
-  outline-offset: 2px;
-}
-.switch {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  min-height: 2.25rem;
-  font-size: var(--text-meta);
-  line-height: var(--text-meta--line-height);
-  cursor: pointer;
-}
-.switch input {
-  width: 1.25rem;
-  height: 1.25rem;
-  margin: 0;
-  accent-color: var(--color-lake);
-  cursor: pointer;
-}
-.switch input:disabled {
-  cursor: default;
+.tool[aria-pressed="true"] {
+  background: var(--color-pine);
+  border-color: var(--color-pine);
+  color: var(--color-on-pine);
 }
 
 /* ---------------------------------------------------------------------------
-   Navigation below `lg`: one button in the header, one drawer from the right.
-   The drawer is a <dialog>, so the platform traps focus and answers Escape.
+   Main menu. A flat row of links from `md` up; below that the same links in a
+   <dialog> that drops from the top edge, full width.
    ------------------------------------------------------------------------ */
+.nav-link {
+  display: inline-block;
+  padding: 0.55rem 0;
+  border-bottom: 3px solid transparent;
+  color: var(--color-ink);
+  text-decoration: none;
+}
+.nav-link:hover {
+  color: var(--color-pine-deep);
+  border-bottom-color: var(--color-line);
+}
+.nav-link[aria-current="page"] {
+  color: var(--color-pine);
+  border-bottom-color: var(--color-pine);
+  font-weight: 600;
+}
+
 .menu {
   margin: 0;
-  padding: 0;
-  inset: 0 0 0 auto;
-  width: min(22rem, 100%);
+  width: 100%;
   max-width: 100%;
-  height: 100%;
-  max-height: 100%;
+  padding: 1rem 1.25rem 1.5rem;
   border: 0;
-  border-left: 1px solid var(--color-line);
+  border-bottom: 1px solid var(--color-line);
   background: var(--color-paper);
   color: var(--color-ink);
 }
 .menu::backdrop {
-  background: rgb(0 0 0 / 0.45);
+  background: color-mix(in srgb, var(--color-ink) 60%, transparent);
 }
 .menu a {
   display: block;
-  padding: 0.9rem 0;
+  padding: 0.85rem 0.25rem;
+  border-top: 1px solid var(--color-line);
+  color: var(--color-ink);
+  font-size: 1.125rem;
+  text-decoration: none;
+}
+.menu a:hover {
+  color: var(--color-pine-deep);
+}
+.menu a[aria-current="page"] {
+  color: var(--color-pine);
+  font-weight: 600;
+}
+.menu li:last-child a {
   border-bottom: 1px solid var(--color-line);
-  font-size: 1.2rem;
-  font-family: var(--font-display);
-  font-weight: 600;
-  color: var(--color-ink);
-  text-decoration: none;
-}
-.menu a[aria-current] {
-  color: var(--color-lake);
 }
 
-/* The same dropdown in the drawer is simply a labelled group: there is room
-   to show all four addresses at once. */
-.menu-group > p {
-  padding: 0.9rem 0 0.35rem;
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 1.2rem;
-  color: var(--color-ink-soft);
-}
-.menu-group ul a {
-  padding-left: 1rem;
-  font-size: 1.05rem;
+/* The crumb separator is drawn but never read out: the empty alt text in the
+   second `content` declaration keeps it out of the accessibility tree. */
+.breadcrumbs li:not(:last-child)::after {
+  content: "›";
+  content: "›" / "";
+  margin-inline-start: 0.25rem;
 }
 
 /* ---------------------------------------------------------------------------
-   "W skrócie": three sentences at the top of every content page, in heather,
-   the colour that means "worth reading".
+   Sub-navigation and the table of contents: the two rails.
    ------------------------------------------------------------------------ */
-.brief {
-  background: var(--color-heather-soft);
-  border-left: 4px solid var(--color-heather);
-  border-radius: 0 0.5rem 0.5rem 0;
-  padding: 1rem 1.25rem;
-  max-width: var(--container-column);
-}
-.brief > p:first-child {
+.rail-title {
   font-family: var(--font-display);
   font-weight: 600;
-  margin: 0 0 0.35rem;
+  margin-bottom: 0.5rem;
 }
-.brief ul {
-  margin: 0;
-  padding-left: 1.1rem;
-}
-.brief li {
-  margin: 0.25rem 0;
-}
-.brief li::marker {
-  color: var(--color-heather);
-}
-
-/* ---------------------------------------------------------------------------
-   Table of contents: the left rail on desktop, a list under the title on a
-   phone. The current chapter is marked by script; without it, plain links.
-   ------------------------------------------------------------------------ */
-.toc a {
+.rail a {
   display: block;
-  padding: 0.3rem 0 0.3rem 0.85rem;
-  border-left: 2px solid var(--color-line);
-  color: var(--color-ink-soft);
+  padding: 0.4rem 0;
+  border-top: 1px solid var(--color-line);
+  color: var(--color-pine);
   text-decoration: none;
-  font-size: var(--text-meta);
-  line-height: var(--text-meta--line-height);
 }
-.toc a:hover {
-  color: var(--color-ink);
-  border-left-color: var(--color-edge);
+.rail a:hover {
+  color: var(--color-pine-deep);
+  text-decoration: underline;
 }
-.toc a[aria-current] {
+.rail li:last-child a {
+  border-bottom: 1px solid var(--color-line);
+}
+.rail a[aria-current] {
   color: var(--color-ink);
-  border-left-color: var(--color-lake);
   font-weight: 600;
 }
 
-/* A plain list of pages, one per row, replaces cards everywhere. */
+/* ---------------------------------------------------------------------------
+   A plain list of pages, one link per row, a hairline between rows. This is the
+   site's only "card".
+   ------------------------------------------------------------------------ */
 .pages {
   list-style: none;
   margin: 0;
@@ -571,129 +332,162 @@ html[data-font-size="xlarge"] {
 .pages a {
   display: block;
   padding: 0.9rem 0;
-  color: var(--color-lake-deep);
   text-decoration: none;
-  font-weight: 500;
 }
 .pages a > span {
+  font-weight: 600;
   text-decoration: underline;
-  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
 }
 .pages a:hover > span {
   text-decoration-thickness: 2px;
 }
 .pages p {
-  margin: 0.1rem 0 0;
+  margin-top: 0.15rem;
   color: var(--color-ink-soft);
-  max-width: var(--measure-prose);
 }
 
 /* ---------------------------------------------------------------------------
-   Long-form prose. Everything a migrated document needs, in one class.
+   Documents to download: the format and the size after the label, so a reader
+   knows what opens before it opens.
    ------------------------------------------------------------------------ */
-.doc {
-  max-width: var(--container-column);
+.docs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
-.doc > * {
-  max-width: var(--measure-prose);
+.docs li {
+  border-top: 1px solid var(--color-line);
 }
-.doc > :is(table, .table-scroll, figure, ul.pages, .brief, hr) {
-  max-width: none;
+.docs li:last-child {
+  border-bottom: 1px solid var(--color-line);
 }
-.doc h2 {
-  font-size: 1.6rem;
-  margin-top: var(--spacing-subsection);
-  margin-bottom: 0.6rem;
-}
-.doc h3 {
-  font-size: 1.2rem;
-  margin-top: 1.75rem;
-  margin-bottom: 0.4rem;
-}
-.doc h4 {
-  font-size: 1.05rem;
-  margin-top: 1.4rem;
-  margin-bottom: 0.3rem;
-}
-.doc p,
-.doc ul,
-.doc ol,
-.doc dl {
-  margin: 0.85rem 0;
-}
-.doc ul,
-.doc ol {
-  padding-left: 1.3rem;
-}
-.doc li {
-  margin: 0.3rem 0;
-}
-.doc li::marker {
-  color: var(--color-ink-soft);
-}
-.doc a {
-  color: var(--color-lake-deep);
+.docs a {
+  display: block;
+  padding: 0.75rem 0;
   text-decoration: underline;
   text-decoration-thickness: 1px;
 }
-.doc a:hover {
+.docs a:hover {
   text-decoration-thickness: 2px;
 }
-.doc strong {
-  font-weight: 600;
+.docs span {
+  font-size: var(--text-sm);
+  white-space: nowrap;
 }
-.doc blockquote {
-  margin: 1.25rem 0;
-  padding: 0.25rem 0 0.25rem 1.1rem;
-  border-left: 3px solid var(--color-heather);
+
+/* ---------------------------------------------------------------------------
+   Long-form text. Everything the Dom wrote in sentences goes inside
+   <div class="prose">, whole.
+   ------------------------------------------------------------------------ */
+.prose {
+  /* The running-text measure — the same 65ch the `max-w-prose` utility sets. */
+  max-width: 65ch;
+}
+.prose h2 {
+  font-size: 1.6rem;
+  line-height: 1.25;
+  margin-top: 2.75rem;
+  margin-bottom: 0.6rem;
+}
+.prose h3 {
+  font-size: 1.2rem;
+  line-height: 1.3;
+  margin-top: 1.9rem;
+  margin-bottom: 0.4rem;
+}
+.prose h4 {
+  font-size: 1.05rem;
+  line-height: 1.35;
+  margin-top: 1.4rem;
+  margin-bottom: 0.3rem;
+}
+.prose > *:first-child {
+  margin-top: 0;
+}
+.prose p,
+.prose ul,
+.prose ol,
+.prose dl {
+  margin: 0.9rem 0;
+}
+.prose ul,
+.prose ol {
+  padding-left: 1.3rem;
+}
+.prose ul {
+  list-style: disc;
+}
+.prose ol {
+  list-style: decimal;
+}
+/* The whistleblower procedure numbers sub-items "1)", "2)" and refers to them
+   that way in its own text, so the closing parenthesis has to be preserved. */
+.prose ol.paren > li::marker {
+  content: counter(list-item) ") ";
+}
+.prose li {
+  margin: 0.3rem 0;
+}
+.prose li::marker {
   color: var(--color-ink-soft);
 }
-.doc hr {
-  border: 0;
-  border-top: 1px solid var(--color-line);
-  margin: var(--spacing-subsection) 0;
+.prose a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
 }
-.doc figure {
-  margin: 1.5rem 0;
+.prose a:hover {
+  text-decoration-thickness: 2px;
 }
-.doc figcaption,
-figcaption {
-  font-size: var(--text-meta);
-  line-height: var(--text-meta--line-height);
-  color: var(--color-ink-soft);
-  margin-top: 0.5rem;
-}
-.doc img {
-  border-radius: 0.5rem;
-}
-.doc address {
-  font-style: normal;
-}
-.doc dt {
+.prose strong {
   font-weight: 600;
 }
-.doc dd {
+.prose dt {
+  font-weight: 600;
+}
+.prose dd {
   margin: 0 0 0.6rem;
 }
-.doc table,
-.table {
+.prose blockquote {
+  margin: 1.3rem 0;
+  padding: 0.25rem 0 0.25rem 1.1rem;
+  border-left: 3px solid var(--color-clay);
+  color: var(--color-ink-soft);
+}
+.prose hr {
+  margin: 2.75rem 0;
+  border: 0;
+  border-top: 1px solid var(--color-line);
+}
+.prose figure {
+  margin: 1.6rem 0;
+}
+.prose img {
+  border-radius: var(--radius-md);
+}
+
+figcaption {
+  margin-top: 0.5rem;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--color-ink-soft);
+}
+
+/* Tables. The wrapper is what scrolls, so the table keeps its semantics. */
+.prose table {
   width: 100%;
   border-collapse: collapse;
-  font-size: var(--text-meta);
-  line-height: var(--text-meta--line-height);
   margin: 1rem 0;
+  font-size: var(--text-sm);
 }
-.doc th,
-.doc td,
-.table th,
-.table td {
-  text-align: left;
-  vertical-align: top;
+.prose th,
+.prose td {
   padding: 0.6rem 0.6rem 0.6rem 0;
   border-bottom: 1px solid var(--color-line);
+  text-align: left;
+  vertical-align: top;
 }
-.doc th,
-.table th {
+.prose th {
   font-weight: 600;
   border-bottom: 2px solid var(--color-ink);
 }
@@ -706,410 +500,68 @@ figcaption {
 }
 
 /* ---------------------------------------------------------------------------
-   Documents to download: format and size after the label, in meta type.
+   Photographs: the gallery grid and the lightbox it opens.
    ------------------------------------------------------------------------ */
-.docs {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  max-width: var(--container-column);
-}
-.docs li {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem 1rem;
-  align-items: baseline;
-  justify-content: space-between;
-  padding: 0.7rem 0;
-  border-top: 1px solid var(--color-line);
-}
-.docs li:last-child {
-  border-bottom: 1px solid var(--color-line);
-}
-.docs a {
-  color: var(--color-lake-deep);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-}
-.docs a:hover {
-  text-decoration-thickness: 2px;
-}
-.docs span {
-  font-size: var(--text-meta);
-  color: var(--color-ink-soft);
-  white-space: nowrap;
-}
-
-/* ---------------------------------------------------------------------------
-   Buttons. One family for the whole site: `.btn` (secondary, outlined),
-   `.btn-primary` (the one action of a page), `.btn-phone` (the large number),
-   `.btn-quiet` (a control on a dark or busy ground: the lightbox). Every
-   button answers hover with a fill, press with a deeper fill, and — with
-   motion allowed — a soft bloom spreading from the point of the click
-   (`--px`/`--py` written by the pointer script in Base).
-   ------------------------------------------------------------------------ */
-.btn {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  min-height: 2.75rem;
-  padding: 0.7rem 1.2rem;
-  border-radius: 0.5rem;
-  font: inherit;
-  font-weight: 600;
-  line-height: 1.2;
-  text-decoration: none;
-  border: 2px solid var(--color-lake);
-  color: var(--color-lake-deep);
-  background: transparent;
-  cursor: pointer;
-  --bloom: color-mix(in srgb, var(--color-lake) 22%, transparent);
-}
-.btn:hover {
-  background: var(--color-mist-deep);
-  border-color: var(--color-lake-deep);
-}
-.btn:active {
-  background: var(--color-mist-deep);
-  border-color: var(--color-lake-deep);
-  color: var(--color-lake-deep);
-}
-.btn-primary {
-  background: var(--color-lake);
-  color: var(--color-on-dark);
-  --bloom: color-mix(in srgb, var(--color-on-dark) 28%, transparent);
-}
-.btn-primary:hover,
-.btn-primary:active {
-  background: var(--color-lake-deep);
-  border-color: var(--color-lake-deep);
-  color: var(--color-on-dark);
-}
-.btn-phone {
-  font-size: 1.35rem;
-  padding: 0.75rem 1.35rem;
-  letter-spacing: 0.01em;
-}
-.btn-quiet {
-  border-color: color-mix(in srgb, var(--color-on-overlay) 45%, transparent);
-  color: var(--color-on-overlay);
-  --bloom: color-mix(in srgb, var(--color-on-overlay) 30%, transparent);
-}
-.btn-quiet:hover {
-  background: color-mix(in srgb, var(--color-on-overlay) 14%, transparent);
-  border-color: var(--color-on-overlay);
-}
-.btn-quiet:active {
-  background: color-mix(in srgb, var(--color-on-overlay) 26%, transparent);
-  border-color: var(--color-on-overlay);
-  color: var(--color-on-overlay);
-}
-/* The bloom: one wide, soft disc of light drawn on ::after, centred on the
-   click point. Invisible until a press starts the animation. */
-.btn::after,
-.chip::after {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  pointer-events: none;
-  --bloom-size: max(220%, 14rem);
-  width: var(--bloom-size);
-  aspect-ratio: 1;
-  left: var(--px, 50%);
-  top: var(--py, 50%);
-  translate: -50% -50%;
-  border-radius: 50%;
-  background: radial-gradient(circle, var(--bloom) 0, transparent 60%);
-  opacity: 0;
-  scale: 0;
-}
-
-/* ---------------------------------------------------------------------------
-   Photographs and the lightbox.
-   ------------------------------------------------------------------------ */
-.photo img {
-  width: 100%;
-  height: auto;
-  border-radius: 0.5rem;
-  display: block;
-}
 .gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  gap: 1rem;
   list-style: none;
   margin: 0;
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
-  gap: 1rem;
 }
 .gallery button {
   display: block;
   width: 100%;
   padding: 0;
   border: 0;
-  background: transparent;
-  border-radius: 0.5rem;
-  cursor: zoom-in;
+  border-radius: var(--radius-md);
+  background: none;
+  cursor: pointer;
 }
 .gallery img {
+  display: block;
   width: 100%;
+  height: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
-  border-radius: 0.5rem;
-  display: block;
+  border-radius: var(--radius-md);
 }
+.gallery button:hover img {
+  outline: 3px solid var(--color-pine);
+  outline-offset: -3px;
+}
+
 .lightbox {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  width: 100%;
-  height: 100%;
-  max-width: 100%;
-  max-height: 100%;
-  background: var(--color-overlay);
-  color: var(--color-on-overlay);
+  width: min(64rem, 92vw);
+  max-width: 92vw;
+  max-height: 92vh;
+  margin: auto;
+  padding: 1rem;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-paper);
+  color: var(--color-ink);
 }
 .lightbox::backdrop {
-  background: var(--color-overlay);
+  background: color-mix(in srgb, var(--color-ink) 85%, transparent);
 }
-/* Three rows that never overlap: a bar, the photograph, a bar. The middle
-   row is the only one allowed to shrink, so the picture always fits in
-   whatever is left between the two bars. */
-.lightbox-frame {
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
-  height: 100%;
-  min-height: 0;
-  gap: 1rem;
-  padding: 1rem;
-}
-@media (min-width: 40rem) {
-  .lightbox-frame {
-    gap: 1.25rem;
-    padding: 1.25rem 1.5rem;
-  }
+.lightbox img {
+  display: block;
+  width: 100%;
+  max-height: 72vh;
+  object-fit: contain;
+  border-radius: var(--radius-md);
 }
 .lightbox-bar {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
   flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  margin-top: 0.75rem;
 }
-.lightbox-counter {
-  margin: 0;
-  font-size: var(--text-meta);
-  line-height: var(--text-meta--line-height);
-  color: var(--color-on-overlay);
-}
-.lightbox figure {
-  margin: 0;
-  height: 100%;
-  min-height: 0;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.lightbox img {
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  display: block;
-  border-radius: 0.5rem;
-}
-.lightbox-figcaption {
-  margin: 0;
-  flex: 1 1 100%;
-  text-align: center;
-  text-wrap: balance;
-}
-.lightbox-nav {
-  display: flex;
-  gap: 0.75rem;
-  margin-inline: auto;
-}
-.lightbox .btn {
-  min-height: 3rem;
-}
-.lightbox :focus-visible {
-  outline-color: var(--color-on-overlay);
-}
-
-/* ---------------------------------------------------------------------------
-   Motion. One gesture — a quiet rise with a fade, the way the page itself
-   arrives — at three speeds: --dur-fast for state feedback, --dur-panel for a
-   surface opening, --dur-enter for something arriving. --dur-press is the
-   soft bloom after a press. One easing. Everything below is gated on
-   prefers-reduced-motion and switched off in the contrast modes and by the „Ruch" button.
-   ------------------------------------------------------------------------ */
-:root {
-  --dur-fast: 300ms;
-  --dur-panel: 500ms;
-  --dur-enter: 350ms;
-  --dur-press: 800ms;
-  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-}
-@media (prefers-reduced-motion: no-preference) {
-  html:not([data-contrast]):not([data-motion="reduce"]) {
-    scroll-behavior: smooth;
-  }
-  /* State feedback: a link's underline, a button's fill, the Toc's marker
-     crossfade slowly enough to be seen, never snap. */
-  html:not([data-contrast]):not([data-motion="reduce"]) :is(a, button, .toc a, .site-nav-link, .segment) {
-    transition-property: color, background-color, border-color, text-decoration-color, text-decoration-thickness;
-    transition-duration: var(--dur-fast);
-    transition-timing-function: var(--ease-out);
-  }
-  /* Press feedback: one soft, wide bloom of light spreading from the click
-     point and dissolving. The pointer script sets `data-press` on pointerdown
-     and takes it off when the bloom has faded. */
-  html:not([data-contrast]):not([data-motion="reduce"]) :is(.btn, .chip)[data-press]::after {
-    animation: bloom var(--dur-press) var(--ease-out);
-  }
-  /* Surfaces opening: the drawer slides into place from the right, the
-     lightbox rises the way the page does; both backdrops fade in. */
-  html:not([data-contrast]):not([data-motion="reduce"]) .menu[open] {
-    animation: slide-in var(--dur-panel) var(--ease-out);
-  }
-  html:not([data-contrast]):not([data-motion="reduce"]) .menu[open]::backdrop,
-  html:not([data-contrast]):not([data-motion="reduce"]) .lightbox[open]::backdrop {
-    animation: fade-in var(--dur-panel) var(--ease-out);
-  }
-  html:not([data-contrast]):not([data-motion="reduce"]) .lightbox[open] {
-    animation: rise-in var(--dur-panel) var(--ease-out);
-  }
-  /* The accessibility panel rises the way the page does. */
-  html:not([data-contrast]):not([data-motion="reduce"]) .a11y[open] {
-    animation: rise-in var(--dur-panel) var(--ease-out);
-  }
-  html:not([data-contrast]):not([data-motion="reduce"]) .a11y[open]::backdrop {
-    animation: fade-in var(--dur-panel) var(--ease-out);
-  }
-  /* The page arriving: one quiet rise of <main>, once per load. */
-  html:not([data-contrast]):not([data-motion="reduce"]) main {
-    animation: rise-in var(--dur-enter) var(--ease-out);
-  }
-  /* Arriving at a chapter by anchor: the heading glows and lets it go. */
-  html:not([data-contrast]):not([data-motion="reduce"]) :is(h2, h3, section)[id]:target {
-    animation: arrive-in 1600ms var(--ease-out);
-  }
-  /* Between pages: the old page dissolves, the new one arrives with its own
-     rise; the header holds still. `mix-blend-mode: normal` because the UA
-     default is additive and would flash white. */
-  @view-transition {
-    navigation: auto;
-  }
-  ::view-transition-old(root),
-  ::view-transition-new(root),
-  ::view-transition-old(site-header),
-  ::view-transition-new(site-header) {
-    mix-blend-mode: normal;
-  }
-  ::view-transition-old(root) {
-    animation: fade-out 220ms var(--ease-out);
-  }
-  ::view-transition-new(root) {
-    animation: fade-in 420ms var(--ease-out);
-  }
-  ::view-transition-old(site-header),
-  ::view-transition-new(site-header) {
-    animation: none;
-  }
-  header {
-    view-transition-name: site-header;
-  }
-  /* A theme change (`data-theme-switch` on <html> while it runs): the page is
-     one snapshot, header included, nothing crossfades on its own, and the
-     new theme is wiped in as a circle growing from the press — the header
-     script animates ::view-transition-new(root) with the clip. */
-  html[data-theme-switch] header {
-    view-transition-name: none;
-  }
-  html[data-theme-switch] :is(a, button, .toc a, .site-nav-link, .segment) {
-    transition: none;
-  }
-  html[data-theme-switch]::view-transition-image-pair(root) {
-    isolation: auto;
-  }
-  html[data-theme-switch]::view-transition-old(root),
-  html[data-theme-switch]::view-transition-new(root) {
-    animation: none;
-  }
-  html[data-theme-switch]::view-transition {
-    pointer-events: none;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  @view-transition {
-    navigation: none;
-  }
-}
-@keyframes slide-in {
-  from {
-    opacity: 0;
-    transform: translateX(2rem);
-  }
-}
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-}
-@keyframes fade-out {
-  to {
-    opacity: 0;
-  }
-}
-@keyframes rise-in {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-}
-@keyframes bloom {
-  0% {
-    opacity: 0;
-    scale: 0.2;
-  }
-  25% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    scale: 1;
-  }
-}
-@keyframes arrive-in {
-  from {
-    background-color: var(--color-heather-soft);
-    box-shadow: 0 0 0 8px var(--color-heather-soft);
-  }
-}
-
-@media print {
-  .chip,
-  .site-nav,
-  .menu,
-  .a11y,
-  .skip {
-    display: none !important;
-  }
-}
-
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+.lightbox-caption {
+  font-size: var(--text-sm);
+  color: var(--color-ink-soft);
 }

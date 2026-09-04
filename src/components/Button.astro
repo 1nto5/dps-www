@@ -1,20 +1,16 @@
 ---
 /**
- * `primary` is the one action of a page (usually the phone), `secondary` the
- * alternative beside it. `phone` sets the large tabular figure treatment.
+ * `primary` is the one action of a page; `secondary` the alternative beside it.
+ * Buttons are links — nothing on this site submits a form.
  */
 interface Props {
   href: string;
   variant?: "primary" | "secondary";
-  phone?: boolean;
-  class?: string;
 }
-const { href, variant = "primary", phone = false, class: className = "" } = Astro.props;
+
+const { href, variant = "primary" } = Astro.props;
 ---
 
-<a
-  href={href}
-  class:list={["btn", variant === "primary" && "btn-primary", phone && "btn-phone", className]}
->
+<a href={href} class:list={["btn", `btn-${variant}`]}>
   <slot />
 </a>

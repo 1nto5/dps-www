@@ -1,12 +1,13 @@
 ---
 /**
- * Internal whistleblowing procedure (source page 1976).
- * Long legal text — reproduced faithfully, including the section numbering
- * the document refers to internally (e.g. "§ 1 ust. 6").
+ * Internal whistleblowing procedure. Long legal text — reproduced faithfully,
+ * including the section numbering the document refers to internally (e.g.
+ * "§ 1 ust. 6").
  */
 import Base from "../../layouts/Base.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import PageShell from "../../components/PageShell.astro";
+import SubNav from "../../components/SubNav.astro";
 import Toc from "../../components/Toc.astro";
 import { addressLine, contact } from "../../data/contact";
 
@@ -37,9 +38,12 @@ const toc = [
   />
 
   <PageShell>
-    <Toc slot="rail" items={toc} />
+    <Fragment slot="aside">
+      <SubNav />
+      <Toc items={toc} />
+    </Fragment>
 
-    <div class="doc mt-subsection">
+    <div class="prose">
       <h2 id="postanowienia-ogolne">§ 1. Postanowienia ogólne</h2>
       <ol>
         <li>
@@ -493,11 +497,3 @@ const toc = [
     </div>
   </PageShell>
 </Base>
-
-<style>
-  /* The source document numbers these sub-items "1)", "2)" and refers to them
-     that way in the text, so the closing parenthesis has to be preserved. */
-  .doc ol.paren > li::marker {
-    content: counter(list-item) ") ";
-  }
-</style>

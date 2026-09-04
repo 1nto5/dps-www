@@ -1,6 +1,6 @@
 /**
  * The Dom's three statutory documents, as a `DocList` array. Kept here rather
- * than on `/o-nas/` because more than one page points at them: the document
+ * than on `/o-domu/` because more than one page points at them: the document
  * hub links to the section that shows them, and a fourth document — or a new
  * file name for one of these — has to change in one place.
  */

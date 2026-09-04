@@ -8,19 +8,12 @@
 import Base from "../../layouts/Base.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import PageShell from "../../components/PageShell.astro";
-import Toc from "../../components/Toc.astro";
-import Brief from "../../components/Brief.astro";
+import SubNav from "../../components/SubNav.astro";
 import Figure from "../../components/Figure.astro";
 
 import groupOnStage from "../../assets/media/1168-christopherGroup.jpg";
 import pressMuzyka from "../../assets/media/1169-christopher680.jpg";
 import pressSeniorska from "../../assets/media/1170-gazeta680.jpg";
-
-const toc = [
-  { id: "grupa", label: "Grupa wokalna" },
-  { id: "media", label: "O nas w mediach" },
-  { id: "muzyka", label: "Muzyka z naszych stron" },
-];
 
 const members = ["Władysław Drozdowski", "Waldemar Szmul", "Jan Pieryni", "Ryszard Haftkowski"];
 ---
@@ -32,17 +25,9 @@ const members = ["Władysław Drozdowski", "Waldemar Szmul", "Jan Pieryni", "Rys
   <PageHeader breadcrumbs title="Grupa wokalna „Christopher”" />
 
   <PageShell>
-    <Toc slot="rail" items={toc} />
+    <SubNav slot="aside" />
 
-    <Brief>
-      <li>
-        Grupa Wokalna „Christopher” działa w Domu Pomocy Społecznej w Szczytnie od 2005 roku.
-      </li>
-      <li>Została stworzona w ramach zajęć pracowni muzykoterapii.</li>
-      <li>Opiekunem i założycielem zespołu jest Krzysztof Fuks.</li>
-    </Brief>
-
-    <div class="doc mt-subsection">
+    <div class="prose">
       <h2 id="grupa">Grupa wokalna</h2>
       <p>
         Grupa Wokalna „Christopher” działa w Domu Pomocy Społecznej w Szczytnie od 2005 roku.

@@ -1,19 +1,18 @@
 ---
 /**
- * The section page about the Dom itself, carrying the production site's
- * `/gallery/` page ("O NAS"): the law the Dom works under, the people in
- * charge and the constitutive documents. That page publishes no photograph,
- * so neither does this one.
+ * The section page about the Dom itself: the law the Dom works under, the
+ * people in charge and the constitutive documents. The production page
+ * publishes no photograph, so neither does this one.
  */
 import Base from "../layouts/Base.astro";
 import PageHeader from "../components/PageHeader.astro";
 import PageShell from "../components/PageShell.astro";
+import SubNav from "../components/SubNav.astro";
 import Toc from "../components/Toc.astro";
-import Brief from "../components/Brief.astro";
 import DocList from "../components/DocList.astro";
 import { dokumentyUstrojowe } from "../data/dokumenty-ustrojowe";
 
-/** Every id below exists as an `id` on an `h2` — the build checks it. */
+/** Every id below is the `id` of an `h2` further down the page. */
 const toc = [
   { id: "nasz-dom", label: "Nasz dom" },
   { id: "dla-kogo", label: "Dla kogo" },
@@ -48,18 +47,12 @@ const legalBasis = [
   <PageHeader breadcrumbs title="O nas" />
 
   <PageShell>
-    <Toc slot="rail" items={toc} />
+    <Fragment slot="aside">
+      <SubNav />
+      <Toc items={toc} />
+    </Fragment>
 
-    <Brief>
-      <li>Nasz Dom przeznaczony jest dla osób przewlekle psychicznie chorych.</li>
-      <li>Zapewniamy opiekę całodobową dla 196 osób.</li>
-      <li>
-        Dom Pomocy Społecznej w Szczytnie zamieszkuje 171 Mieszkańców, a filię w Spychowie 25
-        Mieszkańców.
-      </li>
-    </Brief>
-
-    <div class="doc mt-subsection">
+    <div class="prose">
       <h2 id="nasz-dom">Nasz dom</h2>
       <p>
         Nasz Dom stoi w Szczytnie przy ul. Wielbarskiej 2. Filia Domu Pomocy Społecznej
@@ -119,7 +112,7 @@ const legalBasis = [
       <h2 id="dokumenty">Dokumenty</h2>
     </div>
 
-    <div class="mt-block">
+    <div class="mt-8">
       <DocList docs={dokumentyUstrojowe} />
     </div>
   </PageShell>

@@ -8,7 +8,7 @@ import { Image } from "astro:assets";
 import Base from "../../layouts/Base.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import PageShell from "../../components/PageShell.astro";
-import Toc from "../../components/Toc.astro";
+import SubNav from "../../components/SubNav.astro";
 import PageList from "../../components/PageList.astro";
 import Figure from "../../components/Figure.astro";
 import Gallery from "../../components/Gallery.astro";
@@ -27,14 +27,6 @@ import photoFartuch from "../../assets/media/1204-DSCN4419.jpg";
 import photoSprzet from "../../assets/media/1205-IMG_20201022_102304794.jpg";
 import photoDozownik from "../../assets/media/1206-IMG_20201021_140653511.jpg";
 import photoZamglawiacz from "../../assets/media/1207-IMG_20201022_084222616.jpg";
-
-/** Chapter labels are much shorter than the official project names, which are
-    reproduced in full in the headings themselves. */
-const toc = [
-  { id: "pomagajmy-razem", label: "Pomagajmy Razem" },
-  { id: "bezpieczenstwo-covid", label: "Bezpieczeństwo na czas Covid-19" },
-  { id: "wsparcie-instytucji", label: "Wsparcie instytucji opieki" },
-];
 
 /** The other pages of the subsection; the first entry is this page itself. */
 const otherPages = projektyUnijnePages.slice(1);
@@ -86,9 +78,9 @@ const photos = [
   />
 
   <PageShell>
-    <Toc slot="rail" items={toc} />
+    <SubNav slot="aside" />
 
-    <div class="doc mt-subsection">
+    <div class="prose mt-8">
       <h2 id="pomagajmy-razem">Projekt „Pomagajmy Razem”</h2>
     </div>
 
@@ -106,7 +98,7 @@ const photos = [
       loading="eager"
     />
 
-    <div class="doc">
+    <div class="prose">
       <p>
         Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie realizuje projekt grantowy pt. <strong
           >„Pomagajmy Razem”</strong
@@ -149,11 +141,11 @@ const photos = [
       <h3>Zdjęcia z realizacji projektu</h3>
     </div>
 
-    <div class="mt-block">
+    <div class="mt-8">
       <Gallery photos={photos} sizes="(min-width: 64rem) 15rem, (min-width: 40rem) 33vw, 50vw" />
     </div>
 
-    <div class="doc mt-section">
+    <div class="prose mt-16">
       <h2 id="bezpieczenstwo-covid">
         Projekt „Zapewnienie bezpieczeństwa i opieki pacjentom oraz personelowi zakładów
         opiekuńczo-leczniczych, domów pomocy społecznej, zakładów pielęgnacyjno-opiekuńczych
@@ -178,7 +170,7 @@ const photos = [
       </p>
     </div>
 
-    <div class="mt-block grid max-w-column gap-6 sm:grid-cols-2">
+    <div class="mt-8 grid max-w-prose gap-6 sm:grid-cols-2">
       <Figure
         src={posterCovidDps}
         alt="Plakat informacyjny: Powiat Szczycieński — Dom Pomocy Społecznej im. Jana Pawła II współrealizuje projekt dofinansowany z Funduszy Europejskich na czas Covid-19. Dofinansowanie projektu 29 460,62 zł."
@@ -193,7 +185,7 @@ const photos = [
       />
     </div>
 
-    <div class="doc mt-section">
+    <div class="prose mt-16">
       <h2 id="wsparcie-instytucji">
         Projekt „Wsparcie instytucji zajmujących się opieką nad osobami wymagającymi wsparcia
         z terenu powiatu szczycieńskiego”

@@ -7,10 +7,10 @@ import { Image } from "astro:assets";
 import Base from "../../layouts/Base.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import PageShell from "../../components/PageShell.astro";
-import PageList from "../../components/PageList.astro";
+import SubNav from "../../components/SubNav.astro";
+import Toc from "../../components/Toc.astro";
 import Figure from "../../components/Figure.astro";
 import Gallery from "../../components/Gallery.astro";
-import { projektyUnijnePages } from "../../data/projekty-unijne-pages";
 
 import boardProject from "../../assets/media/1344-680-00186.jpg";
 import logoRpo from "../../assets/media/1345-680-00139.jpg";
@@ -71,6 +71,13 @@ const photos = [
     alt: "Rozdzielacze i naczynia wzbiorcze instalacji ciepłej wody w pomieszczeniu technicznym.",
   },
 ];
+
+const toc = [
+  { id: "cel-projektu", label: "Cel projektu" },
+  { id: "podpisanie-umowy", label: "Podpisanie umowy o dofinansowanie" },
+  { id: "informacja-o-projekcie", label: "Informacja o projekcie" },
+  { id: "zdjecia", label: "Zdjęcia z realizacji inwestycji" },
+];
 ---
 
 <Base
@@ -84,7 +91,10 @@ const photos = [
   />
 
   <PageShell>
-    <PageList slot="rail" items={projektyUnijnePages} current="/projekty-unijne/oze/" />
+    <Fragment slot="aside">
+      <SubNav />
+      <Toc items={toc} />
+    </Fragment>
 
     <Figure
       src={boardProject}
@@ -93,11 +103,11 @@ const photos = [
       widths={[400, 680]}
       sizes="(min-width: 48rem) 42rem, 100vw"
       loading="eager"
-      class="mt-subsection max-w-column"
+      class="mt-8 max-w-prose"
     />
 
-    <div class="doc mt-section">
-      <h2>Cel projektu</h2>
+    <div class="prose mt-16">
+      <h2 id="cel-projektu">Cel projektu</h2>
       <p>
         Celem bezpośrednim realizacji przedsięwzięcia jest redukcja emisji zanieczyszczeń (ochrona
         powietrza atmosferycznego) oraz zmniejszenie kosztów eksploatacyjnych w zakresie produkcji
@@ -126,8 +136,8 @@ const photos = [
       loading="lazy"
     />
 
-    <div class="doc">
-      <h2>Podpisanie umowy o dofinansowanie</h2>
+    <div class="prose">
+      <h2 id="podpisanie-umowy">Podpisanie umowy o dofinansowanie</h2>
       <p>
         W dniu 13 maja 2014 r. Starosta Szczycieński Jarosław Matłach wraz z Wicestarostą Sylwią
         Jaskulską podpisali umowę z Adamem Krzyśkowem, prezesem WFOŚiGW w Olsztynie, na realizację
@@ -146,7 +156,7 @@ const photos = [
         sizes="(min-width: 48rem) 42rem, 100vw"
       />
 
-      <h2>Informacja o projekcie</h2>
+      <h2 id="informacja-o-projekcie">Informacja o projekcie</h2>
       <p>
         W dniu 2 września 2014 r. w siedzibie Domu Pomocy Społecznej im. Jana Pawła II Dyrektor DPS
         p. Dorota Sędzińska-Bruździak podpisała umowę z Wykonawcą dotyczącą projektu pn.:
@@ -155,10 +165,10 @@ const photos = [
         Zamówienia. Termin wykonania inwestycji przewidziano do 30 września 2014 r.
       </p>
 
-      <h2>Zdjęcia z realizacji inwestycji</h2>
+      <h2 id="zdjecia">Zdjęcia z realizacji inwestycji</h2>
     </div>
 
-    <div class="mt-block">
+    <div class="mt-8">
       <Gallery photos={photos} sizes="(min-width: 64rem) 15rem, (min-width: 40rem) 33vw, 50vw" />
     </div>
   </PageShell>
