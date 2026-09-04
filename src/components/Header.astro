@@ -1,9 +1,10 @@
 ---
 /**
- * The site header: the menu button, the name, the reader tools (text size,
- * contrast and theme) and the telephone. The sections live in a <dialog> drawer that
- * slides in from the left at every width, so the header is the same on a
- * phone and a desktop.
+ * The site header: the name, the reader's tools and the telephone in the
+ * first row; the sections in a second row from `lg` up. Below `lg` the
+ * sections live in a <dialog> drawer that slides in from the right, behind
+ * one "Menu" button. Every setting a reader can change — text size, colours,
+ * motion — sits behind one "Dostępność" button, in a small <dialog> panel.
  */
 import { mainNav, activeSection } from "../data/nav";
 import { contact } from "../data/contact";
@@ -13,93 +14,87 @@ const path = Astro.url.pathname.startsWith(base)
   ? Astro.url.pathname.slice(base.length) || "/"
   : Astro.url.pathname;
 const active = activeSection(path);
+
+const links = [{ href: "/", label: "Strona główna" }, ...mainNav];
+const current = (href: string) =>
+  href === "/" ? (path === "/" ? "page" : undefined) : href === active ? "page" : undefined;
 ---
 
 <header class="border-b border-line">
-  <div
-    class="mx-auto flex max-w-wide flex-wrap items-center justify-between gap-x-6 gap-y-3 px-5 py-4 sm:px-8"
-  >
-    <div class="flex items-center gap-4">
-      <button type="button" class="menu-open" data-menu-open aria-haspopup="dialog" aria-expanded="false">
-        <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" fill="none">
-          <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-        </svg>
-        <span>Menu</span>
-      </button>
+  <div class="mx-auto max-w-wide px-5 sm:px-8">
+    <div class="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 py-4">
       <a href="/" class="text-ink no-underline">
         <span class="block font-display text-lg font-bold leading-tight sm:text-xl">Dom Pomocy Społecznej</span>
         <span class="block text-meta text-ink-soft">im. Jana Pawła II w Szczytnie</span>
       </a>
+
+      <div class="ml-auto flex items-center gap-2 sm:gap-3">
+        <a
+          href={contact.phone.href}
+          class="hidden font-semibold text-lake-deep no-underline sm:mr-2 sm:inline-block"
+          >{contact.phone.label}</a
+        >
+        <button
+          type="button"
+          class="chip"
+          data-a11y-open
+          aria-haspopup="dialog"
+          aria-expanded="false"
+          hidden
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <circle cx="12" cy="7.5" r="1.25" fill="currentColor" stroke="none" />
+            <path d="M7.5 10.5l3 .8v3.2l-1.5 4M16.5 10.5l-3 .8v3.2l1.5 4M10.5 14.5h3" />
+          </svg>
+          <span>Dostępność</span>
+          <span class="chip-dot" data-a11y-dot hidden><span class="sr-only">, ustawienia zmienione</span></span>
+        </button>
+        <button type="button" class="chip menu-open" data-menu-open aria-haspopup="dialog" aria-expanded="false">
+          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" fill="none">
+            <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+          <span>Menu</span>
+        </button>
+      </div>
     </div>
 
-    <div class="flex items-center gap-4">
-      <div class="tools flex items-center gap-1" data-tools>
-        <span class="sr-only" id="tools-label">Rozmiar tekstu, kontrast, ruch i motyw</span>
-        <div role="group" aria-labelledby="tools-label" class="flex gap-1">
-          <button type="button" class="tool" data-font="" aria-pressed="true">
-            <span aria-hidden="true">A</span><span class="sr-only">Tekst standardowy</span>
-          </button>
-          <button type="button" class="tool" data-font="large" aria-pressed="false">
-            <span aria-hidden="true">A+</span><span class="sr-only">Tekst większy</span>
-          </button>
-          <button type="button" class="tool" data-font="xlarge" aria-pressed="false">
-            <span aria-hidden="true">A++</span><span class="sr-only">Tekst największy</span>
-          </button>
-          <button type="button" class="tool" data-contrast="yellow" aria-pressed="false">
-            Kontrast
-          </button>
-          <button type="button" class="tool" data-motion aria-pressed="false">
-            <span aria-hidden="true">Ruch</span><span class="sr-only">Ogranicz ruch</span>
-          </button>
-          <!--
-            Shown only when the system itself asks for reduced motion: the
-            button is then pressed and cannot be released, so it says why.
-          -->
-          <span id="motion-system-note" class="sr-only" hidden>Wynika z ustawień systemu</span>
-          <button type="button" class="tool tool-theme" data-theme-cycle>
-            <svg data-icon="system" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="4" width="18" height="13" rx="2" />
-              <path d="M8 21h8M12 17v4" />
-            </svg>
-            <svg data-icon="light" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="4" />
-              <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
-            </svg>
-            <svg data-icon="dark" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
-            </svg>
-            <span class="sr-only" data-theme-label>Motyw: systemowy. Zmień motyw</span>
-          </button>
-        </div>
-        <p class="sr-only" aria-live="polite" data-tools-status></p>
-      </div>
-      <a
-        href={contact.phone.href}
-        class="hidden font-semibold text-lake-deep no-underline sm:inline-block"
-        >{contact.phone.label}</a
-      >
-    </div>
+    <nav aria-label="Sekcje strony" class="site-nav hidden lg:block">
+      <ul role="list" class="-mx-3 flex flex-wrap">
+        {
+          links.map((item) => (
+            <li>
+              <a href={item.href} class="site-nav-link" aria-current={current(item.href)}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
   </div>
 </header>
 
 <dialog class="menu" aria-label="Menu strony" data-menu>
   <div class="flex min-h-full flex-col px-5 py-4">
-    <div class="flex items-center justify-between">
-      <p class="font-display text-xl font-bold">Menu</p>
-      <button type="button" class="tool" data-menu-close>Zamknij</button>
+    <div class="flex items-center justify-end">
+      <button type="button" class="chip" data-menu-close>
+        <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" fill="none">
+          <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+        <span>Zamknij</span>
+      </button>
     </div>
-    <ul role="list" class="mt-6">
-      <li><a href="/" aria-current={path === "/" ? "page" : undefined}>Strona główna</a></li>
+    <ul role="list" class="mt-4">
       {
-        mainNav.map((item) => (
+        links.map((item) => (
           <li>
-            <a href={item.href} aria-current={item.href === active ? "page" : undefined}>
+            <a href={item.href} aria-current={current(item.href)}>
               {item.label}
             </a>
           </li>
         ))
       }
-      <li><a href="/zamieszkac-u-nas/" aria-current={path === "/zamieszkac-u-nas/" ? "page" : undefined}>Przyjęcie do Domu</a></li>
     </ul>
     <p class="mt-8 text-ink-soft">
       Zadzwoń: <a href={contact.phone.href} class="font-semibold text-lake-deep">{contact.phone.label}</a>
@@ -107,10 +102,58 @@ const active = activeSection(path);
   </div>
 </dialog>
 
+<dialog class="a11y" aria-labelledby="a11y-title" data-a11y>
+  <form method="dialog" class="flex flex-col gap-6 p-5 sm:p-6" data-a11y-form>
+    <div class="flex items-center justify-between gap-4">
+      <h2 id="a11y-title" class="font-display text-xl font-bold">Dostępność</h2>
+      <button type="submit" class="chip">
+        <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" fill="none">
+          <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+        <span>Zamknij</span>
+      </button>
+    </div>
+
+    <fieldset class="a11y-group">
+      <legend>Rozmiar tekstu</legend>
+      <div class="segments">
+        <label class="segment"><input type="radio" name="font" value="" /><span aria-hidden="true">A</span><span class="sr-only">Standardowy</span></label>
+        <label class="segment"><input type="radio" name="font" value="large" /><span aria-hidden="true">A+</span><span class="sr-only">Większy</span></label>
+        <label class="segment"><input type="radio" name="font" value="xlarge" /><span aria-hidden="true">A++</span><span class="sr-only">Największy</span></label>
+      </div>
+    </fieldset>
+
+    <fieldset class="a11y-group">
+      <legend>Kolory</legend>
+      <div class="segments">
+        <label class="segment"><input type="radio" name="colors" value="" /><span>Jak w systemie</span></label>
+        <label class="segment"><input type="radio" name="colors" value="light" /><span>Jasne</span></label>
+        <label class="segment"><input type="radio" name="colors" value="dark" /><span>Ciemne</span></label>
+        <label class="segment"><input type="radio" name="colors" value="yellow" /><span>Czarno-żółte</span></label>
+      </div>
+    </fieldset>
+
+    <fieldset class="a11y-group">
+      <legend>Ruch</legend>
+      <label class="switch">
+        <input type="checkbox" name="motion" value="reduce" aria-describedby="motion-system-note" />
+        <span>Ogranicz animacje</span>
+      </label>
+      <p id="motion-system-note" class="mt-2 text-meta text-ink-soft" hidden>
+        Włączone na stałe, bo tak ustawiono w systemie.
+      </p>
+    </fieldset>
+
+    <div class="flex flex-wrap items-center justify-between gap-3 border-t border-line pt-4">
+      <button type="button" class="chip" data-a11y-reset>Przywróć domyślne</button>
+      <a href="/dostepnosc/" class="text-meta">Więcej o dostępności strony</a>
+    </div>
+    <p class="sr-only" aria-live="polite" data-a11y-status></p>
+  </form>
+</dialog>
+
 <script>
   const root = document.documentElement;
-  const tools = document.querySelector<HTMLElement>("[data-tools]");
-  const status = tools?.querySelector<HTMLElement>("[data-tools-status]");
 
   const write = (key: string, value: string) => {
     try {
@@ -121,33 +164,19 @@ const active = activeSection(path);
     }
   };
 
-  const THEMES = ["", "light", "dark"] as const;
-  const themeName = (t: string) => (t === "light" ? "jasny" : t === "dark" ? "ciemny" : "systemowy");
+  /* ---- The accessibility panel ------------------------------------------ */
+  const panel = document.querySelector<HTMLDialogElement>("[data-a11y]");
+  const openA11y = document.querySelector<HTMLButtonElement>("[data-a11y-open]");
+  const form = panel?.querySelector<HTMLFormElement>("[data-a11y-form]");
+  const status = panel?.querySelector<HTMLElement>("[data-a11y-status]");
+  const dot = document.querySelector<HTMLElement>("[data-a11y-dot]");
 
-  const sync = () => {
-    if (!tools) return;
-    const theme = root.getAttribute("data-theme") ?? "";
-    const label = tools.querySelector<HTMLElement>("[data-theme-label]");
-    if (label) label.textContent = `Motyw: ${themeName(theme)}. Zmień motyw`;
-    const font = root.getAttribute("data-font-size") ?? "";
-    const contrast = root.getAttribute("data-contrast") ?? "";
-    for (const b of tools.querySelectorAll("[data-font]")) {
-      b.setAttribute("aria-pressed", String(b.getAttribute("data-font") === font));
-    }
-    for (const b of tools.querySelectorAll("[data-contrast]")) {
-      b.setAttribute("aria-pressed", String(contrast !== ""));
-    }
-    for (const b of tools.querySelectorAll("[data-motion]")) {
-      b.setAttribute("aria-pressed", String(systemReduce || root.getAttribute("data-motion") === "reduce"));
-    }
-    applyMotion();
-  };
-
-  // The reader's own choice, or the system's. Cross-document view transitions
-  // are declared in CSS and only a later `@view-transition` rule can cancel
-  // them, so the cancel is appended at the end of <body>, after the stylesheet.
   const systemReduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const motionOff = () => systemReduce || root.getAttribute("data-motion") === "reduce";
+
+  // Cross-document view transitions are declared in CSS and only a later
+  // `@view-transition` rule can cancel them, so the cancel is appended at the
+  // end of <body>, after the stylesheet.
   const applyMotion = () => {
     const existing = document.getElementById("dps-no-vt");
     if (motionOff() && !existing) {
@@ -157,94 +186,125 @@ const active = activeSection(path);
       document.body.append(style);
     } else if (!motionOff() && existing) existing.remove();
   };
-  if (systemReduce) {
-    const note = document.getElementById("motion-system-note");
-    const button = tools?.querySelector("[data-motion]");
-    if (note && button) {
-      note.removeAttribute("hidden");
-      button.setAttribute("aria-describedby", "motion-system-note");
+
+  const state = () => ({
+    font: root.getAttribute("data-font-size") ?? "",
+    colors: root.hasAttribute("data-contrast") ? "yellow" : (root.getAttribute("data-theme") ?? ""),
+    motion: root.getAttribute("data-motion") === "reduce",
+  });
+
+  // The form shows what <html> carries; the dot on the button says something
+  // was changed from the defaults.
+  const sync = () => {
+    if (!form) return;
+    const s = state();
+    for (const input of form.querySelectorAll<HTMLInputElement>("input[type=radio]")) {
+      input.checked = input.value === (input.name === "font" ? s.font : s.colors);
     }
+    const motion = form.querySelector<HTMLInputElement>("input[name=motion]");
+    if (motion) {
+      motion.checked = systemReduce || s.motion;
+      motion.disabled = systemReduce;
+    }
+    if (dot) dot.hidden = !(s.font || s.colors || s.motion);
+    applyMotion();
+  };
+
+  const say = (text: string) => {
+    if (status) status.textContent = text;
+  };
+
+  const setFont = (font: string) => {
+    if (font) root.setAttribute("data-font-size", font);
+    else root.removeAttribute("data-font-size");
+    write("dps-font", font);
+    say("Rozmiar tekstu: " + (font === "large" ? "większy" : font === "xlarge" ? "największy" : "standardowy"));
+  };
+
+  const colorName = (c: string) =>
+    c === "light" ? "jasne" : c === "dark" ? "ciemne" : c === "yellow" ? "czarno-żółte" : "jak w systemie";
+
+  const setColors = (colors: string, event?: Event) => {
+    const apply = () => {
+      if (colors === "yellow") {
+        root.setAttribute("data-contrast", "yellow");
+      } else {
+        root.removeAttribute("data-contrast");
+        if (colors) root.setAttribute("data-theme", colors);
+        else root.removeAttribute("data-theme");
+      }
+      // The wipe applies this later, so the form is refreshed here too.
+      sync();
+    };
+    write("dps-contrast", colors === "yellow" ? "yellow" : "");
+    if (colors !== "yellow") write("dps-theme", colors);
+    // The new colours are wiped in as a circle growing from the panel,
+    // through a same-document view transition, when motion is allowed.
+    const from = root.hasAttribute("data-contrast");
+    if (!motionOff() && !from && colors !== "yellow" && "startViewTransition" in document) {
+      const r = ((event?.target as Element | null)?.closest("label") ?? panel)!.getBoundingClientRect();
+      const x = r.left + r.width / 2;
+      const y = r.top + r.height / 2;
+      const reach = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+      const style = getComputedStyle(root);
+      const duration = parseFloat(style.getPropertyValue("--dur-panel")) || 500;
+      const easing = style.getPropertyValue("--ease-out").trim() || "ease-out";
+      root.setAttribute("data-theme-switch", "");
+      const transition = document.startViewTransition(apply);
+      transition.ready
+        .then(() => {
+          root.animate(
+            { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${reach}px at ${x}px ${y}px)`] },
+            { duration, easing, pseudoElement: "::view-transition-new(root)" },
+          );
+        })
+        .catch(() => {});
+      transition.finished.finally(() => root.removeAttribute("data-theme-switch")).catch(() => {});
+    } else apply();
+    say("Kolory: " + colorName(colors));
+  };
+
+  const setMotion = (reduce: boolean) => {
+    if (reduce) root.setAttribute("data-motion", "reduce");
+    else root.removeAttribute("data-motion");
+    write("dps-motion", reduce ? "reduce" : "");
+    say(reduce ? "Ograniczono ruch na stronie" : "Przywrócono animacje");
+  };
+
+  if (panel && openA11y && form) {
+    openA11y.hidden = false;
+    if (systemReduce) document.getElementById("motion-system-note")?.removeAttribute("hidden");
+
+    form.addEventListener("change", (event) => {
+      const input = event.target as HTMLInputElement;
+      if (input.name === "font") setFont(input.value);
+      else if (input.name === "colors") setColors(input.value, event);
+      else if (input.name === "motion") setMotion(input.checked);
+      sync();
+    });
+    form.querySelector("[data-a11y-reset]")?.addEventListener("click", () => {
+      setFont("");
+      setColors("");
+      setMotion(false);
+      sync();
+      say("Przywrócono ustawienia domyślne");
+    });
+    openA11y.addEventListener("click", () => {
+      sync();
+      panel.showModal();
+      openA11y.setAttribute("aria-expanded", "true");
+    });
+    panel.addEventListener("click", (e) => {
+      if (e.target === panel) panel.close();
+    });
+    panel.addEventListener("close", () => {
+      openA11y.setAttribute("aria-expanded", "false");
+      openA11y.focus({ preventScroll: true });
+    });
+    sync();
   }
 
-  tools?.addEventListener("click", (event) => {
-    const button = (event.target as Element).closest("button");
-    if (!button) return;
-    const font = button.getAttribute("data-font");
-    if (font !== null) {
-      if (font) root.setAttribute("data-font-size", font);
-      else root.removeAttribute("data-font-size");
-      write("dps-font", font);
-      if (status)
-        status.textContent =
-          "Rozmiar tekstu: " +
-          (font === "large" ? "większy" : font === "xlarge" ? "największy" : "standardowy");
-    }
-    if (button.hasAttribute("data-contrast")) {
-      const on = !root.hasAttribute("data-contrast");
-      if (on) root.setAttribute("data-contrast", "yellow");
-      else root.removeAttribute("data-contrast");
-      write("dps-contrast", on ? "yellow" : "");
-      if (status) status.textContent = on ? "Włączono wysoki kontrast" : "Wyłączono wysoki kontrast";
-    }
-    if (button.hasAttribute("data-motion")) {
-      if (systemReduce) {
-        if (status) status.textContent = "Ograniczenie ruchu wynika z ustawień systemu";
-        return;
-      }
-      const on = root.getAttribute("data-motion") !== "reduce";
-      if (on) root.setAttribute("data-motion", "reduce");
-      else root.removeAttribute("data-motion");
-      write("dps-motion", on ? "reduce" : "");
-      if (status) status.textContent = on ? "Ograniczono ruch na stronie" : "Przywrócono animacje";
-    }
-    if (button.hasAttribute("data-theme-cycle")) {
-      const current = root.getAttribute("data-theme") ?? "";
-      const next = THEMES[(THEMES.indexOf(current as (typeof THEMES)[number]) + 1) % THEMES.length];
-      const apply = () => {
-        if (next) root.setAttribute("data-theme", next);
-        else root.removeAttribute("data-theme");
-        // The new icon rises in once, as the theme lands.
-        button.removeAttribute("data-theme-changed");
-        void button.offsetWidth;
-        button.setAttribute("data-theme-changed", "");
-        sync();
-      };
-      // The new theme is wiped in as a circle growing from the press, through
-      // a same-document view transition; a keyboard press starts from the
-      // button's centre. Speed and easing come from the motion tokens.
-      const reduced = motionOff();
-      if (!reduced && !root.hasAttribute("data-contrast") && "startViewTransition" in document) {
-        const r = button.getBoundingClientRect();
-        const x = event.clientX || r.left + r.width / 2;
-        const y = event.clientY || r.top + r.height / 2;
-        const reach = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
-        const style = getComputedStyle(root);
-        const duration = parseFloat(style.getPropertyValue("--dur-panel")) || 500;
-        const easing = style.getPropertyValue("--ease-out").trim() || "ease-out";
-        root.setAttribute("data-theme-switch", "");
-        const transition = document.startViewTransition(apply);
-        // A second press mid-wipe aborts the first transition; that is fine,
-        // the theme is already applied, so the rejections are just swallowed.
-        transition.ready
-          .then(() => {
-            root.animate(
-              { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${reach}px at ${x}px ${y}px)`] },
-              { duration, easing, pseudoElement: "::view-transition-new(root)" },
-            );
-          })
-          .catch(() => {});
-        transition.finished
-          .finally(() => root.removeAttribute("data-theme-switch"))
-          .catch(() => {});
-      } else apply();
-      write("dps-theme", next);
-      if (status) status.textContent = `Motyw: ${themeName(next)}`;
-      return;
-    }
-    sync();
-  });
-  sync();
-
+  /* ---- The drawer ------------------------------------------------------ */
   const menu = document.querySelector<HTMLDialogElement>("[data-menu]");
   const open = document.querySelector<HTMLButtonElement>("[data-menu-open]");
   if (menu && open) {
@@ -263,6 +323,7 @@ const active = activeSection(path);
     });
     addEventListener("pagehide", () => {
       if (menu.open) menu.close();
+      if (panel?.open) panel.close();
     });
   }
 </script>

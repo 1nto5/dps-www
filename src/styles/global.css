@@ -246,62 +246,19 @@ html[data-font-size="xlarge"] {
 }
 
 /* ---------------------------------------------------------------------------
-   Header tools: A / A+ / A++ / Kontrast. Small chrome with its own scale.
+   Header chips: "Dostępność", "Menu", "Zamknij", "Przywróć domyślne". One
+   shape for every small control in the chrome, tall enough for a thumb.
    ------------------------------------------------------------------------ */
-.tool {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  --bloom: color-mix(in srgb, var(--color-ink) 18%, transparent);
-  font-size: 0.8125rem;
-  line-height: 1;
-  padding: 0.5rem 0.6rem;
-  border: 0;
-  border-radius: 0.375rem;
-  color: var(--color-ink);
-  background: var(--color-mist);
-  cursor: pointer;
-}
-.tool:hover {
-  background: var(--color-mist-deep);
-}
-.tool[aria-pressed="true"] {
-  background: var(--color-ink);
-  color: var(--color-paper);
-}
-html:not([data-js]) .tools {
-  display: none;
-}
-/* The theme button: one icon at a time — sun, moon, or the "system" mark —
-   the next one rising into place the way the page arrives. */
-.tool-theme {
-  display: inline-grid;
-  place-items: center;
-  padding: 0.375rem;
-}
-.tool-theme svg {
-  grid-area: 1 / 1;
-  display: none;
-}
-html:not([data-theme]) .tool-theme [data-icon="system"],
-html[data-theme="light"] .tool-theme [data-icon="light"],
-html[data-theme="dark"] .tool-theme [data-icon="dark"] {
-  display: block;
-}
-
-/* ---------------------------------------------------------------------------
-   Navigation: one button in the header, one drawer from the left. The drawer is
-   a <dialog>, so the platform traps focus and answers Escape.
-   ------------------------------------------------------------------------ */
-.menu-open {
+.chip {
   position: relative;
   isolation: isolate;
   overflow: hidden;
   --bloom: color-mix(in srgb, var(--color-ink) 18%, transparent);
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.55rem 0.85rem;
+  gap: 0.45rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.9rem;
   border: 0;
   border-radius: 0.5rem;
   background: var(--color-mist);
@@ -310,19 +267,153 @@ html[data-theme="dark"] .tool-theme [data-icon="dark"] {
   font-weight: 600;
   cursor: pointer;
 }
-.menu-open:hover {
+.chip:hover {
   background: var(--color-mist-deep);
 }
+/* From `lg` the sections sit in the header row, so the drawer button goes. */
+@media (min-width: 64rem) {
+  .menu-open {
+    display: none;
+  }
+}
+.chip[aria-expanded="true"] {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+/* The mark on "Dostępność" when something differs from the defaults. */
+.chip-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--color-heather);
+}
+
+/* ---------------------------------------------------------------------------
+   The sections, in a row under the name from `lg` up. The current one is
+   underlined in lake, the way a link is.
+   ------------------------------------------------------------------------ */
+.site-nav-link {
+  display: block;
+  padding: 0.75rem 0.75rem 0.85rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--color-ink);
+  text-decoration: none;
+  border-bottom: 3px solid transparent;
+}
+.site-nav-link:hover {
+  color: var(--color-lake);
+}
+.site-nav-link[aria-current] {
+  color: var(--color-lake);
+  border-bottom-color: var(--color-lake);
+}
+
+/* ---------------------------------------------------------------------------
+   The accessibility panel: a small <dialog> at the top right, full width on
+   a phone. Segmented radios for text size and colours, one switch for motion.
+   ------------------------------------------------------------------------ */
+.a11y {
+  margin: 0.75rem 0.75rem 0 auto;
+  padding: 0;
+  width: min(26rem, calc(100% - 1.5rem));
+  max-height: calc(100% - 1.5rem);
+  border: 1px solid var(--color-line);
+  border-radius: 0.5rem;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  box-shadow: 0 1rem 2.5rem rgb(0 0 0 / 0.18);
+}
+@media (min-width: 40rem) {
+  .a11y {
+    margin: 1rem 2rem 0 auto;
+  }
+}
+.a11y::backdrop {
+  background: rgb(0 0 0 / 0.25);
+}
+.a11y-group {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+.a11y-group legend {
+  padding: 0;
+  margin-bottom: 0.6rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+}
+.segments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.segment {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  min-width: 3.25rem;
+  padding: 0.5rem 0.9rem;
+  border: 2px solid var(--color-edge);
+  border-radius: 0.5rem;
+  background: var(--color-card);
+  color: var(--color-ink);
+  cursor: pointer;
+}
+.segment input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  margin: 0;
+  cursor: pointer;
+}
+.segment:hover {
+  background: var(--color-mist);
+}
+.segment:has(input:checked) {
+  background: var(--color-ink);
+  border-color: var(--color-ink);
+  color: var(--color-paper);
+}
+.segment:has(input:focus-visible) {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+.switch {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 2.75rem;
+  cursor: pointer;
+}
+.switch input {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: 0;
+  accent-color: var(--color-lake);
+  cursor: pointer;
+}
+.switch input:disabled {
+  cursor: default;
+}
+
+/* ---------------------------------------------------------------------------
+   Navigation below `lg`: one button in the header, one drawer from the right.
+   The drawer is a <dialog>, so the platform traps focus and answers Escape.
+   ------------------------------------------------------------------------ */
 .menu {
   margin: 0;
   padding: 0;
-  inset: 0 auto 0 0;
+  inset: 0 0 0 auto;
   width: min(22rem, 100%);
   max-width: 100%;
   height: 100%;
   max-height: 100%;
   border: 0;
-  border-right: 1px solid var(--color-line);
+  border-left: 1px solid var(--color-line);
   background: var(--color-paper);
   color: var(--color-ink);
 }
@@ -648,8 +739,7 @@ figcaption {
 /* The bloom: one wide, soft disc of light drawn on ::after, centred on the
    click point. Invisible until a press starts the animation. */
 .btn::after,
-.tool::after,
-.menu-open::after {
+.chip::after {
   content: "";
   position: absolute;
   z-index: -1;
@@ -799,7 +889,7 @@ figcaption {
   }
   /* State feedback: a link's underline, a button's fill, the Toc's marker
      crossfade slowly enough to be seen, never snap. */
-  html:not([data-contrast]):not([data-motion="reduce"]) :is(a, button, .toc a, .nav-link) {
+  html:not([data-contrast]):not([data-motion="reduce"]) :is(a, button, .toc a, .site-nav-link, .segment) {
     transition-property: color, background-color, border-color, text-decoration-color, text-decoration-thickness;
     transition-duration: var(--dur-fast);
     transition-timing-function: var(--ease-out);
@@ -807,10 +897,10 @@ figcaption {
   /* Press feedback: one soft, wide bloom of light spreading from the click
      point and dissolving. The pointer script sets `data-press` on pointerdown
      and takes it off when the bloom has faded. */
-  html:not([data-contrast]):not([data-motion="reduce"]) :is(.btn, .tool, .menu-open)[data-press]::after {
+  html:not([data-contrast]):not([data-motion="reduce"]) :is(.btn, .chip)[data-press]::after {
     animation: bloom var(--dur-press) var(--ease-out);
   }
-  /* Surfaces opening: the drawer rises into place from the left, the
+  /* Surfaces opening: the drawer slides into place from the right, the
      lightbox rises the way the page does; both backdrops fade in. */
   html:not([data-contrast]):not([data-motion="reduce"]) .menu[open] {
     animation: slide-in var(--dur-panel) var(--ease-out);
@@ -822,11 +912,12 @@ figcaption {
   html:not([data-contrast]):not([data-motion="reduce"]) .lightbox[open] {
     animation: rise-in var(--dur-panel) var(--ease-out);
   }
-  /* The theme icon changing hands: the new one rises in after a press. The
-     page itself crossfades through a same-document view transition, using the
-     root animations declared below. */
-  html:not([data-contrast]):not([data-motion="reduce"]) .tool-theme[data-theme-changed] svg {
-    animation: rise-in var(--dur-fast) var(--ease-out);
+  /* The accessibility panel rises the way the page does. */
+  html:not([data-contrast]):not([data-motion="reduce"]) .a11y[open] {
+    animation: rise-in var(--dur-panel) var(--ease-out);
+  }
+  html:not([data-contrast]):not([data-motion="reduce"]) .a11y[open]::backdrop {
+    animation: fade-in var(--dur-panel) var(--ease-out);
   }
   /* The page arriving: one quiet rise of <main>, once per load. */
   html:not([data-contrast]):not([data-motion="reduce"]) main {
@@ -868,7 +959,7 @@ figcaption {
   html[data-theme-switch] header {
     view-transition-name: none;
   }
-  html[data-theme-switch] :is(a, button, .toc a, .nav-link) {
+  html[data-theme-switch] :is(a, button, .toc a, .site-nav-link, .segment) {
     transition: none;
   }
   html[data-theme-switch]::view-transition-image-pair(root) {
@@ -890,7 +981,7 @@ figcaption {
 @keyframes slide-in {
   from {
     opacity: 0;
-    transform: translateX(-2rem);
+    transform: translateX(2rem);
   }
 }
 @keyframes fade-in {
@@ -930,9 +1021,10 @@ figcaption {
 }
 
 @media print {
-  .menu-open,
-  .tools,
+  .chip,
+  .site-nav,
   .menu,
+  .a11y,
   .skip {
     display: none !important;
   }

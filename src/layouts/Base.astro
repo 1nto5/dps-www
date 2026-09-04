@@ -60,7 +60,7 @@ const desc =
       can start there. Pure decoration; the button works without it.
     -->
     <script>
-      const SEL = ".btn, .tool, .menu-open";
+      const SEL = ".btn, .chip";
       document.addEventListener("pointerdown", (e) => {
         const el = (e.target as Element).closest?.(SEL) as HTMLElement | null;
         if (!el) return;

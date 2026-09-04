@@ -32,8 +32,9 @@ iframe. No JavaScript unless a feature genuinely cannot work without it.
   every content page), `Figure` (a photo in its natural rectangle with a caption),
   `Gallery` + `Lightbox`, `DocList`, `Button` (`primary` — the one action of a page,
   `secondary`; `phone` for the large number), `Breadcrumbs`, `PostDate`, `Header`
-  (brand, four sections, A / A+ / A++ / Kontrast / Ruch / theme tools, the phone, the mobile bottom
-  bar and the `<dialog>` menu), `Footer`.
+  (brand, the phone, the „Dostępność" button opening a `<dialog>` panel with text size,
+  colours and motion, the sections in a row from `lg` and in a `<dialog>` drawer from the
+  right below it), `Footer`.
 - `src/pages/` — one `.astro` file per URL. `trailingSlash: "always"`, `build.format:
   "directory"` — internal links must end with `/`. Four sections, named the way
   readers think: `/zamieszkac-u-nas/`, `/zycie-w-domu/` (with `spychowo/`,
