@@ -163,12 +163,34 @@ const active = activeSection(path);
         button.setAttribute("data-theme-changed", "");
         sync();
       };
-      // The page crossfades through a same-document view transition, the
-      // same seam pages cross between each other.
+      // The new theme is wiped in as a circle growing from the press, through
+      // a same-document view transition; a keyboard press starts from the
+      // button's centre. Speed and easing come from the motion tokens.
       const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (!reduced && !root.hasAttribute("data-contrast") && "startViewTransition" in document)
-        document.startViewTransition(apply);
-      else apply();
+      if (!reduced && !root.hasAttribute("data-contrast") && "startViewTransition" in document) {
+        const r = button.getBoundingClientRect();
+        const x = event.clientX || r.left + r.width / 2;
+        const y = event.clientY || r.top + r.height / 2;
+        const reach = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+        const style = getComputedStyle(root);
+        const duration = parseFloat(style.getPropertyValue("--dur-panel")) || 500;
+        const easing = style.getPropertyValue("--ease-out").trim() || "ease-out";
+        root.setAttribute("data-theme-switch", "");
+        const transition = document.startViewTransition(apply);
+        // A second press mid-wipe aborts the first transition; that is fine,
+        // the theme is already applied, so the rejections are just swallowed.
+        transition.ready
+          .then(() => {
+            root.animate(
+              { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${reach}px at ${x}px ${y}px)`] },
+              { duration, easing, pseudoElement: "::view-transition-new(root)" },
+            );
+          })
+          .catch(() => {});
+        transition.finished
+          .finally(() => root.removeAttribute("data-theme-switch"))
+          .catch(() => {});
+      } else apply();
       write("dps-theme", next);
       if (status) status.textContent = `Motyw: ${themeName(next)}`;
       return;

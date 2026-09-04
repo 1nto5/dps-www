@@ -861,6 +861,26 @@ figcaption {
   header {
     view-transition-name: site-header;
   }
+  /* A theme change (`data-theme-switch` on <html> while it runs): the page is
+     one snapshot, header included, nothing crossfades on its own, and the
+     new theme is wiped in as a circle growing from the press — the header
+     script animates ::view-transition-new(root) with the clip. */
+  html[data-theme-switch] header {
+    view-transition-name: none;
+  }
+  html[data-theme-switch] :is(a, button, .toc a, .nav-link) {
+    transition: none;
+  }
+  html[data-theme-switch]::view-transition-image-pair(root) {
+    isolation: auto;
+  }
+  html[data-theme-switch]::view-transition-old(root),
+  html[data-theme-switch]::view-transition-new(root) {
+    animation: none;
+  }
+  html[data-theme-switch]::view-transition {
+    pointer-events: none;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   @view-transition {
