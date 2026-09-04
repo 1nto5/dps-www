@@ -157,22 +157,18 @@ const active = activeSection(path);
       const apply = () => {
         if (next) root.setAttribute("data-theme", next);
         else root.removeAttribute("data-theme");
-      };
-      // The page crossfades through a same-document view transition, the
-      // same seam pages cross between each other; the icon rises in after.
-      const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-      const transition =
-        !reduced && !root.hasAttribute("data-contrast") && "startViewTransition" in document
-          ? document.startViewTransition(apply)
-          : (apply(), null);
-      const settle = () => {
+        // The new icon rises in once, as the theme lands.
         button.removeAttribute("data-theme-changed");
         void button.offsetWidth;
         button.setAttribute("data-theme-changed", "");
         sync();
       };
-      if (transition) transition.finished.finally(settle);
-      else settle();
+      // The page crossfades through a same-document view transition, the
+      // same seam pages cross between each other.
+      const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (!reduced && !root.hasAttribute("data-contrast") && "startViewTransition" in document)
+        document.startViewTransition(apply);
+      else apply();
       write("dps-theme", next);
       if (status) status.textContent = `Motyw: ${themeName(next)}`;
       return;
