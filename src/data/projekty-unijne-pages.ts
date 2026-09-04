@@ -4,6 +4,6 @@
  * rather than a list of everything except where you are.
  */
 export const projektyUnijnePages = [
-  { href: "/dokumenty/projekty-unijne/", label: "Projekty unijne — przegląd" },
-  { href: "/dokumenty/projekty-unijne/oze/", label: "Wykorzystanie OZE w Domu" },
+  { href: "/projekty-unijne/", label: "Projekty unijne — przegląd" },
+  { href: "/projekty-unijne/oze/", label: "Wykorzystanie OZE w Domu" },
 ] as const;

@@ -1,4 +1,9 @@
 ---
+/**
+ * The section page that carries the production site's `/oferta/` page: the
+ * numbers, the three lists of services and nothing else. Every sentence here
+ * is a sentence the Dom published.
+ */
 import Base from "../../layouts/Base.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import PageShell from "../../components/PageShell.astro";
@@ -7,13 +12,16 @@ import Brief from "../../components/Brief.astro";
 import Figure from "../../components/Figure.astro";
 import PageList from "../../components/PageList.astro";
 
+import treatmentRoom from "../../assets/media/1182-2012-07-25-at-10-20-35.jpg";
 import commonRoom from "../../assets/media/1188-2012-07-25-at-10-18-46-1-1.jpg";
+import twinRoom from "../../assets/media/1185-2012-07-25-at-10-40-40.jpg";
 import singleRoom from "../../assets/media/1186-2012-07-25-at-10-43-511.jpg";
+import diningRoom from "../../assets/media/1187-2012-07-25-at-10-46-26.jpg";
 
 const toc = [
-  { id: "dzien", label: "Nasz Dom" },
-  { id: "zajecia", label: "Usługi wspomagające" },
-  { id: "wsrod-ludzi", label: "Wśród ludzi" },
+  { id: "opiekuncze", label: "Usługi opiekuńcze i pielęgnacyjne" },
+  { id: "wspomagajace", label: "Usługi wspomagające" },
+  { id: "bytowe", label: "Potrzeby bytowe" },
   { id: "wiecej", label: "Więcej o życiu w Domu" },
 ];
 
@@ -29,96 +37,113 @@ const pracownie = [
 ];
 
 const podstrony = [
-  { href: "/zycie-w-domu/spychowo/", label: "Filia w Spychowie" },
+  { href: "/zycie-w-domu/spychowo/", label: "Filia Domu Pomocy w Spychowie" },
   { href: "/zycie-w-domu/grupa-christopher/", label: "Grupa wokalna „Christopher”" },
-  { href: "/zycie-w-domu/zdjecia/", label: "Zdjęcia" },
-  { href: "/aktualnosci/", label: "Aktualności" },
   {
     href: "/zycie-w-domu/regulamin-imprez-okolicznosciowych/",
     label: "Regulamin imprez okolicznościowych",
   },
+  { href: "/aktualnosci/", label: "Aktualności" },
 ];
 ---
 
 <Base
   title="Oferta"
-  description="Opieka całodobowa, usługi opiekuńcze i pielęgnacyjne, terapia zajęciowa oraz warunki bytowe w Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie."
+  description="Nasz Dom przeznaczony jest dla osób przewlekle psychicznie chorych. Zapewniamy opiekę całodobową dla 196 osób w Szczytnie i w filii w Spychowie."
 >
-  <PageHeader
-    breadcrumbs
-    title="Co zapewniamy naszym Mieszkańcom"
-    lead="Nasz Dom przeznaczony jest dla osób przewlekle psychicznie chorych. Zapewniamy całodobową opiekę w Szczytnie i w filii w Spychowie."
-  />
+  <PageHeader breadcrumbs title="Oferta" />
 
   <PageShell>
     <Toc slot="rail" items={toc} />
 
     <Brief>
-      <li>Mieszkańcy znajdują u nas wykwalifikowaną, całodobową opiekę i własny kąt.</li>
-      <li>
-        Zapewniamy wsparcie terapeutów, którzy dbają o to, aby Mieszkańcy aktywnie spędzali czas
-        i rozwijali swoje zainteresowania.
-      </li>
-      <li>Współpracujemy również z uczniami lokalnych szkół.</li>
+      <li>Nasz Dom przeznaczony jest dla osób przewlekle psychicznie chorych.</li>
+      <li>Zapewniamy opiekę całodobową dla 196 osób.</li>
+      <li>Współpracujemy też z uczniami lokalnych szkół.</li>
     </Brief>
 
     <div class="doc mt-subsection">
-      <h2 id="dzien">Dom, w którym czuć troskę</h2>
       <p>
-        Mieszkańcy znajdują u nas wykwalifikowaną, całodobową opiekę i własny kąt. Troszczymy się
-        o ich dobre samopoczucie, nie zapominając o indywidualności każdej osoby.
+        Nasz Dom przeznaczony jest dla osób przewlekle psychicznie chorych. Zapewniamy opiekę
+        całodobową dla 196 osób. Dom Pomocy Społecznej w Szczytnie zamieszkuje 171 Mieszkańców,
+        a filię w Spychowie 25 Mieszkańców.
       </p>
       <p>
-        Wszechstronna opieka terapeutyczna i medyczna oraz zaangażowanie pracowników w tworzenie
-        jak najlepszej atmosfery zapewniają godne warunki życia, ze szczególnym poszanowaniem
-        prawa do wolności, intymności i poczucia bezpieczeństwa.
+        Mieszkańcy w naszym Domu znajdują dobrą i wysoce wykwalifikowaną, całodobową opiekę.
+        Troszczymy się też o dobre samopoczucie naszych Mieszkańców, nie zapominając
+        o indywidualności każdego z nich. Zapewniamy wsparcie wykwalifikowanych terapeutów, którzy
+        dbają o to, aby Mieszkańcy aktywnie spędzali swój czas i rozwijali swoje zainteresowania.
+      </p>
+      <p>
+        Podejmujemy działania zmierzające do integracji osób chorujących psychicznie ze
+        środowiskiem lokalnym. Nasi Mieszkańcy są gośćmi kawiarni, aktywnie korzystają z plaży
+        miejskiej, są członkami Klubu Miłośników Kina. Współpracujemy też z uczniami lokalnych
+        szkół.
+      </p>
+      <p>
+        Wszechstronna opieka terapeutyczna i medyczna oraz zaangażowanie pracowników w stworzenie
+        jak najlepszej atmosfery zapewniają godne warunki życia ze szczególnym poszanowaniem prawa
+        do wolności, intymności i poczucia bezpieczeństwa.
+      </p>
+      <p>
+        Nasi Mieszkańcy objęci są opieką lekarza psychiatry. Korzystają z usług psychologa
+        i rehabilitanta zatrudnionych w Domu.
       </p>
 
       <Figure
-        src={singleRoom}
-        alt="Mieszkaniec siedzi na tapczanie w swoim pokoju jednoosobowym; przy oknie telewizor i stolik."
+        src={treatmentRoom}
+        alt="Gabinet zabiegowy: pielęgniarka przy biurku, przeszklone szafy z lekami."
         loading="eager"
       />
 
-      <p>
-        Jeśli ktoś rozważa zamieszkanie u nas, drogę do przyjęcia opisujemy krok po kroku na
-        stronie <a href="/zamieszkac-u-nas/">Jak zamieszkać w naszym Domu</a>.
-      </p>
+      <h2 id="opiekuncze">Usługi opiekuńcze i pielęgnacyjne</h2>
+      <ul>
+        <li>pomagamy w utrzymaniu higieny osobistej,</li>
+        <li>udzielamy pomocy we wszystkich czynnościach dnia codziennego,</li>
+        <li>zapewniamy opiekę pielęgniarską.</li>
+      </ul>
 
-      <h2 id="zajecia">Usługi wspomagające</h2>
-      <p>
-        Zapewniamy wsparcie terapeutów, którzy dbają o to, aby Mieszkańcy aktywnie spędzali czas
-        i rozwijali swoje zainteresowania. Prowadzimy zajęcia terapeutyczne w pracowniach:
-      </p>
+      <h2 id="wspomagajace">Usługi wspomagające</h2>
+      <p>Prowadzimy zajęcia terapeutyczne w pracowniach:</p>
       <ul>
         {pracownie.map((item) => <li>{item}</li>)}
       </ul>
       <p>
-        Umożliwiamy Mieszkańcom korzystanie z codziennej prasy i biblioteki, dbamy o poprawę ich
-        sprawności fizycznej, zapewniamy wsparcie kapłana oraz współpracujemy z rodzinami
-        Mieszkańców i z jednostkami pomocy społecznej.
+        Umożliwiamy Mieszkańcom korzystanie z codziennej prasy i biblioteki, dbamy o poprawę
+        sprawności fizycznej naszych Mieszkańców, zapewniamy wsparcie kapłana, współpracujemy
+        z rodzinami Mieszkańców oraz z jednostkami pomocy społecznej.
       </p>
 
       <Figure
         src={commonRoom}
         alt="Mieszkańcy i terapeutka przy wspólnym stole w świetlicy, w tle regały z książkami."
       />
+      <Figure
+        src={twinRoom}
+        alt="Dwie Mieszkanki siedzą w fotelach przy stoliku w swoim pokoju."
+      />
 
-      <h2 id="wsrod-ludzi">Wśród ludzi</h2>
-      <p>
-        Podejmujemy działania zmierzające do integracji osób chorujących psychicznie ze
-        środowiskiem lokalnym: nasi Mieszkańcy bywają w kawiarniach, korzystają z plaży miejskiej,
-        należą do Klubu Miłośników Kina. Współpracujemy również z uczniami lokalnych szkół.
-      </p>
-      <p>
-        Uroczystości i spotkania organizowane w naszym Domu odbywają się według ustalonych zasad
-        porządku, bezpieczeństwa oraz utrwalania i rozpowszechniania wizerunku uczestników.
-      </p>
-      <p>
-        <a href="/zycie-w-domu/regulamin-imprez-okolicznosciowych/">
-          Przeczytaj regulamin imprez okolicznościowych
-        </a>
-      </p>
+      <h2 id="bytowe">Zaspokajamy potrzeby bytowe</h2>
+      <ul>
+        <li>
+          dysponujemy pokojami jedno-, dwu- i trzyosobowymi oraz pokojami czteroosobowymi dla osób
+          leżących,
+        </li>
+        <li>zapewniamy urozmaicone posiłki, zgodne z dietą zaleconą przez lekarza,</li>
+        <li>pomagamy w zakupie odzieży i obuwia,</li>
+        <li>
+          zapewniamy bezpieczne przechowywanie środków finansowych i przedmiotów wartościowych.
+        </li>
+      </ul>
+
+      <Figure
+        src={singleRoom}
+        alt="Mieszkaniec siedzi na tapczanie w swoim pokoju jednoosobowym; przy oknie telewizor i stolik."
+      />
+      <Figure
+        src={diningRoom}
+        alt="Jadalnia Domu z drewnianymi stołami nakrytymi kolorowymi obrusami."
+      />
 
       <h2 id="wiecej">Więcej o życiu w Domu</h2>
       <PageList items={podstrony} />

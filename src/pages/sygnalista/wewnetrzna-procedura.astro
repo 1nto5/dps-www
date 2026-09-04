@@ -4,11 +4,11 @@
  * Long legal text — reproduced faithfully, including the section numbering
  * the document refers to internally (e.g. "§ 1 ust. 6").
  */
-import Base from "../../../layouts/Base.astro";
-import PageHeader from "../../../components/PageHeader.astro";
-import PageShell from "../../../components/PageShell.astro";
-import Toc from "../../../components/Toc.astro";
-import { addressLine, contact } from "../../../data/contact";
+import Base from "../../layouts/Base.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import PageShell from "../../components/PageShell.astro";
+import Toc from "../../components/Toc.astro";
+import { addressLine, contact } from "../../data/contact";
 
 /** Chapter labels drop the "§ n." prefix the headings carry. */
 const toc = [
@@ -490,11 +490,6 @@ const toc = [
           zobowiązane są do zapoznania się z nią i złożenia oświadczenia, o którym mowa w § 1 ust. 6.
         </li>
       </ol>
-
-      <p>
-        Wzory dokumentów wymienionych w procedurze są dostępne na stronie
-        <a href="/dokumenty/sygnalista/zalaczniki/">Załączniki</a>.
-      </p>
     </div>
   </PageShell>
 </Base>

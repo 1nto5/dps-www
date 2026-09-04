@@ -12,28 +12,12 @@ import offerPhoto from "../assets/media/1188-2012-07-25-at-10-18-46-1-1.jpg";
 import branchPhoto from "../assets/media/1376-3.jpg";
 import musicPhoto from "../assets/media/1168-christopherGroup.jpg";
 
-/** The four ways into the site, with the wording the production site uses. */
+/** The four ways into the site, named the way the production site names them. */
 const sections = [
-  {
-    href: "/zycie-w-domu/",
-    label: "Oferta",
-    text: "Zapewniamy całodobową opiekę, wsparcie pielęgniarskie i medyczne oraz zajęcia terapeutyczne dostosowane do możliwości każdego Mieszkańca. Dbamy o warunki bytowe, posiłki i codzienny rytm dnia, który daje poczucie bezpieczeństwa.",
-  },
-  {
-    href: "/zycie-w-domu/spychowo/",
-    label: "Filia w Spychowie",
-    text: "Filia w Spychowie działa od 2001 roku i jest domem dla Mieszkańców. Poza pokojami do dyspozycji są świetlica, kaplica, stołówka i pracownia terapeutyczna.",
-  },
-  {
-    href: "/zycie-w-domu/grupa-christopher/",
-    label: "Grupa wokalna „Christopher”",
-    text: "Nasza grupa wokalna gra i śpiewa na uroczystościach w Domu oraz na przeglądach poza nim. Wspólne próby to dla Mieszkańców sposób na kontakt z ludźmi i na własną twórczość.",
-  },
-  {
-    href: "/zamieszkac-u-nas/",
-    label: "Przyjęcie do Domu",
-    text: "Wyjaśniamy, kto może u nas zamieszkać, jak wygląda droga do przyjęcia i jakie dokumenty warto przygotować. W razie pytań wystarczy do nas zadzwonić.",
-  },
+  { href: "/zycie-w-domu/", label: "Oferta" },
+  { href: "/zycie-w-domu/spychowo/", label: "Filia Domu Pomocy w Spychowie" },
+  { href: "/zycie-w-domu/grupa-christopher/", label: "Grupa wokalna „Christopher”" },
+  { href: "/o-domu/", label: "O nas" },
 ];
 
 const posts = (await getCollection("aktualnosci")).sort(
@@ -49,14 +33,16 @@ const latest = posts.slice(0, 3);
   <section class="mx-auto max-w-wide px-5 pt-10 sm:px-8 md:pt-14" aria-labelledby="hero-title">
     <div class="grid items-center gap-10 md:grid-cols-2 md:gap-14">
       <div>
-        <h1 id="hero-title" class="max-w-[16ch] text-4xl md:text-5xl">Dom z całodobową opieką</h1>
+        <h1 id="hero-title" class="text-4xl md:text-5xl">
+          Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie
+        </h1>
         <p class="mt-5 max-w-[44ch] text-lg text-ink-soft">
-          Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie jest domem dla osób przewlekle
-          psychicznie chorych. Razem z filią w Spychowie zapewniamy Mieszkańcom całodobową opiekę.
+          Nasz Dom przeznaczony jest dla osób przewlekle psychicznie chorych. Zapewniamy opiekę
+          całodobową dla 196 osób.
         </p>
         <div class="mt-8 flex flex-wrap gap-3">
-          <Button href="/kontakt/">Kontakt i adres</Button>
-          <Button href="/zycie-w-domu/" variant="secondary">Poznaj naszą ofertę</Button>
+          <Button href="/kontakt/">Kontakt i adres</Button>
+          <Button href="/zycie-w-domu/" variant="secondary">Oferta</Button>
         </div>
       </div>
       <Figure
@@ -70,28 +56,33 @@ const latest = posts.slice(0, 3);
 
   <section class="mx-auto mt-section max-w-wide px-5 sm:px-8" aria-labelledby="o-domu">
     <div class="max-w-column">
-      <h2 id="o-domu" class="text-2xl md:text-3xl">O naszym domu</h2>
+      <h2 id="o-domu" class="text-2xl md:text-3xl">
+        Witamy na stronie Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie
+      </h2>
       <p class="mt-4">
-        Troszczymy się o dobre samopoczucie Mieszkańców, nie zapominając o indywidualności każdego
-        z nich. Wsparcie wykwalifikowanych terapeutów pomaga aktywnie spędzać czas i rozwijać
-        zainteresowania, a wszechstronna opieka pielęgniarska i medyczna daje poczucie
-        bezpieczeństwa.
+        Dom Pomocy Społecznej w Szczytnie zamieszkuje 171 Mieszkańców, a filię w Spychowie 25
+        Mieszkańców.
       </p>
       <p class="mt-4">
-        Zależy nam na godnych warunkach życia, z poszanowaniem prawa do wolności i intymności.
-        Podejmujemy też działania, które łączą Mieszkańców ze środowiskiem lokalnym — od wizyt szkół
-        i zespołów artystycznych po nasze własne występy poza Domem.
+        Mieszkańcy w naszym Domu znajdują dobrą i wysoce wykwalifikowaną, całodobową opiekę.
+        Troszczymy się też o dobre samopoczucie naszych Mieszkańców, nie zapominając
+        o indywidualności każdego z nich. Zapewniamy wsparcie wykwalifikowanych terapeutów, którzy
+        dbają o to, aby Mieszkańcy aktywnie spędzali swój czas i rozwijali swoje zainteresowania.
+      </p>
+      <p class="mt-4">
+        Wszechstronna opieka terapeutyczna i medyczna oraz zaangażowanie pracowników w stworzenie
+        jak najlepszej atmosfery zapewniają godne warunki życia ze szczególnym poszanowaniem prawa
+        do wolności, intymności i poczucia bezpieczeństwa. Podejmujemy działania zmierzające do
+        integracji osób chorujących psychicznie ze środowiskiem lokalnym.
       </p>
       <p class="mt-6">
-        <a href="/o-domu/" class="font-semibold text-lake-deep underline"
-          >Więcej o Domu i jego kierownictwie</a
-        >
+        <a href="/o-domu/" class="font-semibold text-lake-deep underline">O nas</a>
       </p>
     </div>
   </section>
 
   <section class="mx-auto mt-section max-w-wide px-5 sm:px-8" aria-labelledby="czym-sie-zajmujemy">
-    <h2 id="czym-sie-zajmujemy" class="text-2xl md:text-3xl">Czym się zajmujemy</h2>
+    <h2 id="czym-sie-zajmujemy" class="text-2xl md:text-3xl">Strony naszego Domu</h2>
     <div class="mt-6 grid gap-10 lg:grid-cols-[1fr_20rem] lg:gap-14">
       <PageList items={sections} />
       <div class="grid gap-6 sm:grid-cols-3 lg:grid-cols-1">
@@ -121,11 +112,9 @@ const latest = posts.slice(0, 3);
     latest.length > 0 && (
       <section class="mx-auto mt-section max-w-wide px-5 sm:px-8" aria-labelledby="aktualnosci">
         <div class="flex flex-wrap items-baseline justify-between gap-4">
-          <h2 id="aktualnosci" class="text-2xl md:text-3xl">
-            Komunikaty i podziękowania
-          </h2>
+          <h2 id="aktualnosci" class="text-2xl md:text-3xl">Aktualności</h2>
           <a href="/aktualnosci/" class="font-semibold text-lake-deep underline">
-            Wszystkie komunikaty
+            Wszystkie aktualności
           </a>
         </div>
         <ul class="mt-6 max-w-column" role="list">
@@ -145,7 +134,7 @@ const latest = posts.slice(0, 3);
   <section class="mt-section border-y border-line bg-mist" aria-labelledby="kontakt-skrot">
     <div class="mx-auto grid max-w-wide gap-8 px-5 py-10 sm:px-8 md:grid-cols-[1fr_auto] md:items-center">
       <div>
-        <h2 id="kontakt-skrot" class="text-2xl">Zapraszamy do kontaktu</h2>
+        <h2 id="kontakt-skrot" class="text-2xl">Kontakt</h2>
         <address class="mt-3 not-italic text-ink-soft">
           {addressLine(contact.address)}<br />
           tel. <a href={contact.phone.href} class="text-lake-deep underline">{contact.phone.label}</a><br />

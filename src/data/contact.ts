@@ -52,7 +52,6 @@ export const contact = {
   fax: "89 624 34 99",
   email: "sekretariat@dpsszczytno.pl",
   epuap: "/dpsszczytno/SkrytkaESP",
-  bip: "https://dpsszczytno.bip.gov.pl/",
   spychowo: {
     name: "Dom Pomocy Społecznej im. Jana Pawła II — Filia w Spychowie",
     address: {
@@ -65,9 +64,9 @@ export const contact = {
   /** Direct numbers of the residential units and the catering section. */
   units: [
     { name: "Sekcja Żywienia", phones: [phone("89 624 64 44")] },
-    { name: "Dom Mieszkalny I", phones: [phone("89 624 64 55"), phone("728 457 616")] },
-    { name: "Dom Mieszkalny II", phones: [phone("89 624 64 97"), phone("600 835 191")] },
-    { name: "Dom Mieszkalny III", phones: [phone("89 624 22 92"), phone("600 835 576")] },
+    { name: "Mieszkanie I", phones: [phone("89 624 64 55"), phone("728 457 616")] },
+    { name: "Mieszkanie II", phones: [phone("89 624 64 97"), phone("600 835 191")] },
+    { name: "Mieszkanie III", phones: [phone("89 624 22 92"), phone("600 835 576")] },
   ] satisfies ContactUnit[],
 };
 

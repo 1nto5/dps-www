@@ -5,11 +5,11 @@
  * and telephone come from `contact.ts`, so a corrected number cannot go stale
  * here; every other detail is the notice as signed.
  */
-import Base from "../../layouts/Base.astro";
-import PageHeader from "../../components/PageHeader.astro";
-import PageShell from "../../components/PageShell.astro";
-import Toc from "../../components/Toc.astro";
-import { addressLine, contact } from "../../data/contact";
+import Base from "../layouts/Base.astro";
+import PageHeader from "../components/PageHeader.astro";
+import PageShell from "../components/PageShell.astro";
+import Toc from "../components/Toc.astro";
+import { addressLine, contact } from "../data/contact";
 
 const toc = [
   { id: "pracownik", label: "Dla pracownika" },

@@ -17,7 +17,8 @@ const toc = [
   { id: "telefony", label: "Telefony" },
   { id: "spychowo", label: "Filia w Spychowie" },
   { id: "dojazd", label: "Dojazd" },
-  { id: "epuap", label: "Sprawy urzędowe" },
+  { id: "iod", label: "Inspektor Ochrony Danych" },
+  { id: "faktury", label: "Dane do faktur" },
 ];
 ---
 
@@ -25,7 +26,7 @@ const toc = [
   title="Kontakt"
   description="Adresy, telefony i adresy e-mail Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie oraz filii w Spychowie."
 >
-  <PageHeader breadcrumbs title="Jak się z nami skontaktować i gdzie nas znaleźć?">
+  <PageHeader breadcrumbs title="Kontakt">
     <p class="mt-8">
       <Button href={contact.phone.href} phone>{contact.phone.label}</Button>
     </p>
@@ -53,6 +54,7 @@ const toc = [
       </dl>
 
       <h2 id="telefony">Telefony</h2>
+      <p>Nr telefonów podane niżej działają przez całą dobę i wszystkie dni.</p>
       {
         contact.units.map((unit) => (
           <>
@@ -87,27 +89,18 @@ const toc = [
         windy przystosowanej dla osób z niepełnosprawnością.
       </p>
       <p>
-        Na terenie Domu można parkować pojazdy. Nie ma wyznaczonych i oznakowanych miejsc
+        Na terenie Domu można parkować pojazdy. Nie ma oznakowanych miejsc
         parkingowych dla osób z niepełnosprawnością.
       </p>
       <p>Osoba z psem asystującym ma prawo wstępu do budynku.</p>
 
-      <h2 id="epuap">Sprawy urzędowe</h2>
-      <p>
-        Pismo urzędowe można wysłać elektronicznie przez usługę <a
-          href="https://www.gov.pl/web/gov/wyslij-pismo-ogolne">Wyślij pismo ogólne</a
-        > na portalu gov.pl — jako adresata wskazuje się wtedy naszą skrytkę ePUAP
-        <span class="whitespace-nowrap">{contact.epuap}</span>. W zwykłych sprawach nie trzeba
-        jednak niczego podpisywać elektronicznie: wystarczy e-mail albo telefon.
-      </p>
-
-      <h3>Inspektor Ochrony Danych</h3>
+      <h2 id="iod">Inspektor Ochrony Danych</h2>
       <p>
         W sprawach dotyczących ochrony danych osobowych prosimy o kontakt z Inspektorem Ochrony
         Danych: <a href="mailto:iod2@warmiainkaso.pl">iod2@warmiainkaso.pl</a>.
       </p>
 
-      <h3>Dane do faktur</h3>
+      <h2 id="faktury">Dane do faktur</h2>
       <dl>
         <dt>Nabywca</dt>
         <dd>

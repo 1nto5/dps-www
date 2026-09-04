@@ -25,25 +25,40 @@ const { items, title = "Na tej stronie" } = Astro.props;
 </nav>
 
 <script>
+  // The chapter being read is the last heading that has passed a line a
+  // third of the way down the viewport; before the first heading, the first.
   const toc = document.querySelector<HTMLElement>(".toc[data-section-nav]");
-  if (toc && "IntersectionObserver" in window) {
+  if (toc) {
     const links = [...toc.querySelectorAll<HTMLAnchorElement>("a[href^='#']")];
     const targets = links
       .map((a) => document.getElementById(decodeURIComponent(a.hash.slice(1))))
       .filter((el): el is HTMLElement => el !== null);
     const mark = (id: string) => {
       for (const a of links) {
-        if (a.hash.slice(1) === id) a.setAttribute("aria-current", "location");
+        if (decodeURIComponent(a.hash.slice(1)) === id) a.setAttribute("aria-current", "location");
         else a.removeAttribute("aria-current");
       }
     };
-    const io = new IntersectionObserver(
-      (entries) => {
-        const hit = entries.find((e) => e.isIntersecting);
-        if (hit) mark(hit.target.id);
-      },
-      { rootMargin: "-20% 0px -70% 0px" },
-    );
-    for (const t of targets) io.observe(t);
+    const update = () => {
+      const line = window.innerHeight / 3;
+      let current = targets[0];
+      for (const t of targets) {
+        if (t.getBoundingClientRect().top <= line) current = t;
+      }
+      if (current) mark(current.id);
+    };
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        update();
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    window.addEventListener("hashchange", onScroll);
+    update();
   }
 </script>

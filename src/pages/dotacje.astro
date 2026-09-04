@@ -6,30 +6,30 @@
  * official wording are reproduced as published — grant publicity rules do not
  * allow rewording them.
  */
-import Base from "../../layouts/Base.astro";
-import PageHeader from "../../components/PageHeader.astro";
-import PageShell from "../../components/PageShell.astro";
-import Toc from "../../components/Toc.astro";
-import Figure from "../../components/Figure.astro";
-import DocList from "../../components/DocList.astro";
+import Base from "../layouts/Base.astro";
+import PageHeader from "../components/PageHeader.astro";
+import PageShell from "../components/PageShell.astro";
+import Toc from "../components/Toc.astro";
+import Figure from "../components/Figure.astro";
+import DocList from "../components/DocList.astro";
 
-import emblem from "../../assets/media/1423-Picture-1.png";
-import poster2025Motywacyjny from "../../assets/media/plakat-dodatek-motywacyjny-2025.png";
-import poster2025Celowa from "../../assets/media/2422-dotacje-2025.png";
-import poster2024 from "../../assets/media/2059-Screenshot-2024-10-02-at-12.30.49.png";
-import poster2022Sierpien from "../../assets/media/1245-dot1.jpg";
-import poster2022Marzec from "../../assets/media/1246-Informacja-na-strone-1.jpg";
-import poster2021Wyposazenie from "../../assets/media/1257-110.jpg";
-import poster2021Covid from "../../assets/media/1258-97.jpg";
-import poster2021Wzmocnienie from "../../assets/media/1259-123-1.jpg";
-import poster2020Ochrona from "../../assets/media/1266-212.jpg";
-import poster2020Gratyfikacje from "../../assets/media/1267-32.jpg";
-import poster2020Opieka from "../../assets/media/1268-41.jpg";
-import poster2020Ciaglosc from "../../assets/media/1269-54.jpg";
-import poster2020SrodkiOchrony from "../../assets/media/1270-61.jpg";
-import poster2019 from "../../assets/media/1277-00013.jpg";
-import poster2018 from "../../assets/media/1278-333_page-0001.jpg";
-import poster2016 from "../../assets/media/1279-72.jpg";
+import emblem from "../assets/media/1423-Picture-1.png";
+import poster2025Motywacyjny from "../assets/media/plakat-dodatek-motywacyjny-2025.png";
+import poster2025Celowa from "../assets/media/2422-dotacje-2025.png";
+import poster2024 from "../assets/media/2059-Screenshot-2024-10-02-at-12.30.49.png";
+import poster2022Sierpien from "../assets/media/1245-dot1.jpg";
+import poster2022Marzec from "../assets/media/1246-Informacja-na-strone-1.jpg";
+import poster2021Wyposazenie from "../assets/media/1257-110.jpg";
+import poster2021Covid from "../assets/media/1258-97.jpg";
+import poster2021Wzmocnienie from "../assets/media/1259-123-1.jpg";
+import poster2020Ochrona from "../assets/media/1266-212.jpg";
+import poster2020Gratyfikacje from "../assets/media/1267-32.jpg";
+import poster2020Opieka from "../assets/media/1268-41.jpg";
+import poster2020Ciaglosc from "../assets/media/1269-54.jpg";
+import poster2020SrodkiOchrony from "../assets/media/1270-61.jpg";
+import poster2019 from "../assets/media/1277-00013.jpg";
+import poster2018 from "../assets/media/1278-333_page-0001.jpg";
+import poster2016 from "../assets/media/1279-72.jpg";
 
 const toc = [
   { id: "rok-2025", label: "2025" },
@@ -47,15 +47,6 @@ const docs2024 = [
     label: "Plakat informacyjny — dodatek motywacyjny w roku 2024",
     format: "PDF",
     size: "553 KB",
-  },
-];
-
-const docs2023 = [
-  {
-    href: "/dokumenty/pliki/1410-dotacja-2023.pdf",
-    label: "Informacja o dofinansowaniu z rezerwy celowej w 2023 roku",
-    format: "PDF",
-    size: "182 KB",
   },
 ];
 
@@ -224,24 +215,6 @@ const posterSizes = "(min-width: 48rem) 42rem, 100vw";
         (słownie: dziewięćset czternaście tysięcy dwadzieścia dziewięć złotych 00/100).
       </p>
       <p><strong>Środki z funduszu przeznaczono na wypłatę dodatków dla pracowników.</strong></p>
-
-      <h3>Wcześniejsza transza z rezerwy celowej</h3>
-      <p>
-        <strong>Dom Pomocy Społecznej w Szczytnie w 2023 r.</strong> otrzymał
-        z Warmińsko-Mazurskiego Urzędu Wojewódzkiego środki dotacji celowej pochodzącej z rezerwy
-        celowej (cz. 83, poz. 49), w rozdziale 85202 § 2130 — Domy Pomocy Społecznej.
-      </p>
-      <p>
-        <strong>Wartość dofinansowania: 688 950,00 zł</strong><br />
-        (słownie: sześćset osiemdziesiąt osiem tysięcy dziewięćset pięćdziesiąt złotych 00/100).
-      </p>
-      <p><strong>Środki z funduszu przeznaczono na wypłatę dodatków dla pracowników.</strong></p>
-
-      <h3>Do pobrania</h3>
-    </div>
-
-    <div class="mt-block max-w-column">
-      <DocList docs={docs2023} />
     </div>
 
     <div class="doc mt-section">

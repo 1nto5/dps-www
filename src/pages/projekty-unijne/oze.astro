@@ -4,35 +4,35 @@
  * Funding logos and the official project figures are reproduced as published.
  */
 import { Image } from "astro:assets";
-import Base from "../../../layouts/Base.astro";
-import PageHeader from "../../../components/PageHeader.astro";
-import PageShell from "../../../components/PageShell.astro";
-import PageList from "../../../components/PageList.astro";
-import Figure from "../../../components/Figure.astro";
-import Gallery from "../../../components/Gallery.astro";
-import { projektyUnijnePages } from "../../../data/projekty-unijne-pages";
+import Base from "../../layouts/Base.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import PageShell from "../../components/PageShell.astro";
+import PageList from "../../components/PageList.astro";
+import Figure from "../../components/Figure.astro";
+import Gallery from "../../components/Gallery.astro";
+import { projektyUnijnePages } from "../../data/projekty-unijne-pages";
 
-import boardProject from "../../../assets/media/1344-680-00186.jpg";
-import logoRpo from "../../../assets/media/1345-680-00139.jpg";
-import photoUmowa from "../../../assets/media/1346-680-00126.jpg";
+import boardProject from "../../assets/media/1344-680-00186.jpg";
+import logoRpo from "../../assets/media/1345-680-00139.jpg";
+import photoUmowa from "../../assets/media/1346-680-00126.jpg";
 
-import p140 from "../../../assets/media/1348-680-00140.jpg";
-import p145 from "../../../assets/media/1349-680-00145.jpg";
-import p146 from "../../../assets/media/1350-680-00146.jpg";
-import p153 from "../../../assets/media/1351-680-00153.jpg";
-import p155 from "../../../assets/media/1352-680-00155.jpg";
-import p157 from "../../../assets/media/1354-680-00157.jpg";
-import p160 from "../../../assets/media/1355-680-00160.jpg";
-import p163 from "../../../assets/media/1356-680-00163.jpg";
-import p166 from "../../../assets/media/1357-680-00166.jpg";
-import p167 from "../../../assets/media/1358-680-00167.jpg";
-import p173 from "../../../assets/media/1359-680-00173.jpg";
-import p174 from "../../../assets/media/1360-680-00174.jpg";
-import p295 from "../../../assets/media/1361-680-00295.jpg";
-import p296 from "../../../assets/media/1362-680-00296.jpg";
-import p380 from "../../../assets/media/1363-680-00380.jpg";
-import p1680 from "../../../assets/media/1364-1680-001.jpg";
-import p298 from "../../../assets/media/1369-680-00298.jpg";
+import p140 from "../../assets/media/1348-680-00140.jpg";
+import p145 from "../../assets/media/1349-680-00145.jpg";
+import p146 from "../../assets/media/1350-680-00146.jpg";
+import p153 from "../../assets/media/1351-680-00153.jpg";
+import p155 from "../../assets/media/1352-680-00155.jpg";
+import p157 from "../../assets/media/1354-680-00157.jpg";
+import p160 from "../../assets/media/1355-680-00160.jpg";
+import p163 from "../../assets/media/1356-680-00163.jpg";
+import p166 from "../../assets/media/1357-680-00166.jpg";
+import p167 from "../../assets/media/1358-680-00167.jpg";
+import p173 from "../../assets/media/1359-680-00173.jpg";
+import p174 from "../../assets/media/1360-680-00174.jpg";
+import p295 from "../../assets/media/1361-680-00295.jpg";
+import p296 from "../../assets/media/1362-680-00296.jpg";
+import p380 from "../../assets/media/1363-680-00380.jpg";
+import p1680 from "../../assets/media/1364-1680-001.jpg";
+import p298 from "../../assets/media/1369-680-00298.jpg";
 
 const photos = [
   {
@@ -84,7 +84,7 @@ const photos = [
   />
 
   <PageShell>
-    <PageList slot="rail" items={projektyUnijnePages} current="/dokumenty/projekty-unijne/oze/" />
+    <PageList slot="rail" items={projektyUnijnePages} current="/projekty-unijne/oze/" />
 
     <Figure
       src={boardProject}

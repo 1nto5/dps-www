@@ -4,7 +4,6 @@ import Base from "../../layouts/Base.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import PageShell from "../../components/PageShell.astro";
 import PageList from "../../components/PageList.astro";
-import { contact } from "../../data/contact";
 
 const entries = (await getCollection("aktualnosci")).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
@@ -28,23 +27,12 @@ const items = entries.map((entry) => {
 ---
 
 <Base
-  title="Komunikaty i podziękowania"
-  description="Komunikaty i podziękowania z życia Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie i filii w Spychowie. Ogłoszenia urzędowe publikujemy w Biuletynie Informacji Publicznej."
+  title="Aktualności"
+  description="Aktualności Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie i filii w Spychowie."
 >
-  <PageHeader
-    breadcrumbs
-    title="Komunikaty i podziękowania"
-    lead="Ważniejsze komunikaty i podziękowania z życia Domu oraz filii w Spychowie. Bieżące ogłoszenia urzędowe publikujemy w Biuletynie Informacji Publicznej."
-  />
+  <PageHeader breadcrumbs title="Aktualności" />
 
   <PageShell>
-    <div class="doc">
-      <p>
-        Zamówienia publiczne, nabory i inne ogłoszenia urzędowe znajdują się
-        w <a href={contact.bip}>Biuletynie Informacji Publicznej Domu</a>.
-      </p>
-    </div>
-
     <div class="mt-subsection">
       {
         items.length === 0 ? (

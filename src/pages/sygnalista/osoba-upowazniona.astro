@@ -4,16 +4,16 @@
  * The old page showed only a scan; the notice is reproduced here as text
  * so it is readable by screen readers, with the scan linked as PDF.
  */
-import Base from "../../../layouts/Base.astro";
-import PageHeader from "../../../components/PageHeader.astro";
-import PageShell from "../../../components/PageShell.astro";
-import PageList from "../../../components/PageList.astro";
-import Figure from "../../../components/Figure.astro";
-import DocList from "../../../components/DocList.astro";
-import { contact } from "../../../data/contact";
-import { sygnalistaPages } from "../../../data/sygnalista-pages";
+import Base from "../../layouts/Base.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import PageShell from "../../components/PageShell.astro";
+import PageList from "../../components/PageList.astro";
+import Figure from "../../components/Figure.astro";
+import DocList from "../../components/DocList.astro";
+import { contact } from "../../data/contact";
+import { sygnalistaPages } from "../../data/sygnalista-pages";
 
-import scan from "../../../assets/media/2065-Screenshot-2024-10-02-at-13.03.49.png";
+import scan from "../../assets/media/2065-Screenshot-2024-10-02-at-13.03.49.png";
 
 /** The rail is a bare list of the subsection's pages — the blurbs would not fit. */
 const rail = sygnalistaPages.map(({ href, label }) => ({ href, label }));
@@ -39,7 +39,7 @@ const docs = [
   />
 
   <PageShell>
-    <PageList slot="rail" items={rail} current="/dokumenty/sygnalista/osoba-upowazniona/" />
+    <PageList slot="rail" items={rail} current="/sygnalista/osoba-upowazniona/" />
 
     <div class="doc mt-subsection">
       <p>

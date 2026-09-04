@@ -353,3 +353,55 @@ zdanie na ten temat.
 Skład zespołu i nazwisko opiekuna pochodzą ze starej strony. Prosimy o potwierdzenie,
 czy skład jest aktualny, oraz o rok ostatniego występu — chcielibyśmy napisać, że grupa
 nadal działa, ale tylko jeśli to prawda.
+
+---
+
+## 13. Kod pocztowy filii w Spychowie
+
+Deklaracja dostępności na obecnej stronie podaje adres filii jako **12-140 Spychowo**,
+ul. H. Sienkiewicza 3. W nowej wersji strony w tym samym zdaniu jest **12-150**.
+
+Deklaracja jest dokumentem podpisanym, więc nie zmieniamy tej wartości samodzielnie
+w żadną stronę. Prosimy o wskazanie, który kod jest prawidłowy — a jeśli prawidłowy jest
+inny niż w podpisanej deklaracji, prosimy o pisemną zgodę na poprawienie go w deklaracji.
+
+---
+
+## 14. Dotacje 2023 — transza 688 950,00 zł
+
+Przy przenoszeniu strony mieliśmy na stronie o dotacjach za 2023 rok dwie transze
+z rezerwy celowej: 914 029,00 zł oraz wcześniejszą 688 950,00 zł, razem z plikiem PDF
+„Informacja o dofinansowaniu z rezerwy celowej w 2023 roku”.
+
+Dziś na stronie `dpsszczytno.pl/dotacje/dotacje-2023/` jest tylko kwota 914 029,00 zł,
+a plik PDF nie otwiera się (błąd 404). Wygląda na to, że Dom usunął tę informację.
+Dlatego usunęliśmy z nowej strony zarówno akapit o kwocie 688 950,00 zł, jak i ten plik.
+
+Pytania:
+
+- Czy informacja o transzy 688 950,00 zł ma wrócić na stronę?
+- Jeśli tak, prosimy o przesłanie pliku PDF, który ma jej towarzyszyć.
+
+---
+
+## 13. Kod pocztowy filii w Spychowie
+
+Na stronie podajemy dla filii kod **12-150 Spychowo**. W podpisanej deklaracji dostępności
+opublikowanej przez Dom widnieje natomiast **12-140**. Nie zmieniamy tego sami, bo jeden
+z tych zapisów jest w dokumencie podpisanym przez Dom.
+
+Pytanie: który kod pocztowy jest prawidłowy dla adresu „ul. Sienkiewicza 3, Spychowo”?
+
+---
+
+## 14. Adres e-mail Domu: sprzeczność na samej stronie produkcyjnej
+
+Na stronie produkcyjnej ten sam Dom podaje dwa różne adresy:
+
+- podstrona „KONTAKT” (`/contact/`) — **sekretariat@dpsszczytno.pl**,
+- strona główna (`/`), w tej samej sekcji kontaktowej — **szczytno@dps.pl**.
+
+Zostawiliśmy na nowej stronie adres `sekretariat@dpsszczytno.pl` i nic nie zmienialiśmy.
+
+Pytanie: który adres jest właściwy dla korespondencji z Domem i czy drugi z nich nadal
+działa? (Sprawa łączy się z punktem 7.1 — te same dwa adresy występują w klauzulach RODO.)

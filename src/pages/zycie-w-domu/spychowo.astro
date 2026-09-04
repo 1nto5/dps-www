@@ -34,57 +34,54 @@ const therapies = [
 ---
 
 <Base
-  title="Filia w Spychowie"
-  description={`Filia Domu Pomocy Społecznej im. Jana Pawła II w Spychowie — opieka pielęgnacyjna i zajęcia terapeutyczne. ${contact.spychowo.address.city}, ${contact.spychowo.address.street}, tel. ${contact.spychowo.phone.label}.`}
+  title="Filia Domu Pomocy w Spychowie"
+  description={`Filia Domu Pomocy Społecznej w Spychowie istnieje od 2001 r. i przeznaczona jest dla 25 Mieszkańców. ${contact.spychowo.address.city}, ${contact.spychowo.address.street}, tel. ${contact.spychowo.phone.label}.`}
 >
-  <PageHeader
-    breadcrumbs
-    title="Filia w Spychowie"
-    lead="Mniejszy dom pośród mazurskich lasów. Od 2001 roku Mieszkańcy znajdują tu opiekę i codzienny rytm zajęć."
-  />
+  <PageHeader breadcrumbs title="Filia Domu Pomocy w Spychowie" />
 
   <PageShell>
     <Toc slot="rail" items={toc} />
 
     <Brief>
-      <li>Filia w Spychowie istnieje od 2001 roku i jest domem dla Mieszkańców.</li>
+      <li>
+        Filia Domu Pomocy Społecznej w Spychowie istnieje od 2001 r. i przeznaczona jest dla 25
+        Mieszkańców.
+      </li>
+      <li>Dom świadczy usługi pielęgnacyjne, opiekuńcze i wspomagające.</li>
       <li>Wsparcie duchowe zapewnia kapłan z tutejszej parafii.</li>
-      <li>Sprawy formalne prowadzi sekretariat w Szczytnie.</li>
     </Brief>
 
     <div class="doc mt-subsection">
       <h2 id="o-filii">O filii</h2>
       <p>
-        Filia w Spychowie istnieje od 2001 roku i jest domem dla Mieszkańców. Opieka pielęgniarska
-        jest tu przez całą dobę, a dzień ma swój rytm: wspólne posiłki w stołówce, zajęcia
-        w pracowni terapeutycznej, msza w kaplicy i czas dla siebie we własnym pokoju. Pomagamy
-        w codziennych czynnościach tyle, ile potrzeba — i tak, żeby każdy zachował swoje
-        przyzwyczajenia.
-      </p>
-      <p>
-        Zakres usług pielęgnacyjnych, opiekuńczych i wspomagających oraz warunki bytowe określa
-        Regulamin Organizacyjny Domu.
+        Filia Domu Pomocy Społecznej w Spychowie istnieje od 2001 r. i przeznaczona jest dla 25
+        Mieszkańców. Zgodnie z postanowieniami Regulaminu Organizacyjnego, Dom świadczy usługi
+        pielęgnacyjne, opiekuńcze i wspomagające, a także spełnia wszystkie wymogi
+        standaryzacyjne w zakresie warunków bytowych.
       </p>
 
       <h2 id="pomieszczenia">Wspólne pomieszczenia</h2>
-      <p>Oprócz własnych pokoi Mieszkańcy korzystają także z pozostałych pomieszczeń domu:</p>
+      <p>
+        Mieszkańcy, oprócz własnych pokoi mieszkalnych, korzystają także z innych pomieszczeń:
+      </p>
       <ul>
         {rooms.map((room) => <li>{room}</li>)}
       </ul>
       <p>Wsparcie duchowe zapewnia kapłan z tutejszej parafii.</p>
 
       <h2 id="zajecia">Zajęcia terapeutyczne</h2>
+      <p>Zakres tematyczny prowadzonych zajęć terapeutycznych:</p>
       <ul>
         {therapies.map((item) => <li>{item}</li>)}
       </ul>
 
       <h2 id="spolecznosc">Życie ze społecznością lokalną</h2>
       <p>
-        Pracownicy domu i Mieszkańcy dokładają starań, by utrzymywać dobre kontakty ze środowiskiem
-        lokalnym, szczególnie ze szkołą i miejscowymi zakładami pracy. Dom odwiedzają różne zespoły
-        muzyczne i rozrywkowe — między innymi aktorzy Teatru ArtRe z Krakowa — a także dzieci
-        i młodzież z okolicznościowymi przedstawieniami oraz Mieszkańcy i uczestnicy placówek
-        o podobnym profilu działalności.
+        Pracownicy Domu i Mieszkańcy dokładają wielu starań w celu utrzymania dobrych kontaktów
+        ze środowiskiem lokalnym, szczególnie ze szkołą i miejscowymi zakładami pracy. Dom
+        odwiedzają różne zespoły muzyczne i rozrywkowe (np. aktorzy Teatru ArtRe z Krakowa),
+        a także dzieci i młodzież z okolicznościowymi przedstawieniami, jak również Uczestnicy
+        i Mieszkańcy placówek o podobnym profilu działalności.
       </p>
 
       <h2 id="kontakt">Kontakt do filii</h2>
@@ -96,9 +93,7 @@ const therapies = [
       <p>
         Telefon: <a href={contact.spychowo.phone.href}>{contact.spychowo.phone.label}</a>
       </p>
-      <p>
-        Sprawy formalne prowadzi <a href="/kontakt/">sekretariat w Szczytnie</a>.
-      </p>
+      <p><a href="/kontakt/">Kontakt</a></p>
     </div>
   </PageShell>
 </Base>
