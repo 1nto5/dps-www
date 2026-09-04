@@ -832,28 +832,6 @@ figcaption {
   html:not([data-contrast]) main {
     animation: rise-in var(--dur-enter) var(--ease-out);
   }
-  /* Below the fold, as the reader scrolls: each block rises in with the same
-     gesture, driven by the scroll position itself (a scroll-driven animation
-     on the view timeline), so nothing waits on a script and nothing is ever
-     hidden when the page is not being scrolled. A block already on screen at
-     load sits past the end of its range and is simply painted. The range is a
-     short fixed length from the block's top crossing the bottom edge, so a
-     page-tall block (a long document) is readable at once. Units: the blocks
-     of a section or of the content column, list items one by one, the blocks
-     of a document, the photos of a gallery. Firefox has no view timelines
-     yet and keeps the page still. */
-  @supports (animation-timeline: view()) {
-    html:not([data-contrast]) :is(
-        :is(main section, main [data-shell-content]) > :not(ul, ol, .doc, section),
-        :is(main section, main [data-shell-content]) > :is(ul, ol) > li,
-        .doc > :not(ul.pages, ul.docs, ul.gallery),
-        :is(ul.pages, ul.docs, ul.gallery) > li
-      ) {
-      animation: scroll-in linear both;
-      animation-timeline: view();
-      animation-range: entry 0 entry 10rem;
-    }
-  }
   /* Arriving at a chapter by anchor: the heading glows and lets it go. */
   html:not([data-contrast]) :is(h2, h3, section)[id]:target {
     animation: arrive-in 1600ms var(--ease-out);
@@ -931,12 +909,6 @@ figcaption {
     transform: translateY(10px);
   }
 }
-@keyframes scroll-in {
-  from {
-    opacity: 0;
-    transform: translateY(1.5rem);
-  }
-}
 @keyframes bloom {
   0% {
     opacity: 0;
@@ -958,9 +930,6 @@ figcaption {
 }
 
 @media print {
-  main * {
-    animation: none !important;
-  }
   .menu-open,
   .tools,
   .menu,

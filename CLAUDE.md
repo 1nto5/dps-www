@@ -106,9 +106,7 @@ declared in `global.css` and nowhere else: `--dur-fast` (300ms, state feedback),
 moves: links and buttons crossfade their colour, a pressed button blooms softly from
 the click point (`--px`/`--py` written by the pointer script in `Base`; `data-press`
 while it runs), the drawer rises in from the left, the lightbox rises, `main` rises
-once per load, below the fold each block rises in as the reader scrolls to it (a
-scroll-driven animation on `view()`, pure CSS, `@supports`-guarded; a block on screen
-at load is simply painted), a heading reached by anchor glows briefly (`:target`), anchors scroll smoothly,
+once per load, a heading reached by anchor glows briefly (`:target`), anchors scroll smoothly,
 and pages crossfade through a cross-document view transition with the header held
 still (`view-transition-name: site-header` — exactly one element may carry it). All
 of it sits under `prefers-reduced-motion: no-preference` and outside `[data-contrast]`.
