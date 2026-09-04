@@ -46,8 +46,10 @@ const desc =
         try {
           var c = localStorage.getItem("dps-contrast");
           var f = localStorage.getItem("dps-font");
+          var t = localStorage.getItem("dps-theme");
           if (c === "yellow" || c === "bw") d.setAttribute("data-contrast", c);
           if (f === "large" || f === "xlarge") d.setAttribute("data-font-size", f);
+          if (t === "light" || t === "dark") d.setAttribute("data-theme", t);
         } catch (e) {}
       })();
     </script>

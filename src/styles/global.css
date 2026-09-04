@@ -152,28 +152,35 @@ a {
 }
 
 /* ---------------------------------------------------------------------------
-   Reader modes. Dark follows the system only (no switch on the site). The two
-   high-contrast modes are chosen in the header and win over everything.
+   Reader modes. The theme button in the header writes `data-theme` on <html>:
+   nothing means "follow the system", `light` and `dark` pin one side. Every
+   token picks its side with light-dark(), so the choice is one property —
+   `color-scheme`. The two high-contrast modes are chosen in the header and win
+   over everything.
    ------------------------------------------------------------------------ */
-@media (prefers-color-scheme: dark) {
-  html:not([data-contrast]) {
-    --color-paper: #121719;
-    --color-mist: #1a2124;
-    --color-mist-deep: #263035;
-    --color-card: #1a2124;
-    --color-ink: #eceeec;
-    --color-ink-soft: #b0b8b5;
-    --color-lake: #8fbfda;
-    --color-lake-deep: #b9d9ea;
-    --color-heather: #c3a8d9;
-    --color-heather-soft: #2a2233;
-    --color-line: #2e383c;
-    --color-edge: #8a969d;
-    --color-overlay: #090c0e;
-    --color-on-overlay: #eceeec;
-    --color-on-dark: #121719;
-    color-scheme: dark;
-  }
+html:not([data-contrast]) {
+  color-scheme: light dark;
+  --color-paper: light-dark(#fbfbf8, #121719);
+  --color-mist: light-dark(#f1f3f1, #1a2124);
+  --color-mist-deep: light-dark(#e1e6e3, #263035);
+  --color-card: light-dark(#ffffff, #1a2124);
+  --color-ink: light-dark(#1b2430, #eceeec);
+  --color-ink-soft: light-dark(#4a5560, #b0b8b5);
+  --color-lake: light-dark(#244c63, #8fbfda);
+  --color-lake-deep: light-dark(#1a3a4d, #b9d9ea);
+  --color-heather: light-dark(#7a5c8e, #c3a8d9);
+  --color-heather-soft: light-dark(#efe9f4, #2a2233);
+  --color-line: light-dark(#d6dad8, #2e383c);
+  --color-edge: light-dark(#6f7c85, #8a969d);
+  --color-overlay: light-dark(#0e1418, #090c0e);
+  --color-on-overlay: #eceeec;
+  --color-on-dark: light-dark(#ffffff, #121719);
+}
+html[data-theme="light"]:not([data-contrast]) {
+  color-scheme: light;
+}
+html[data-theme="dark"]:not([data-contrast]) {
+  color-scheme: dark;
 }
 @media (prefers-contrast: more) {
   html:not([data-contrast]) {
@@ -264,6 +271,22 @@ html[data-font-size="xlarge"] {
 }
 html:not([data-js]) .tools {
   display: none;
+}
+/* The theme button: one icon at a time — sun, moon, or the "system" mark —
+   the next one rising into place the way the page arrives. */
+.tool-theme {
+  display: inline-grid;
+  place-items: center;
+  padding: 0.375rem;
+}
+.tool-theme svg {
+  grid-area: 1 / 1;
+  display: none;
+}
+html:not([data-theme]) .tool-theme [data-icon="system"],
+html[data-theme="light"] .tool-theme [data-icon="light"],
+html[data-theme="dark"] .tool-theme [data-icon="dark"] {
+  display: block;
 }
 
 /* ---------------------------------------------------------------------------
@@ -798,6 +821,12 @@ figcaption {
   }
   html:not([data-contrast]) .lightbox[open] {
     animation: rise-in var(--dur-panel) var(--ease-out);
+  }
+  /* The theme icon changing hands: the new one rises in after a press. The
+     page itself crossfades through a same-document view transition, using the
+     root animations declared below. */
+  html:not([data-contrast]) .tool-theme[data-theme-changed] svg {
+    animation: rise-in var(--dur-fast) var(--ease-out);
   }
   /* The page arriving: one quiet rise of <main>, once per load. */
   html:not([data-contrast]) main {
