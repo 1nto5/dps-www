@@ -851,7 +851,7 @@ figcaption {
       ) {
       animation: scroll-in linear both;
       animation-timeline: view();
-      animation-range: entry 0 entry 10rem;
+      animation-range: entry 0 entry 22rem;
     }
   }
   /* Arriving at a chapter by anchor: the heading glows and lets it go. */
@@ -934,7 +934,7 @@ figcaption {
 @keyframes scroll-in {
   from {
     opacity: 0;
-    transform: translateY(1.5rem);
+    transform: translateY(2.5rem);
   }
 }
 @keyframes bloom {
