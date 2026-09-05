@@ -11,7 +11,7 @@ const home = addressLines(contact.address);
 const branch = addressLines(contact.spychowo.address);
 ---
 
-<footer class="mt-auto border-t border-line bg-sand">
+<footer transition:animate="none" class="mt-auto border-t border-line bg-sand">
   <div class="mx-auto grid max-w-6xl gap-10 px-5 py-12 sm:px-8 md:grid-cols-3 md:py-16">
     <div>
       <h2 class="text-lg">{contact.name}</h2>
@@ -67,16 +67,23 @@ const branch = addressLines(contact.spychowo.address);
   </div>
 
   <div class="border-t border-line">
-    <div
-      class="mx-auto flex max-w-6xl flex-wrap items-baseline justify-between gap-x-8 gap-y-2 px-5 py-4 text-sm text-ink-soft sm:px-8"
-    >
-      <p>
-        © {year}
-        {contact.name}. Jednostka organizacyjna Powiatu Szczycieńskiego.
-      </p>
-      <p class="flex flex-wrap gap-x-6">
-        <a href="/deklaracja-dostepnosci/">Deklaracja dostępności</a>
-        <a href="/rodo/">RODO</a>
+    <div class="mx-auto max-w-6xl px-5 py-4 text-sm text-ink-soft sm:px-8">
+      <div class="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
+        <p>
+          © {year}
+          {contact.name}. Jednostka organizacyjna Powiatu Szczycieńskiego.
+        </p>
+        <p class="flex flex-wrap gap-x-6">
+          <a href="/deklaracja-dostepnosci/">Deklaracja dostępności</a>
+          <a href="/rodo/">RODO</a>
+        </p>
+      </div>
+      <p class="mt-3 text-xs sm:text-right">
+        Projekt i wykonanie strony: <a
+          href="https://adrianantosiak.pl"
+          rel="author noopener"
+          target="_blank">Adrian Antosiak</a
+        >
       </p>
     </div>
   </div>

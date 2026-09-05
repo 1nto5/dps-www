@@ -29,13 +29,13 @@ const branch = addressLines(contact.spychowo.address);
   title="Kontakt"
   description="Adresy, telefony i adresy e-mail Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie oraz filii w Spychowie."
 >
-  <PageHeader breadcrumbs title="Kontakt">
-    <p class="mt-8">
-      <Button href={contact.phone.href}>{contact.phone.label}</Button>
-    </p>
-  </PageHeader>
-
   <PageShell>
+    <PageHeader bare slot="header" breadcrumbs title="Kontakt">
+      <p class="mt-8">
+        <Button href={contact.phone.href}>{contact.phone.label}</Button>
+      </p>
+    </PageHeader>
+
     <Toc slot="aside" items={toc} />
 
     <div class="prose">

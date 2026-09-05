@@ -2,11 +2,52 @@
 
 /* ---------------------------------------------------------------------------
    Fonts. Self-hosted, no external request: the packages ship the woff2 files
-   and Vite copies the ones the browser asks for into the build. Fraunces draws
-   the headings, Source Sans 3 everything else.
+   and Vite copies them into the build. Fraunces draws the headings, Source
+   Sans 3 everything else; the upright faces in the latin and latin-ext
+   subsets, which is all Polish text needs.
+
+   Declared here rather than through the packages' own CSS for one reason:
+   `font-display: block`. With `swap` the text paints in a fallback face and
+   jumps when the real one lands; with `optional` a page swapped in by the
+   router can come up in the fallback face for good. `block` holds the text
+   for the font — the four files are about 160 kB together, fetched right
+   after this stylesheet, and from the second page on come from the cache.
+   Not preloaded: the router re-inserts <link rel="preload"> on every swap,
+   and a font request in flight during the swap makes Chrome drop the
+   transition.
    ------------------------------------------------------------------------ */
-@import "@fontsource-variable/fraunces";
-@import "@fontsource-variable/source-sans-3";
+@font-face {
+  font-family: "Fraunces Variable";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: block;
+  src: url("@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face {
+  font-family: "Fraunces Variable";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: block;
+  src: url("@fontsource-variable/fraunces/files/fraunces-latin-ext-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+@font-face {
+  font-family: "Source Sans 3 Variable";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: block;
+  src: url("@fontsource-variable/source-sans-3/files/source-sans-3-latin-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face {
+  font-family: "Source Sans 3 Variable";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: block;
+  src: url("@fontsource-variable/source-sans-3/files/source-sans-3-latin-ext-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
 
 /* ---------------------------------------------------------------------------
    Tokens — the whole palette of the site. `--color-*: initial` first clears
@@ -22,17 +63,19 @@
 @theme static {
   --color-*: initial;
 
-  --color-paper: #faf8f3;
-  --color-sand: #f0ece2;
-  --color-ink: #1f2a2e;
-  --color-ink-soft: #4d5a5f;
-  --color-pine: #1f5a46;
-  --color-pine-deep: #153f31;
-  --color-clay: #8a4b2f;
-  --color-line: #d9d3c5;
-  --color-white: #ffffff;
+  /* Each token is a pair: on paper, and on the dark ground. Which one paints
+     follows `color-scheme` on <html> — the reader's choice, or the system's. */
+  --color-paper: light-dark(#faf8f3, #141c1a);
+  --color-sand: light-dark(#f0ece2, #1c2624);
+  --color-ink: light-dark(#1f2a2e, #ebe9e2);
+  --color-ink-soft: light-dark(#4d5a5f, #b3bcb7);
+  --color-pine: light-dark(#1f5a46, #8ccfb1);
+  --color-pine-deep: light-dark(#153f31, #b4e0cb);
+  --color-clay: light-dark(#8a4b2f, #dea283);
+  --color-line: light-dark(#d9d3c5, #36443f);
+  --color-white: light-dark(#ffffff, #232f2c);
   /* Text drawn on a pine fill. A pair, not a new colour: high contrast flips it. */
-  --color-on-pine: #ffffff;
+  --color-on-pine: light-dark(#ffffff, #0f1916);
 
   --font-display: "Fraunces Variable", Georgia, "Times New Roman", serif;
   --font-body: "Source Sans 3 Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -54,7 +97,8 @@
    ------------------------------------------------------------------------ */
 html {
   font-size: 112.5%; /* 18px */
-  scroll-padding-top: 2rem;
+  /* The pinned row must not cover the heading a link lands on. */
+  scroll-padding-top: calc(var(--header-height, 0px) + 1.5rem);
   -webkit-text-size-adjust: 100%;
 }
 
@@ -79,12 +123,23 @@ body {
     color: var(--color-ink);
   }
 
+  /* The line sits under the descenders and under the ogonek of ą and ę, and
+     does not step over them: a line broken around every j and ę looks torn
+     once it is thicker than a hairline. */
   a {
     color: var(--color-pine);
-    text-underline-offset: 0.18em;
+    text-underline-offset: 0.3em;
+    text-decoration-skip-ink: none;
   }
+  /* Colour alone cannot answer a hover here: the site has one green, and the
+     darker one is only 1.46:1 away from it — far under the 3:1 the eye needs.
+     So a line appears under the link as well. The components below that answer
+     with a shape of their own — the buttons, the menu bar, the page and
+     document rows — sit outside this layer and keep what they set. */
   a:hover {
     color: var(--color-pine-deep);
+    text-decoration-line: underline;
+    text-decoration-thickness: 2px;
   }
 
   ::selection {
@@ -113,6 +168,18 @@ body {
    yellow mode Polish public sites have offered for years; it repaints every
    token, and photographs are left alone.
    ------------------------------------------------------------------------ */
+/* Dark mode. Without a choice the page follows the system; the header button
+   pins it to dark or light. High contrast, below, repaints every token itself. */
+html {
+  color-scheme: light dark;
+}
+html[data-theme="dark"] {
+  color-scheme: dark;
+}
+html[data-theme="light"] {
+  color-scheme: light;
+}
+
 html[data-contrast="high"] {
   --color-paper: #000000;
   --color-sand: #000000;
@@ -216,6 +283,10 @@ html[data-font-size="xlarge"] {
   line-height: 1.2;
   cursor: pointer;
 }
+/* The reader's tools need JavaScript; `data-js` is set before first paint. */
+html:not([data-js]) [data-tools] {
+  display: none;
+}
 .tool:hover {
   border-color: var(--color-pine-deep);
   color: var(--color-pine-deep);
@@ -225,10 +296,26 @@ html[data-font-size="xlarge"] {
   border-color: var(--color-pine);
   color: var(--color-on-pine);
 }
+/* The theme switch: an icon only, one of three — a screen for „follow the
+   system", the moon for dark, the sun for light. */
+.tool svg {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+.tool[data-theme-switch] svg {
+  display: none;
+}
+.tool[data-theme-switch="system"] [data-icon="system"],
+.tool[data-theme-switch="dark"] [data-icon="moon"],
+.tool[data-theme-switch="light"] [data-icon="sun"] {
+  display: block;
+}
 
 /* ---------------------------------------------------------------------------
    Main menu. A flat row of links from `md` up; below that the same links in a
-   <dialog> that drops from the top edge, full width.
+   <dialog> drawer that slides in from the left, under the bar with the reader's
+   tools. The dialog is not modal, so the shade behind it is an element of its
+   own (.menu-backdrop) rather than ::backdrop.
    ------------------------------------------------------------------------ */
 .nav-link {
   display: inline-block;
@@ -237,9 +324,11 @@ html[data-font-size="xlarge"] {
   color: var(--color-ink);
   text-decoration: none;
 }
+/* Pine, not the hairline: the hairline is 1.41:1 against the bar behind it, so
+   the rule that is meant to say „this one" was itself invisible. */
 .nav-link:hover {
   color: var(--color-pine-deep);
-  border-bottom-color: var(--color-line);
+  border-bottom-color: var(--color-pine);
 }
 .nav-link[aria-current="page"] {
   color: var(--color-pine);
@@ -247,31 +336,104 @@ html[data-font-size="xlarge"] {
   font-weight: 600;
 }
 
+/* The row with the name and the sections is pinned to the top; the bar with
+   the reader's tools scrolls away. The header and <main> each carry a
+   view-transition-name, which makes them stacking contexts of their own; the
+   header goes above so the pinned row, and the drawer, paint over the page. */
+header {
+  position: sticky;
+  /* Pulled up by the bar's height, so the bar scrolls off and the row stays. */
+  top: calc(-1 * var(--bar-height, 0px));
+  z-index: 10;
+  background: var(--color-paper);
+}
+/* The pinned row shrinks once the page has scrolled past the bar
+   (`data-compact`, set by the script in Header): tighter padding, a smaller
+   name, the second line folded away. */
+.pinned-row {
+  padding-block: 1rem;
+}
+.brand-name {
+  font-size: 1.25rem;
+}
+.brand-sub {
+  display: grid;
+  grid-template-rows: 1fr;
+}
+.brand-sub > span {
+  overflow: hidden;
+}
+header[data-compact] .pinned-row {
+  padding-block: 0.25rem;
+}
+header[data-compact] .brand-name {
+  font-size: 1rem;
+}
+/* The links shrink with the row: less air above and below, the type a notch
+   smaller, and the line under the active section pulled up close to the text. */
+header[data-compact] .nav-link {
+  padding: 0.3rem 0 0.15rem;
+  border-bottom-width: 2px;
+  font-size: 0.9375rem;
+}
+header[data-compact] [data-menu-open] {
+  min-height: 2rem;
+  min-width: 2rem;
+  padding: 0.15rem 0.5rem;
+}
+header[data-compact] .brand-sub {
+  grid-template-rows: 0fr;
+  opacity: 0;
+}
 .menu {
+  position: fixed;
+  inset: var(--drawer-top, 0) auto 0 0;
+  z-index: 40;
   margin: 0;
-  width: 100%;
-  max-width: 100%;
-  padding: 1rem 1.25rem 1.5rem;
+  width: min(20rem, 85vw);
+  max-width: none;
+  height: auto;
+  max-height: none;
+  padding: 0.5rem 1.25rem 1.5rem;
   border: 0;
-  border-bottom: 1px solid var(--color-line);
+  border-right: 1px solid var(--color-line);
   background: var(--color-paper);
   color: var(--color-ink);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
 }
-.menu::backdrop {
+/* From `md` up the drawer has no business on screen, whatever its state. */
+@media (min-width: 48rem) {
+  .menu,
+  .menu-backdrop {
+    display: none !important;
+  }
+}
+.menu-backdrop {
+  position: fixed;
+  inset: var(--drawer-top, 0) 0 0 0;
+  z-index: 39;
   background: color-mix(in srgb, var(--color-ink) 60%, transparent);
+  touch-action: none;
 }
-.menu a {
+/* Each entry carries its line from the start, painted in nothing; a hover only
+   gives it colour, so the line fades in instead of snapping on. */
+.menu nav a {
   display: block;
   padding: 0.85rem 0.25rem;
   border-top: 1px solid var(--color-line);
   color: var(--color-ink);
   font-size: 1.125rem;
-  text-decoration: none;
+  text-decoration-line: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 2px;
 }
-.menu a:hover {
+.menu nav a:hover {
   color: var(--color-pine-deep);
+  text-decoration-color: currentColor;
 }
-.menu a[aria-current="page"] {
+.menu nav a[aria-current="page"] {
   color: var(--color-pine);
   font-weight: 600;
 }
@@ -304,7 +466,8 @@ html[data-font-size="xlarge"] {
 }
 .rail a:hover {
   color: var(--color-pine-deep);
-  text-decoration: underline;
+  text-decoration-line: underline;
+  text-decoration-thickness: 2px;
 }
 .rail li:last-child a {
   border-bottom: 1px solid var(--color-line);
@@ -329,18 +492,28 @@ html[data-font-size="xlarge"] {
 .pages li:last-child {
   border-bottom: 1px solid var(--color-line);
 }
+/* The whole row is the target; what answers is the title. It carries its line
+   from the start, painted in nothing: the green already says „link", and the
+   line fades in under the pointer. */
 .pages a {
   display: block;
   padding: 0.9rem 0;
   text-decoration: none;
 }
+.pages a > span,
+.docs a > span {
+  text-underline-offset: 0.3em;
+}
 .pages a > span {
   font-weight: 600;
-  text-decoration: underline;
-  text-underline-offset: 0.18em;
-}
-.pages a:hover > span {
+  text-decoration-line: underline;
+  text-decoration-color: transparent;
   text-decoration-thickness: 2px;
+}
+.pages a:hover > span,
+.docs a:hover > span {
+  color: var(--color-pine-deep);
+  text-decoration-color: currentColor;
 }
 .pages p {
   margin-top: 0.15rem;
@@ -362,16 +535,21 @@ html[data-font-size="xlarge"] {
 .docs li:last-child {
   border-bottom: 1px solid var(--color-line);
 }
+/* The line sits on the title alone: the format and the size after it are a
+   note, not part of the name. */
 .docs a {
   display: block;
   padding: 0.75rem 0;
-  text-decoration: underline;
+  text-decoration: none;
+}
+.docs a > span {
+  text-decoration-line: underline;
   text-decoration-thickness: 1px;
 }
-.docs a:hover {
+.docs a:hover > span {
   text-decoration-thickness: 2px;
 }
-.docs span {
+.docs small {
   font-size: var(--text-sm);
   white-space: nowrap;
 }
@@ -564,4 +742,281 @@ figcaption {
 .lightbox-caption {
   font-size: var(--text-sm);
   color: var(--color-ink-soft);
+}
+
+/* ---------------------------------------------------------------------------
+   Motion. Four kinds, all of them short and all of them off for a reader who
+   asked the system for reduced motion:
+
+   1. Between pages — Astro's <ClientRouter> swaps the page in place: the
+      header and the footer stay put, the old content fades out and the new
+      comes up (the timings are on <main> in Base; the keyframes are below).
+   2. Opening a page — the title block (`.intro`: the hero on the home page,
+      the heading of every other page) comes in piece by piece.
+   3. While scrolling — `[data-reveal]` blocks fade up as they enter the view.
+      Without JavaScript nothing is hidden: the rule waits for `data-js`.
+      A link to a place on the same page („Na tej stronie") glides there, and
+      the heading it lands on comes in the way a new page does.
+   4. On hover — colour, underline and a slight lift, always with a transition.
+   ------------------------------------------------------------------------ */
+/* Screen only: on paper nothing may wait to be scrolled into view. */
+@media screen and (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+  /* The heading a same-page link lands on. */
+  :target {
+    animation: 600ms 80ms cubic-bezier(0.2, 0.7, 0.2, 1) both fade-up;
+  }
+
+  /* 2. The title block. */
+  .intro > * {
+    animation: 600ms cubic-bezier(0.2, 0.7, 0.2, 1) both fade-up;
+  }
+  .intro > :nth-child(2) {
+    animation-delay: 100ms;
+  }
+  .intro > :nth-child(3) {
+    animation-delay: 200ms;
+  }
+  .intro > :nth-child(n + 4) {
+    animation-delay: 300ms;
+  }
+  .intro-figure {
+    animation: 800ms 160ms cubic-bezier(0.2, 0.7, 0.2, 1) both fade-in;
+  }
+
+  /* 3. Scroll reveal. */
+  html[data-js] [data-reveal] {
+    opacity: 0;
+    transform: translateY(1rem);
+    transition:
+      opacity 500ms ease-out,
+      transform 500ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  html[data-js] [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+  }
+  /* Children of a stagger group come in one after another. */
+  html[data-js] [data-reveal-group] > * {
+    opacity: 0;
+    transform: translateY(1rem);
+    transition:
+      opacity 500ms ease-out,
+      transform 500ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  html[data-js] [data-reveal-group].is-visible > * {
+    opacity: 1;
+    transform: none;
+  }
+  html[data-js] [data-reveal-group].is-visible > :nth-child(2) {
+    transition-delay: 90ms;
+  }
+  html[data-js] [data-reveal-group].is-visible > :nth-child(3) {
+    transition-delay: 180ms;
+  }
+  html[data-js] [data-reveal-group].is-visible > :nth-child(4) {
+    transition-delay: 270ms;
+  }
+  html[data-js] [data-reveal-group].is-visible > :nth-child(n + 5) {
+    transition-delay: 360ms;
+  }
+
+  /* 4. Hover. */
+  a,
+  .btn,
+  .tool,
+  .nav-link,
+  .card-link span,
+  .menu nav a,
+  .pages a > span,
+  .docs a > span {
+    transition:
+      color 150ms ease,
+      background-color 250ms ease,
+      border-color 150ms ease,
+      text-decoration-thickness 250ms ease,
+      text-decoration-color 250ms ease,
+      transform 200ms ease,
+      box-shadow 200ms ease;
+  }
+  .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px -4px color-mix(in srgb, var(--color-ink) 35%, transparent);
+  }
+  .btn:active {
+    transform: none;
+    box-shadow: none;
+  }
+  .card-link img {
+    transition:
+      transform 500ms cubic-bezier(0.2, 0.7, 0.2, 1),
+      filter 500ms ease;
+  }
+  .card-link:hover img {
+    transform: scale(1.03);
+  }
+  .gallery img {
+    transition: transform 400ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .gallery button:hover img {
+    transform: scale(1.03);
+  }
+
+  /* The header folding up as the page scrolls. */
+  .pinned-row {
+    transition: padding 200ms ease;
+  }
+  .brand-name {
+    transition: font-size 200ms ease;
+  }
+  /* These two are also in the hover list above; a later rule replaces the
+     whole transition, so the hover properties are repeated here. */
+  .nav-link {
+    transition:
+      color 150ms ease,
+      border-color 150ms ease,
+      font-size 200ms ease,
+      padding 200ms ease,
+      border-bottom-width 200ms ease;
+  }
+  [data-menu-open] {
+    transition:
+      color 150ms ease,
+      background-color 250ms ease,
+      border-color 150ms ease,
+      min-height 200ms ease,
+      min-width 200ms ease,
+      padding 200ms ease;
+  }
+  .brand-sub {
+    transition:
+      grid-template-rows 200ms ease,
+      opacity 150ms ease;
+  }
+
+  /* Dialogs: the menu slides in from the left, the lightbox fades in. */
+  .menu-backdrop {
+    transition:
+      opacity 200ms ease,
+      display 260ms allow-discrete;
+  }
+  .menu-backdrop[hidden] {
+    opacity: 0;
+  }
+  .menu,
+  .lightbox {
+    transition:
+      opacity 200ms ease,
+      transform 260ms cubic-bezier(0.2, 0.7, 0.2, 1),
+      overlay 260ms allow-discrete,
+      display 260ms allow-discrete;
+  }
+  .lightbox::backdrop {
+    transition:
+      opacity 200ms ease,
+      overlay 260ms allow-discrete,
+      display 260ms allow-discrete;
+  }
+  .menu:not([open]),
+  .lightbox:not([open]) {
+    opacity: 0;
+  }
+  .menu:not([open]) {
+    transform: translateX(-100%);
+  }
+  .lightbox:not([open]) {
+    transform: scale(0.97);
+  }
+  .lightbox:not([open])::backdrop {
+    opacity: 0;
+  }
+  @starting-style {
+    .menu-backdrop:not([hidden]) {
+      opacity: 0;
+    }
+    .menu[open],
+    .lightbox[open] {
+      opacity: 0;
+    }
+    .menu[open] {
+      transform: translateX(-100%);
+    }
+    .lightbox[open] {
+      transform: scale(0.97);
+    }
+    .lightbox[open]::backdrop {
+      opacity: 0;
+    }
+  }
+}
+
+@media print {
+  .intro > *,
+  .intro-figure,
+  [data-reveal],
+  [data-reveal-group] > * {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* The picture cards on the home page. The photograph growing a little is a
+   nicety a reader who asked for reduced motion never sees, so the title carries
+   the answer to a hover on its own, here and not inside the motion block. */
+.card-link span {
+  text-underline-offset: 0.3em;
+}
+.card-link:hover span {
+  color: var(--color-pine-deep);
+  text-decoration-thickness: 2px;
+}
+
+/* Footer links carry their line from the start, painted in nothing; a hover
+   only gives it colour, so it fades in instead of snapping on. */
+footer a {
+  text-decoration-line: underline;
+  text-decoration-color: transparent;
+}
+footer a:hover {
+  text-decoration-color: currentColor;
+}
+
+/* Wrappers that keep a scaled picture inside its rounded corner, without
+   clipping the focus ring of the link or button around it. */
+.card-media,
+.gallery-media {
+  display: block;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }

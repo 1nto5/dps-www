@@ -37,9 +37,9 @@ const therapies = [
   title="Filia Domu Pomocy w Spychowie"
   description={`Filia Domu Pomocy Społecznej w Spychowie istnieje od 2001 r. i przeznaczona jest dla 25 Mieszkańców. ${contact.spychowo.address.city}, ${contact.spychowo.address.street}, tel. ${contact.spychowo.phone.label}.`}
 >
-  <PageHeader breadcrumbs title="Filia Domu Pomocy w Spychowie" />
-
   <PageShell>
+    <PageHeader bare slot="header" breadcrumbs title="Filia Domu Pomocy w Spychowie" />
+
     <Fragment slot="aside">
       <SubNav />
       <Toc items={toc} />

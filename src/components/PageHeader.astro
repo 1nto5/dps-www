@@ -3,6 +3,11 @@
  * The one `h1` of a page, with the trail above it and an optional lead below.
  * Anything passed as a child sits under the lead — usually the one button of
  * the page.
+ *
+ * On its own it brings the page's container and the space under the site
+ * header. A page with a rail puts it into the `header` slot of `PageShell`
+ * instead, as `bare`: there the container and that space are the shell's, so
+ * the rail can start level with the trail.
  */
 import Breadcrumbs from "./Breadcrumbs.astro";
 
@@ -12,12 +17,16 @@ interface Props {
   breadcrumbs?: boolean;
   /** Label for the last crumb when the route map cannot know it — a news post. */
   current?: string;
+  /** Inside `PageShell`: no container and no spacing of its own. */
+  bare?: boolean;
 }
 
-const { title, lead, breadcrumbs = false, current } = Astro.props;
+const { title, lead, breadcrumbs = false, current, bare = false } = Astro.props;
 ---
 
-<header class="mx-auto w-full max-w-6xl px-5 pt-12 pb-8 sm:px-8 md:pt-16">
+<header
+  class:list={["intro", !bare && "mx-auto w-full max-w-6xl px-5 pt-8 pb-8 sm:px-8 md:pt-10"]}
+>
   {breadcrumbs && <Breadcrumbs current={current} />}
   <h1 class="max-w-[22ch] text-4xl md:text-5xl">{title}</h1>
   {lead && <p class="mt-5 max-w-prose text-lg text-ink-soft">{lead}</p>}

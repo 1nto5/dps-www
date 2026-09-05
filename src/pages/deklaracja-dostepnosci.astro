@@ -46,9 +46,9 @@ const docs = [
   title="Deklaracja dostępności"
   description="Deklaracja dostępności strony internetowej Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie — status zgodności, dane kontaktowe, procedura wnioskowa i dostępność architektoniczna."
 >
-  <PageHeader breadcrumbs title="Deklaracja dostępności" />
-
   <PageShell>
+    <PageHeader bare slot="header" breadcrumbs title="Deklaracja dostępności" />
+
     <Fragment slot="aside">
       <SubNav />
       <Toc items={toc} />

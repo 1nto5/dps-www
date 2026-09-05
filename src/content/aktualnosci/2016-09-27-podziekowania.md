@@ -4,12 +4,6 @@ date: 2016-09-27
 description: "Podziękowania dla darczyńców, którzy przekazali Domowi środki ochrony osobistej związane z zapobieganiem, przeciwdziałaniem i zwalczaniem COVID-19."
 ---
 
-Treść skanu opublikowanego przez Dom, przepisana słowo w słowo:
-
-> „Wczoraj do ciebie nie należy. Jutro niepewne… Tylko dziś jest twoje.”
->
-> Jan Paweł II
-
 ## Podziękowania dla darczyńców
 
 Szanowni Państwo w imieniu własnym, pracowników oraz Mieszkańców DPS w Szczytnie składamy

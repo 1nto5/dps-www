@@ -44,9 +44,9 @@ const legalBasis = [
   title="O nas"
   description="Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie — podstawa prawna działania Domu, kierownictwo oraz dokumenty ustrojowe do pobrania."
 >
-  <PageHeader breadcrumbs title="O nas" />
-
   <PageShell>
+    <PageHeader bare slot="header" breadcrumbs title="O nas" />
+
     <Fragment slot="aside">
       <SubNav />
       <Toc items={toc} />

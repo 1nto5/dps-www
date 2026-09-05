@@ -19,6 +19,7 @@ const toc = [
   { id: "stazysta", label: "Dla stażysty lub praktykanta" },
   { id: "kandydat", label: "Dla kandydata" },
   { id: "monitoring", label: "Monitoring wizyjny" },
+  { id: "strona", label: "Strona internetowa" },
 ];
 
 const adres = `${contact.nameShort}, ${addressLine(contact.address)}`;
@@ -26,15 +27,17 @@ const adres = `${contact.nameShort}, ${addressLine(contact.address)}`;
 
 <Base
   title="RODO"
-  description="Informacje o przetwarzaniu danych osobowych w Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie — dla pracowników, rodzin, kuratorów i opiekunów, stażystów, kandydatów do pracy oraz w sprawie monitoringu wizyjnego."
+  description="Informacje o przetwarzaniu danych osobowych w Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie — dla pracowników, rodzin, kuratorów i opiekunów, stażystów, kandydatów do pracy oraz w sprawie monitoringu wizyjnego i danych zapisywanych przez stronę internetową."
 >
-  <PageHeader
-    breadcrumbs
-    title="RODO"
-    lead="Informacje o przetwarzaniu danych osobowych w Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie."
-  />
-
   <PageShell>
+    <PageHeader
+      bare
+      slot="header"
+      breadcrumbs
+      title="RODO"
+      lead="Informacje o przetwarzaniu danych osobowych w Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie."
+    />
+
     <Fragment slot="aside">
       <SubNav />
       <Toc items={toc} />
@@ -477,6 +480,29 @@ const adres = `${contact.nameShort}, ${addressLine(contact.address)}`;
           danych osobowych.
         </li>
       </ol>
+      <h2 id="strona">Strona internetowa — pliki cookies i dane zapisywane w przeglądarce</h2>
+      <p>
+        Serwis dpsszczytno.pl nie używa plików cookies. Nie prowadzimy statystyk odwiedzin, nie
+        wyświetlamy reklam i nie osadzamy treści z serwisów zewnętrznych, które mogłyby śledzić
+        użytkowników.
+      </p>
+      <p>
+        Jedyne dane, jakie strona zapisuje w Twojej przeglądarce, to ustawienia wyglądu wybrane
+        przez Ciebie w panelu „Dostępność”: rozmiar tekstu oraz tryb wysokiego kontrastu. Zapisujemy
+        je wyłącznie po Twoim kliknięciu, w pamięci lokalnej przeglądarki (localStorage), po to, aby
+        wybrane ustawienia zachowały się przy kolejnych wizytach. Nie zawierają one żadnych
+        informacji pozwalających Cię zidentyfikować i nie są przesyłane na nasz serwer ani nikomu
+        udostępniane.
+      </p>
+      <p>
+        Zapis ten jest niezbędny do działania funkcji, o którą sam prosisz, dlatego zgodnie
+        z art. 399 ust. 3 ustawy z dnia 12 lipca 2024 r. – Prawo komunikacji elektronicznej nie
+        wymaga odrębnej zgody.
+      </p>
+      <p>
+        Ustawienia możesz w każdej chwili usunąć, przywracając wartości domyślne w panelu
+        „Dostępność” albo czyszcząc dane witryny w ustawieniach przeglądarki.
+      </p>
     </div>
   </PageShell>
 </Base>

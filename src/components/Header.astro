@@ -1,12 +1,16 @@
 ---
 /**
- * Two rows. A thin bar with the telephone and the reader's tools — text size
- * and contrast — and the main row with the name of the Dom and the six
- * sections. From `md` up the sections are a flat row of links; below that they
- * live behind one „Menu" button, in a native <dialog>. No dropdowns anywhere.
+ * From `md` up: a thin bar with the telephone and the reader's tools — text
+ * size, contrast and dark mode — which scrolls away, and the main row with the
+ * name of the Dom and the six sections in a flat row, pinned to the top of the
+ * page. Below `md` only the pinned row shows; the telephone, the tools and the sections live
+ * behind a hamburger button, in a native <dialog> that slides in from the left
+ * as a drawer under the header. A tap outside, a swipe to the left or Escape
+ * closes it.
  */
 import { mainNav, activeSection } from "../data/nav";
 import { contact } from "../data/contact";
+import ReaderTools from "./ReaderTools.astro";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const path = Astro.url.pathname.startsWith(base)
@@ -16,8 +20,8 @@ const section = activeSection(path);
 const current = (href: string) => (href === section?.href ? "page" : undefined);
 ---
 
-<header>
-  <div class="border-b border-line bg-sand">
+<header transition:animate="none">
+  <div class="border-b border-line bg-sand max-md:hidden" data-bar>
     <div
       class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-5 py-2 sm:px-8"
     >
@@ -26,37 +30,27 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
         <a href={contact.phone.href} class="font-semibold">{contact.phone.label}</a>
       </p>
 
-      <div class="flex flex-wrap items-center gap-2" data-tools hidden>
-        <div class="flex items-center gap-1" role="group" aria-label="Wielkość tekstu">
-          <button type="button" class="tool" data-font="normal" aria-pressed="true">
-            <span>A</span><span class="sr-only"> — tekst standardowy</span>
-          </button>
-          <button type="button" class="tool" data-font="large" aria-pressed="false">
-            <span>A+</span><span class="sr-only"> — tekst większy</span>
-          </button>
-          <button type="button" class="tool" data-font="xlarge" aria-pressed="false">
-            <span>A++</span><span class="sr-only"> — tekst największy</span>
-          </button>
-        </div>
-        <button type="button" class="tool" data-contrast aria-pressed="false">Kontrast</button>
-      </div>
+      <ReaderTools />
     </div>
   </div>
 
-  <div class="border-b border-line">
+  <div class="border-b border-line" data-pinned>
     <div
-      class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-8 gap-y-4 px-5 py-4 sm:px-8 max-md:flex-nowrap"
+      class="pinned-row mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-8 gap-y-4 px-5 sm:px-8 max-md:flex-nowrap"
     >
-      <a href="/" class="no-underline">
-        <span class="block font-display text-xl leading-tight font-semibold text-ink"
+      <a href="/" class="brand no-underline">
+        <span class="brand-name block font-display leading-tight font-semibold text-ink"
           >Dom Pomocy Społecznej</span
         >
-        <span class="block text-sm text-ink-soft">im. Jana Pawła II w Szczytnie</span>
+        <span class="brand-sub text-sm text-ink-soft"><span>im. Jana Pawła II w Szczytnie</span></span>
       </a>
 
       <div class="md:hidden">
         <button type="button" class="tool" data-menu-open aria-haspopup="dialog" aria-expanded="false">
-          Menu
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <span class="sr-only">Menu</span>
         </button>
       </div>
 
@@ -76,13 +70,16 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
     </div>
   </div>
 
+  <div class="menu-backdrop" data-menu-backdrop hidden></div>
   <dialog class="menu" data-menu aria-label="Menu główne">
-    <div class="mx-auto max-w-6xl">
-      <div class="flex justify-end">
-        <button type="button" class="tool" data-menu-close>Zamknij</button>
-      </div>
-      <nav aria-label="Menu główne">
-        <ul role="list" class="mt-3">
+    <div>
+      <p class="py-3">
+        <span class="text-sm text-ink-soft">Telefon:</span>
+        <a href={contact.phone.href} class="font-semibold">{contact.phone.label}</a>
+      </p>
+      <ReaderTools />
+      <nav aria-label="Menu główne" class="mt-4">
+        <ul role="list">
           {
             mainNav.map((item) => (
               <li>
@@ -99,13 +96,10 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
 </header>
 
 <script>
-  // The reader's tools. They do nothing without JavaScript, so they stay hidden
-  // until this runs; the values themselves are applied by the inline script in
-  // Base, before first paint.
+  // The reader's tools. They do nothing without JavaScript, so the CSS hides
+  // them unless `data-js` is on <html> — set by the inline script in Base
+  // before first paint, so the bar never changes shape after it appears.
   const doc = document.documentElement;
-  const tools = document.querySelector<HTMLElement>("[data-tools]");
-  const fontButtons = [...document.querySelectorAll<HTMLButtonElement>("[data-font]")];
-  const contrastButton = document.querySelector<HTMLButtonElement>("[data-contrast]");
 
   function remember(key: string, value: string | null) {
     try {
@@ -116,45 +110,152 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
     }
   }
 
-  function syncFont() {
-    const size = doc.getAttribute("data-font-size") ?? "normal";
+  // The header is rendered afresh with every page, so the buttons are bound
+  // again after each swap.
+  function bind() {
+    const fontButtons = [...document.querySelectorAll<HTMLButtonElement>("[data-font]")];
+    const contrastButtons = [...document.querySelectorAll<HTMLButtonElement>("button[data-contrast]")];
+
+    function syncFont() {
+      const size = doc.getAttribute("data-font-size") ?? "normal";
+      for (const button of fontButtons) {
+        button.setAttribute("aria-pressed", String(button.dataset.font === size));
+      }
+    }
+
     for (const button of fontButtons) {
-      button.setAttribute("aria-pressed", String(button.dataset.font === size));
+      button.addEventListener("click", () => {
+        const size = button.dataset.font!;
+        if (size === "normal") doc.removeAttribute("data-font-size");
+        else doc.setAttribute("data-font-size", size);
+        remember("dps-font", size === "normal" ? null : size);
+        syncFont();
+      });
+    }
+
+    function syncContrast() {
+      const on = doc.getAttribute("data-contrast") === "high";
+      for (const button of contrastButtons) button.setAttribute("aria-pressed", String(on));
+    }
+
+    for (const button of contrastButtons) {
+      button.addEventListener("click", () => {
+        const on = doc.getAttribute("data-contrast") === "high";
+        if (on) doc.removeAttribute("data-contrast");
+        else doc.setAttribute("data-contrast", "high");
+        remember("dps-contrast", on ? null : "high");
+        syncContrast();
+      });
+    }
+
+    // The theme button walks a circle: system → dark → light → system.
+    const themeButtons = [...document.querySelectorAll<HTMLButtonElement>("button[data-theme-switch]")];
+    const themes = ["system", "dark", "light"] as const;
+    const themeNames = { system: "systemowy", dark: "ciemny", light: "jasny" };
+
+    function syncTheme() {
+      const theme = doc.getAttribute("data-theme") ?? "system";
+      const next = themes[(themes.indexOf(theme as (typeof themes)[number]) + 1) % themes.length];
+      for (const button of themeButtons) {
+        button.dataset.themeSwitch = theme;
+        button.querySelector("[data-theme-label]")!.textContent =
+          `Motyw: ${themeNames[theme as keyof typeof themeNames]}. Przełącz na ${themeNames[next]}`;
+      }
+    }
+
+    for (const button of themeButtons) {
+      button.addEventListener("click", () => {
+        const theme = doc.getAttribute("data-theme") ?? "system";
+        const next = themes[(themes.indexOf(theme as (typeof themes)[number]) + 1) % themes.length];
+        if (next === "system") doc.removeAttribute("data-theme");
+        else doc.setAttribute("data-theme", next);
+        remember("dps-theme", next === "system" ? null : next);
+        syncTheme();
+      });
+    }
+
+    syncFont();
+    syncContrast();
+    syncTheme();
+
+    // The drawer below `md`. Opened with show(), not showModal(), so the
+    // pinned row above it stays usable; the backdrop is our own element for
+    // the same reason. It starts where the pinned row ends.
+    const menu = document.querySelector<HTMLDialogElement>("[data-menu]");
+    const backdrop = document.querySelector<HTMLElement>("[data-menu-backdrop]");
+    const open = document.querySelector<HTMLButtonElement>("[data-menu-open]");
+    const pinned = document.querySelector<HTMLElement>("[data-pinned]");
+    const bar = document.querySelector<HTMLElement>("[data-bar]");
+    if (!pinned || !bar) return;
+    // The header sticks with the bar pulled off the top; same-page links have
+    // to land below the row that stays.
+    const measure = () => {
+      doc.style.setProperty("--bar-height", `${bar.offsetHeight}px`);
+      doc.style.setProperty("--header-height", `${pinned.offsetHeight}px`);
+    };
+    const observer = new ResizeObserver(measure);
+    observer.observe(bar);
+    observer.observe(pinned);
+
+    // Once the page has scrolled past the bar the header is stuck, and it
+    // shrinks: less padding, the name smaller, the second line folded away.
+    const header = pinned.closest("header")!;
+    let ticking = false;
+    const compact = () => {
+      ticking = false;
+      header.toggleAttribute("data-compact", window.scrollY > bar.offsetHeight + 8);
+    };
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(compact);
+        }
+      },
+      { passive: true },
+    );
+    compact();
+
+    if (menu && backdrop && open) {
+      const close = () => menu.open && menu.close();
+
+      open.addEventListener("click", () => {
+        const top = Math.max(0, pinned.getBoundingClientRect().bottom);
+        menu.style.setProperty("--drawer-top", `${top}px`);
+        backdrop.style.setProperty("--drawer-top", `${top}px`);
+        backdrop.hidden = false;
+        menu.show();
+        doc.style.overflow = "hidden";
+        open.setAttribute("aria-expanded", "true");
+        menu.querySelector<HTMLElement>("button, a")?.focus();
+      });
+      menu.addEventListener("close", () => {
+        backdrop.hidden = true;
+        doc.style.overflow = "";
+        open.setAttribute("aria-expanded", "false");
+        open.focus();
+      });
+
+      backdrop.addEventListener("click", close);
+      // Widened past `md` with the drawer open: the row of links takes over.
+      window.matchMedia("(min-width: 48rem)").addEventListener("change", (e) => e.matches && close());
+      document.addEventListener("keydown", (e) => e.key === "Escape" && close());
+
+      // A swipe to the left, on the drawer or on the shade beside it, closes it.
+      let startX: number | null = null;
+      const onDown = (e: PointerEvent) => (startX = e.clientX);
+      const onUp = (e: PointerEvent) => {
+        if (startX !== null && startX - e.clientX > 40) close();
+        startX = null;
+      };
+      for (const el of [menu, backdrop]) {
+        el.addEventListener("pointerdown", onDown);
+        el.addEventListener("pointerup", onUp);
+        el.addEventListener("pointercancel", () => (startX = null));
+      }
     }
   }
 
-  for (const button of fontButtons) {
-    button.addEventListener("click", () => {
-      const size = button.dataset.font!;
-      if (size === "normal") doc.removeAttribute("data-font-size");
-      else doc.setAttribute("data-font-size", size);
-      remember("dps-font", size === "normal" ? null : size);
-      syncFont();
-    });
-  }
-
-  contrastButton?.addEventListener("click", () => {
-    const on = doc.getAttribute("data-contrast") === "high";
-    if (on) doc.removeAttribute("data-contrast");
-    else doc.setAttribute("data-contrast", "high");
-    remember("dps-contrast", on ? null : "high");
-    contrastButton.setAttribute("aria-pressed", String(!on));
-  });
-
-  syncFont();
-  contrastButton?.setAttribute("aria-pressed", String(doc.getAttribute("data-contrast") === "high"));
-  tools?.removeAttribute("hidden");
-
-  // The menu below `md`.
-  const menu = document.querySelector<HTMLDialogElement>("[data-menu]");
-  const open = document.querySelector<HTMLButtonElement>("[data-menu-open]");
-  if (menu && open) {
-    open.addEventListener("click", () => {
-      menu.showModal();
-      open.setAttribute("aria-expanded", "true");
-    });
-    menu.querySelector("[data-menu-close]")?.addEventListener("click", () => menu.close());
-    menu.addEventListener("click", (e) => e.target === menu && menu.close());
-    menu.addEventListener("close", () => open.setAttribute("aria-expanded", "false"));
-  }
+  document.addEventListener("astro:page-load", bind);
 </script>

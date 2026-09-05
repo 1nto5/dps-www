@@ -28,13 +28,15 @@ const docs = [
   title="Osoba upoważniona"
   description="Osoba upoważniona do przyjmowania i weryfikacji zgłoszeń wewnętrznych w Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie."
 >
-  <PageHeader
-    breadcrumbs
-    title="Osoba upoważniona"
-    lead="Kto przyjmuje i weryfikuje zgłoszenia wewnętrzne w naszym Domu."
-  />
-
   <PageShell>
+    <PageHeader
+      bare
+      slot="header"
+      breadcrumbs
+      title="Osoba upoważniona"
+      lead="Kto przyjmuje i weryfikuje zgłoszenia wewnętrzne w naszym Domu."
+    />
+
     <SubNav slot="aside" />
 
     <div class="prose">

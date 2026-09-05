@@ -9,10 +9,8 @@ import Base from "../../layouts/Base.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import PageShell from "../../components/PageShell.astro";
 import SubNav from "../../components/SubNav.astro";
-import PageList from "../../components/PageList.astro";
 import Figure from "../../components/Figure.astro";
 import Gallery from "../../components/Gallery.astro";
-import { projektyUnijnePages } from "../../data/projekty-unijne-pages";
 
 import logoPower from "../../assets/media/1196-UE.jpg";
 import posterCovidDps from "../../assets/media/1197-13.jpg";
@@ -27,9 +25,6 @@ import photoFartuch from "../../assets/media/1204-DSCN4419.jpg";
 import photoSprzet from "../../assets/media/1205-IMG_20201022_102304794.jpg";
 import photoDozownik from "../../assets/media/1206-IMG_20201021_140653511.jpg";
 import photoZamglawiacz from "../../assets/media/1207-IMG_20201022_084222616.jpg";
-
-/** The other pages of the subsection; the first entry is this page itself. */
-const otherPages = projektyUnijnePages.slice(1);
 
 const photos = [
   {
@@ -71,13 +66,15 @@ const photos = [
   title="Projekty unijne"
   description="Projekty ze środków Unii Europejskiej realizowane przez Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie: „Pomagajmy Razem”, wsparcie na czas Covid-19 oraz wsparcie instytucji opieki z terenu powiatu szczycieńskiego."
 >
-  <PageHeader
-    breadcrumbs
-    title="Projekty unijne"
-    lead="Projekty finansowane ze środków Unii Europejskiej, w których uczestniczy nasz Dom."
-  />
-
   <PageShell>
+    <PageHeader
+      bare
+      slot="header"
+      breadcrumbs
+      title="Projekty unijne"
+      lead="Projekty finansowane ze środków Unii Europejskiej, w których uczestniczy nasz Dom."
+    />
+
     <SubNav slot="aside" />
 
     <div class="prose mt-8">
@@ -220,8 +217,6 @@ const photos = [
         widths={[400, 680]}
         sizes="(min-width: 48rem) 42rem, 100vw"
       />
-
-      <PageList items={otherPages} />
     </div>
   </PageShell>
 </Base>

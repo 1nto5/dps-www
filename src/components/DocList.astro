@@ -16,7 +16,7 @@ const { docs } = Astro.props;
     docs.map((doc) => (
       <li>
         <a href={doc.href}>
-          {doc.label} <span>({doc.size ? `${doc.format}, ${doc.size}` : doc.format})</span>
+          <span>{doc.label}</span> <small>({doc.size ? `${doc.format}, ${doc.size}` : doc.format})</small>
         </a>
       </li>
     ))

@@ -58,13 +58,15 @@ const posterSizes = "(min-width: 48rem) 42rem, 100vw";
   title="Dotacje"
   description="Dotacje i dofinansowania otrzymane przez Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie — informacje z lat 2016–2025."
 >
-  <PageHeader
-    breadcrumbs
-    title="Dotacje"
-    lead="Informujemy o środkach publicznych, które otrzymuje nasz Dom. Poniżej znajdą Państwo informacje o dotacjach z podziałem na lata."
-  />
-
   <PageShell>
+    <PageHeader
+      bare
+      slot="header"
+      breadcrumbs
+      title="Dotacje"
+      lead="Informujemy o środkach publicznych, które otrzymuje nasz Dom. Poniżej znajdą Państwo informacje o dotacjach z podziałem na lata."
+    />
+
     <Fragment slot="aside">
       <SubNav />
       <Toc items={toc} title="Lata" />

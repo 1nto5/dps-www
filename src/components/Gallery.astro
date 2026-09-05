@@ -26,12 +26,14 @@ const items = await Promise.all(
 ---
 
 <div data-gallery>
-  <ul class="gallery" role="list">
+  <ul class="gallery" role="list" data-reveal-group>
     {
       items.map((photo) => (
         <li>
           <button type="button" data-full={photo.full.src} data-alt={photo.alt}>
-            <Image src={photo.src} alt={photo.alt} widths={[400, 700]} sizes={sizes} loading="lazy" />
+            <span class="gallery-media">
+              <Image src={photo.src} alt={photo.alt} widths={[400, 700]} sizes={sizes} loading="lazy" />
+            </span>
             <span class="sr-only">Powiększ zdjęcie</span>
           </button>
         </li>
@@ -55,6 +57,12 @@ const items = await Promise.all(
     const target = event.target instanceof Element ? event.target : null;
     if (!target) return;
 
+    // A click on the backdrop lands on the dialog itself, never on its contents.
+    if (target instanceof HTMLDialogElement && target.closest("[data-gallery]")) {
+      target.close();
+      return;
+    }
+
     const close = target.closest("[data-lightbox-close]");
     if (close) {
       close.closest("dialog")?.close();
@@ -77,9 +85,4 @@ const items = await Promise.all(
     dialog.querySelector(".lightbox-caption")!.textContent = thumb.dataset.alt ?? "";
     dialog.showModal();
   });
-
-  // A click on the backdrop lands on the dialog itself, never on its contents.
-  for (const dialog of document.querySelectorAll<HTMLDialogElement>("[data-gallery] dialog")) {
-    dialog.addEventListener("click", (event) => event.target === dialog && dialog.close());
-  }
 </script>

@@ -6,7 +6,6 @@
 import Base from "../../layouts/Base.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import PageShell from "../../components/PageShell.astro";
-import SubNav from "../../components/SubNav.astro";
 import PageList from "../../components/PageList.astro";
 import { sygnalistaPages } from "../../data/sygnalista-pages";
 
@@ -21,8 +20,6 @@ const subpages = sygnalistaPages.slice(1);
   <PageHeader breadcrumbs title="Sygnalista" />
 
   <PageShell>
-    <SubNav slot="aside" />
-
     <div class="max-w-prose">
       <PageList items={subpages} />
     </div>

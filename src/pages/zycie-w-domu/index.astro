@@ -51,9 +51,9 @@ const podstrony = [
   title="Oferta"
   description="Nasz Dom przeznaczony jest dla osób przewlekle psychicznie chorych. Zapewniamy opiekę całodobową dla 196 osób w Szczytnie i w filii w Spychowie."
 >
-  <PageHeader breadcrumbs title="Oferta" />
-
   <PageShell>
+    <PageHeader bare slot="header" breadcrumbs title="Oferta" />
+
     <Fragment slot="aside">
       <SubNav />
       <Toc items={toc} />
