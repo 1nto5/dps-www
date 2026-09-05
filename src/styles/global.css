@@ -282,8 +282,9 @@ html[data-font-size="xlarge"] {
 }
 
 /* ---------------------------------------------------------------------------
-   Header controls: the text-size and contrast buttons, and the „Menu" button.
-   One shape, tall enough for a thumb.
+   Header controls: the theme switch, the „Dostępność" and „Menu" buttons in
+   the row, the text-size and contrast buttons in the settings dialog. One
+   shape, tall enough for a thumb.
    ------------------------------------------------------------------------ */
 .tool {
   display: inline-flex;
@@ -303,7 +304,8 @@ html[data-font-size="xlarge"] {
   line-height: 1.2;
   cursor: pointer;
 }
-/* The reader's tools need JavaScript; `data-js` is set before first paint. */
+/* The theme and settings buttons need JavaScript; `data-js` is set before
+   first paint. */
 html:not([data-js]) [data-tools] {
   display: none;
 }
@@ -316,8 +318,8 @@ html:not([data-js]) [data-tools] {
   border-color: var(--color-pine);
   color: var(--color-on-pine);
 }
-/* The theme switch: an icon only, one of three — a screen for „follow the
-   system", the moon for dark, the sun for light. */
+/* The theme switch: an icon only — the moon for dark, the sun for light —
+   showing the theme the reader sees, whether chosen or taken from the system. */
 .tool svg {
   width: 1.15rem;
   height: 1.15rem;
@@ -325,7 +327,6 @@ html:not([data-js]) [data-tools] {
 .tool[data-theme-switch] svg {
   display: none;
 }
-.tool[data-theme-switch="system"] [data-icon="system"],
 .tool[data-theme-switch="dark"] [data-icon="moon"],
 .tool[data-theme-switch="light"] [data-icon="sun"] {
   display: block;
@@ -333,8 +334,8 @@ html:not([data-js]) [data-tools] {
 
 /* ---------------------------------------------------------------------------
    Main menu. A flat row of links from `md` up; below that the same links in a
-   <dialog> drawer that slides in from the left, under the bar with the reader's
-   tools. The dialog is not modal, so the shade behind it is an element of its
+   <dialog> drawer that slides in from the left, under the pinned row. The
+   dialog is not modal, so the shade behind it is an element of its
    own (.menu-backdrop) rather than ::backdrop.
    ------------------------------------------------------------------------ */
 .nav-link {
@@ -356,8 +357,8 @@ html:not([data-js]) [data-tools] {
   font-weight: 600;
 }
 
-/* The row with the name and the sections is pinned to the top; the bar with
-   the reader's tools scrolls away. The header and <main> each carry a
+/* The row with the name and the sections is pinned to the top. The header
+   and <main> each carry a
    view-transition-name, which makes them stacking contexts of their own; the
    header goes above so the pinned row, and the drawer, paint over the page. */
 .site-header {
@@ -385,34 +386,12 @@ html:not([data-js]) [data-tools] {
 .site-header[data-still] * {
   transition: none !important;
 }
-/* The bar shows from `md` up and closes like a drawer: a grid row going from
-   1fr to 0fr. (A plain rule, so the breakpoint lives here, not in a utility
-   class the rule would override.) */
-.bar {
-  display: none;
-  grid-template-rows: 1fr;
-}
-@media (min-width: 48rem) {
-  .bar {
-    display: grid;
-  }
-}
-.bar-inner {
-  min-height: 0;
-  overflow: hidden;
-}
-.site-header[data-compact] .bar {
-  grid-template-rows: 0fr;
-  opacity: 0;
-  /* Out of the tab order while closed. */
-  visibility: hidden;
-}
 /* The side column on wide pages sticks too, just under the pinned row, so
    the row never covers it. `--header-height` is the row's current height. */
 .aside-sticky {
   top: calc(var(--header-height, 0px) + 1.5rem);
 }
-/* The pinned row shrinks once the page has scrolled past the bar
+/* The pinned row shrinks once the page has scrolled a little
    (`data-compact`, set by the script in Header): tighter padding, a smaller
    name, the second line folded away. */
 .pinned-row {
@@ -441,7 +420,7 @@ html:not([data-js]) [data-tools] {
   border-bottom-width: 2px;
   font-size: 0.9375rem;
 }
-.site-header[data-compact] [data-menu-open] {
+.site-header[data-compact] .pinned-row .tool {
   min-height: 2rem;
   min-width: 2rem;
   padding: 0.15rem 0.5rem;
@@ -469,10 +448,13 @@ html:not([data-js]) [data-tools] {
   overscroll-behavior: contain;
   touch-action: pan-y;
 }
-/* From `md` up the drawer has no business on screen, whatever its state. */
+/* From `md` up the drawer, its shade and its button have no business on
+   screen, whatever their state. (A plain rule: `.tool` sets `display`, and a
+   utility class would lose to it.) */
 @media (min-width: 48rem) {
   .menu,
-  .menu-backdrop {
+  .menu-backdrop,
+  [data-menu-open] {
     display: none !important;
   }
 }
@@ -816,6 +798,50 @@ figcaption {
 }
 
 /* ---------------------------------------------------------------------------
+   The settings dialog („Dostępność" in the header): text size and contrast.
+   Modal, centred, the same surface as the lightbox.
+   ------------------------------------------------------------------------ */
+.settings {
+  /* Inside the header, which turns pointer events off for itself. */
+  pointer-events: auto;
+  width: min(24rem, 92vw);
+  max-width: 92vw;
+  margin: auto;
+  padding: 1.25rem 1.5rem 1.5rem;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+.settings::backdrop {
+  background: color-mix(in srgb, var(--color-ink) 60%, transparent);
+}
+html[data-contrast="high"] .settings::backdrop {
+  background: rgb(0 0 0 / 0.7);
+}
+.settings-title {
+  margin: 0 0 1rem;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+.settings-group + .settings-group {
+  margin-top: 1rem;
+}
+.settings-label {
+  margin: 0 0 0.35rem;
+  font-size: var(--text-sm);
+  color: var(--color-ink-soft);
+}
+.settings-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-line);
+}
+
+/* ---------------------------------------------------------------------------
    Motion. Four kinds, all of them short and all of them off for a reader who
    asked the system for reduced motion:
 
@@ -979,7 +1005,7 @@ figcaption {
       opacity 150ms ease;
   }
 
-  /* Dialogs: the menu slides in from the left, the lightbox fades in. */
+  /* Dialogs: the menu slides in from the left, the lightbox and the settings fade in. */
   .menu-backdrop {
     transition:
       opacity 200ms ease,
@@ -996,30 +1022,35 @@ figcaption {
       transform 260ms cubic-bezier(0.2, 0.7, 0.2, 1),
       display 260ms allow-discrete;
   }
-  .lightbox {
+  .lightbox,
+  .settings {
     transition:
       opacity 200ms ease,
       transform 260ms cubic-bezier(0.2, 0.7, 0.2, 1),
       overlay 260ms allow-discrete,
       display 260ms allow-discrete;
   }
-  .lightbox::backdrop {
+  .lightbox::backdrop,
+  .settings::backdrop {
     transition:
       opacity 200ms ease,
       overlay 260ms allow-discrete,
       display 260ms allow-discrete;
   }
   .menu:not([open]),
-  .lightbox:not([open]) {
+  .lightbox:not([open]),
+  .settings:not([open]) {
     opacity: 0;
   }
   .menu:not([open]) {
     transform: translateX(-100%);
   }
-  .lightbox:not([open]) {
+  .lightbox:not([open]),
+  .settings:not([open]) {
     transform: scale(0.97);
   }
-  .lightbox:not([open])::backdrop {
+  .lightbox:not([open])::backdrop,
+  .settings:not([open])::backdrop {
     opacity: 0;
   }
   @starting-style {
@@ -1027,16 +1058,19 @@ figcaption {
       opacity: 0;
     }
     .menu[open],
-    .lightbox[open] {
+    .lightbox[open],
+    .settings[open] {
       opacity: 0;
     }
     .menu[open] {
       transform: translateX(-100%);
     }
-    .lightbox[open] {
+    .lightbox[open],
+    .settings[open] {
       transform: scale(0.97);
     }
-    .lightbox[open]::backdrop {
+    .lightbox[open]::backdrop,
+    .settings[open]::backdrop {
       opacity: 0;
     }
   }

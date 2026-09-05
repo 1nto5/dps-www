@@ -1,13 +1,13 @@
 ---
 /**
- * Pinned to the top of the page. From `md` up: a thin bar with the telephone
- * and the reader's tools — text size, contrast and dark mode — and the main
- * row with the name of the Dom and the six sections in a flat row. Once the
- * page scrolls, both fold in one motion: the bar closes and the row shrinks.
- * Below `md` only the row shows; the telephone, the tools and the sections live
+ * Pinned to the top of the page: one row with the name of the Dom, the six
+ * sections in a flat row from `md` up, and to their right two buttons — the
+ * theme switch and „Dostępność", which opens a modal <dialog> with the text
+ * size and contrast (ReaderTools). Once the page scrolls the row folds: less
+ * padding, a smaller name, the second line gone. Below `md` the sections live
  * behind a hamburger button, in a native <dialog> that slides in from the left
- * as a drawer under the header. A tap outside, a swipe to the left or Escape
- * closes it.
+ * as a drawer under the header; the two buttons stay in the row beside it. A
+ * tap outside, a swipe to the left or Escape closes the drawer.
  */
 import { mainNav, activeSection } from "../data/nav";
 import { contact } from "../data/contact";
@@ -23,21 +23,6 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
 
 <header class="site-header" transition:animate="none">
   <div class="header-surface" data-surface>
-  <div class="bar" data-bar>
-    <div class="bar-inner border-b border-line bg-sand">
-    <div
-      class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-5 py-2 sm:px-8"
-    >
-      <p>
-        <span class="text-sm text-ink-soft">Telefon:</span>
-        <a href={contact.phone.href} class="font-semibold">{contact.phone.label}</a>
-      </p>
-
-      <ReaderTools />
-    </div>
-    </div>
-  </div>
-
   <div class="pinned-row-wrap border-b border-line" data-pinned>
     <div
       class="pinned-row mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-8 gap-y-4 px-5 sm:px-8 max-md:flex-nowrap"
@@ -49,28 +34,51 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
         <span class="brand-sub text-sm text-ink-soft"><span>im. Jana Pawła II w Szczytnie</span></span>
       </a>
 
-      <div class="md:hidden">
-        <button type="button" class="tool" data-menu-open aria-haspopup="dialog" aria-expanded="false">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-            <path d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-          <span class="sr-only">Menu</span>
-        </button>
-      </div>
+      <div class="flex items-center gap-x-6 gap-y-2 md:flex-wrap">
+        <nav aria-label="Menu główne" class="hidden md:block">
+          <ul role="list" class="flex flex-wrap gap-x-6">
+            {
+              mainNav.map((item) => (
+                <li>
+                  <a href={item.href} class="nav-link" aria-current={current(item.href)}>
+                    {item.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
 
-      <nav aria-label="Menu główne" class="hidden md:block">
-        <ul role="list" class="flex flex-wrap gap-x-6">
-          {
-            mainNav.map((item) => (
-              <li>
-                <a href={item.href} class="nav-link" aria-current={current(item.href)}>
-                  {item.label}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </nav>
+        <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2" data-tools>
+            <button type="button" class="tool" data-theme-switch="light">
+              <svg data-icon="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+              </svg>
+              <svg data-icon="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="4" />
+                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+              </svg>
+              <span class="sr-only" data-theme-label>Motyw: jasny (systemowy). Przełącz na ciemny</span>
+            </button>
+            <button type="button" class="tool" data-settings-open aria-haspopup="dialog">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" />
+                <circle cx="12" cy="7" r="1.25" fill="currentColor" stroke="none" />
+                <path d="M6.5 9.5c3.5 1 7.5 1 11 0M12 11v3M12 14l-2.5 5M12 14l2.5 5" />
+              </svg>
+              <span class="sr-only">Dostępność</span>
+            </button>
+          </div>
+
+          <button type="button" class="tool" data-menu-open aria-haspopup="dialog" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+              <path d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <span class="sr-only">Menu</span>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
   </div>
@@ -82,8 +90,7 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
         <span class="text-sm text-ink-soft">Telefon:</span>
         <a href={contact.phone.href} class="font-semibold">{contact.phone.label}</a>
       </p>
-      <ReaderTools />
-      <nav aria-label="Menu główne" class="mt-4">
+      <nav aria-label="Menu główne" class="mt-2">
         <ul role="list">
           {
             mainNav.map((item) => (
@@ -98,12 +105,14 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
       </nav>
     </div>
   </dialog>
+
+  <ReaderTools />
 </header>
 
 <script>
   // The reader's tools. They do nothing without JavaScript, so the CSS hides
   // them unless `data-js` is on <html> — set by the inline script in Base
-  // before first paint, so the bar never changes shape after it appears.
+  // before first paint, so the row never changes shape after it appears.
   const doc = document.documentElement;
 
   function remember(key: string, value: string | null) {
@@ -160,35 +169,54 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
       });
     }
 
-    // The theme button walks a circle: system → dark → light → system.
+    // The theme button flips between light and dark. Without a saved choice the
+    // page follows the system, and the button shows the theme the reader sees.
+    // Picking the theme the system already shows drops the saved choice, so
+    // the page follows the system again from then on.
     const themeButtons = [...document.querySelectorAll<HTMLButtonElement>("button[data-theme-switch]")];
-    const themes = ["system", "dark", "light"] as const;
-    const themeNames = { system: "systemowy", dark: "ciemny", light: "jasny" };
+    const themeNames = { dark: "ciemny", light: "jasny" };
+    const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
+    const systemTheme = () => (systemDark.matches ? "dark" : "light");
+    const currentTheme = () => (doc.getAttribute("data-theme") as "dark" | "light" | null) ?? systemTheme();
 
     function syncTheme() {
-      const theme = doc.getAttribute("data-theme") ?? "system";
-      const next = themes[(themes.indexOf(theme as (typeof themes)[number]) + 1) % themes.length];
+      const theme = currentTheme();
+      const pinned = doc.hasAttribute("data-theme");
+      const next = theme === "dark" ? "light" : "dark";
       for (const button of themeButtons) {
         button.dataset.themeSwitch = theme;
         button.querySelector("[data-theme-label]")!.textContent =
-          `Motyw: ${themeNames[theme as keyof typeof themeNames]}. Przełącz na ${themeNames[next]}`;
+          `Motyw: ${themeNames[theme]}${pinned ? "" : " (systemowy)"}. Przełącz na ${themeNames[next]}`;
       }
     }
 
     for (const button of themeButtons) {
       button.addEventListener("click", () => {
-        const theme = doc.getAttribute("data-theme") ?? "system";
-        const next = themes[(themes.indexOf(theme as (typeof themes)[number]) + 1) % themes.length];
-        if (next === "system") doc.removeAttribute("data-theme");
+        const next = currentTheme() === "dark" ? "light" : "dark";
+        if (next === systemTheme()) doc.removeAttribute("data-theme");
         else doc.setAttribute("data-theme", next);
-        remember("dps-theme", next === "system" ? null : next);
+        remember("dps-theme", next === systemTheme() ? null : next);
         syncTheme();
       });
     }
+    systemDark.addEventListener("change", syncTheme, { signal });
 
     syncFont();
     syncContrast();
     syncTheme();
+
+    // The settings dialog. Modal, so the page behind is inert on its own and
+    // Escape closes it; a click on the backdrop lands on the dialog itself.
+    const settings = document.querySelector<HTMLDialogElement>("[data-settings]");
+    const settingsOpen = document.querySelector<HTMLButtonElement>("[data-settings-open]");
+    if (settings && settingsOpen) {
+      settingsOpen.addEventListener("click", () => settings.showModal());
+      settings.addEventListener("click", (e) => {
+        if (e.target === settings || (e.target as Element).closest("[data-settings-close]")) {
+          settings.close();
+        }
+      });
+    }
 
     // The drawer below `md`. Opened with show(), not showModal(), so the
     // pinned row above it stays usable; the backdrop is our own element for
@@ -215,8 +243,8 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
     // Read once now, before the fold below: a page opened at a hash or by the
     // back button is already scrolled, and the observer reports too late.
     measure();
-    // The unfolded height changes with the window (the bar comes and goes at
-    // `md`, lines wrap). Folded, the header is unfolded for one silent frame
+    // The unfolded height changes with the window (the links move into the
+    // drawer at `md`, lines wrap). Folded, the header is unfolded for one silent frame
     // to read it.
     let resizeTimer = 0;
     window.addEventListener("resize", () => {
@@ -233,9 +261,8 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
       }, 100);
     }, { signal });
 
-    // A little way down the page the header folds, bar and row in one motion:
-    // the bar closes, the row loses padding, the name shrinks, its second line
-    // goes. Two thresholds, so a scroll that rests near one does not flicker.
+    // A little way down the page the header folds: the row loses padding, the
+    // name shrinks, its second line goes. Two thresholds, so a scroll that rests near one does not flicker.
     let ticking = false;
     const compact = () => {
       ticking = false;

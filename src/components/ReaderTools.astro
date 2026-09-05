@@ -1,35 +1,35 @@
 ---
 /**
- * The reader's tools — text size, contrast and theme. Rendered twice: in the
- * top bar from `md` up and inside the drawer below it; the script in Header
- * binds every copy.
+ * The reader's settings — text size and contrast — in a modal <dialog> the
+ * „Dostępność" button in the header opens. Escape, the „Zamknij" button and a
+ * click on the backdrop close it; the script in Header binds all three.
  */
 ---
-<div class="flex flex-wrap items-center gap-2" data-tools>
-  <div class="flex items-center gap-1" role="group" aria-label="Wielkość tekstu">
-    <button type="button" class="tool" data-font="normal" aria-pressed="true">
-      <span>A</span><span class="sr-only"> — tekst standardowy</span>
-    </button>
-    <button type="button" class="tool" data-font="large" aria-pressed="false">
-      <span>A+</span><span class="sr-only"> — tekst większy</span>
-    </button>
-    <button type="button" class="tool" data-font="xlarge" aria-pressed="false">
-      <span>A++</span><span class="sr-only"> — tekst największy</span>
-    </button>
+<dialog class="settings" data-settings aria-labelledby="settings-title">
+  <div class="settings-body">
+    <h2 id="settings-title" class="settings-title">Dostępność</h2>
+    <div class="settings-group">
+      <p id="settings-font" class="settings-label">Wielkość tekstu</p>
+      <div class="flex flex-wrap items-center gap-1" role="group" aria-labelledby="settings-font">
+        <button type="button" class="tool" data-font="normal" aria-pressed="true">
+          <span>A</span><span class="sr-only"> — tekst standardowy</span>
+        </button>
+        <button type="button" class="tool" data-font="large" aria-pressed="false">
+          <span>A+</span><span class="sr-only"> — tekst większy</span>
+        </button>
+        <button type="button" class="tool" data-font="xlarge" aria-pressed="false">
+          <span>A++</span><span class="sr-only"> — tekst największy</span>
+        </button>
+      </div>
+    </div>
+    <div class="settings-group">
+      <p id="settings-contrast" class="settings-label">Kontrast</p>
+      <button type="button" class="tool" data-contrast aria-pressed="false" aria-describedby="settings-contrast">
+        Wysoki kontrast
+      </button>
+    </div>
+    <div class="settings-bar">
+      <button type="button" class="tool" data-settings-close>Zamknij</button>
+    </div>
   </div>
-  <button type="button" class="tool" data-contrast aria-pressed="false">Kontrast</button>
-  <button type="button" class="tool" data-theme-switch="system">
-    <svg data-icon="system" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <rect x="2" y="4" width="20" height="13" rx="2" />
-      <path d="M8 21h8M12 17v4" />
-    </svg>
-    <svg data-icon="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
-    </svg>
-    <svg data-icon="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-      <circle cx="12" cy="12" r="4" />
-      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-    </svg>
-    <span class="sr-only" data-theme-label>Motyw: systemowy. Przełącz na ciemny</span>
-  </button>
-</div>
+</dialog>
