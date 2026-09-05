@@ -26,10 +26,11 @@ const { Content } = await render(entry);
     <PostDate date={entry.data.date} />
 
     {
+      /* coverAlt is required whenever cover is set — enforced by the collection schema */
       entry.data.cover && (
         <Figure
           src={entry.data.cover}
-          alt={entry.data.coverAlt ?? ""}
+          alt={entry.data.coverAlt!}
           loading="eager"
           class="mt-8 max-w-prose"
         />

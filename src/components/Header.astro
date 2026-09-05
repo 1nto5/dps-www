@@ -1,9 +1,10 @@
 ---
 /**
- * From `md` up: a thin bar with the telephone and the reader's tools — text
- * size, contrast and dark mode — which scrolls away, and the main row with the
- * name of the Dom and the six sections in a flat row, pinned to the top of the
- * page. Below `md` only the pinned row shows; the telephone, the tools and the sections live
+ * Pinned to the top of the page. From `md` up: a thin bar with the telephone
+ * and the reader's tools — text size, contrast and dark mode — and the main
+ * row with the name of the Dom and the six sections in a flat row. Once the
+ * page scrolls, both fold in one motion: the bar closes and the row shrinks.
+ * Below `md` only the row shows; the telephone, the tools and the sections live
  * behind a hamburger button, in a native <dialog> that slides in from the left
  * as a drawer under the header. A tap outside, a swipe to the left or Escape
  * closes it.
@@ -20,8 +21,10 @@ const section = activeSection(path);
 const current = (href: string) => (href === section?.href ? "page" : undefined);
 ---
 
-<header transition:animate="none">
-  <div class="border-b border-line bg-sand max-md:hidden" data-bar>
+<header class="site-header" transition:animate="none">
+  <div class="header-surface" data-surface>
+  <div class="bar" data-bar>
+    <div class="bar-inner border-b border-line bg-sand">
     <div
       class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-5 py-2 sm:px-8"
     >
@@ -32,9 +35,10 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
 
       <ReaderTools />
     </div>
+    </div>
   </div>
 
-  <div class="border-b border-line" data-pinned>
+  <div class="pinned-row-wrap border-b border-line" data-pinned>
     <div
       class="pinned-row mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-8 gap-y-4 px-5 sm:px-8 max-md:flex-nowrap"
     >
@@ -69,9 +73,10 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
       </nav>
     </div>
   </div>
+  </div>
 
   <div class="menu-backdrop" data-menu-backdrop hidden></div>
-  <dialog class="menu" data-menu aria-label="Menu główne">
+  <dialog class="menu" data-menu aria-label="Menu" tabindex="-1">
     <div>
       <p class="py-3">
         <span class="text-sm text-ink-soft">Telefon:</span>
@@ -111,9 +116,16 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
   }
 
   // The header is rendered afresh with every page, so the buttons are bound
-  // again after each swap.
+  // again after each swap. This module runs only once, though, so listeners
+  // on window and document from the previous page are dropped first.
+  let bound: AbortController | null = null;
+
   function bind() {
-    const fontButtons = [...document.querySelectorAll<HTMLButtonElement>("[data-font]")];
+    bound?.abort();
+    bound = new AbortController();
+    const { signal } = bound;
+
+    const fontButtons = [...document.querySelectorAll<HTMLButtonElement>("button[data-font]")];
     const contrastButtons = [...document.querySelectorAll<HTMLButtonElement>("button[data-contrast]")];
 
     function syncFont() {
@@ -184,26 +196,53 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
     const menu = document.querySelector<HTMLDialogElement>("[data-menu]");
     const backdrop = document.querySelector<HTMLElement>("[data-menu-backdrop]");
     const open = document.querySelector<HTMLButtonElement>("[data-menu-open]");
-    const pinned = document.querySelector<HTMLElement>("[data-pinned]");
-    const bar = document.querySelector<HTMLElement>("[data-bar]");
-    if (!pinned || !bar) return;
-    // The header sticks with the bar pulled off the top; same-page links have
-    // to land below the row that stays.
+    const surface = document.querySelector<HTMLElement>("[data-surface]");
+    if (!surface) return;
+    const header = surface.closest("header")!;
+    // The header keeps its full height in the flow (`--header-flow`) while the
+    // surface inside it folds, so the page below never moves during the fold.
+    // `--header-height` is the surface's current height: same-page links, the
+    // side column and the drawer sit below it.
     const measure = () => {
-      doc.style.setProperty("--bar-height", `${bar.offsetHeight}px`);
-      doc.style.setProperty("--header-height", `${pinned.offsetHeight}px`);
+      doc.style.setProperty("--header-height", `${surface.offsetHeight}px`);
+      if (!header.hasAttribute("data-compact")) {
+        doc.style.setProperty("--header-flow", `${surface.offsetHeight}px`);
+      }
     };
     const observer = new ResizeObserver(measure);
-    observer.observe(bar);
-    observer.observe(pinned);
+    observer.observe(surface);
+    signal.addEventListener("abort", () => observer.disconnect());
+    // Read once now, before the fold below: a page opened at a hash or by the
+    // back button is already scrolled, and the observer reports too late.
+    measure();
+    // The unfolded height changes with the window (the bar comes and goes at
+    // `md`, lines wrap). Folded, the header is unfolded for one silent frame
+    // to read it.
+    let resizeTimer = 0;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimer);
+      if (signal.aborted) return;
+      resizeTimer = window.setTimeout(() => {
+        if (!header.hasAttribute("data-compact")) return;
+        header.setAttribute("data-still", "");
+        header.removeAttribute("data-compact");
+        doc.style.setProperty("--header-flow", `${surface.offsetHeight}px`);
+        header.setAttribute("data-compact", "");
+        void surface.offsetHeight;
+        header.removeAttribute("data-still");
+      }, 100);
+    }, { signal });
 
-    // Once the page has scrolled past the bar the header is stuck, and it
-    // shrinks: less padding, the name smaller, the second line folded away.
-    const header = pinned.closest("header")!;
+    // A little way down the page the header folds, bar and row in one motion:
+    // the bar closes, the row loses padding, the name shrinks, its second line
+    // goes. Two thresholds, so a scroll that rests near one does not flicker.
     let ticking = false;
     const compact = () => {
       ticking = false;
-      header.toggleAttribute("data-compact", window.scrollY > bar.offsetHeight + 8);
+      const on = header.hasAttribute("data-compact");
+      const y = window.scrollY;
+      if (!on && y > 48) header.setAttribute("data-compact", "");
+      else if (on && y < 8) header.removeAttribute("data-compact");
     };
     window.addEventListener(
       "scroll",
@@ -213,46 +252,63 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
           requestAnimationFrame(compact);
         }
       },
-      { passive: true },
+      { passive: true, signal },
     );
     compact();
 
     if (menu && backdrop && open) {
       const close = () => menu.open && menu.close();
+      // The page behind the drawer is inert while it is open, so the Tab key
+      // stays inside; the pinned row above stays live.
+      const behind = [...document.querySelectorAll<HTMLElement>("main, footer")];
 
       open.addEventListener("click", () => {
-        const top = Math.max(0, pinned.getBoundingClientRect().bottom);
+        const top = Math.max(0, surface.getBoundingClientRect().bottom);
         menu.style.setProperty("--drawer-top", `${top}px`);
         backdrop.style.setProperty("--drawer-top", `${top}px`);
         backdrop.hidden = false;
         menu.show();
+        for (const el of behind) el.inert = true;
         doc.style.overflow = "hidden";
         open.setAttribute("aria-expanded", "true");
-        menu.querySelector<HTMLElement>("button, a")?.focus();
+        menu.focus();
       });
       menu.addEventListener("close", () => {
         backdrop.hidden = true;
+        for (const el of behind) el.inert = false;
         doc.style.overflow = "";
         open.setAttribute("aria-expanded", "false");
-        open.focus();
+        // Not when the drawer closed because the window grew past `md` and
+        // the button went with it.
+        if (open.offsetParent !== null) open.focus();
       });
 
       backdrop.addEventListener("click", close);
       // Widened past `md` with the drawer open: the row of links takes over.
-      window.matchMedia("(min-width: 48rem)").addEventListener("change", (e) => e.matches && close());
-      document.addEventListener("keydown", (e) => e.key === "Escape" && close());
+      window
+        .matchMedia("(min-width: 48rem)")
+        .addEventListener("change", (e) => e.matches && close(), { signal });
+      document.addEventListener("keydown", (e) => e.key === "Escape" && close(), { signal });
 
-      // A swipe to the left, on the drawer or on the shade beside it, closes it.
-      let startX: number | null = null;
-      const onDown = (e: PointerEvent) => (startX = e.clientX);
+      // A finger swipe to the left, on the drawer or on the shade beside it,
+      // closes it. A mostly vertical move is a scroll, and a mouse drag is a
+      // text selection; neither counts.
+      let start: { x: number; y: number } | null = null;
+      const onDown = (e: PointerEvent) => {
+        start = e.pointerType === "touch" ? { x: e.clientX, y: e.clientY } : null;
+      };
       const onUp = (e: PointerEvent) => {
-        if (startX !== null && startX - e.clientX > 40) close();
-        startX = null;
+        if (start) {
+          const dx = start.x - e.clientX;
+          const dy = Math.abs(start.y - e.clientY);
+          if (dx > 40 && dx > dy) close();
+        }
+        start = null;
       };
       for (const el of [menu, backdrop]) {
         el.addEventListener("pointerdown", onDown);
         el.addEventListener("pointerup", onUp);
-        el.addEventListener("pointercancel", () => (startX = null));
+        el.addEventListener("pointercancel", () => (start = null));
       }
     }
   }

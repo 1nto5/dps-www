@@ -34,7 +34,7 @@ const hasHeader = Astro.slots.has("header");
     hasAside && (
       <div
         class:list={[
-          "space-y-8 lg:sticky lg:top-8 lg:col-start-2 lg:row-start-1 lg:self-start",
+          "aside-sticky space-y-8 lg:sticky lg:col-start-2 lg:row-start-1 lg:self-start",
           hasHeader && "lg:row-span-2",
         ]}
         data-reveal

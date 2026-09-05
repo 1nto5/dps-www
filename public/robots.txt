@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://dpsszczytno.pl/sitemap-index.xml
