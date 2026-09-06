@@ -11,6 +11,7 @@
  * nothing at all.
  */
 import { sectionPages, type NavItem } from "../data/nav";
+import { sitePath } from "../data/routes";
 import { sygnalistaPages } from "../data/sygnalista-pages";
 import { projektyUnijnePages } from "../data/projekty-unijne-pages";
 
@@ -20,10 +21,7 @@ interface Props {
 
 const { title = "W tej sekcji" } = Astro.props;
 
-const base = import.meta.env.BASE_URL.replace(/\/$/, "");
-const path = Astro.url.pathname.startsWith(base)
-  ? Astro.url.pathname.slice(base.length) || "/"
-  : Astro.url.pathname;
+const path = sitePath(Astro.url.pathname);
 
 let items: readonly NavItem[];
 if (path.startsWith("/sygnalista/")) items = sygnalistaPages;

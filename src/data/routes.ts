@@ -4,6 +4,12 @@
  * own title in at render time.
  */
 
+/** `Astro.url.pathname` without the deploy base, so route maps see site paths. */
+export function sitePath(pathname: string): string {
+  const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+  return pathname.startsWith(base) ? pathname.slice(base.length) || "/" : pathname;
+}
+
 export const routeLabels: Record<string, string> = {
   "/": "Strona główna",
 

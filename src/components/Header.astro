@@ -10,13 +10,11 @@
  * tap outside, a swipe to the left or Escape closes the drawer.
  */
 import { mainNav, activeSection } from "../data/nav";
+import { sitePath } from "../data/routes";
 import { contact } from "../data/contact";
 import ReaderTools from "./ReaderTools.astro";
 
-const base = import.meta.env.BASE_URL.replace(/\/$/, "");
-const path = Astro.url.pathname.startsWith(base)
-  ? Astro.url.pathname.slice(base.length) || "/"
-  : Astro.url.pathname;
+const path = sitePath(Astro.url.pathname);
 const section = activeSection(path);
 const current = (href: string) => (href === section?.href ? "page" : undefined);
 ---
@@ -247,6 +245,7 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
     // drawer at `md`, lines wrap). Folded, the header is unfolded for one silent frame
     // to read it.
     let resizeTimer = 0;
+    signal.addEventListener("abort", () => clearTimeout(resizeTimer));
     window.addEventListener("resize", () => {
       clearTimeout(resizeTimer);
       if (signal.aborted) return;

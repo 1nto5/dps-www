@@ -962,18 +962,6 @@ html[data-contrast="high"] .settings::backdrop {
   }
 
   /* The header folding up as the page scrolls: one motion for everything. */
-  .bar {
-    transition:
-      grid-template-rows 200ms ease,
-      opacity 150ms ease,
-      visibility 0s 200ms;
-  }
-  .site-header:not([data-compact]) .bar {
-    transition:
-      grid-template-rows 200ms ease,
-      opacity 150ms ease,
-      visibility 0s;
-  }
   .pinned-row {
     transition: padding 200ms ease;
   }
@@ -1100,7 +1088,6 @@ html[data-contrast="high"] .settings::backdrop {
     position: static;
     height: auto;
   }
-  .site-header .bar,
   [data-menu-open],
   .aside-sticky,
   footer nav {

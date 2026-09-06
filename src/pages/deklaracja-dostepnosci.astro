@@ -10,8 +10,8 @@
  * date, a "zgodna" status or a new review date requires a documented WCAG 2.1
  * AA audit of the relaunched site and the Dom's sign-off, not a migration
  * edit. The rebuild changed the wrapper around the statement and nothing else;
- * points that no longer describe the new site are listed in
- * docs/pytania-do-domu.md, not corrected here.
+ * points that no longer describe the new site are questions for the Dom,
+ * not corrected here.
  */
 import Base from "../layouts/Base.astro";
 import PageHeader from "../components/PageHeader.astro";
@@ -19,6 +19,7 @@ import PageShell from "../components/PageShell.astro";
 import SubNav from "../components/SubNav.astro";
 import Toc from "../components/Toc.astro";
 import DocList from "../components/DocList.astro";
+import { contact } from "../data/contact";
 
 /** Rail table of contents. Ids and labels only — the statement's own wording,
  *  dates and status are untouched. */
@@ -119,7 +120,7 @@ const docs = [
         jest <span id="a11y-osoba">Mariusz Dziatkowiak</span>,
         <a id="a11y-email" href="mailto:informatyk@dpsszczytno.pl">informatyk@dpsszczytno.pl</a>.
         Kontaktować można się także dzwoniąc na numer telefonu
-        <a id="a11y-telefon" href="tel:+48896242288">89 624 22 88</a>. Tą samą drogą można składać
+        <a id="a11y-telefon" href={contact.phone.href}>{contact.phone.label}</a>. Tą samą drogą można składać
         wnioski o udostępnienie informacji niedostępnej oraz składać skargi na brak zapewnienia
         dostępności.
       </p>
