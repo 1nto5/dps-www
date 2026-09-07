@@ -1,29 +1,11 @@
 ---
-import { getCollection } from "astro:content";
+import { getPosts, postListItem } from "../../lib/posts";
 import Base from "../../layouts/Base.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import PageShell from "../../components/PageShell.astro";
 import PageList from "../../components/PageList.astro";
 
-const entries = (await getCollection("aktualnosci")).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
-);
-
-/** The same long-form date the post itself prints, so a list row and the post agree. */
-const dateFormat = new Intl.DateTimeFormat("pl-PL", {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-});
-
-const items = entries.map((entry) => {
-  const date = dateFormat.format(entry.data.date);
-  return {
-    href: `/aktualnosci/${entry.id}/`,
-    label: entry.data.title,
-    text: entry.data.description ? `${date} — ${entry.data.description}` : date,
-  };
-});
+const items = (await getPosts()).map((post) => postListItem(post, true));
 ---
 
 <Base

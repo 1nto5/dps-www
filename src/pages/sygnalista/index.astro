@@ -7,10 +7,9 @@ import Base from "../../layouts/Base.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import PageShell from "../../components/PageShell.astro";
 import PageList from "../../components/PageList.astro";
-import { sygnalistaPages } from "../../data/sygnalista-pages";
+import { childrenOf } from "../../data/nav";
 
-/** The rows here are the pages below, so the index skips its own entry. */
-const subpages = sygnalistaPages.slice(1);
+const subpages = childrenOf("/sygnalista/");
 ---
 
 <Base

@@ -18,9 +18,6 @@ export default defineConfig({
   site: process.env.SITE ?? "https://dpsszczytno.pl",
   base: process.env.BASE,
   trailingSlash: "always",
-  build: {
-    format: "directory",
-  },
   markdown: {
     // Markdown tables render straight into `.doc`, where a wide table would push
     // the page sideways. The plugin gives each one a scrollable, focusable

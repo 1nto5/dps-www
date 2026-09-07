@@ -25,7 +25,7 @@ const { title, lead, breadcrumbs = false, current, bare = false } = Astro.props;
 ---
 
 <header
-  class:list={["intro", !bare && "mx-auto w-full max-w-6xl px-5 pt-8 pb-8 sm:px-8 md:pt-10"]}
+  class:list={["intro", !bare && "page-wrap pt-8 pb-8 md:pt-10"]}
 >
   {breadcrumbs && <Breadcrumbs current={current} />}
   <h1 class="max-w-[22ch] text-4xl md:text-5xl">{title}</h1>

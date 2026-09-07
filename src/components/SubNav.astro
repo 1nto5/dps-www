@@ -5,28 +5,16 @@
  *
  *   <SubNav slot="aside" />
  *
- * Inside „Sygnalista" and „Projekty unijne" the list is that subsection's own
- * pages; everywhere else it is the section from `nav.ts` — the section's own
- * page first, then its children. A page in a section without children renders
- * nothing at all.
+ * The list is the nearest group in `nav.ts` that holds the page — the group's
+ * own page first, then its children. A page in a section without children
+ * renders nothing at all.
  */
-import { sectionPages, type NavItem } from "../data/nav";
+import { sectionPages } from "../data/nav";
 import { sitePath } from "../data/routes";
-import { sygnalistaPages } from "../data/sygnalista-pages";
-import { projektyUnijnePages } from "../data/projekty-unijne-pages";
 
-interface Props {
-  title?: string;
-}
-
-const { title = "W tej sekcji" } = Astro.props;
-
+const title = "W tej sekcji";
 const path = sitePath(Astro.url.pathname);
-
-let items: readonly NavItem[];
-if (path.startsWith("/sygnalista/")) items = sygnalistaPages;
-else if (path.startsWith("/projekty-unijne/")) items = projektyUnijnePages;
-else items = sectionPages(path);
+const items = sectionPages(path);
 ---
 
 {

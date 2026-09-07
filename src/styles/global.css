@@ -93,6 +93,8 @@
   --color-white: light-dark(#ffffff, #232f2c);
   /* Text drawn on a pine fill. A pair, not a new colour: high contrast flips it. */
   --color-on-pine: light-dark(#ffffff, #0f1916);
+  /* The shade behind a dialog. Not derived from the ink: in high contrast the ink is yellow. */
+  --color-scrim: color-mix(in srgb, light-dark(#1f2a2e, #e8e4da) 60%, transparent);
 
   --font-display: "Fraunces Variable", "Fraunces-fallback", Georgia, serif;
   --font-body: "Source Sans 3 Variable", "Source Sans 3-fallback", system-ui, sans-serif;
@@ -128,6 +130,17 @@ body {
   color: var(--color-ink);
   line-height: 1.6;
   overflow-wrap: break-word;
+}
+
+/* The page's width: one column, centred, with the gutter every band shares. */
+@utility page-wrap {
+  margin-inline: auto;
+  width: 100%;
+  max-width: var(--container-6xl);
+  padding-inline: --spacing(5);
+  @media (width >= 40rem) {
+    padding-inline: --spacing(8);
+  }
 }
 
 @layer base {
@@ -211,6 +224,7 @@ html[data-contrast="high"] {
   --color-clay: #ffff00;
   --color-line: #ffffff;
   --color-on-pine: #000000;
+  --color-scrim: rgb(0 0 0 / 0.7);
   color-scheme: dark;
 }
 html[data-contrast="high"] img {
@@ -463,12 +477,8 @@ html:not([data-js]) [data-tools] {
   position: fixed;
   inset: var(--drawer-top, 0) 0 0 0;
   z-index: 39;
-  background: color-mix(in srgb, var(--color-ink) 60%, transparent);
+  background: var(--color-scrim);
   touch-action: none;
-}
-/* In high contrast the ink is yellow; the shade stays dark. */
-html[data-contrast="high"] .menu-backdrop {
-  background: rgb(0 0 0 / 0.7);
 }
 /* Each entry carries its line from the start, painted in nothing; a hover only
    gives it colour, so the line fades in instead of snapping on. */
@@ -531,72 +541,60 @@ html[data-contrast="high"] .menu-backdrop {
 }
 
 /* ---------------------------------------------------------------------------
-   A plain list of pages, one link per row, a hairline between rows. This is the
-   site's only "card".
+   Rows: a list with a hairline between entries, the whole row one link. Two
+   uses — a list of pages (`.pages`, the site's only "card") and documents to
+   download (`.docs`, the format and the size after the label).
    ------------------------------------------------------------------------ */
-.pages {
+.pages,
+.docs {
   list-style: none;
   margin: 0;
   padding: 0;
 }
-.pages li {
+.pages li,
+.docs li {
   border-top: 1px solid var(--color-line);
 }
-.pages li:last-child {
+.pages li:last-child,
+.docs li:last-child {
   border-bottom: 1px solid var(--color-line);
 }
-/* The whole row is the target; what answers is the title. It carries its line
-   from the start, painted in nothing: the green already says „link", and the
-   line fades in under the pointer. */
-.pages a {
+.pages a,
+.docs a {
   display: block;
-  padding: 0.9rem 0;
   text-decoration: none;
 }
 .pages a > span,
 .docs a > span {
-  text-underline-offset: 0.3em;
-}
-.pages a > span {
-  font-weight: 600;
   text-decoration-line: underline;
-  text-decoration-color: transparent;
-  text-decoration-thickness: 2px;
+  text-underline-offset: 0.3em;
 }
 .pages a:hover > span,
 .docs a:hover > span {
   color: var(--color-pine-deep);
   text-decoration-color: currentColor;
 }
+/* What answers on a page row is the title. It carries its line from the
+   start, painted in nothing: the green already says „link", and the line
+   fades in under the pointer. */
+.pages a {
+  padding: 0.9rem 0;
+}
+.pages a > span {
+  font-weight: 600;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 2px;
+}
 .pages p {
   margin-top: 0.15rem;
   color: var(--color-ink-soft);
 }
-
-/* ---------------------------------------------------------------------------
-   Documents to download: the format and the size after the label, so a reader
-   knows what opens before it opens.
-   ------------------------------------------------------------------------ */
-.docs {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.docs li {
-  border-top: 1px solid var(--color-line);
-}
-.docs li:last-child {
-  border-bottom: 1px solid var(--color-line);
-}
-/* The line sits on the title alone: the format and the size after it are a
-   note, not part of the name. */
+/* On a document row the line sits on the title alone: the format and the
+   size after it are a note, not part of the name. */
 .docs a {
-  display: block;
   padding: 0.75rem 0;
-  text-decoration: none;
 }
 .docs a > span {
-  text-decoration-line: underline;
   text-decoration-thickness: 1px;
 }
 .docs a:hover > span {
@@ -814,10 +812,7 @@ figcaption {
   color: var(--color-ink);
 }
 .settings::backdrop {
-  background: color-mix(in srgb, var(--color-ink) 60%, transparent);
-}
-html[data-contrast="high"] .settings::backdrop {
-  background: rgb(0 0 0 / 0.7);
+  background: var(--color-scrim);
 }
 .settings-title {
   margin: 0 0 1rem;
@@ -884,29 +879,18 @@ html[data-contrast="high"] .settings::backdrop {
   }
 
   /* 3. Scroll reveal. */
-  html[data-js] [data-reveal] {
+  html[data-js] :is([data-reveal], [data-reveal-group] > *) {
     opacity: 0;
     transform: translateY(1rem);
     transition:
       opacity 500ms ease-out,
       transform 500ms cubic-bezier(0.2, 0.7, 0.2, 1);
   }
-  html[data-js] [data-reveal].is-visible {
+  html[data-js] :is([data-reveal].is-visible, [data-reveal-group].is-visible > *) {
     opacity: 1;
     transform: none;
   }
   /* Children of a stagger group come in one after another. */
-  html[data-js] [data-reveal-group] > * {
-    opacity: 0;
-    transform: translateY(1rem);
-    transition:
-      opacity 500ms ease-out,
-      transform 500ms cubic-bezier(0.2, 0.7, 0.2, 1);
-  }
-  html[data-js] [data-reveal-group].is-visible > * {
-    opacity: 1;
-    transform: none;
-  }
   html[data-js] [data-reveal-group].is-visible > :nth-child(2) {
     transition-delay: 90ms;
   }
@@ -1096,15 +1080,6 @@ html[data-contrast="high"] .settings::backdrop {
   main a[href^="http"]::after {
     content: " (" attr(href) ")";
     font-size: 0.85em;
-  }
-  .intro > *,
-  .intro-figure,
-  [data-reveal],
-  [data-reveal-group] > * {
-    opacity: 1 !important;
-    transform: none !important;
-    animation: none !important;
-    transition: none !important;
   }
 }
 

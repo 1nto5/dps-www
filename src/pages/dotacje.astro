@@ -6,6 +6,7 @@
  * official wording are reproduced as published — grant publicity rules do not
  * allow rewording them.
  */
+import type { Doc } from "../data/docs";
 import Base from "../layouts/Base.astro";
 import PageHeader from "../components/PageHeader.astro";
 import PageShell from "../components/PageShell.astro";
@@ -32,6 +33,26 @@ import poster2019 from "../assets/media/1277-00013.jpg";
 import poster2018 from "../assets/media/1278-333_page-0001.jpg";
 import poster2016 from "../assets/media/1279-72.jpg";
 
+/** The programme description, printed as issued under both 2025 and 2024. */
+const dodatekMotywacyjny = [
+  [
+    "Cel programu",
+    "Pomoc w postaci dodatkowych środków na dofinansowanie wynagrodzeń pracowników jednostek organizacyjnych pomocy społecznej.",
+  ],
+  [
+    "Realizowane zadania",
+    "Wypłata dodatków motywacyjnych w wysokości 1000 zł brutto oraz kosztów składek od dodatków w okresie od dnia 1 lipca 2024 r. do dnia 31 grudnia 2027 r. dla pracowników zatrudnionych na umowę o pracę w jednostkach organizacyjnych pomocy społecznej prowadzonych przez jednostki samorządu terytorialnego lub na ich zlecenie.",
+  ],
+  [
+    "Grupa docelowa",
+    "Pracownicy zatrudnieni na umowę o pracę w jednostkach organizacyjnych pomocy społecznej prowadzonych przez jednostki samorządu terytorialnego lub na zlecenie jednostek samorządu terytorialnego.",
+  ],
+  [
+    "Efekty programu",
+    "Wsparcie i poprawa sytuacji finansowej pracowników zatrudnionych w jednostkach organizacyjnych pomocy społecznej oraz utrzymanie wysokiego standardu realizowanych usług w pomocy społecznej.",
+  ],
+];
+
 const toc = [
   { id: "rok-2025", label: "2025" },
   { id: "rok-2024", label: "2024" },
@@ -49,7 +70,7 @@ const docs2024 = [
     format: "PDF",
     size: "553 KB",
   },
-];
+] satisfies Doc[];
 
 const posterSizes = "(min-width: 48rem) 42rem, 100vw";
 ---
@@ -96,33 +117,14 @@ const posterSizes = "(min-width: 48rem) 42rem, 100vw";
         <dd>1 730 105,53 zł</dd>
       </dl>
 
-      <h4>Cel programu</h4>
-      <p>
-        Pomoc w postaci dodatkowych środków na dofinansowanie wynagrodzeń pracowników jednostek
-        organizacyjnych pomocy społecznej.
-      </p>
-
-      <h4>Realizowane zadania</h4>
-      <p>
-        Wypłata dodatków motywacyjnych w wysokości 1000 zł brutto oraz kosztów składek od dodatków
-        w okresie od dnia 1 lipca 2024 r. do dnia 31 grudnia 2027 r. dla pracowników zatrudnionych
-        na umowę o pracę w jednostkach organizacyjnych pomocy społecznej prowadzonych przez
-        jednostki samorządu terytorialnego lub na ich zlecenie.
-      </p>
-
-      <h4>Grupa docelowa</h4>
-      <p>
-        Pracownicy zatrudnieni na umowę o pracę w jednostkach organizacyjnych pomocy społecznej
-        prowadzonych przez jednostki samorządu terytorialnego lub na zlecenie jednostek samorządu
-        terytorialnego.
-      </p>
-
-      <h4>Efekty programu</h4>
-      <p>
-        Wsparcie i poprawa sytuacji finansowej pracowników zatrudnionych w jednostkach
-        organizacyjnych pomocy społecznej oraz utrzymanie wysokiego standardu realizowanych usług
-        w pomocy społecznej.
-      </p>
+      {
+        dodatekMotywacyjny.map(([heading, text]) => (
+          <>
+            <h4>{heading}</h4>
+            <p>{text}</p>
+          </>
+        ))
+      }
 
       <Figure
         src={poster2025Motywacyjny}
@@ -170,33 +172,14 @@ const posterSizes = "(min-width: 48rem) 42rem, 100vw";
         <dd>994 620,00 zł</dd>
       </dl>
 
-      <h4>Cel programu</h4>
-      <p>
-        Pomoc w postaci dodatkowych środków na dofinansowanie wynagrodzeń pracowników jednostek
-        organizacyjnych pomocy społecznej.
-      </p>
-
-      <h4>Realizowane zadania</h4>
-      <p>
-        Wypłata dodatków motywacyjnych w wysokości 1000 zł brutto oraz kosztów składek od dodatków
-        w okresie od dnia 1 lipca 2024 r. do dnia 31 grudnia 2027 r. dla pracowników zatrudnionych
-        na umowę o pracę w jednostkach organizacyjnych pomocy społecznej prowadzonych przez
-        jednostki samorządu terytorialnego lub na ich zlecenie.
-      </p>
-
-      <h4>Grupa docelowa</h4>
-      <p>
-        Pracownicy zatrudnieni na umowę o pracę w jednostkach organizacyjnych pomocy społecznej
-        prowadzonych przez jednostki samorządu terytorialnego lub na zlecenie jednostek samorządu
-        terytorialnego.
-      </p>
-
-      <h4>Efekty programu</h4>
-      <p>
-        Wsparcie i poprawa sytuacji finansowej pracowników zatrudnionych w jednostkach
-        organizacyjnych pomocy społecznej oraz utrzymanie wysokiego standardu realizowanych usług
-        w pomocy społecznej.
-      </p>
+      {
+        dodatekMotywacyjny.map(([heading, text]) => (
+          <>
+            <h4>{heading}</h4>
+            <p>{text}</p>
+          </>
+        ))
+      }
 
       <Figure
         src={poster2024}
@@ -208,9 +191,7 @@ const posterSizes = "(min-width: 48rem) 42rem, 100vw";
       <h3>Do pobrania</h3>
     </div>
 
-    <div class="mt-8 max-w-prose">
-      <DocList docs={docs2024} />
-    </div>
+    <DocList docs={docs2024} />
 
     <div class="prose mt-16">
       <h2 id="rok-2023">Dotacje 2023</h2>

@@ -1,13 +1,13 @@
 ---
 import { Image } from "astro:assets";
-import { getCollection } from "astro:content";
+import { getPosts, postListItem } from "../lib/posts";
+import { hero } from "../data/hero";
 import Base from "../layouts/Base.astro";
 import Button from "../components/Button.astro";
 import Figure from "../components/Figure.astro";
 import PageList from "../components/PageList.astro";
 import { contact, addressLine } from "../data/contact";
 
-import heroPhoto from "../assets/media/1377-1-1.jpg";
 import offerPhoto from "../assets/media/1188-2012-07-25-at-10-18-46-1-1.jpg";
 import branchPhoto from "../assets/media/1376-3.jpg";
 import musicPhoto from "../assets/media/1168-christopherGroup.jpg";
@@ -35,31 +35,19 @@ const sections = [
   {
     href: "/o-domu/",
     label: "O nas",
-    photo: heroPhoto,
-    alt: "Budynek Domu Pomocy Społecznej w Szczytnie z czerwonym dachem, widziany zza kwitnących hortensji",
+    photo: hero.photo,
+    alt: hero.alt,
   },
 ];
 
-const posts = (await getCollection("aktualnosci")).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
-);
-const dateFormat = new Intl.DateTimeFormat("pl-PL", {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-});
-const latest = posts.slice(0, 3).map((post) => ({
-  href: `/aktualnosci/${post.id}/`,
-  label: post.data.title,
-  text: dateFormat.format(post.data.date),
-}));
+const latest = (await getPosts()).slice(0, 3).map((post) => postListItem(post));
 ---
 
 <Base
   title="Strona główna"
   description="Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie — całodobowa opieka dla osób przewlekle psychicznie chorych, wraz z filią w Spychowie."
 >
-  <section class="mx-auto max-w-6xl px-5 py-12 sm:px-8 md:py-16" aria-labelledby="hero-title">
+  <section class="page-wrap py-12 md:py-16" aria-labelledby="hero-title">
     <div class="grid items-center gap-10 md:grid-cols-2 md:gap-14">
       <div class="intro">
         {/* The name is in the header just above; the heading says what the Dom
@@ -78,8 +66,8 @@ const latest = posts.slice(0, 3).map((post) => ({
         </div>
       </div>
       <Figure
-        src={heroPhoto}
-        alt="Budynek Domu Pomocy Społecznej w Szczytnie z czerwonym dachem, widziany zza kwitnących hortensji"
+        src={hero.photo}
+        alt={hero.alt}
         loading="eager"
         sizes="(min-width: 48rem) 32rem, 100vw"
         class="intro-figure"
@@ -88,7 +76,7 @@ const latest = posts.slice(0, 3).map((post) => ({
   </section>
 
   <section class="border-y border-line bg-sand" aria-labelledby="o-domu">
-    <div class="mx-auto max-w-6xl px-5 py-12 sm:px-8 md:py-16">
+    <div class="page-wrap py-12 md:py-16">
       <div class="max-w-prose" data-reveal>
         <h2 id="o-domu" class="text-2xl md:text-3xl">
           Witamy na stronie Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie
@@ -110,13 +98,13 @@ const latest = posts.slice(0, 3).map((post) => ({
           integracji osób chorujących psychicznie ze środowiskiem lokalnym.
         </p>
         <p class="mt-6">
-          <a href="/o-domu/" class="font-semibold underline">O nas</a>
+          <a href="/o-domu/" class="link-strong">O nas</a>
         </p>
       </div>
     </div>
   </section>
 
-  <section class="mx-auto max-w-6xl px-5 py-12 sm:px-8 md:py-16" aria-labelledby="strony-domu">
+  <section class="page-wrap py-12 md:py-16" aria-labelledby="strony-domu">
     <h2 id="strony-domu" class="text-2xl md:text-3xl" data-reveal>Strony naszego Domu</h2>
     <ul role="list" class="mt-8 grid gap-8 sm:grid-cols-2 sm:gap-10" data-reveal-group>
       {
@@ -145,7 +133,7 @@ const latest = posts.slice(0, 3).map((post) => ({
   {
     latest.length > 0 && (
       <section
-        class="mx-auto max-w-6xl px-5 pb-12 sm:px-8 md:pb-16"
+        class="page-wrap pb-12 md:pb-16"
         aria-labelledby="aktualnosci-skrot"
         data-reveal
       >
@@ -153,7 +141,7 @@ const latest = posts.slice(0, 3).map((post) => ({
           <h2 id="aktualnosci-skrot" class="text-2xl md:text-3xl">
             Aktualności
           </h2>
-          <a href="/aktualnosci/" class="font-semibold underline">
+          <a href="/aktualnosci/" class="link-strong">
             Wszystkie aktualności
           </a>
         </div>
@@ -166,7 +154,7 @@ const latest = posts.slice(0, 3).map((post) => ({
 
   <section class="border-t border-line bg-sand" aria-labelledby="kontakt-skrot">
     <div
-      class="mx-auto grid max-w-6xl gap-8 px-5 py-12 sm:px-8 md:grid-cols-[1fr_auto] md:items-center md:py-16"
+      class="page-wrap grid gap-8 py-12 md:grid-cols-[1fr_auto] md:items-center md:py-16"
       data-reveal
     >
       <div>

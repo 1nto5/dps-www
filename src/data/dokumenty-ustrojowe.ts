@@ -4,6 +4,8 @@
  * hub links to the section that shows them, and a fourth document — or a new
  * file name for one of these — has to change in one place.
  */
+import type { Doc } from "./docs";
+
 export const dokumentyUstrojowe = [
   {
     href: "/dokumenty/pliki/1744-Regulamin-Organizacyjny-DPS-Szczytno.doc",
@@ -23,4 +25,4 @@ export const dokumentyUstrojowe = [
     format: "PDF",
     size: "204 KB",
   },
-];
+] satisfies Doc[];

@@ -36,11 +36,11 @@ import { addressLine, contact } from "../../data/contact";
             >Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie</strong
           >, {addressLine(contact.address)}, telefon:
           <a href={contact.phone.href}>{contact.phone.label}</a>, e-mail:
-          <a href="mailto:szczytno@dps.pl">szczytno@dps.pl</a>.
+          <a href={`mailto:${contact.emailRodo}`}>{contact.emailRodo}</a>.
         </li>
         <li>
           Administrator wyznaczył Inspektora Ochrony Danych, z którym można skontaktować się pod
-          adresem e-mail: <a href="mailto:iod2@warmiainkaso.pl">iod2@warmiainkaso.pl</a>.
+          adresem e-mail: <a href={`mailto:${contact.iodEmail}`}>{contact.iodEmail}</a>.
           Z Inspektorem można kontaktować się we wszystkich sprawach związanych z ochroną danych
           osobowych.
         </li>

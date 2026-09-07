@@ -1,53 +1,21 @@
 /**
- * Route → breadcrumb label, one line per URL the site builds. Short, nav-style
- * names, because a crumb is read in a row of other crumbs. News posts pass their
- * own title in at render time.
+ * Breadcrumbs, derived from the navigation tree in `nav.ts`. A crumb carries
+ * the item's `crumb` label when it has one, else its menu label. News posts
+ * pass their own title in at render time.
  */
+import { navTree, type NavItem } from "./nav";
+
+/** `import.meta.env.BASE_URL` without its trailing slash: "" on the real domain. */
+export const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 /** `Astro.url.pathname` without the deploy base, so route maps see site paths. */
 export function sitePath(pathname: string): string {
-  const base = import.meta.env.BASE_URL.replace(/\/$/, "");
-  return pathname.startsWith(base) ? pathname.slice(base.length) || "/" : pathname;
+  return pathname.startsWith(basePath) ? pathname.slice(basePath.length) || "/" : pathname;
 }
 
-export const routeLabels: Record<string, string> = {
-  "/": "Strona główna",
-
-  "/o-domu/": "O nas",
-  "/deklaracja-dostepnosci/": "Deklaracja dostępności",
-
-  "/zycie-w-domu/": "Oferta",
-  "/zycie-w-domu/spychowo/": "Filia Domu Pomocy w Spychowie",
-  "/zycie-w-domu/grupa-christopher/": "Grupa wokalna „Christopher”",
-  "/zycie-w-domu/regulamin-imprez-okolicznosciowych/": "Regulamin imprez okolicznościowych",
-
-  "/dokumenty/": "Dokumenty",
-  "/dotacje/": "Dotacje",
-  "/projekty-unijne/": "Projekty unijne",
-  "/projekty-unijne/oze/": "Instalacje OZE",
-  "/rodo/": "RODO",
-  "/sygnalista/": "Sygnalista",
-  "/sygnalista/wewnetrzna-procedura/": "Wewnętrzna procedura",
-  "/sygnalista/klauzula-informacyjna/": "Klauzula informacyjna",
-  "/sygnalista/osoba-upowazniona/": "Osoba upoważniona",
-  "/sygnalista/zalaczniki/": "Załączniki",
-
-  "/aktualnosci/": "Aktualności",
-  "/kontakt/": "Kontakt",
-};
-
-/**
- * Pages whose address does not sit under the section they belong to. Without
- * this, „Dotacje" would trail straight off the home page instead of through
- * „Dokumenty".
- */
-export const routeParents: Record<string, string> = {
-  "/deklaracja-dostepnosci/": "/o-domu/",
-  "/dotacje/": "/dokumenty/",
-  "/projekty-unijne/": "/dokumenty/",
-  "/rodo/": "/dokumenty/",
-  "/sygnalista/": "/dokumenty/",
-};
+const byHref = new Map<string, { item: NavItem; parent?: NavItem }>(
+  navTree.map((node) => [node.item.href, node]),
+);
 
 export interface Crumb {
   href: string;
@@ -55,12 +23,12 @@ export interface Crumb {
 }
 
 /**
- * Home → … → the page itself. The trail follows `routeParents` where a page has
- * one, and otherwise walks the URL one segment at a time. `current` names the
- * last crumb when the route map cannot know it — a news post.
+ * Home → … → the page itself. The trail follows the tree where a page is in
+ * it, and otherwise walks the URL one segment at a time. `current` names the
+ * last crumb when the tree cannot know it — a news post.
  */
 export function breadcrumbsFor(pathname: string, current?: string): Crumb[] {
-  const home: Crumb = { href: "/", label: routeLabels["/"]! };
+  const home: Crumb = { href: "/", label: byHref.get("/")!.item.label };
   if (pathname === "/") return [home];
 
   const trail: Crumb[] = [];
@@ -69,9 +37,10 @@ export function breadcrumbsFor(pathname: string, current?: string): Crumb[] {
 
   while (href && href !== "/" && !seen.has(href)) {
     seen.add(href);
-    const label = routeLabels[href] ?? (href === pathname ? current : undefined);
+    const node = byHref.get(href);
+    const label = node ? (node.item.crumb ?? node.item.label) : href === pathname ? current : undefined;
     if (label) trail.unshift({ href, label });
-    href = routeParents[href] ?? parentSegment(href);
+    href = node?.parent?.href ?? parentSegment(href);
   }
 
   return [home, ...trail];

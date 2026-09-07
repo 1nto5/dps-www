@@ -51,6 +51,10 @@ export const contact = {
   /** Plain text: the fax is not something a browser can dial. */
   fax: "89 624 34 99",
   email: "sekretariat@dpsszczytno.pl",
+  /** The address the data-protection notices name; not the secretariat's. */
+  emailRodo: "szczytno@dps.pl",
+  /** The Data Protection Officer (IOD), an external firm. */
+  iodEmail: "iod2@warmiainkaso.pl",
   epuap: "/dpsszczytno/SkrytkaESP",
   spychowo: {
     name: "Dom Pomocy Społecznej im. Jana Pawła II — Filia w Spychowie",

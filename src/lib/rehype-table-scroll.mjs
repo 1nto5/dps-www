@@ -25,24 +25,17 @@ export default function rehypeTableScroll() {
       if (!child || child.type !== "element") continue;
 
       if (child.tagName === "table") {
-        // Already wrapped by hand-written HTML — leave it alone.
-        const isWrapped =
-          node.type === "element" &&
-          node.tagName === "div" &&
-          toClassList(node.properties).includes("table-scroll");
-        if (!isWrapped) {
-          children[i] = {
-            type: "element",
-            tagName: "div",
-            properties: {
-              className: ["table-scroll"],
-              tabIndex: 0,
-              role: "region",
-              "aria-label": "Tabela, przewiń w poziomie",
-            },
-            children: [child],
-          };
-        }
+        children[i] = {
+          type: "element",
+          tagName: "div",
+          properties: {
+            className: ["table-scroll"],
+            tabIndex: 0,
+            role: "region",
+            "aria-label": "Tabela, przewiń w poziomie",
+          },
+          children: [child],
+        };
         // Nested tables are vanishingly rare, but keep walking anyway.
         visit(child);
         continue;
@@ -53,9 +46,3 @@ export default function rehypeTableScroll() {
   }
 }
 
-function toClassList(properties) {
-  const className = properties?.className;
-  if (Array.isArray(className)) return className;
-  if (typeof className === "string") return className.split(/\s+/);
-  return [];
-}

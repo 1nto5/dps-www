@@ -4,14 +4,16 @@
  * a reader — and a screen reader announcing links out of context — knows what
  * opens before it opens.
  */
+import type { Doc } from "../data/docs";
+
 interface Props {
-  docs: readonly { href: string; label: string; format: string; size?: string }[];
+  docs: readonly Doc[];
 }
 
 const { docs } = Astro.props;
 ---
 
-<ul class="docs" role="list">
+<ul class="docs mt-8 max-w-prose" role="list">
   {
     docs.map((doc) => (
       <li>

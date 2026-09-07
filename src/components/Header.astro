@@ -20,10 +20,9 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
 ---
 
 <header class="site-header" transition:animate="none">
-  <div class="header-surface" data-surface>
-  <div class="pinned-row-wrap border-b border-line" data-pinned>
+  <div class="header-surface border-b border-line" data-surface>
     <div
-      class="pinned-row mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-8 gap-y-4 px-5 sm:px-8 max-md:flex-nowrap"
+      class="pinned-row page-wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-4 max-md:flex-nowrap"
     >
       <a href="/" class="brand no-underline">
         <span class="brand-name block font-display leading-tight font-semibold text-ink"
@@ -57,7 +56,7 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
                 <circle cx="12" cy="12" r="4" />
                 <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
               </svg>
-              <span class="sr-only" data-theme-label>Motyw: jasny (systemowy). Przełącz na ciemny</span>
+              <span class="sr-only" data-theme-label></span>
             </button>
             <button type="button" class="tool" data-settings-open aria-haspopup="dialog">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -78,7 +77,6 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
         </div>
       </div>
     </div>
-  </div>
   </div>
 
   <div class="menu-backdrop" data-menu-backdrop hidden></div>
@@ -132,37 +130,38 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
     bound = new AbortController();
     const { signal } = bound;
 
+    // Text size and contrast are each one attribute on <html>, remembered
+    // under one key. Setting the default value clears the attribute instead.
+    const setting = (attr: string, key: string, off: string) => ({
+      current: () => doc.getAttribute(attr) ?? off,
+      set(value: string) {
+        if (value === off) doc.removeAttribute(attr);
+        else doc.setAttribute(attr, value);
+        remember(key, value === off ? null : value);
+      },
+    });
+
+    const font = setting("data-font-size", "dps-font", "normal");
     const fontButtons = [...document.querySelectorAll<HTMLButtonElement>("button[data-font]")];
-    const contrastButtons = [...document.querySelectorAll<HTMLButtonElement>("button[data-contrast]")];
-
-    function syncFont() {
-      const size = doc.getAttribute("data-font-size") ?? "normal";
+    const syncFont = () => {
       for (const button of fontButtons) {
-        button.setAttribute("aria-pressed", String(button.dataset.font === size));
+        button.setAttribute("aria-pressed", String(button.dataset.font === font.current()));
       }
-    }
-
+    };
     for (const button of fontButtons) {
-      button.addEventListener("click", () => {
-        const size = button.dataset.font!;
-        if (size === "normal") doc.removeAttribute("data-font-size");
-        else doc.setAttribute("data-font-size", size);
-        remember("dps-font", size === "normal" ? null : size);
-        syncFont();
-      });
+      button.addEventListener("click", () => (font.set(button.dataset.font!), syncFont()));
     }
 
-    function syncContrast() {
-      const on = doc.getAttribute("data-contrast") === "high";
-      for (const button of contrastButtons) button.setAttribute("aria-pressed", String(on));
-    }
-
+    const contrast = setting("data-contrast", "dps-contrast", "normal");
+    const contrastButtons = [...document.querySelectorAll<HTMLButtonElement>("button[data-contrast]")];
+    const syncContrast = () => {
+      for (const button of contrastButtons) {
+        button.setAttribute("aria-pressed", String(contrast.current() === "high"));
+      }
+    };
     for (const button of contrastButtons) {
       button.addEventListener("click", () => {
-        const on = doc.getAttribute("data-contrast") === "high";
-        if (on) doc.removeAttribute("data-contrast");
-        else doc.setAttribute("data-contrast", "high");
-        remember("dps-contrast", on ? null : "high");
+        contrast.set(contrast.current() === "high" ? "normal" : "high");
         syncContrast();
       });
     }
@@ -282,60 +281,59 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
     );
     compact();
 
-    if (menu && backdrop && open) {
-      const close = () => menu.open && menu.close();
-      // The page behind the drawer is inert while it is open, so the Tab key
-      // stays inside; the pinned row above stays live.
-      const behind = [...document.querySelectorAll<HTMLElement>("main, footer")];
+    if (!menu || !backdrop || !open) return;
+    const close = () => menu.open && menu.close();
+    // The page behind the drawer is inert while it is open, so the Tab key
+    // stays inside; the pinned row above stays live.
+    const behind = [...document.querySelectorAll<HTMLElement>("main, footer")];
 
-      open.addEventListener("click", () => {
-        const top = Math.max(0, surface.getBoundingClientRect().bottom);
-        menu.style.setProperty("--drawer-top", `${top}px`);
-        backdrop.style.setProperty("--drawer-top", `${top}px`);
-        backdrop.hidden = false;
-        menu.show();
-        for (const el of behind) el.inert = true;
-        doc.style.overflow = "hidden";
-        open.setAttribute("aria-expanded", "true");
-        menu.focus();
-      });
-      menu.addEventListener("close", () => {
-        backdrop.hidden = true;
-        for (const el of behind) el.inert = false;
-        doc.style.overflow = "";
-        open.setAttribute("aria-expanded", "false");
-        // Not when the drawer closed because the window grew past `md` and
-        // the button went with it.
-        if (open.offsetParent !== null) open.focus();
-      });
+    open.addEventListener("click", () => {
+      const top = Math.max(0, surface.getBoundingClientRect().bottom);
+      menu.style.setProperty("--drawer-top", `${top}px`);
+      backdrop.style.setProperty("--drawer-top", `${top}px`);
+      backdrop.hidden = false;
+      menu.show();
+      for (const el of behind) el.inert = true;
+      doc.style.overflow = "hidden";
+      open.setAttribute("aria-expanded", "true");
+      menu.focus();
+    });
+    menu.addEventListener("close", () => {
+      backdrop.hidden = true;
+      for (const el of behind) el.inert = false;
+      doc.style.overflow = "";
+      open.setAttribute("aria-expanded", "false");
+      // Not when the drawer closed because the window grew past `md` and
+      // the button went with it.
+      if (open.offsetParent !== null) open.focus();
+    });
 
-      backdrop.addEventListener("click", close);
-      // Widened past `md` with the drawer open: the row of links takes over.
-      window
-        .matchMedia("(min-width: 48rem)")
-        .addEventListener("change", (e) => e.matches && close(), { signal });
-      document.addEventListener("keydown", (e) => e.key === "Escape" && close(), { signal });
+    backdrop.addEventListener("click", close);
+    // Widened past `md` with the drawer open: the row of links takes over.
+    window
+      .matchMedia("(min-width: 48rem)")
+      .addEventListener("change", (e) => e.matches && close(), { signal });
+    document.addEventListener("keydown", (e) => e.key === "Escape" && close(), { signal });
 
-      // A finger swipe to the left, on the drawer or on the shade beside it,
-      // closes it. A mostly vertical move is a scroll, and a mouse drag is a
-      // text selection; neither counts.
-      let start: { x: number; y: number } | null = null;
-      const onDown = (e: PointerEvent) => {
-        start = e.pointerType === "touch" ? { x: e.clientX, y: e.clientY } : null;
-      };
-      const onUp = (e: PointerEvent) => {
-        if (start) {
-          const dx = start.x - e.clientX;
-          const dy = Math.abs(start.y - e.clientY);
-          if (dx > 40 && dx > dy) close();
-        }
-        start = null;
-      };
-      for (const el of [menu, backdrop]) {
-        el.addEventListener("pointerdown", onDown);
-        el.addEventListener("pointerup", onUp);
-        el.addEventListener("pointercancel", () => (start = null));
+    // A finger swipe to the left, on the drawer or on the shade beside it,
+    // closes it. A mostly vertical move is a scroll, and a mouse drag is a
+    // text selection; neither counts.
+    let start: { x: number; y: number } | null = null;
+    const onDown = (e: PointerEvent) => {
+      start = e.pointerType === "touch" ? { x: e.clientX, y: e.clientY } : null;
+    };
+    const onUp = (e: PointerEvent) => {
+      if (start) {
+        const dx = start.x - e.clientX;
+        const dy = Math.abs(start.y - e.clientY);
+        if (dx > 40 && dx > dy) close();
       }
+      start = null;
+    };
+    for (const el of [menu, backdrop]) {
+      el.addEventListener("pointerdown", onDown);
+      el.addEventListener("pointerup", onUp);
+      el.addEventListener("pointercancel", () => (start = null));
     }
   }
 

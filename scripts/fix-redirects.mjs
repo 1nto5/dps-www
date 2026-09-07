@@ -13,26 +13,15 @@
  * page that already has an <html> tag (i.e. every normal Astro page) is left
  * alone, so running this twice is harmless.
  */
-import { readdir, readFile, writeFile } from "node:fs/promises";
-import { join } from "node:path";
-import { fileURLToPath } from "node:url";
+import { readFile, writeFile } from "node:fs/promises";
+import { DIST, walk } from "./lib/fs.mjs";
 
-const root = fileURLToPath(new URL("../", import.meta.url));
-const DIST = join(root, "dist");
+const files = await walk(DIST, (name) => name === "index.html");
+const htmls = await Promise.all(files.map((file) => readFile(file, "utf8")));
+const writes = [];
 
-async function walk(dir) {
-  const found = [];
-  for (const entry of await readdir(dir, { withFileTypes: true })) {
-    const path = join(dir, entry.name);
-    if (entry.isDirectory()) found.push(...(await walk(path)));
-    else if (entry.name === "index.html") found.push(path);
-  }
-  return found;
-}
-
-let fixed = 0;
-for (const file of await walk(DIST)) {
-  const html = await readFile(file, "utf8");
+for (const [i, html] of htmls.entries()) {
+  const file = files[i];
 
   // A redirect stub: no <html> element yet, and a meta refresh in it.
   if (html.includes("<html") || !html.includes('http-equiv="refresh"')) continue;
@@ -44,8 +33,8 @@ for (const file of await walk(DIST)) {
   const body = html.slice(bodyStart);
 
   const fixedHtml = `<!doctype html><html lang="pl"><head><meta charset="utf-8">${head}</head>${body}</html>`;
-  await writeFile(file, fixedHtml);
-  fixed += 1;
+  writes.push(writeFile(file, fixedHtml));
 }
+await Promise.all(writes);
 
-console.log(`Redirects: ${fixed} page(s) wrapped in a proper <html lang="pl">.`);
+console.log(`Redirects: ${writes.length} page(s) wrapped in a proper <html lang="pl">.`);

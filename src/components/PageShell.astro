@@ -18,7 +18,7 @@ const hasHeader = Astro.slots.has("header");
 
 <div
   class:list={[
-    "mx-auto w-full max-w-6xl px-5 pb-16 sm:px-8 md:pb-24",
+    "page-wrap pb-16 md:pb-24",
     hasHeader && "pt-8 md:pt-10",
     hasAside && "grid gap-x-10 gap-y-8 lg:grid-cols-[minmax(0,1fr)_15rem] lg:gap-x-14",
   ]}

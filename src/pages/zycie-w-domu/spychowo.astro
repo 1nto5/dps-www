@@ -4,7 +4,7 @@ import PageHeader from "../../components/PageHeader.astro";
 import PageShell from "../../components/PageShell.astro";
 import SubNav from "../../components/SubNav.astro";
 import Toc from "../../components/Toc.astro";
-import { contact } from "../../data/contact";
+import { contact, addressLines } from "../../data/contact";
 
 const toc = [
   { id: "o-filii", label: "O filii" },
@@ -81,8 +81,12 @@ const therapies = [
       <h2 id="kontakt">Kontakt do filii</h2>
       <address>
         {contact.spychowo.name}<br />
-        {contact.spychowo.address.street}<br />
-        {contact.spychowo.address.postalCode} {contact.spychowo.address.city}
+        {addressLines(contact.spychowo.address).map((line, i) => (
+          <Fragment>
+            {i > 0 && <br />}
+            {line}
+          </Fragment>
+        ))}
       </address>
       <p>
         Telefon: <a href={contact.spychowo.phone.href}>{contact.spychowo.phone.label}</a>

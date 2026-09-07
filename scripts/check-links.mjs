@@ -18,11 +18,9 @@
  */
 import { readdir, readFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
-import { join, relative } from "node:path";
-import { fileURLToPath } from "node:url";
+import { join, relative, sep } from "node:path";
+import { root, DIST, walk } from "./lib/fs.mjs";
 
-const root = fileURLToPath(new URL("../", import.meta.url));
-const DIST = join(root, "dist");
 const SRC = join(root, "src");
 const MEDIA = join(SRC, "assets", "media");
 const DOWNLOADS = join(root, "public", "dokumenty", "pliki");
@@ -33,22 +31,6 @@ const BASE = (process.env.BASE ?? "").replace(/\/+$/, "");
 const SKIP_ORPHANS = process.env.SKIP_ORPHANS === "1";
 
 const problems = [];
-
-/** Every file under `dir` whose name passes `keep`, depth-first. */
-async function walk(dir, keep, skipDirs = new Set()) {
-  const found = [];
-  for (const entry of await readdir(dir, { withFileTypes: true })) {
-    if (entry.name.startsWith(".")) continue;
-    const path = join(dir, entry.name);
-    if (entry.isDirectory()) {
-      if (skipDirs.has(path)) continue;
-      found.push(...(await walk(path, keep, skipDirs)));
-    } else if (keep(entry.name)) {
-      found.push(path);
-    }
-  }
-  return found;
-}
 
 /** Every href="…" and src="…" in one page, unescaped. */
 function urls(html) {
@@ -70,8 +52,7 @@ function isExternal(url) {
   return (
     url.startsWith("#") ||
     url.startsWith("//") ||
-    /^[a-z][a-z0-9+.-]*:/i.test(url) ||
-    url.startsWith("data:")
+    /^[a-z][a-z0-9+.-]*:/i.test(url)
   );
 }
 
@@ -90,7 +71,13 @@ if (!existsSync(DIST)) {
 }
 
 // --- 1 and 2: every internal address in the built HTML resolves ------------
-const pages = await walk(DIST, (name) => name.endsWith(".html"));
+// One walk of dist/: the pages to read, and every built file as a site path
+// ("/kontakt/index.html"), so a link is checked with a lookup, not a stat.
+const built = new Set(
+  (await walk(DIST, () => true)).map((file) => "/" + relative(DIST, file).split(sep).join("/")),
+);
+const pages = [...built].filter((path) => path.endsWith(".html")).map((path) => join(DIST, path));
+const htmls = await Promise.all(pages.map((page) => readFile(page, "utf8")));
 const downloadsOnDisk = new Set(
   (await readdir(DOWNLOADS, { withFileTypes: true }))
     .filter((entry) => entry.isFile())
@@ -99,9 +86,8 @@ const downloadsOnDisk = new Set(
 const downloadsLinked = new Set();
 let checked = 0;
 
-for (const page of pages) {
-  const html = await readFile(page, "utf8");
-  const where = relative(root, page);
+for (const [i, html] of htmls.entries()) {
+  const where = relative(root, pages[i]);
 
   for (const url of urls(html)) {
     if (isExternal(url)) continue;
@@ -119,10 +105,9 @@ for (const page of pages) {
       continue;
     }
 
-    const target = join(DIST, path);
     const ok = path.endsWith("/")
-      ? existsSync(join(target, "index.html"))
-      : existsSync(target) || existsSync(join(target, "index.html"));
+      ? built.has(`${path}index.html`)
+      : built.has(path) || built.has(`${path}/index.html`);
     if (!ok) problems.push(`${where}: broken link — ${path}`);
   }
 }
@@ -144,8 +129,10 @@ if (!SKIP_ORPHANS) {
     .filter((entry) => entry.isFile())
     .map((entry) => entry.name)
     .sort();
+  // Every image-looking file name written anywhere under src/, in one pass.
+  const named = new Set(haystack.match(/[\w.-]+\.(?:jpe?g|png|webp|avif|gif|svg)\b/gi) ?? []);
   for (const name of images) {
-    if (!haystack.includes(name)) {
+    if (!named.has(name)) {
       problems.push(`orphan image: src/assets/media/${name} — no page imports it`);
     }
   }

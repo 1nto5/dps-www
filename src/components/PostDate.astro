@@ -1,18 +1,14 @@
 ---
 /** The date of a news post, written out the long Polish way. */
+import { formatPostDate } from "../lib/posts";
+
 interface Props {
   date: Date;
 }
 
 const { date } = Astro.props;
-const format = new Intl.DateTimeFormat("pl-PL", {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-  timeZone: "UTC",
-});
 ---
 
 <p class="text-sm text-ink-soft">
-  <time datetime={date.toISOString().slice(0, 10)}>{format.format(date)}</time>
+  <time datetime={date.toISOString().slice(0, 10)}>{formatPostDate(date)}</time>
 </p>

@@ -8,9 +8,9 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { contact } from "../data/contact";
 import { ClientRouter } from "astro:transitions";
+import { basePath as base, sitePath } from "../data/routes";
 import { getImage } from "astro:assets";
-import heroPhoto from "../assets/media/1377-1-1.jpg";
-
+import { hero } from "../data/hero";
 
 /**
  * Between pages the header and the footer stay put; the content of the old
@@ -31,17 +31,16 @@ interface Props {
 
 const { title, description } = Astro.props;
 
-const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const canonical = new URL(Astro.url.pathname, Astro.site);
 
-// Same photo as the homepage hero, cropped to the 1200×630 social-preview
-// shape every platform expects for a "large image" card. Astro's own build
-// step already rewrites `/_astro/...` asset paths for the base path, so
-// `ogImage.src` must NOT be prefixed with `base` again here.
-const ogImage = await getImage({ src: heroPhoto, width: 1200, height: 630, format: "jpg" });
+// The hero photo cropped to the 1200×630 social-preview shape every platform
+// expects for a "large image" card. Astro's own build step already rewrites
+// `/_astro/...` asset paths for the base path, so `ogImage.src` must NOT be
+// prefixed with `base` again here.
+const ogImage = await getImage({ src: hero.photo, width: 1200, height: 630, format: "jpg" });
 const ogImageUrl = new URL(ogImage.src, Astro.site);
 const fullTitle =
-  Astro.url.pathname === `${base}/`
+  sitePath(Astro.url.pathname) === "/"
     ? "Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie"
     : `${title} — DPS Szczytno`;
 const desc =
@@ -101,10 +100,7 @@ const desc =
     <meta property="og:image" content={ogImageUrl} />
     <meta property="og:image:width" content={String(ogImage.options.width)} />
     <meta property="og:image:height" content={String(ogImage.options.height)} />
-    <meta
-      property="og:image:alt"
-      content="Budynek Domu Pomocy Społecznej w Szczytnie z czerwonym dachem, widziany zza kwitnących hortensji"
-    />
+    <meta property="og:image:alt" content={hero.alt} />
     <meta name="twitter:card" content="summary_large_image" />
     <script
       type="application/ld+json"
