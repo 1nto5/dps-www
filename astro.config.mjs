@@ -12,10 +12,6 @@ const at = (target) => `${base}${target}`;
 export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
-    // Never inline a bundled script into the page. The header and the Base
-    // scripts are ~4.6 kB together: as a file they are fetched and cached once
-    // for the whole site, inlined they are repeated in every page's HTML.
-    build: { assetsInlineLimit: 0 },
   },
   // SITE/BASE env vars let CI build for the temporary github.io test URL;
   // the defaults are the production domain.

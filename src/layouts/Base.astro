@@ -51,10 +51,11 @@ const desc =
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!--
       Everything the site loads is self-hosted (fonts, images, styles, scripts),
-      so the policy stays closed except for the two things that have to sit
-      inline in the page: the pre-paint reader-settings script below and the
-      JSON-LD block. The bundled scripts are always separate files (see
-      `assetsInlineLimit` in astro.config.mjs).
+      so the policy stays closed except for what has to sit inline in the page:
+      the pre-paint reader-settings script below, the JSON-LD block and the
+      small bundled scripts Astro inlines instead of a separate file. Inline
+      they also run at once during a page swap; as files the router would wait
+      for the download and the content would come in late.
       `frame-ancestors` cannot be set from a <meta> tag — that one needs a real
       HTTP header — so it is left out here.
     -->
