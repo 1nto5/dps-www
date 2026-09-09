@@ -73,10 +73,9 @@ if (!existsSync(DIST)) {
 // --- 1 and 2: every internal address in the built HTML resolves ------------
 // One walk of dist/: the pages to read, and every built file as a site path
 // ("/kontakt/index.html"), so a link is checked with a lookup, not a stat.
-const built = new Set(
-  (await walk(DIST, () => true)).map((file) => "/" + relative(DIST, file).split(sep).join("/")),
-);
-const pages = [...built].filter((path) => path.endsWith(".html")).map((path) => join(DIST, path));
+const files = await walk(DIST, () => true);
+const built = new Set(files.map((file) => "/" + relative(DIST, file).split(sep).join("/")));
+const pages = files.filter((file) => file.endsWith(".html"));
 const htmls = await Promise.all(pages.map((page) => readFile(page, "utf8")));
 const downloadsOnDisk = new Set(
   (await readdir(DOWNLOADS, { withFileTypes: true }))

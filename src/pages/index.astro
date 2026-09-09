@@ -1,50 +1,35 @@
 ---
 import { Image } from "astro:assets";
 import { getPosts, postListItem } from "../lib/posts";
-import { hero } from "../data/hero";
+import { hero, offerPhoto, christopherPhoto } from "../data/hero";
 import Base from "../layouts/Base.astro";
 import Button from "../components/Button.astro";
 import Figure from "../components/Figure.astro";
 import PageList from "../components/PageList.astro";
 import { contact, addressLine } from "../data/contact";
+import { navLabel } from "../data/nav";
 
-import offerPhoto from "../assets/media/1188-2012-07-25-at-10-18-46-1-1.jpg";
 import branchPhoto from "../assets/media/1376-3.jpg";
-import musicPhoto from "../assets/media/1168-christopherGroup.jpg";
 
-/** The four ways into the site, named the way the production site names them. */
+/** The four ways into the site. The menu names them; here they get a photo. */
 const sections = [
-  {
-    href: "/zycie-w-domu/",
-    label: "Oferta",
-    photo: offerPhoto,
-    alt: "Mieszkańcy i terapeutka przy wspólnym stole w świetlicy, w tle regały z książkami.",
-  },
+  { href: "/zycie-w-domu/", ...offerPhoto },
   {
     href: "/zycie-w-domu/spychowo/",
-    label: "Filia Domu Pomocy w Spychowie",
     photo: branchPhoto,
     alt: "Biały budynek Domu z czerwonym dachem i drewniana altana w ogrodzie",
   },
-  {
-    href: "/zycie-w-domu/grupa-christopher/",
-    label: "Grupa wokalna „Christopher”",
-    photo: musicPhoto,
-    alt: "Pięciu członków grupy wokalnej „Christopher” śpiewa na plenerowej scenie pod żółtym namiotem.",
-  },
-  {
-    href: "/o-domu/",
-    label: "O nas",
-    photo: hero.photo,
-    alt: hero.alt,
-  },
+  { href: "/zycie-w-domu/grupa-christopher/", ...christopherPhoto },
+  { href: "/o-domu/", ...hero },
 ];
+
+/** Shared with the hero photo above, which is encoded at 480, 800 and 1200. */
+const cardWidths = [480, 800];
 
 const latest = (await getPosts()).slice(0, 3).map((post) => postListItem(post));
 ---
 
 <Base
-  title="Strona główna"
   description="Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie — całodobowa opieka dla osób przewlekle psychicznie chorych, wraz z filią w Spychowie."
 >
   <section class="page-wrap py-12 md:py-16" aria-labelledby="hero-title">
@@ -57,9 +42,7 @@ const latest = (await getPosts()).slice(0, 3).map((post) => postListItem(post));
           dla osób przewlekle<br />
           psychicznie chorych
         </h1>
-        <p class="mt-6 max-w-[44ch] text-lg text-ink-soft">
-          <span class="block">Szczytno i filia w Spychowie</span>
-        </p>
+        <p class="mt-6 max-w-[44ch] text-lg text-ink-soft">Szczytno i filia w Spychowie</p>
         <div class="mt-8 flex flex-wrap gap-3">
           <Button href="/kontakt/">Kontakt i adres</Button>
           <Button href="/zycie-w-domu/" variant="secondary">Oferta</Button>
@@ -115,13 +98,13 @@ const latest = (await getPosts()).slice(0, 3).map((post) => postListItem(post));
                 <Image
                   src={section.photo}
                   alt={section.alt}
-                  widths={[400, 700]}
+                  widths={cardWidths}
                   sizes="(min-width: 40rem) 32rem, 100vw"
                   class="aspect-[4/3] w-full object-cover"
                 />
               </div>
               <span class="mt-4 block font-display text-xl font-semibold underline">
-                {section.label}
+                {navLabel(section.href)}
               </span>
             </a>
           </li>
@@ -145,7 +128,7 @@ const latest = (await getPosts()).slice(0, 3).map((post) => postListItem(post));
             Wszystkie aktualności
           </a>
         </div>
-        <div class="mt-6 max-w-prose">
+        <div class="mt-6">
           <PageList items={latest} />
         </div>
       </section>

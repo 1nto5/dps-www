@@ -16,11 +16,9 @@ const subpages = childrenOf("/sygnalista/");
   title="Sygnalista"
   description="Zgłaszanie naruszeń prawa w Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie — wewnętrzna procedura, osoba upoważniona, klauzula informacyjna i załączniki."
 >
-  <PageHeader breadcrumbs title="Sygnalista" />
-
   <PageShell>
-    <div class="max-w-prose">
-      <PageList items={subpages} />
-    </div>
+    <PageHeader slot="header" breadcrumbs title="Sygnalista" />
+
+    <PageList items={subpages} />
   </PageShell>
 </Base>

@@ -12,10 +12,12 @@ import type { ImageMetadata } from "astro";
 
 interface Props {
   photos: readonly { src: ImageMetadata; alt: string }[];
-  sizes?: string;
 }
 
-const { photos, sizes = "(min-width: 64rem) 16rem, (min-width: 40rem) 33vw, 50vw" } = Astro.props;
+const { photos } = Astro.props;
+
+/** The grid is four columns from `lg`, three from `sm`, two below that. */
+const sizes = "(min-width: 64rem) 15rem, (min-width: 40rem) 33vw, 50vw";
 
 const items = await Promise.all(
   photos.map(async (photo) => ({

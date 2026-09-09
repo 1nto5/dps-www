@@ -12,9 +12,9 @@ const items = (await getPosts()).map((post) => postListItem(post, true));
   title="Aktualności"
   description="Aktualności Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie i filii w Spychowie."
 >
-  <PageHeader breadcrumbs title="Aktualności" />
-
   <PageShell>
+    <PageHeader slot="header" breadcrumbs title="Aktualności" />
+
     <div class="max-w-prose">
       {
         items.length === 0 ? (

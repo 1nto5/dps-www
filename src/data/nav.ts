@@ -86,6 +86,13 @@ export const navPages: readonly NavItem[] = navTree
   .filter(({ parent, section }) => !parent || parent === section)
   .map(({ item }) => ({ href: item.href, label: item.label }));
 
+/** The menu label of the page at `href`. Throws when the tree has no such page. */
+export function navLabel(href: string): string {
+  const node = navTree.find((node) => node.item.href === href);
+  if (!node) throw new Error(`navLabel: no navigation entry for ${href}`);
+  return node.item.label;
+}
+
 /** True when `href` is the page at `pathname`, or an ancestor of it. */
 function covers(href: string, pathname: string): boolean {
   return href === "/" ? pathname === "/" : pathname.startsWith(href);

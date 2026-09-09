@@ -1,7 +1,7 @@
 /**
  * Wrap every Markdown table in a focusable, horizontally scrollable region.
  *
- * A wide table inside `.doc` would otherwise push the whole page sideways. The
+ * A wide table inside `.prose` would otherwise push the whole page sideways. The
  * wrapper is the element that scrolls, so the `<table>` keeps its table display
  * and its semantics stay intact for screen readers.
  *

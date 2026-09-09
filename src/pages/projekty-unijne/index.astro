@@ -68,7 +68,6 @@ const photos = [
 >
   <PageShell>
     <PageHeader
-      bare
       slot="header"
       breadcrumbs
       title="Projekty unijne"
@@ -139,7 +138,7 @@ const photos = [
     </div>
 
     <div class="mt-8">
-      <Gallery photos={photos} sizes="(min-width: 64rem) 15rem, (min-width: 40rem) 33vw, 50vw" />
+      <Gallery photos={photos} />
     </div>
 
     <div class="prose mt-16">
@@ -215,7 +214,6 @@ const photos = [
         src={posterWsparcie}
         alt="Plakat projektu „Wsparcie instytucji zajmujących się opieką nad osobami wymagającymi wsparcia z terenu powiatu szczycieńskiego” z logotypami Funduszy Europejskich, Rzeczypospolitej Polskiej, Unii Europejskiej i herbem powiatu szczycieńskiego."
         widths={[400, 680]}
-        sizes="(min-width: 48rem) 42rem, 100vw"
       />
     </div>
   </PageShell>

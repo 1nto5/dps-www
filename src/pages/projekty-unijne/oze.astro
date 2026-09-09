@@ -86,7 +86,6 @@ const toc = [
 >
   <PageShell>
     <PageHeader
-      bare
       slot="header"
       breadcrumbs
       title="Projekt „Wykorzystanie OZE w Domu Pomocy Społecznej w Szczytnie”"
@@ -103,7 +102,6 @@ const toc = [
       alt="Tablica informacyjna projektu: „Warmia i Mazury regionem zjednoczonej Europy”. Projekt współfinansowany ze środków Europejskiego Funduszu Rozwoju Regionalnego w ramach Regionalnego Programu Operacyjnego Warmia i Mazury na lata 2007–2013. Tytuł projektu: „Wykorzystanie OZE w Domu Pomocy Społecznej w Szczytnie”. Całkowita wartość projektu 347 357,96 PLN, kwota dofinansowania 276 902,36 PLN, beneficjent — Powiat Szczycieński, ul. Sienkiewicza 1, 12-100 Szczytno."
       caption="Tablica informacyjna projektu „Wykorzystanie OZE w Domu Pomocy Społecznej w Szczytnie”"
       widths={[400, 680]}
-      sizes="(min-width: 48rem) 42rem, 100vw"
       loading="eager"
       class="mt-8 max-w-prose"
     />
@@ -154,7 +152,6 @@ const toc = [
         src={photoUmowa}
         alt="Podpisanie umowy o dofinansowanie — uścisk dłoni prezesa WFOŚiGW w Olsztynie i Starosty Szczycieńskiego, obok Wicestarosta, w tle flagi Polski i Unii Europejskiej."
         widths={[400, 680]}
-        sizes="(min-width: 48rem) 42rem, 100vw"
       />
 
       <h2 id="informacja-o-projekcie">Informacja o projekcie</h2>
@@ -170,7 +167,7 @@ const toc = [
     </div>
 
     <div class="mt-8">
-      <Gallery photos={photos} sizes="(min-width: 64rem) 15rem, (min-width: 40rem) 33vw, 50vw" />
+      <Gallery photos={photos} />
     </div>
   </PageShell>
 </Base>

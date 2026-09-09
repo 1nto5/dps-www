@@ -2,14 +2,15 @@ import type { APIRoute } from "astro";
 
 /**
  * robots.txt, generated instead of static: a preview build (the temporary
- * github.io URL, `SITE` env var set) must not be indexed, only the real
- * domain may. `Astro.site` already carries that distinction.
+ * github.io URL, served under a base path) must not be indexed, only the real
+ * domain may. The base path carries that distinction — the same test `Base`
+ * uses for its `noindex`.
  */
 export const GET: APIRoute = ({ site }) => {
-  const isProduction = site?.origin === "https://dpsszczytno.pl";
   // BASE_URL already has the leading and trailing slash normalised (e.g.
   // "/" on the real domain, "/dps-www/" for the temporary preview build).
   const base = import.meta.env.BASE_URL;
+  const isProduction = base === "/";
   const body = [
     "User-agent: *",
     isProduction ? "Allow: /" : "Disallow: /",

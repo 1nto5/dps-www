@@ -16,11 +16,9 @@ const children = childrenOf("/dokumenty/");
   title="Dokumenty"
   description="Dokumenty Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie: dotacje, projekty unijne, RODO i zgłoszenia sygnalistów."
 >
-  <PageHeader breadcrumbs title="Dokumenty" />
-
   <PageShell>
-    <div class="max-w-prose">
-      <PageList items={children} />
-    </div>
+    <PageHeader slot="header" breadcrumbs title="Dokumenty" />
+
+    <PageList items={children} />
   </PageShell>
 </Base>

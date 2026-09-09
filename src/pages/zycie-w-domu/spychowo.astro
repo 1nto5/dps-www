@@ -4,7 +4,7 @@ import PageHeader from "../../components/PageHeader.astro";
 import PageShell from "../../components/PageShell.astro";
 import SubNav from "../../components/SubNav.astro";
 import Toc from "../../components/Toc.astro";
-import { contact, addressLines } from "../../data/contact";
+import { addressLine, addressLines, contact } from "../../data/contact";
 
 const toc = [
   { id: "o-filii", label: "O filii" },
@@ -23,6 +23,8 @@ const rooms = [
   "pracownia terapeutyczna",
 ];
 
+const branch = addressLines(contact.spychowo.address);
+
 const therapies = [
   "zajęcia plastyczne",
   "robótki ręczne",
@@ -35,10 +37,10 @@ const therapies = [
 
 <Base
   title="Filia Domu Pomocy w Spychowie"
-  description={`Filia Domu Pomocy Społecznej w Spychowie istnieje od 2001 r. i przeznaczona jest dla 25 Mieszkańców. ${contact.spychowo.address.city}, ${contact.spychowo.address.street}, tel. ${contact.spychowo.phone.label}.`}
+  description={`Filia Domu Pomocy Społecznej w Spychowie istnieje od 2001 r. i przeznaczona jest dla 25 Mieszkańców. ${addressLine(contact.spychowo.address)}, tel. ${contact.spychowo.phone.label}.`}
 >
   <PageShell>
-    <PageHeader bare slot="header" breadcrumbs title="Filia Domu Pomocy w Spychowie" />
+    <PageHeader slot="header" breadcrumbs title="Filia Domu Pomocy w Spychowie" />
 
     <Fragment slot="aside">
       <SubNav />
@@ -81,12 +83,8 @@ const therapies = [
       <h2 id="kontakt">Kontakt do filii</h2>
       <address>
         {contact.spychowo.name}<br />
-        {addressLines(contact.spychowo.address).map((line, i) => (
-          <Fragment>
-            {i > 0 && <br />}
-            {line}
-          </Fragment>
-        ))}
+        {branch[0]}<br />
+        {branch[1]}
       </address>
       <p>
         Telefon: <a href={contact.spychowo.phone.href}>{contact.spychowo.phone.label}</a>

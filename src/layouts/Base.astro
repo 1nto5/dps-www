@@ -8,9 +8,8 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { contact } from "../data/contact";
 import { ClientRouter } from "astro:transitions";
-import { basePath as base, sitePath } from "../data/routes";
-import { getImage } from "astro:assets";
-import { hero } from "../data/hero";
+import { basePath as base } from "../data/routes";
+import { hero, ogImage } from "../data/hero";
 
 /**
  * Between pages the header and the footer stay put; the content of the old
@@ -25,7 +24,8 @@ const swapContent = { forwards: content, backwards: content };
 
 
 interface Props {
-  title: string;
+  /** Left out on the home page, whose title is the name of the Dom alone. */
+  title?: string;
   description?: string;
 }
 
@@ -33,16 +33,12 @@ const { title, description } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
 
-// The hero photo cropped to the 1200×630 social-preview shape every platform
-// expects for a "large image" card. Astro's own build step already rewrites
-// `/_astro/...` asset paths for the base path, so `ogImage.src` must NOT be
-// prefixed with `base` again here.
-const ogImage = await getImage({ src: hero.photo, width: 1200, height: 630, format: "jpg" });
-const ogImageUrl = new URL(ogImage.src, Astro.site);
-const fullTitle =
-  sitePath(Astro.url.pathname) === "/"
-    ? "Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie"
-    : `${title} — DPS Szczytno`;
+// The social-preview crop is built once in `hero.ts`. Astro's own build step
+// already rewrites `/_astro/...` asset paths for the base path, so `og.src`
+// must NOT be prefixed with `base` again here.
+const og = await ogImage;
+const ogImageUrl = new URL(og.src, Astro.site);
+const fullTitle = title ? `${title} — DPS Szczytno` : contact.name;
 const desc =
   description ??
   "Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie — dom dla osób przewlekle psychicznie chorych, z filią w Spychowie.";
@@ -55,9 +51,10 @@ const desc =
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!--
       Everything the site loads is self-hosted (fonts, images, styles, scripts),
-      so the policy stays closed except for the two things Astro itself needs
-      inline: the pre-paint reader-settings script below and the small bundled
-      scripts Astro inlines for some pages instead of a separate file.
+      so the policy stays closed except for the two things that have to sit
+      inline in the page: the pre-paint reader-settings script below and the
+      JSON-LD block. The bundled scripts are always separate files (see
+      `assetsInlineLimit` in astro.config.mjs).
       `frame-ancestors` cannot be set from a <meta> tag — that one needs a real
       HTTP header — so it is left out here.
     -->
@@ -98,8 +95,8 @@ const desc =
     <meta property="og:locale" content="pl_PL" />
     <meta property="og:site_name" content={contact.name} />
     <meta property="og:image" content={ogImageUrl} />
-    <meta property="og:image:width" content={String(ogImage.options.width)} />
-    <meta property="og:image:height" content={String(ogImage.options.height)} />
+    <meta property="og:image:width" content={String(og.options.width)} />
+    <meta property="og:image:height" content={String(og.options.height)} />
     <meta property="og:image:alt" content={hero.alt} />
     <meta name="twitter:card" content="summary_large_image" />
     <script

@@ -185,6 +185,12 @@ body {
   }
 }
 
+/* A link that carries a sentence on its own — „O nas", „Wszystkie
+   aktualności", the telephone on the 404 page. */
+.link-strong {
+  font-weight: 600;
+}
+
 :focus-visible {
   outline: 3px solid var(--color-pine);
   outline-offset: 2px;
@@ -354,9 +360,10 @@ html:not([data-js]) [data-tools] {
    ------------------------------------------------------------------------ */
 .nav-link {
   display: inline-block;
-  padding: 0.55rem 0;
-  border-bottom: 3px solid transparent;
+  padding: 0.4rem 0 0.25rem;
+  border-bottom: 2px solid transparent;
   color: var(--color-ink);
+  font-size: 0.9375rem;
   text-decoration: none;
 }
 /* Pine, not the hairline: the hairline is 1.41:1 against the bar behind it, so
@@ -410,11 +417,6 @@ html:not([data-js]) [data-tools] {
 .brand-sub {
   font-size: 0.8125rem;
   line-height: 1.25;
-}
-.pinned-row .nav-link {
-  padding: 0.4rem 0 0.25rem;
-  border-bottom-width: 2px;
-  font-size: 0.9375rem;
 }
 .menu {
   pointer-events: auto;
@@ -607,20 +609,21 @@ html:not([data-js]) [data-tools] {
 .prose > *:first-child {
   margin-top: 0;
 }
+/* Only lists the running text writes itself. A list that carries a class is a
+   component placed inside the prose — `PageList`, a gallery — and brings its
+   own shape; `ol.paren` below is the one classed list that is running text. */
 .prose p,
-.prose ul,
-.prose ol,
-.prose dl {
+.prose dl,
+.prose :where(ul, ol):where(:not([class]), .paren) {
   margin: 0.9rem 0;
 }
-.prose ul,
-.prose ol {
+.prose :where(ul, ol):where(:not([class]), .paren) {
   padding-left: 1.3rem;
 }
-.prose ul {
+.prose ul:where(:not([class])) {
   list-style: disc;
 }
-.prose ol {
+.prose ol:where(:not([class]), .paren) {
   list-style: decimal;
 }
 /* The whistleblower procedure numbers sub-items "1)", "2)" and refers to them
@@ -628,10 +631,10 @@ html:not([data-js]) [data-tools] {
 .prose ol.paren > li::marker {
   content: counter(list-item) ") ";
 }
-.prose li {
+.prose :where(ul, ol):where(:not([class]), .paren) li {
   margin: 0.3rem 0;
 }
-.prose li::marker {
+.prose :where(ul, ol):where(:not([class]), .paren) li::marker {
   color: var(--color-ink-soft);
 }
 .prose a {

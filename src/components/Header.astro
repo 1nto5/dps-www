@@ -24,11 +24,11 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
     <div
       class="pinned-row page-wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-4 max-md:flex-nowrap"
     >
-      <a href="/" class="brand no-underline">
+      <a href="/" class="no-underline">
         <span class="brand-name block font-display leading-tight font-semibold text-ink"
           >Dom Pomocy Społecznej</span
         >
-        <span class="brand-sub text-sm text-ink-soft"><span>im. Jana Pawła II w Szczytnie</span></span>
+        <span class="brand-sub text-sm text-ink-soft">im. Jana Pawła II w Szczytnie</span>
       </a>
 
       <div class="flex items-center gap-x-6 gap-y-2 md:flex-wrap">
@@ -152,19 +152,16 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
       button.addEventListener("click", () => (font.set(button.dataset.font!), syncFont()));
     }
 
+    // One button, in the settings dialog: it turns high contrast on and off.
     const contrast = setting("data-contrast", "dps-contrast", "normal");
-    const contrastButtons = [...document.querySelectorAll<HTMLButtonElement>("button[data-contrast]")];
+    const contrastButton = document.querySelector<HTMLButtonElement>("button[data-contrast]");
     const syncContrast = () => {
-      for (const button of contrastButtons) {
-        button.setAttribute("aria-pressed", String(contrast.current() === "high"));
-      }
+      contrastButton?.setAttribute("aria-pressed", String(contrast.current() === "high"));
     };
-    for (const button of contrastButtons) {
-      button.addEventListener("click", () => {
-        contrast.set(contrast.current() === "high" ? "normal" : "high");
-        syncContrast();
-      });
-    }
+    contrastButton?.addEventListener("click", () => {
+      contrast.set(contrast.current() === "high" ? "normal" : "high");
+      syncContrast();
+    });
 
     // The theme button flips between light and dark. Without a saved choice the
     // page follows the system, and the button shows the theme the reader sees.
@@ -226,11 +223,14 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
     // `--header-height` is the surface's height: same-page links, the side
     // column and the drawer sit below it. It changes with the window (the
     // links move into the drawer at `md`, lines wrap).
-    const measure = () => doc.style.setProperty("--header-height", `${surface.offsetHeight}px`);
-    const observer = new ResizeObserver(measure);
+    const setHeight = (height: number) =>
+      doc.style.setProperty("--header-height", `${height}px`);
+    const observer = new ResizeObserver(([entry]) =>
+      setHeight(entry.borderBoxSize?.[0]?.blockSize ?? surface.offsetHeight),
+    );
     observer.observe(surface);
     signal.addEventListener("abort", () => observer.disconnect());
-    measure();
+    setHeight(surface.offsetHeight);
 
     if (!menu || !backdrop || !open) return;
     const close = () => menu.open && menu.close();

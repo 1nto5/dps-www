@@ -10,7 +10,7 @@ import PageHeader from "../components/PageHeader.astro";
 import PageShell from "../components/PageShell.astro";
 import Toc from "../components/Toc.astro";
 import Button from "../components/Button.astro";
-import { contact, addressLines } from "../data/contact";
+import { addressLine, addressLines, contact } from "../data/contact";
 
 const toc = [
   { id: "sekretariat", label: "Sekretariat" },
@@ -30,7 +30,7 @@ const branch = addressLines(contact.spychowo.address);
   description="Adresy, telefony i adresy e-mail Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie oraz filii w Spychowie."
 >
   <PageShell>
-    <PageHeader bare slot="header" breadcrumbs title="Kontakt">
+    <PageHeader slot="header" breadcrumbs title="Kontakt">
       <p class="mt-8">
         <Button href={contact.phone.href}>{contact.phone.label}</Button>
       </p>
@@ -112,7 +112,7 @@ const branch = addressLines(contact.spychowo.address);
         </dd>
         <dt>Odbiorca</dt>
         <dd>
-          {contact.nameShort}, {home.join(", ")}<br />
+          {contact.nameShort}, {addressLine(contact.address)}<br />
           REGON 000963690
         </dd>
       </dl>

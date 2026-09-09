@@ -12,6 +12,10 @@ const at = (target) => `${base}${target}`;
 export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
+    // Never inline a bundled script into the page. The header and the Base
+    // scripts are ~4.6 kB together: as a file they are fetched and cached once
+    // for the whole site, inlined they are repeated in every page's HTML.
+    build: { assetsInlineLimit: 0 },
   },
   // SITE/BASE env vars let CI build for the temporary github.io test URL;
   // the defaults are the production domain.
@@ -19,9 +23,9 @@ export default defineConfig({
   base: process.env.BASE,
   trailingSlash: "always",
   markdown: {
-    // Markdown tables render straight into `.doc`, where a wide table would push
-    // the page sideways. The plugin gives each one a scrollable, focusable
-    // wrapper; the styling lives on `.doc .table-scroll` in global.css.
+    // Markdown tables render straight into `.prose`, where a wide table would
+    // push the page sideways. The plugin gives each one a scrollable, focusable
+    // wrapper; the styling lives on `.table-scroll` in global.css.
     rehypePlugins: [rehypeTableScroll],
   },
   // The production site's own addresses → the pages that carry that content

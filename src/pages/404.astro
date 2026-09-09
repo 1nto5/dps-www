@@ -9,22 +9,21 @@ import PageShell from "../components/PageShell.astro";
 import PageList from "../components/PageList.astro";
 import { contact } from "../data/contact";
 import { navPages } from "../data/nav";
-
-const links = navPages.map((item) => ({ href: item.href, label: item.label }));
 ---
 
 <Base
   title="Nie znaleziono strony"
   description="Pod tym adresem nie ma strony. Skorzystaj z odnośników, aby wrócić na stronę główną lub do kontaktu."
 >
-  <PageHeader
-    title="Nie znaleziono tej strony"
-    lead="Adres mógł się zmienić przy przenosinach naszej strony albo zawiera literówkę. Nic straconego — poniżej znajdziesz drogę dalej."
-  />
-
   <PageShell>
+    <PageHeader
+      slot="header"
+      title="Nie znaleziono tej strony"
+      lead="Adres mógł się zmienić przy przenosinach naszej strony albo zawiera literówkę. Nic straconego — poniżej znajdziesz drogę dalej."
+    />
+
     <div class="max-w-prose">
-      <PageList items={links} />
+      <PageList items={navPages} />
       <p class="mt-8 text-ink-soft">
         Jeśli szukasz konkretnej informacji i nie możesz jej znaleźć, chętnie pomożemy. Zadzwoń pod
         numer <a href={contact.phone.href} class="link-strong">{contact.phone.label}</a>

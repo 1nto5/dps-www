@@ -83,3 +83,6 @@ export function addressLine(a: PostalAddress): string {
 export function addressLines(a: PostalAddress): string[] {
   return [a.street, `${a.postalCode} ${a.city}`];
 }
+
+/** The Dom's postal address, its name first, on one line: for "listownie: …". */
+export const nameAndAddress = `${contact.nameShort}, ${addressLine(contact.address)}`;

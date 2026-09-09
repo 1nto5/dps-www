@@ -8,13 +8,13 @@ import Base from "../../layouts/Base.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import PageShell from "../../components/PageShell.astro";
 import SubNav from "../../components/SubNav.astro";
-import { childrenOf } from "../../data/nav";
+import { childrenOf, navLabel } from "../../data/nav";
 import Toc from "../../components/Toc.astro";
 import Figure from "../../components/Figure.astro";
 import PageList from "../../components/PageList.astro";
+import { offerPhoto } from "../../data/hero";
 
 import treatmentRoom from "../../assets/media/1182-2012-07-25-at-10-20-35.jpg";
-import commonRoom from "../../assets/media/1188-2012-07-25-at-10-18-46-1-1.jpg";
 import twinRoom from "../../assets/media/1185-2012-07-25-at-10-40-40.jpg";
 import singleRoom from "../../assets/media/1186-2012-07-25-at-10-43-511.jpg";
 import diningRoom from "../../assets/media/1187-2012-07-25-at-10-46-26.jpg";
@@ -37,7 +37,10 @@ const pracownie = [
   "ergoterapia",
 ];
 
-const podstrony = [...childrenOf("/zycie-w-domu/"), { href: "/aktualnosci/", label: "Aktualności" }];
+const podstrony = [
+  ...childrenOf("/zycie-w-domu/"),
+  { href: "/aktualnosci/", label: navLabel("/aktualnosci/") },
+];
 ---
 
 <Base
@@ -45,7 +48,7 @@ const podstrony = [...childrenOf("/zycie-w-domu/"), { href: "/aktualnosci/", lab
   description="Nasz Dom przeznaczony jest dla osób przewlekle psychicznie chorych. Zapewniamy opiekę całodobową dla 196 osób w Szczytnie i w filii w Spychowie."
 >
   <PageShell>
-    <PageHeader bare slot="header" breadcrumbs title="Oferta" />
+    <PageHeader slot="header" breadcrumbs title="Oferta" />
 
     <Fragment slot="aside">
       <SubNav />
@@ -104,10 +107,7 @@ const podstrony = [...childrenOf("/zycie-w-domu/"), { href: "/aktualnosci/", lab
         z rodzinami Mieszkańców oraz z jednostkami pomocy społecznej.
       </p>
 
-      <Figure
-        src={commonRoom}
-        alt="Mieszkańcy i terapeutka przy wspólnym stole w świetlicy, w tle regały z książkami."
-      />
+      <Figure src={offerPhoto.photo} alt={offerPhoto.alt} />
       <Figure
         src={twinRoom}
         alt="Dwie Mieszkanki siedzą w fotelach przy stoliku w swoim pokoju."

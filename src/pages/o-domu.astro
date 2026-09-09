@@ -10,7 +10,7 @@ import PageShell from "../components/PageShell.astro";
 import SubNav from "../components/SubNav.astro";
 import Toc from "../components/Toc.astro";
 import DocList from "../components/DocList.astro";
-import { dokumentyUstrojowe } from "../data/dokumenty-ustrojowe";
+import type { Doc } from "../data/docs";
 
 /** Every id below is the `id` of an `h2` further down the page. */
 const toc = [
@@ -30,6 +30,28 @@ const management = [
   { role: "Kierownik Mieszkania III", name: "Marta Deptuła" },
 ];
 
+/** The Dom's three statutory documents, in the order the page shows them. */
+const dokumentyUstrojowe = [
+  {
+    href: "/dokumenty/pliki/1744-Regulamin-Organizacyjny-DPS-Szczytno.doc",
+    label: "Regulamin organizacyjny",
+    format: "DOC",
+    size: "133 KB",
+  },
+  {
+    href: "/dokumenty/pliki/1741-Statut-DPS-Szczytno.pdf",
+    label: "Statut Domu",
+    format: "PDF",
+    size: "699 KB",
+  },
+  {
+    href: "/dokumenty/pliki/1771-schemat-organizacyjny.pdf",
+    label: "Schemat organizacyjny",
+    format: "PDF",
+    size: "204 KB",
+  },
+] satisfies Doc[];
+
 const legalBasis = [
   "Ustawy o finansach publicznych (t.j. Dz. U. z 2019 r., poz. 869)",
   "Ustawy o samorządzie powiatowym (t.j. Dz. U. z 2019 r., poz. 511)",
@@ -45,7 +67,7 @@ const legalBasis = [
   description="Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie — podstawa prawna działania Domu, kierownictwo oraz dokumenty ustrojowe do pobrania."
 >
   <PageShell>
-    <PageHeader bare slot="header" breadcrumbs title="O nas" />
+    <PageHeader slot="header" breadcrumbs title="O nas" />
 
     <Fragment slot="aside">
       <SubNav />

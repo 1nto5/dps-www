@@ -1,0 +1,21 @@
+---
+/**
+ * The `<li>` that opens each of the five notices on the RODO page: who the
+ * administrator is and the three ways of reaching them. The wording is the
+ * signed notice's, written once here instead of five times on the page.
+ */
+import { contact, nameAndAddress } from "../data/contact";
+---
+
+<li>
+  <p>
+    Administratorem Pani/Pana danych osobowych jest: <strong>{contact.name}</strong> reprezentowany
+    przez Dyrektora Domu Pomocy Społecznej im. Jana Pawła II w Szczytnie. Możesz się z nami
+    skontaktować w następujący sposób:
+  </p>
+  <ul>
+    <li>listownie: {nameAndAddress};</li>
+    <li>e-mail: <a href={`mailto:${contact.emailRodo}`}>{contact.emailRodo}</a>;</li>
+    <li>telefon: <a href={contact.phone.href}>{contact.phone.label}</a>.</li>
+  </ul>
+</li>
