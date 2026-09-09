@@ -379,9 +379,8 @@ html:not([data-js]) [data-tools] {
   position: sticky;
   top: 0;
   z-index: 10;
-  /* The header keeps its unfolded height in the flow, so the page below holds
-     still while the surface folds; only the surface is painted and clickable. */
-  height: var(--header-flow, auto);
+  /* Only the surface is painted and clickable; the drawer and the dialogs
+     below it in the tree place themselves. */
   pointer-events: none;
 }
 .header-surface {
@@ -393,55 +392,29 @@ html:not([data-js]) [data-tools] {
 @media (max-height: 26rem) {
   .site-header {
     position: static;
-    height: auto;
   }
-}
-/* One silent frame while the script measures the unfolded height. */
-.site-header[data-still] * {
-  transition: none !important;
 }
 /* The side column on wide pages sticks too, just under the pinned row, so
    the row never covers it. `--header-height` is the row's current height. */
 .aside-sticky {
   top: calc(var(--header-height, 0px) + 1.5rem);
 }
-/* The pinned row shrinks once the page has scrolled a little
-   (`data-compact`, set by the script in Header): tighter padding, a smaller
-   name, the second line folded away. */
+/* The pinned row is compact from the start: modest padding, a name a notch
+   smaller than a heading, the second line close under it. */
 .pinned-row {
-  padding-block: 1rem;
+  padding-block: 0.625rem;
 }
 .brand-name {
-  font-size: 1.25rem;
+  font-size: 1.125rem;
 }
 .brand-sub {
-  display: grid;
-  grid-template-rows: 1fr;
+  font-size: 0.8125rem;
+  line-height: 1.25;
 }
-.brand-sub > span {
-  overflow: hidden;
-}
-.site-header[data-compact] .pinned-row {
-  padding-block: 0.25rem;
-}
-.site-header[data-compact] .brand-name {
-  font-size: 1rem;
-}
-/* The links shrink with the row: less air above and below, the type a notch
-   smaller, and the line under the active section pulled up close to the text. */
-.site-header[data-compact] .nav-link {
-  padding: 0.3rem 0 0.15rem;
+.pinned-row .nav-link {
+  padding: 0.4rem 0 0.25rem;
   border-bottom-width: 2px;
   font-size: 0.9375rem;
-}
-.site-header[data-compact] .pinned-row .tool {
-  min-height: 2rem;
-  min-width: 2rem;
-  padding: 0.15rem 0.5rem;
-}
-.site-header[data-compact] .brand-sub {
-  grid-template-rows: 0fr;
-  opacity: 0;
 }
 .menu {
   pointer-events: auto;
@@ -945,36 +918,11 @@ figcaption {
     transform: scale(1.03);
   }
 
-  /* The header folding up as the page scrolls: one motion for everything. */
-  .pinned-row {
-    transition: padding 200ms ease;
-  }
-  .brand-name {
-    transition: font-size 200ms ease;
-  }
-  /* These two are also in the hover list above; a later rule replaces the
-     whole transition, so the hover properties are repeated here. */
-  .nav-link {
-    transition:
-      color 150ms ease,
-      border-color 150ms ease,
-      font-size 200ms ease,
-      padding 200ms ease,
-      border-bottom-width 200ms ease;
-  }
   [data-menu-open] {
     transition:
       color 150ms ease,
       background-color 250ms ease,
-      border-color 150ms ease,
-      min-height 200ms ease,
-      min-width 200ms ease,
-      padding 200ms ease;
-  }
-  .brand-sub {
-    transition:
-      grid-template-rows 200ms ease,
-      opacity 150ms ease;
+      border-color 150ms ease;
   }
 
   /* Dialogs: the menu slides in from the left, the lightbox and the settings fade in. */
@@ -1070,7 +1018,6 @@ figcaption {
      reader's tools have no use there. Links show where they go. */
   .site-header {
     position: static;
-    height: auto;
   }
   [data-menu-open],
   .aside-sticky,

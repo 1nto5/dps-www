@@ -3,8 +3,8 @@
  * Pinned to the top of the page: one row with the name of the Dom, the six
  * sections in a flat row from `md` up, and to their right two buttons — the
  * theme switch and „Dostępność", which opens a modal <dialog> with the text
- * size and contrast (ReaderTools). Once the page scrolls the row folds: less
- * padding, a smaller name, the second line gone. Below `md` the sections live
+ * size and contrast (ReaderTools). The row is compact from the start and keeps
+ * one shape while the page scrolls. Below `md` the sections live
  * behind a hamburger button, in a native <dialog> that slides in from the left
  * as a drawer under the header; the two buttons stay in the row beside it. A
  * tap outside, a swipe to the left or Escape closes the drawer.
@@ -223,63 +223,14 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
     const open = document.querySelector<HTMLButtonElement>("[data-menu-open]");
     const surface = document.querySelector<HTMLElement>("[data-surface]");
     if (!surface) return;
-    const header = surface.closest("header")!;
-    // The header keeps its full height in the flow (`--header-flow`) while the
-    // surface inside it folds, so the page below never moves during the fold.
-    // `--header-height` is the surface's current height: same-page links, the
-    // side column and the drawer sit below it.
-    const measure = () => {
-      doc.style.setProperty("--header-height", `${surface.offsetHeight}px`);
-      if (!header.hasAttribute("data-compact")) {
-        doc.style.setProperty("--header-flow", `${surface.offsetHeight}px`);
-      }
-    };
+    // `--header-height` is the surface's height: same-page links, the side
+    // column and the drawer sit below it. It changes with the window (the
+    // links move into the drawer at `md`, lines wrap).
+    const measure = () => doc.style.setProperty("--header-height", `${surface.offsetHeight}px`);
     const observer = new ResizeObserver(measure);
     observer.observe(surface);
     signal.addEventListener("abort", () => observer.disconnect());
-    // Read once now, before the fold below: a page opened at a hash or by the
-    // back button is already scrolled, and the observer reports too late.
     measure();
-    // The unfolded height changes with the window (the links move into the
-    // drawer at `md`, lines wrap). Folded, the header is unfolded for one silent frame
-    // to read it.
-    let resizeTimer = 0;
-    signal.addEventListener("abort", () => clearTimeout(resizeTimer));
-    window.addEventListener("resize", () => {
-      clearTimeout(resizeTimer);
-      if (signal.aborted) return;
-      resizeTimer = window.setTimeout(() => {
-        if (!header.hasAttribute("data-compact")) return;
-        header.setAttribute("data-still", "");
-        header.removeAttribute("data-compact");
-        doc.style.setProperty("--header-flow", `${surface.offsetHeight}px`);
-        header.setAttribute("data-compact", "");
-        void surface.offsetHeight;
-        header.removeAttribute("data-still");
-      }, 100);
-    }, { signal });
-
-    // A little way down the page the header folds: the row loses padding, the
-    // name shrinks, its second line goes. Two thresholds, so a scroll that rests near one does not flicker.
-    let ticking = false;
-    const compact = () => {
-      ticking = false;
-      const on = header.hasAttribute("data-compact");
-      const y = window.scrollY;
-      if (!on && y > 48) header.setAttribute("data-compact", "");
-      else if (on && y < 8) header.removeAttribute("data-compact");
-    };
-    window.addEventListener(
-      "scroll",
-      () => {
-        if (!ticking) {
-          ticking = true;
-          requestAnimationFrame(compact);
-        }
-      },
-      { passive: true, signal },
-    );
-    compact();
 
     if (!menu || !backdrop || !open) return;
     const close = () => menu.open && menu.close();
