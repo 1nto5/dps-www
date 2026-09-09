@@ -223,14 +223,11 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
     // `--header-height` is the surface's height: same-page links, the side
     // column and the drawer sit below it. It changes with the window (the
     // links move into the drawer at `md`, lines wrap).
-    const setHeight = (height: number) =>
-      doc.style.setProperty("--header-height", `${height}px`);
-    const observer = new ResizeObserver(([entry]) =>
-      setHeight(entry.borderBoxSize?.[0]?.blockSize ?? surface.offsetHeight),
-    );
+    const measure = () => doc.style.setProperty("--header-height", `${surface.offsetHeight}px`);
+    const observer = new ResizeObserver(measure);
     observer.observe(surface);
     signal.addEventListener("abort", () => observer.disconnect());
-    setHeight(surface.offsetHeight);
+    measure();
 
     if (!menu || !backdrop || !open) return;
     const close = () => menu.open && menu.close();
