@@ -2,14 +2,12 @@
  * The photographs more than one page shows.
  *
  * `hero` is the building: the homepage hero, the „O nas" tile and, cropped
- * below, the og:image of every page. `offerPhoto` and `christopherPhoto` are
- * the two the homepage tiles share with the pages they lead to — one photo,
- * one alt text, in one place.
+ * below, the og:image of every page. `offerPhoto` is the one the homepage tile
+ * shares with the page it leads to — one photo, one alt text, in one place.
  */
 import { getImage } from "astro:assets";
 import photo from "../assets/media/1377-1-1.jpg";
 import offer from "../assets/media/1188-2012-07-25-at-10-18-46-1-1.jpg";
-import christopher from "../assets/media/1168-christopherGroup.jpg";
 
 export const hero = {
   photo,
@@ -20,12 +18,6 @@ export const hero = {
 export const offerPhoto = {
   photo: offer,
   alt: "Mieszkańcy i terapeutka przy wspólnym stole w świetlicy, w tle regały z książkami.",
-};
-
-/** The vocal group on stage: its tile and its own page. */
-export const christopherPhoto = {
-  photo: christopher,
-  alt: "Pięciu członków grupy wokalnej „Christopher” śpiewa na plenerowej scenie pod żółtym namiotem.",
 };
 
 // The hero photo cropped to the 1200×630 social-preview shape every platform

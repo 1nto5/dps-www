@@ -31,7 +31,6 @@ export const mainNav: readonly NavItem[] = [
     label: "Oferta",
     children: [
       { href: "/zycie-w-domu/spychowo/", label: "Filia Domu Pomocy w Spychowie" },
-      { href: "/zycie-w-domu/grupa-christopher/", label: "Grupa wokalna „Christopher”" },
       {
         href: "/zycie-w-domu/regulamin-imprez-okolicznosciowych/",
         label: "Regulamin imprez okolicznościowych",

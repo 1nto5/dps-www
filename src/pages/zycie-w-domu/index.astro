@@ -26,16 +26,6 @@ const toc = [
   { id: "wiecej", label: "Więcej o życiu w Domu" },
 ];
 
-/** The workshops the therapy is run in, as the Dom names them. */
-const pracownie = [
-  "arteterapia",
-  "wsparcie duchowe",
-  "aktywizacja społeczna",
-  "pracownia multimedialna",
-  "pracownia kulturalno-oświatowa",
-  "pracownia rękodzieła artystycznego",
-  "ergoterapia",
-];
 
 const podstrony = [
   ...childrenOf("/zycie-w-domu/"),
@@ -89,6 +79,44 @@ const podstrony = [
         loading="eager"
       />
 
+      <p>Dom świadczy usługi: bytowe, opiekuńcze i wspomagające.</p>
+      <ul>
+        <li>
+          w zakresie potrzeb bytowych Dom zapewnia:
+          <ul>
+            <li>miejsce zamieszkania,</li>
+            <li>wyżywienie,</li>
+            <li>odzież i obuwie,</li>
+            <li>utrzymanie czystości;</li>
+          </ul>
+        </li>
+        <li>
+          opiekuńcze polegające na:
+          <ul>
+            <li>udzielaniu pomocy w podstawowych czynnościach życiowych,</li>
+            <li>pielęgnacji,</li>
+            <li>niezbędnej pomocy w załatwianiu spraw osobistych;</li>
+          </ul>
+        </li>
+        <li>
+          wspomagające polegające na:
+          <ul>
+            <li>umożliwieniu udziału w terapii zajęciowej,</li>
+            <li>
+              podnoszeniu sprawności i aktywizowaniu Mieszkańców, w tym w zakresie komunikacji
+              wspomagającej lub alternatywnej, w przypadku osób z problemami w komunikacji
+              werbalnej,
+            </li>
+            <li>umożliwieniu zaspokojenia potrzeb religijnych i kulturalnych,</li>
+            <li>zapewnieniu warunków do rozwoju samorządności Mieszkańców,</li>
+            <li>
+              stymulowaniu nawiązywania, utrzymywania i rozwijania kontaktu z rodziną
+              i społecznością lokalną.
+            </li>
+          </ul>
+        </li>
+      </ul>
+
       <h2 id="opiekuncze">Usługi opiekuńcze i pielęgnacyjne</h2>
       <ul>
         <li>pomagamy w utrzymaniu higieny osobistej,</li>
@@ -97,14 +125,51 @@ const podstrony = [
       </ul>
 
       <h2 id="wspomagajace">Usługi wspomagające</h2>
-      <p>Prowadzimy zajęcia terapeutyczne w pracowniach:</p>
-      <ul>
-        {pracownie.map((item) => <li>{item}</li>)}
-      </ul>
       <p>
-        Umożliwiamy Mieszkańcom korzystanie z codziennej prasy i biblioteki, dbamy o poprawę
-        sprawności fizycznej naszych Mieszkańców, zapewniamy wsparcie kapłana, współpracujemy
-        z rodzinami Mieszkańców oraz z jednostkami pomocy społecznej.
+        Mieszkańcy Domu korzystają z zajęć w pracowniach terapeutycznych umożliwiających
+        zaspokajanie potrzeb poznawczych zmierzających do rozwijania zainteresowań i umiejętności
+        Mieszkańców DPS.
+      </p>
+      <p>
+        Rękodzieło artystyczne — pracownia realizuje zajęcia tematyczne z malarstwa, rysunku,
+        robótek ręcznych, gobeliniarstwa, papieroplastyki, witrażu, dziewiarstwa, decoupage’u,
+        krawiectwa, recyklingu i mozaiki.
+      </p>
+      <p>
+        Ergoterapia — pracownia realizuje zajęcia z zakresu pobudzania Mieszkańca do aktywizacji
+        społecznej, ukazywania alternatywnych form spędzania czasu wolnego, wykonywania różnorodnych
+        dekoracji na poszczególne okazje.
+      </p>
+      <p>
+        Pracownia kulturalno-oświatowa — organizuje wycieczki, wyjazdy, spotkania z uczniami
+        szczycieńskich szkół i przedszkoli oraz integruje Mieszkańców Domu ze środowiskiem lokalnym.
+      </p>
+      <p>
+        Aktywizacja społeczna — organizuje wyjścia na wystawy, spacery, uczy Mieszkańców
+        posługiwania się przedmiotami ułatwiającymi czynności życia codziennego, kształtuje
+        umiejętności samodzielnej egzystencji, prawidłowych postaw i zachowań społecznych.
+      </p>
+      <p>
+        Pracownia aktywizacji społecznej wyposażona jest również w dwa stanowiska komputerowe
+        przeznaczone do korzystania przez Mieszkańców Domu. Podczas zajęć Mieszkańcy mogą poznać
+        i nauczyć się obsługi programów komputerowych, korzystania z internetu lub przeglądać
+        wiadomości czy filmotekę komputerową.
+      </p>
+      <p>
+        Arteterapia — pracownia realizuje zajęcia z plastyki: rysunek, malarstwo akwarelowe,
+        malarstwo na szkle, rzeźby.
+      </p>
+      <p>
+        Dom Pomocy Społecznej w Szczytnie i Filia DPS w Spychowie zapewniają Mieszkańcom możliwość
+        korzystania z punktu bibliotecznego, w którym znajdują się książki o tematyce historycznej,
+        obyczajowej, przyrodniczej, atlasy i słowniki. Ponadto Mieszkańcy mają dostęp do prasy
+        codziennej.
+      </p>
+      <p>
+        Mieszkańcy Domu Pomocy Społecznej mają możliwość kontaktu z kapelanem, który pełni posługę
+        duszpasterską i odprawia Msze Św. w każdą sobotę. Udzielane jest również wsparcie duchowe
+        poprzez rozmowy kapelana z Mieszkańcami, prowadzenie spotkań modlitewnych w kaplicy,
+        organizowanie uroczystości kościelnych.
       </p>
 
       <Figure src={offerPhoto.photo} alt={offerPhoto.alt} />

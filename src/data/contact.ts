@@ -48,11 +48,12 @@ export const contact = {
     city: "Szczytno",
   } satisfies PostalAddress,
   phone: phone("89 624 22 88"),
+  nip: "745-15-89-346",
   /** Plain text: the fax is not something a browser can dial. */
   fax: "89 624 34 99",
   email: "sekretariat@dpsszczytno.pl",
-  /** The address the data-protection notices name; not the secretariat's. */
-  emailRodo: "szczytno@dps.pl",
+  /** The address the data-protection notices name; the same as the secretariat's. */
+  emailRodo: "sekretariat@dpsszczytno.pl",
   /** The Data Protection Officer (IOD), an external firm. */
   iodEmail: "iod2@warmiainkaso.pl",
   epuap: "/dpsszczytno/SkrytkaESP",
@@ -65,9 +66,8 @@ export const contact = {
     } satisfies PostalAddress,
     phone: phone("89 622 50 30"),
   },
-  /** Direct numbers of the residential units and the catering section. */
+  /** Direct numbers of the residential units. */
   units: [
-    { name: "Sekcja Żywienia", phones: [phone("89 624 64 44")] },
     { name: "Mieszkanie I", phones: [phone("89 624 64 55"), phone("728 457 616")] },
     { name: "Mieszkanie II", phones: [phone("89 624 64 97"), phone("600 835 191")] },
     { name: "Mieszkanie III", phones: [phone("89 624 22 92"), phone("600 835 576")] },

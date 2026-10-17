@@ -31,7 +31,7 @@ export default defineConfig({
     "/gallery/": at("/o-domu/"),
     "/oferta/": at("/zycie-w-domu/"),
     "/filia-domu-pomocy-w-spychowie/": at("/zycie-w-domu/spychowo/"),
-    "/programs/": at("/zycie-w-domu/grupa-christopher/"),
+    "/programs/": at("/zycie-w-domu/"),
     "/regulamin-imprez-okolicznosciowych/": at("/zycie-w-domu/regulamin-imprez-okolicznosciowych/"),
     "/contact/": at("/kontakt/"),
     "/2016/09/27/podziekowania/": at("/aktualnosci/2016-09-27-podziekowania/"),
