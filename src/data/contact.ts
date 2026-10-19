@@ -61,7 +61,7 @@ export const contact = {
     name: "Dom Pomocy Społecznej im. Jana Pawła II — Filia w Spychowie",
     address: {
       street: "ul. Sienkiewicza 3",
-      postalCode: "12-150",
+      postalCode: "12-140",
       city: "Spychowo",
     } satisfies PostalAddress,
     phone: phone("89 622 50 30"),
