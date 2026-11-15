@@ -33,7 +33,7 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
 
       <div class="flex items-center gap-x-6 gap-y-2 md:flex-wrap">
         <nav aria-label="Menu główne" class="hidden md:block">
-          <ul role="list" class="flex flex-wrap gap-x-6">
+          <ul class="flex flex-wrap gap-x-6">
             {
               mainNav.map((item) => (
                 <li>
@@ -68,7 +68,7 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
             </button>
           </div>
 
-          <button type="button" class="tool" data-menu-open aria-haspopup="dialog" aria-expanded="false">
+          <button type="button" class="tool" data-menu-open aria-haspopup="dialog" aria-expanded="false" aria-controls="menu-drawer">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
               <path d="M4 6h16M4 12h16M4 18h16" />
             </svg>
@@ -80,14 +80,14 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
   </div>
 
   <div class="menu-backdrop" data-menu-backdrop hidden></div>
-  <dialog class="menu" data-menu aria-label="Menu" tabindex="-1">
+  <dialog id="menu-drawer" class="menu" data-menu aria-label="Menu" tabindex="-1">
     <div>
       <p class="py-3">
         <span class="text-sm text-ink-soft">Telefon:</span>
         <a href={contact.phone.href} class="font-semibold">{contact.phone.label}</a>
       </p>
       <nav aria-label="Menu główne" class="mt-2">
-        <ul role="list">
+        <ul>
           {
             mainNav.map((item) => (
               <li>

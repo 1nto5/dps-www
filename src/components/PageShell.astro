@@ -10,8 +10,9 @@
  * column and the rail starts on the same line as the trail above the heading;
  * without one the grid's row gap is missing, so the header carries that space.
  *
- * The slot fills a plain <div>: `SubNav` brings its own <aside>, so wrapping one
- * here would make two complementary landmarks out of one rail.
+ * The slot fills a plain <div>: `SubNav` and `Toc` each bring their own <nav>,
+ * which is already the landmark; an <aside> around them here would add a second
+ * one for the same rail.
  */
 const twoColumn = Astro.slots.has("aside");
 const hasHeader = Astro.slots.has("header");

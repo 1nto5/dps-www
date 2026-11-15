@@ -421,16 +421,17 @@ html:not([data-js]) [data-tools] {
 .menu {
   pointer-events: auto;
   position: fixed;
-  inset: var(--drawer-top, 0) auto 0 0;
+  inset-block: var(--drawer-top, 0) 0;
+  inset-inline: 0 auto;
   z-index: 40;
   margin: 0;
-  width: min(20rem, 85vw);
-  max-width: none;
-  height: auto;
-  max-height: none;
+  inline-size: min(20rem, 85dvw);
+  max-inline-size: none;
+  block-size: auto;
+  max-block-size: none;
   padding: 0.5rem 1.25rem 1.5rem;
   border: 0;
-  border-right: 1px solid var(--color-line);
+  border-inline-end: 1px solid var(--color-line);
   background: var(--color-paper);
   color: var(--color-ink);
   overflow-y: auto;
@@ -450,7 +451,8 @@ html:not([data-js]) [data-tools] {
 .menu-backdrop {
   pointer-events: auto;
   position: fixed;
-  inset: var(--drawer-top, 0) 0 0 0;
+  inset-block: var(--drawer-top, 0) 0;
+  inset-inline: 0;
   z-index: 39;
   background: var(--color-scrim);
   touch-action: none;
@@ -754,6 +756,7 @@ figcaption {
 .lightbox img {
   display: block;
   width: 100%;
+  height: auto;
   max-height: 72vh;
   object-fit: contain;
   border-radius: var(--radius-md);
@@ -1013,6 +1016,7 @@ figcaption {
     --color-line: #d9d3c5;
     --color-white: #ffffff;
     --color-on-pine: #ffffff;
+    --color-scrim: color-mix(in srgb, #1f2a2e 60%, transparent);
   }
 }
 
@@ -1059,7 +1063,7 @@ footer a:hover {
 .card-media,
 .gallery-media {
   display: block;
-  overflow: hidden;
+  overflow: clip;
   border-radius: var(--radius-md);
 }
 

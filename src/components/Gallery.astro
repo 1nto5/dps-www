@@ -32,7 +32,13 @@ const items = await Promise.all(
     {
       items.map((photo) => (
         <li>
-          <button type="button" data-full={photo.full.src} data-alt={photo.alt}>
+          <button
+            type="button"
+            data-full={photo.full.src}
+            data-full-width={photo.full.attributes.width}
+            data-full-height={photo.full.attributes.height}
+            data-alt={photo.alt}
+          >
             <span class="gallery-media">
               <Image src={photo.src} alt={photo.alt} widths={[400, 700]} sizes={sizes} loading="lazy" />
             </span>
@@ -82,6 +88,9 @@ const items = await Promise.all(
       image = document.createElement("img");
       dialog.prepend(image);
     }
+    // The full picture's size, so the box has its shape before the file arrives.
+    image.width = Number(thumb.dataset.fullWidth);
+    image.height = Number(thumb.dataset.fullHeight);
     image.src = thumb.dataset.full!;
     image.alt = thumb.dataset.alt ?? "";
     dialog.querySelector(".lightbox-caption")!.textContent = thumb.dataset.alt ?? "";

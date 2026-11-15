@@ -31,7 +31,7 @@ const latest = (await getPosts()).slice(0, 3).map((post) => postListItem(post));
 <Base
   description="Dom Pomocy Społecznej im. Jana Pawła II w Szczytnie — całodobowa opieka dla osób przewlekle psychicznie chorych, wraz z filią w Spychowie."
 >
-  <section class="page-wrap py-12 md:py-16" aria-labelledby="hero-title">
+  <section class="page-wrap py-12 md:py-16">
     <div class="grid items-center gap-10 md:grid-cols-2 md:gap-14">
       <div class="intro">
         {/* The name is in the header just above; the heading says what the Dom
@@ -57,7 +57,7 @@ const latest = (await getPosts()).slice(0, 3).map((post) => postListItem(post));
     </div>
   </section>
 
-  <section class="border-y border-line bg-sand" aria-labelledby="o-domu">
+  <section class="border-y border-line bg-sand">
     <div class="page-wrap py-12 md:py-16">
       <div class="max-w-prose" data-reveal>
         <h2 id="o-domu" class="text-2xl md:text-3xl">
@@ -82,7 +82,7 @@ const latest = (await getPosts()).slice(0, 3).map((post) => postListItem(post));
     </div>
   </section>
 
-  <section class="page-wrap py-12 md:py-16" aria-labelledby="strony-domu">
+  <section class="page-wrap py-12 md:py-16">
     <h2 id="strony-domu" class="text-2xl md:text-3xl" data-reveal>Strony naszego Domu</h2>
     <ul role="list" class="mt-8 grid gap-8 sm:grid-cols-2 sm:gap-10" data-reveal-group>
       {
@@ -110,11 +110,7 @@ const latest = (await getPosts()).slice(0, 3).map((post) => postListItem(post));
 
   {
     latest.length > 0 && (
-      <section
-        class="page-wrap pb-12 md:pb-16"
-        aria-labelledby="aktualnosci-skrot"
-        data-reveal
-      >
+      <section class="page-wrap pb-12 md:pb-16" data-reveal>
         <div class="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
           <h2 id="aktualnosci-skrot" class="text-2xl md:text-3xl">
             Aktualności
@@ -130,7 +126,7 @@ const latest = (await getPosts()).slice(0, 3).map((post) => postListItem(post));
     )
   }
 
-  <section class="border-t border-line bg-sand" aria-labelledby="kontakt-skrot">
+  <section class="border-t border-line bg-sand">
     <div
       class="page-wrap grid gap-8 py-12 md:grid-cols-[1fr_auto] md:items-center md:py-16"
       data-reveal

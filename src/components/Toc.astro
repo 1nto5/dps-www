@@ -13,9 +13,9 @@ const { items, title = "Na tej stronie" } = Astro.props;
 
 {
   items.length > 0 && (
-    <nav class="rail" aria-label={title}>
-      <p class="rail-title">{title}</p>
-      <ul role="list">
+    <nav class="rail" aria-labelledby="rail-toc-title">
+      <p id="rail-toc-title" class="rail-title">{title}</p>
+      <ul>
         {items.map((item) => (
           <li>
             <a href={`#${item.id}`}>{item.label}</a>

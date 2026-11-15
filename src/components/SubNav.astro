@@ -19,9 +19,9 @@ const items = sectionPages(path);
 
 {
   items.length > 0 && (
-    <aside class="rail" aria-label={title}>
-      <p class="rail-title">{title}</p>
-      <ul role="list">
+    <nav class="rail" aria-labelledby="rail-subnav-title">
+      <p id="rail-subnav-title" class="rail-title">{title}</p>
+      <ul>
         {items.map((item) => (
           <li>
             <a href={item.href} aria-current={item.href === path ? "page" : undefined}>
@@ -30,6 +30,6 @@ const items = sectionPages(path);
           </li>
         ))}
       </ul>
-    </aside>
+    </nav>
   )
 }
