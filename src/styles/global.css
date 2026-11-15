@@ -639,11 +639,17 @@ html:not([data-js]) [data-tools] {
 .prose :where(ul, ol):where(:not([class]), .paren) li::marker {
   color: var(--color-ink-soft);
 }
-.prose a {
+/* A link inside running text — the prose and every line of the footer — is
+   underlined from the start, not only on hover: next to the text around it the
+   green is about 1.1:1 away from the grey, and a link must not be told apart by
+   colour alone (WCAG 1.4.1). A hover thickens the line and darkens the green. */
+.prose a,
+footer a {
   text-decoration: underline;
   text-decoration-thickness: 1px;
 }
-.prose a:hover {
+.prose a:hover,
+footer a:hover {
   text-decoration-thickness: 2px;
 }
 .prose strong {
@@ -1046,16 +1052,6 @@ figcaption {
 .card-link:hover span {
   color: var(--color-pine-deep);
   text-decoration-thickness: 2px;
-}
-
-/* Footer links carry their line from the start, painted in nothing; a hover
-   only gives it colour, so it fades in instead of snapping on. */
-footer a {
-  text-decoration-line: underline;
-  text-decoration-color: transparent;
-}
-footer a:hover {
-  text-decoration-color: currentColor;
 }
 
 /* Wrappers that keep a scaled picture inside its rounded corner, without
