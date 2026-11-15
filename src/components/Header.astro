@@ -5,9 +5,10 @@
  * theme switch and „Dostępność", which opens a modal <dialog> with the text
  * size and contrast (ReaderTools). The row is compact from the start and keeps
  * one shape while the page scrolls. Below `md` the sections live
- * behind a hamburger button, in a native <dialog> that slides in from the left
- * as a drawer under the header; the two buttons stay in the row beside it. A
- * tap outside, a swipe to the left or Escape closes the drawer.
+ * behind a hamburger button, in a modal <dialog> that slides in from the left
+ * over the whole screen, header included; the two buttons stay in the row
+ * beside the hamburger. The close button in the drawer's top corner, a tap
+ * outside, a swipe to the left, Escape or the back gesture closes the drawer.
  */
 import { mainNav, activeSection } from "../data/nav";
 import { sitePath } from "../data/routes";
@@ -79,9 +80,26 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
     </div>
   </div>
 
-  <div class="menu-backdrop" data-menu-backdrop hidden></div>
-  <dialog id="menu-drawer" class="menu" data-menu aria-label="Menu" tabindex="-1">
+  <dialog
+    id="menu-drawer"
+    class="menu"
+    data-menu
+    aria-labelledby="menu-title"
+    closedby="any"
+    tabindex="-1"
+  >
     <div>
+      {/* The close button comes first, so it takes focus; the title sits to
+          its left on screen. */}
+      <div class="flex flex-row-reverse items-center justify-between gap-4">
+        <button type="button" class="tool" data-menu-close autofocus>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="M6 6l12 12M18 6 6 18" />
+          </svg>
+          <span class="sr-only">Zamknij menu</span>
+        </button>
+        <h2 id="menu-title" class="text-xl">Menu</h2>
+      </div>
       <p class="py-3">
         <span class="text-sm text-ink-soft">Telefon:</span>
         <a href={contact.phone.href} class="font-semibold">{contact.phone.label}</a>
@@ -212,77 +230,67 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
       });
     }
 
-    // The drawer below `md`. Opened with show(), not showModal(), so the
-    // pinned row above it stays usable; the backdrop is our own element for
-    // the same reason. It starts where the pinned row ends.
+    // The drawer below `md`: a modal dialog over the whole screen, header
+    // included. Modal, so the browser makes the page behind inert, keeps the
+    // Tab key inside, closes it on Escape or the back gesture and puts focus
+    // back on the Menu button; `closedby="any"` adds a tap on the shade.
     const menu = document.querySelector<HTMLDialogElement>("[data-menu]");
-    const backdrop = document.querySelector<HTMLElement>("[data-menu-backdrop]");
     const open = document.querySelector<HTMLButtonElement>("[data-menu-open]");
     const surface = document.querySelector<HTMLElement>("[data-surface]");
     if (!surface) return;
-    // `--header-height` is the surface's height: same-page links, the side
-    // column and the drawer sit below it. It changes with the window (the
-    // links move into the drawer at `md`, lines wrap).
+    // `--header-height` is the surface's height: same-page links and the side
+    // column sit below it. It changes with the window (the links move into
+    // the drawer at `md`, lines wrap).
     const measure = () => doc.style.setProperty("--header-height", `${surface.offsetHeight}px`);
     const observer = new ResizeObserver(measure);
     observer.observe(surface);
     signal.addEventListener("abort", () => observer.disconnect());
     measure();
 
-    if (!menu || !backdrop || !open) return;
+    if (!menu || !open) return;
     const close = () => menu.open && menu.close();
-    // The page behind the drawer is inert while it is open, so the Tab key
-    // stays inside; the pinned row above stays live.
-    const behind = [...document.querySelectorAll<HTMLElement>("main, footer")];
 
     open.addEventListener("click", () => {
-      const top = Math.max(0, surface.getBoundingClientRect().bottom);
-      menu.style.setProperty("--drawer-top", `${top}px`);
-      backdrop.style.setProperty("--drawer-top", `${top}px`);
-      backdrop.hidden = false;
-      menu.show();
-      for (const el of behind) el.inert = true;
-      doc.style.overflow = "hidden";
+      // The close button carries `autofocus`, so it takes focus.
+      menu.showModal();
       open.setAttribute("aria-expanded", "true");
-      menu.focus();
     });
-    menu.addEventListener("close", () => {
-      backdrop.hidden = true;
-      for (const el of behind) el.inert = false;
-      doc.style.overflow = "";
-      open.setAttribute("aria-expanded", "false");
-      // Not when the drawer closed because the window grew past `md` and
-      // the button went with it.
-      if (open.offsetParent !== null) open.focus();
-    });
-
-    backdrop.addEventListener("click", close);
+    menu.addEventListener("close", () => open.setAttribute("aria-expanded", "false"));
+    menu.querySelector("[data-menu-close]")?.addEventListener("click", close);
     // Widened past `md` with the drawer open: the row of links takes over.
     window
       .matchMedia("(min-width: 48rem)")
       .addEventListener("change", (e) => e.matches && close(), { signal });
-    document.addEventListener("keydown", (e) => e.key === "Escape" && close(), { signal });
 
-    // A finger swipe to the left, on the drawer or on the shade beside it,
-    // closes it. A mostly vertical move is a scroll, and a mouse drag is a
-    // text selection; neither counts.
-    let start: { x: number; y: number } | null = null;
-    const onDown = (e: PointerEvent) => {
-      start = e.pointerType === "touch" ? { x: e.clientX, y: e.clientY } : null;
+    // Pointer events on the shade (::backdrop) land on the dialog itself.
+    // Two things listen to them:
+    // - a browser without `closedby` gets the tap on the shade by hand: the
+    //   press and the release both outside the drawer, by pointer position,
+    //   so a press on its padding or a drag that ends outside does not count;
+    // - a finger swipe to the left, on the drawer or on the shade, closes it.
+    //   A mostly vertical move is a scroll, and a mouse drag is a text
+    //   selection; neither counts.
+    const lightDismiss = !("closedBy" in HTMLDialogElement.prototype);
+    const outside = (e: PointerEvent) => {
+      const r = menu.getBoundingClientRect();
+      return e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom;
     };
-    const onUp = (e: PointerEvent) => {
+    let pressedOutside = false;
+    let start: { x: number; y: number } | null = null;
+    menu.addEventListener("pointerdown", (e) => {
+      pressedOutside = outside(e);
+      start = e.pointerType === "touch" ? { x: e.clientX, y: e.clientY } : null;
+    });
+    menu.addEventListener("pointerup", (e) => {
+      if (lightDismiss && pressedOutside && outside(e)) close();
       if (start) {
         const dx = start.x - e.clientX;
         const dy = Math.abs(start.y - e.clientY);
         if (dx > 40 && dx > dy) close();
       }
       start = null;
-    };
-    for (const el of [menu, backdrop]) {
-      el.addEventListener("pointerdown", onDown);
-      el.addEventListener("pointerup", onUp);
-      el.addEventListener("pointercancel", () => (start = null));
-    }
+    });
+    menu.addEventListener("pointercancel", () => (start = null));
   }
 
   document.addEventListener("astro:page-load", bind);

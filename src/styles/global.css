@@ -303,8 +303,8 @@ html[data-font-size="xlarge"] {
 
 /* ---------------------------------------------------------------------------
    Header controls: the theme switch, the „Dostępność" and „Menu" buttons in
-   the row, the text-size and contrast buttons in the settings dialog. One
-   shape, tall enough for a thumb.
+   the row, the close button in the drawer, the text-size and contrast buttons
+   in the settings dialog. One shape, tall enough for a thumb.
    ------------------------------------------------------------------------ */
 .tool {
   display: inline-flex;
@@ -351,12 +351,19 @@ html:not([data-js]) [data-tools] {
 .tool[data-theme-switch="light"] [data-icon="sun"] {
   display: block;
 }
+/* The drawer's close button lives only on a phone-sized screen, so it gets
+   a touch target of at least 44 px; the row's buttons keep their size. */
+.tool[data-menu-close] {
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+}
 
 /* ---------------------------------------------------------------------------
    Main menu. A flat row of links from `md` up; below that the same links in a
-   <dialog> drawer that slides in from the left, under the pinned row. The
-   dialog is not modal, so the shade behind it is an element of its
-   own (.menu-backdrop) rather than ::backdrop.
+   modal <dialog> drawer that slides in from the left over the whole screen,
+   the pinned row included. Modal, so its close button sits in its own top
+   corner, the browser handles Escape, the back gesture and focus, and the
+   page behind is inert without any code of ours; the shade is ::backdrop.
    ------------------------------------------------------------------------ */
 .nav-link {
   display: inline-block;
@@ -381,7 +388,7 @@ html:not([data-js]) [data-tools] {
 /* The row with the name and the sections is pinned to the top. The header
    and <main> each carry a
    view-transition-name, which makes them stacking contexts of their own; the
-   header goes above so the pinned row, and the drawer, paint over the page. */
+   header goes above so the pinned row paints over the page. */
 .site-header {
   position: sticky;
   top: 0;
@@ -421,9 +428,8 @@ html:not([data-js]) [data-tools] {
 .menu {
   pointer-events: auto;
   position: fixed;
-  inset-block: var(--drawer-top, 0) 0;
+  inset-block: 0;
   inset-inline: 0 auto;
-  z-index: 40;
   margin: 0;
   inline-size: min(20rem, 85dvw);
   max-inline-size: none;
@@ -435,27 +441,25 @@ html:not([data-js]) [data-tools] {
   background: var(--color-paper);
   color: var(--color-ink);
   overflow-y: auto;
+  /* With the shade's two lines below: a scroll in the drawer or on the shade
+     never reaches the page behind. */
   overscroll-behavior: contain;
   touch-action: pan-y;
 }
-/* From `md` up the drawer, its shade and its button have no business on
-   screen, whatever their state. (A plain rule: `.tool` sets `display`, and a
-   utility class would lose to it.) */
+.menu::backdrop {
+  background: var(--color-scrim);
+  overflow: hidden;
+  overscroll-behavior: contain;
+  touch-action: none;
+}
+/* From `md` up the drawer and its button have no business on screen,
+   whatever their state. (A plain rule: `.tool` sets `display`, and a utility
+   class would lose to it.) */
 @media (min-width: 48rem) {
   .menu,
-  .menu-backdrop,
   [data-menu-open] {
     display: none !important;
   }
-}
-.menu-backdrop {
-  pointer-events: auto;
-  position: fixed;
-  inset-block: var(--drawer-top, 0) 0;
-  inset-inline: 0;
-  z-index: 39;
-  background: var(--color-scrim);
-  touch-action: none;
 }
 /* Each entry carries its line from the start, painted in nothing; a hover only
    gives it colour, so the line fades in instead of snapping on. */
@@ -937,23 +941,10 @@ figcaption {
       border-color 150ms ease;
   }
 
-  /* Dialogs: the menu slides in from the left, the lightbox and the settings fade in. */
-  .menu-backdrop {
-    transition:
-      opacity 200ms ease,
-      display 260ms allow-discrete;
-  }
-  .menu-backdrop[hidden] {
-    opacity: 0;
-  }
-  /* The lightbox is modal and sits in the top layer, so it needs `overlay`;
-     the drawer is shown with show() and does not. */
-  .menu {
-    transition:
-      opacity 200ms ease,
-      transform 260ms cubic-bezier(0.2, 0.7, 0.2, 1),
-      display 260ms allow-discrete;
-  }
+  /* Dialogs: the menu slides in from the left, the lightbox and the settings
+     fade in. All three are modal and sit in the top layer, so they need
+     `overlay` to stay there while they leave. */
+  .menu,
   .lightbox,
   .settings {
     transition:
@@ -962,6 +953,7 @@ figcaption {
       overlay 260ms allow-discrete,
       display 260ms allow-discrete;
   }
+  .menu::backdrop,
   .lightbox::backdrop,
   .settings::backdrop {
     transition:
@@ -981,14 +973,12 @@ figcaption {
   .settings:not([open]) {
     transform: scale(0.97);
   }
+  .menu:not([open])::backdrop,
   .lightbox:not([open])::backdrop,
   .settings:not([open])::backdrop {
     opacity: 0;
   }
   @starting-style {
-    .menu-backdrop:not([hidden]) {
-      opacity: 0;
-    }
     .menu[open],
     .lightbox[open],
     .settings[open] {
@@ -1001,6 +991,7 @@ figcaption {
     .settings[open] {
       transform: scale(0.97);
     }
+    .menu[open]::backdrop,
     .lightbox[open]::backdrop,
     .settings[open]::backdrop {
       opacity: 0;
