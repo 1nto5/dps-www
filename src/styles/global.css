@@ -184,9 +184,19 @@ body {
     text-decoration-thickness: 2px;
   }
 
+  /* The highlight has to show on every ground and in every mode: pine clears
+     3:1 against paper, sand and the white cards, and the text on it 4.5:1, in
+     light, dark and high contrast. On a pine fill — the primary button, a
+     pressed tool, the skip link — the pair swaps, or pine would sit on pine.
+     In forced colours the browser repaints both with its own Highlight. */
   ::selection {
-    background: var(--color-sand);
-    color: var(--color-ink);
+    background: var(--color-pine);
+    color: var(--color-on-pine);
+  }
+  :is(.btn-primary, .tool[aria-pressed="true"], .skip-link)::selection,
+  :is(.btn-primary, .tool[aria-pressed="true"], .skip-link) ::selection {
+    background: var(--color-on-pine);
+    color: var(--color-pine);
   }
 
   address {
