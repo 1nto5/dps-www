@@ -123,6 +123,15 @@ html {
   scroll-padding-top: calc(var(--header-height) + 1.5rem);
   -webkit-text-size-adjust: 100%;
 }
+/* On a phone the header is taller than the floor above: up to about 7.4rem
+   when the buttons wrap under the name. The floor is what a link to a heading
+   on another page lands by (the jump comes before the script measures), so
+   below `md` it covers the tallest header. */
+@media (width < 48rem) {
+  html {
+    --header-height: 7.5rem;
+  }
+}
 
 body {
   font-family: var(--font-body);
@@ -352,10 +361,18 @@ html:not([data-js]) [data-tools] {
   display: block;
 }
 /* The drawer's close button lives only on a phone-sized screen, so it gets
-   a touch target of at least 44 px; the row's buttons keep their size. */
+   a touch target of at least 44 px. */
 .tool[data-menu-close] {
   min-width: 2.75rem;
   min-height: 2.75rem;
+}
+/* The row's buttons reach 44 px on a phone's touch screen too (they are wider
+   than that already). The row's height does not change: the name, on two
+   lines, is taller. From `md` up they keep their size. */
+@media (width < 48rem) and (pointer: coarse) {
+  .pinned-row .tool {
+    min-height: max(2.25rem, 44px);
+  }
 }
 
 /* ---------------------------------------------------------------------------
@@ -424,6 +441,37 @@ html:not([data-js]) [data-tools] {
 .brand-sub {
   font-size: 0.8125rem;
   line-height: 1.25;
+}
+/* Below `md` the row holds only the name and the three buttons, and on a
+   phone it is the bar that eats the screen, so it is kept low (under 12 % of
+   the screen's height at the default text size). The name takes the room the
+   buttons leave and wraps on balanced lines; it never gets less than the
+   width of „Dom Pomocy", so it is at most two lines beside the buttons. When
+   it would get less — the narrowest phones, the larger text sizes — the
+   buttons wrap to a line of their own and keep to the right. The second line
+   becomes a block, so its own tight line height counts, not the page's. */
+@media (width < 48rem) {
+  .pinned-row {
+    padding-block: 0.5rem;
+    column-gap: 1rem;
+    row-gap: 0.5rem;
+  }
+  .brand {
+    flex: 1 1 7.25rem;
+    min-inline-size: 0;
+    max-inline-size: max-content;
+    text-wrap: balance;
+  }
+  .pinned-row > :last-child {
+    margin-inline-start: auto;
+  }
+  .brand-name {
+    line-height: 1.15;
+  }
+  .brand-sub {
+    display: block;
+    line-height: 1.2;
+  }
 }
 .menu {
   pointer-events: auto;

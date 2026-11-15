@@ -6,8 +6,11 @@
  * size and contrast (ReaderTools). The row is compact from the start and keeps
  * one shape while the page scrolls. Below `md` the sections live
  * behind a hamburger button, in a modal <dialog> that slides in from the left
- * over the whole screen, header included; the two buttons stay in the row
- * beside the hamburger. The close button in the drawer's top corner, a tap
+ * over the whole screen, header included; the two buttons sit beside the
+ * hamburger, to the right of the name. Where the name has no room beside
+ * them — the narrowest phones, or the larger text sizes — the three buttons
+ * wrap to a line of their own under it rather than run off the screen. The
+ * close button in the drawer's top corner, a tap
  * outside, a swipe to the left, Escape or the back gesture closes the drawer.
  */
 import { mainNav, activeSection } from "../data/nav";
@@ -23,13 +26,15 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
 <header class="site-header" transition:animate="none">
   <div class="header-surface border-b border-line" data-surface>
     <div
-      class="pinned-row page-wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-4 max-md:flex-nowrap"
+      class="pinned-row page-wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-4"
     >
-      <a href="/" class="no-underline">
+      <a href="/" class="brand no-underline">
         <span class="brand-name block font-display leading-tight font-semibold text-ink"
           >Dom Pomocy Społecznej</span
         >
-        <span class="brand-sub text-sm text-ink-soft">im. Jana Pawła II w Szczytnie</span>
+        {/* Non-breaking spaces: the patron's name and „w Szczytnie" each stay
+            whole, so a line never ends on „im." or on the one-letter „w". */}
+        <span class="brand-sub text-sm text-ink-soft">im.&nbsp;Jana&nbsp;Pawła&nbsp;II w&nbsp;Szczytnie</span>
       </a>
 
       <div class="flex items-center gap-x-6 gap-y-2 md:flex-wrap">
