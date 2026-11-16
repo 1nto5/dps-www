@@ -228,6 +228,32 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
     }
     systemDark.addEventListener("change", syncTheme, { signal });
 
+    // A setting changed in another tab of the site: this one follows. The
+    // values are checked against the same closed sets as in the inline script
+    // in Base; nothing is written back.
+    const stored: Record<string, [attr: string, allowed: string[]]> = {
+      "dps-font": ["data-font-size", ["large", "xlarge"]],
+      "dps-contrast": ["data-contrast", ["high"]],
+      "dps-theme": ["data-theme", ["dark", "light"]],
+    };
+    window.addEventListener(
+      "storage",
+      (event) => {
+        if (event.storageArea !== localStorage) return;
+        for (const [key, [attr, allowed]] of Object.entries(stored)) {
+          // `key` is null when the whole storage was cleared.
+          if (event.key !== null && event.key !== key) continue;
+          const value = event.key === null ? null : event.newValue;
+          if (value !== null && allowed.includes(value)) doc.setAttribute(attr, value);
+          else doc.removeAttribute(attr);
+        }
+        syncFont();
+        syncContrast();
+        syncTheme();
+      },
+      { signal },
+    );
+
     syncFont();
     syncContrast();
     syncTheme();
