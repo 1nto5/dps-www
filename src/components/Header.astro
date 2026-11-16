@@ -80,6 +80,14 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
             </svg>
             <span class="sr-only">Menu</span>
           </button>
+          {/* Without JavaScript the button above cannot open the drawer, so the
+              CSS swaps it for this link to the same pages in the footer. */}
+          <a href="#footer-strony-serwisu" class="tool" data-menu-link>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+              <path d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <span class="sr-only">Menu</span>
+          </a>
         </div>
       </div>
     </div>

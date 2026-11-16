@@ -343,9 +343,11 @@ html[data-font-size="xlarge"] {
   line-height: 1.2;
   cursor: pointer;
 }
-/* The theme and settings buttons need JavaScript; `data-js` is set before
-   first paint. */
-html:not([data-js]) [data-tools] {
+/* The theme, settings and menu buttons need JavaScript; `data-js` is set
+   before first paint. Without it a link to the footer's list of pages stands
+   in for the menu button. */
+html:not([data-js]) :is([data-tools], [data-menu-open]),
+html[data-js] [data-menu-link] {
   display: none;
 }
 .tool:hover {
@@ -515,7 +517,8 @@ html:not([data-js]) [data-tools] {
    class would lose to it.) */
 @media (min-width: 48rem) {
   .menu,
-  [data-menu-open] {
+  [data-menu-open],
+  [data-menu-link] {
     display: none !important;
   }
 }
@@ -1082,6 +1085,7 @@ figcaption {
     position: static;
   }
   [data-menu-open],
+  [data-menu-link],
   .aside-sticky,
   footer nav {
     display: none !important;
