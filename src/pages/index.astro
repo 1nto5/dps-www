@@ -98,9 +98,15 @@ const latest = (await getPosts()).slice(0, 3).map((post) => postListItem(post));
                   class="aspect-[4/3] w-full object-cover"
                 />
               </div>
-              <span class="mt-4 block font-display text-xl font-semibold underline">
-                {navLabel(section.href)}
-              </span>
+              {/* A heading, so the three cards show up in the outline. The
+                  span keeps the look and the `.card-link span` rules; the h3
+                  hands it the link's colour, spacing and wrapping, not the
+                  base heading style's. */}
+              <h3 class="text-inherit tracking-normal text-wrap">
+                <span class="mt-4 block font-display text-xl font-semibold underline">
+                  {navLabel(section.href)}
+                </span>
+              </h3>
             </a>
           </li>
         ))

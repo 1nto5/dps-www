@@ -2,6 +2,8 @@
 /**
  * Three columns of facts, all of them from `data/contact.ts`, and one bottom
  * line with the two statements every public institution has to keep in reach.
+ * The column titles are `h2`s; `tracking-normal` and `text-wrap` undo the
+ * letter-spacing and balanced lines the base style gives every heading.
  */
 import { contact, addressLines } from "../data/contact";
 import { mainNav } from "../data/nav";
@@ -14,16 +16,16 @@ const branch = addressLines(contact.spychowo.address);
 <footer transition:animate="none" class="mt-auto border-t border-line bg-sand">
   <div class="page-wrap grid gap-10 py-12 md:grid-cols-3 md:py-16">
     <div>
-      <p id="footer-dps-name" class="font-display text-lg font-semibold">{contact.name}</p>
+      <h2 id="footer-dps-name" class="font-display text-lg font-semibold tracking-normal text-wrap">{contact.name}</h2>
       <address class="mt-3 text-ink-soft" aria-labelledby="footer-dps-name">
         {home[0]}<br />
         {home[1]}<br />
         NIP {contact.nip}
       </address>
 
-      <p id="footer-spychowo-name" class="mt-8 font-display text-lg font-semibold">
+      <h2 id="footer-spychowo-name" class="mt-8 font-display text-lg font-semibold tracking-normal text-wrap">
         {contact.spychowo.name}
-      </p>
+      </h2>
       <address class="mt-3 text-ink-soft" aria-labelledby="footer-spychowo-name">
         {branch[0]}<br />
         {branch[1]}<br />
@@ -32,7 +34,7 @@ const branch = addressLines(contact.spychowo.address);
     </div>
 
     <div>
-      <p id="footer-kontakt" class="font-display text-lg font-semibold">Kontakt</p>
+      <h2 id="footer-kontakt" class="font-display text-lg font-semibold tracking-normal text-wrap">Kontakt</h2>
       <dl class="mt-3 text-ink-soft" aria-labelledby="footer-kontakt">
         <dt class="sr-only">Telefon</dt>
         <dd>tel. <a href={contact.phone.href}>{contact.phone.label}</a></dd>
@@ -44,9 +46,9 @@ const branch = addressLines(contact.spychowo.address);
         <dd class="mt-2">ePUAP {contact.epuap}</dd>
       </dl>
 
-      <p id="footer-informacja-publiczna" class="mt-8 font-display text-lg font-semibold">
+      <h2 id="footer-informacja-publiczna" class="mt-8 font-display text-lg font-semibold tracking-normal text-wrap">
         Informacja publiczna
-      </p>
+      </h2>
       <p class="mt-3 text-ink-soft">
         W sprawie dostępu do informacji publicznej prosimy o kontakt z
         <a href="/kontakt/">sekretariatem</a>.
@@ -54,7 +56,7 @@ const branch = addressLines(contact.spychowo.address);
     </div>
 
     <div>
-      <p id="footer-strony-serwisu" class="font-display text-lg font-semibold">Strony serwisu</p>
+      <h2 id="footer-strony-serwisu" class="font-display text-lg font-semibold tracking-normal text-wrap">Strony serwisu</h2>
       <nav aria-labelledby="footer-strony-serwisu">
         <ul class="mt-3 space-y-1">
           {
