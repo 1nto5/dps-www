@@ -393,6 +393,12 @@ html[data-js] [data-menu-link] {
 .tool[data-theme-switch="light"] [data-icon="sun"] {
   display: block;
 }
+/* High contrast paints its own black-and-yellow page whatever the theme, so
+   there the switch would change nothing on screen: it is not shown at all.
+   The theme the reader picked stays saved and is back with normal contrast. */
+html[data-contrast="high"] [data-theme-switch] {
+  display: none;
+}
 /* The drawer's close button lives only on a phone-sized screen, so it gets
    a touch target of at least 44 px. */
 .tool[data-menu-close] {
