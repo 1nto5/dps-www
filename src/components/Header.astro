@@ -55,7 +55,8 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
 
         <div class="flex items-center gap-2">
           <div class="flex items-center gap-2" data-tools>
-            <button type="button" class="tool" data-theme-switch="light">
+            {/* The CSS shows the icon of the theme on screen, from <html>. */}
+            <button type="button" class="tool" data-theme-switch>
               <svg data-icon="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
               </svg>
@@ -199,7 +200,8 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
     });
 
     // The theme button flips between light and dark. Without a saved choice the
-    // page follows the system, and the button shows the theme the reader sees.
+    // page follows the system, and the button shows the theme the reader sees:
+    // the CSS picks its icon, this script its name.
     // Picking the theme the system already shows drops the saved choice, so
     // the page follows the system again from then on.
     const themeButtons = [...document.querySelectorAll<HTMLButtonElement>("button[data-theme-switch]")];
@@ -213,7 +215,6 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
       const pinned = doc.hasAttribute("data-theme");
       const next = theme === "dark" ? "light" : "dark";
       for (const button of themeButtons) {
-        button.dataset.themeSwitch = theme;
         button.querySelector("[data-theme-label]")!.textContent =
           `Motyw: ${themeNames[theme]}${pinned ? "" : " (systemowy)"}. Przełącz na ${themeNames[next]}`;
       }

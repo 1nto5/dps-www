@@ -381,7 +381,9 @@ html[data-js] [data-menu-link] {
   color: var(--color-on-pine);
 }
 /* The theme switch: an icon only — the moon for dark, the sun for light —
-   showing the theme the reader sees, whether chosen or taken from the system. */
+   showing the theme the reader sees, whether chosen or taken from the system.
+   It follows <html> and the system setting, the way the colours do, so the
+   right icon is there at first paint, before the header's script runs. */
 .tool svg {
   width: 1.15rem;
   height: 1.15rem;
@@ -389,9 +391,17 @@ html[data-js] [data-menu-link] {
 .tool[data-theme-switch] svg {
   display: none;
 }
-.tool[data-theme-switch="dark"] [data-icon="moon"],
-.tool[data-theme-switch="light"] [data-icon="sun"] {
+html:not([data-theme="dark"]) [data-theme-switch] [data-icon="sun"],
+html[data-theme="dark"] [data-theme-switch] [data-icon="moon"] {
   display: block;
+}
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) [data-theme-switch] [data-icon="sun"] {
+    display: none;
+  }
+  html:not([data-theme]) [data-theme-switch] [data-icon="moon"] {
+    display: block;
+  }
 }
 /* High contrast paints its own black-and-yellow page whatever the theme, so
    there the switch would change nothing on screen: it is not shown at all.
