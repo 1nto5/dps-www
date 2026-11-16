@@ -35,8 +35,15 @@ const latest = (await getPosts()).slice(0, 3).map((post) => postListItem(post));
     <div class="grid items-center gap-10 md:grid-cols-2 md:gap-14">
       <div class="intro">
         {/* The name is in the header just above; the heading says what the Dom
-            is, in the Dom's own words, one thought to a line. */}
-        <h1 id="hero-title" class="text-4xl md:text-5xl">
+            is, in the Dom's own words, one thought to a line. Below `md` it
+            never gets bigger than the screen less the two gutters allows: its
+            longest word, „Całodobowa", is just under 6em wide, and at the
+            largest text size on a narrow phone it would push the page
+            sideways. */}
+        <h1
+          id="hero-title"
+          class="text-4xl max-md:text-[min(var(--text-4xl),(100vw_-_2.5rem)/6)] md:text-5xl"
+        >
           Całodobowa opieka<br />
           dla osób przewlekle<br />
           psychicznie chorych

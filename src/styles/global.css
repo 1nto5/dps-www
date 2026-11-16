@@ -202,6 +202,13 @@ body {
   address {
     font-style: normal;
   }
+
+  /* An e-mail address is one long word. At the largest text size it is wider
+     than a narrow phone, and it would push the page sideways; this lets it
+     break where it has to. */
+  a[href^="mailto:"] {
+    overflow-wrap: anywhere;
+  }
 }
 
 /* A link that carries a sentence on its own — „O nas", „Wszystkie
