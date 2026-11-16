@@ -683,6 +683,12 @@ html[data-js] [data-menu-link] {
 .prose > *:first-child {
   margin-top: 0;
 }
+/* A paragraph does not end on one short word where the browser can help it.
+   Not in every browser yet (Baseline: limited); elsewhere lines break as
+   before. Headings have `balance` instead. */
+.prose p {
+  text-wrap: pretty;
+}
 /* Only lists the running text writes itself. A list that carries a class is a
    component placed inside the prose — `PageList`, a gallery — and brings its
    own shape; `ol.paren` below is the one classed list that is running text. */
