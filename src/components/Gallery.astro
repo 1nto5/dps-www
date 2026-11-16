@@ -19,11 +19,19 @@ const { photos } = Astro.props;
 /** The grid is four columns from `lg`, three from `sm`, two below that. */
 const sizes = "(min-width: 64rem) 15rem, (min-width: 40rem) 33vw, 50vw";
 
+/**
+ * The lightbox picture comes in widths up to 1600 px, and Astro drops every
+ * width past the original's own, so a photograph is never enlarged: a bigger
+ * file with no more detail in it. Its `sizes` is the width it is shown at,
+ * whichever bound comes first: the window's width (the dialog's 92vw, a little
+ * over the picture inside it) or the picture's 72vh height times its shape.
+ */
 const items = await Promise.all(
-  photos.map(async (photo) => ({
-    ...photo,
-    full: await getImage({ src: photo.src, width: 1600, format: "webp" }),
-  })),
+  photos.map(async (photo) => {
+    const full = await getImage({ src: photo.src, widths: [800, 1200, 1600], format: "webp" });
+    const { width, height } = full.attributes;
+    return { ...photo, full, fullSizes: `min(92vw, ${+((72 * width) / height).toFixed(2)}vh)` };
+  }),
 );
 ---
 
@@ -35,6 +43,8 @@ const items = await Promise.all(
           <button
             type="button"
             data-full={photo.full.src}
+            data-full-srcset={photo.full.srcSet.attribute}
+            data-full-sizes={photo.fullSizes}
             data-full-width={photo.full.attributes.width}
             data-full-height={photo.full.attributes.height}
             data-alt={photo.alt}
@@ -89,6 +99,8 @@ const items = await Promise.all(
     // The full picture's size, so the box has its shape before the file arrives.
     image.width = Number(thumb.dataset.fullWidth);
     image.height = Number(thumb.dataset.fullHeight);
+    image.sizes = thumb.dataset.fullSizes ?? "";
+    image.srcset = thumb.dataset.fullSrcset ?? "";
     image.src = thumb.dataset.full!;
     image.alt = thumb.dataset.alt ?? "";
     dialog.querySelector(".lightbox-caption")!.textContent = thumb.dataset.alt ?? "";
