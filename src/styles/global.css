@@ -847,6 +847,11 @@ figcaption {
 .lightbox::backdrop {
   background: color-mix(in srgb, var(--color-ink) 85%, transparent);
 }
+/* In high contrast the ink is yellow; the photograph sits on black there, like
+   everything else in that mode. */
+html[data-contrast="high"] .lightbox::backdrop {
+  background: rgb(0 0 0 / 0.85);
+}
 .lightbox img {
   display: block;
   width: 100%;
