@@ -50,6 +50,13 @@ const desc =
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!--
+      The schemes the page supports, known before the stylesheet arrives, so
+      the browser does not paint a white page first on a dark system. The
+      reader's own choice narrows it in the inline script below; once the
+      stylesheet is in, `color-scheme` on <html> decides.
+    -->
+    <meta name="color-scheme" content="light dark" />
+    <!--
       Everything the site loads is self-hosted (fonts, images, styles, scripts),
       so the policy stays closed except for what has to sit inline in the page:
       the pre-paint reader-settings script below, the JSON-LD block and the
@@ -86,6 +93,9 @@ const desc =
           if (c === "high") d.setAttribute("data-contrast", c);
           if (t === "dark" || t === "light") d.setAttribute("data-theme", t);
           if (f === "large" || f === "xlarge") d.setAttribute("data-font-size", f);
+          // High contrast is a black page, whatever the theme.
+          var s = c === "high" ? "dark" : d.getAttribute("data-theme");
+          if (s) document.querySelector('meta[name="color-scheme"]').content = s;
         } catch (e) {}
       })();
     </script>
