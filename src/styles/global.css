@@ -892,6 +892,17 @@ html[data-contrast="high"] .lightbox::backdrop {
 .settings::backdrop {
   background: var(--color-scrim);
 }
+/* As in the drawer: a scroll on the lightbox, the settings or their shade
+   never reaches the page behind. */
+.lightbox,
+.settings {
+  overscroll-behavior: contain;
+}
+.lightbox::backdrop,
+.settings::backdrop {
+  overflow: hidden;
+  overscroll-behavior: contain;
+}
 .settings-title {
   margin: 0 0 1rem;
   font-family: var(--font-display);
