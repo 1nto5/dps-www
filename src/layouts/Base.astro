@@ -160,6 +160,17 @@ const desc =
         }
       });
 
+      // After a page swap the router leaves focus at the start of the
+      // document, so the next Tab would go through the header again. Focus
+      // moves to the new content instead, the way the skip link does, without
+      // scrolling: the router has already put the scroll where it belongs. A
+      // link to a #fragment is left to the browser, which has taken the reader
+      // to that spot.
+      document.addEventListener("astro:after-swap", () => {
+        if (location.hash) return;
+        document.getElementById("tresc")?.focus({ preventScroll: true });
+      });
+
       // „Na tej stronie": the entry for the part of the page the reader is
       // looking at is marked the way the current page is in „W tej sekcji" —
       // the last heading that has passed the upper third of the window.
