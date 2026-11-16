@@ -836,7 +836,7 @@ figcaption {
 .lightbox {
   width: min(64rem, 92vw);
   max-width: 92vw;
-  max-height: 92vh;
+  max-height: 92dvh;
   margin: auto;
   padding: 1rem;
   border: 1px solid var(--color-line);
@@ -851,7 +851,7 @@ figcaption {
   display: block;
   width: 100%;
   height: auto;
-  max-height: 72vh;
+  max-height: 72dvh;
   object-fit: contain;
   border-radius: var(--radius-md);
 }
