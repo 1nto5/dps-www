@@ -367,7 +367,11 @@ html:not([data-js]) :is([data-tools], [data-menu-open]),
 html[data-js] [data-menu-link] {
   display: none;
 }
+/* The darker green alone is too close to the green to show (1.46:1); the sand
+   fill is how `btn-secondary` answers a hover too. A pressed tool keeps its
+   pine fill: that rule comes after this one. */
 .tool:hover {
+  background: var(--color-sand);
   border-color: var(--color-pine-deep);
   color: var(--color-pine-deep);
 }
