@@ -1,7 +1,9 @@
 ---
 /**
  * A photograph in its natural rectangle. `alt` describes the picture; `caption`
- * is the sentence under it, and only ever a sentence the Dom wrote.
+ * is the sentence under it, and only ever a sentence the Dom wrote. Without a
+ * caption the wrapper is a plain <div class="figure">: a <figure> with nothing
+ * to name it would only add an unnamed group for a screen reader.
  */
 import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
@@ -25,9 +27,11 @@ const {
   loading = "lazy",
   class: className,
 } = Astro.props;
+
+const Wrapper = caption ? "figure" : "div";
 ---
 
-<figure class={className}>
+<Wrapper class:list={[className, !caption && "figure"]}>
   <Image
     src={src}
     alt={alt}
@@ -38,4 +42,4 @@ const {
     class="w-full rounded-md"
   />
   {caption && <figcaption>{caption}</figcaption>}
-</figure>
+</Wrapper>
