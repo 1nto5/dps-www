@@ -225,6 +225,16 @@ body {
   :focus-visible {
     outline-color: Highlight;
   }
+  /* The pine fill of a pressed tool is repainted away with every other colour,
+     so the system's highlight marks it. `:root` outranks the pressed rule
+     further down; without `forced-color-adjust` the browser would lay its
+     Canvas backplate under the HighlightText and hide the label. */
+  :root .tool[aria-pressed="true"] {
+    forced-color-adjust: none;
+    background: Highlight;
+    border-color: Highlight;
+    color: HighlightText;
+  }
 }
 
 /* ---------------------------------------------------------------------------
