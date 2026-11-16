@@ -129,6 +129,8 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
 </header>
 
 <script>
+  import "../lib/light-dismiss";
+
   // The reader's tools. They do nothing without JavaScript, so the CSS hides
   // them unless `data-js` is on <html> — set by the inline script in Base
   // before first paint, so the row never changes shape after it appears.
@@ -223,16 +225,14 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
     syncTheme();
 
     // The settings dialog. Modal, so the page behind is inert on its own and
-    // Escape closes it; a click on the backdrop lands on the dialog itself.
+    // Escape closes it; `closedby="any"` adds a click on the shade.
     const settings = document.querySelector<HTMLDialogElement>("[data-settings]");
     const settingsOpen = document.querySelector<HTMLButtonElement>("[data-settings-open]");
     if (settings && settingsOpen) {
       settingsOpen.addEventListener("click", () => settings.showModal());
-      settings.addEventListener("click", (e) => {
-        if (e.target === settings || (e.target as Element).closest("[data-settings-close]")) {
-          settings.close();
-        }
-      });
+      settings
+        .querySelector("[data-settings-close]")
+        ?.addEventListener("click", () => settings.close());
     }
 
     // The drawer below `md`: a modal dialog over the whole screen, header
@@ -267,27 +267,16 @@ const current = (href: string) => (href === section?.href ? "page" : undefined);
       .matchMedia("(min-width: 48rem)")
       .addEventListener("change", (e) => e.matches && close(), { signal });
 
-    // Pointer events on the shade (::backdrop) land on the dialog itself.
-    // Two things listen to them:
-    // - a browser without `closedby` gets the tap on the shade by hand: the
-    //   press and the release both outside the drawer, by pointer position,
-    //   so a press on its padding or a drag that ends outside does not count;
-    // - a finger swipe to the left, on the drawer or on the shade, closes it.
-    //   A mostly vertical move is a scroll, and a mouse drag is a text
-    //   selection; neither counts.
-    const lightDismiss = !("closedBy" in HTMLDialogElement.prototype);
-    const outside = (e: PointerEvent) => {
-      const r = menu.getBoundingClientRect();
-      return e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom;
-    };
-    let pressedOutside = false;
+    // A browser without `closedby` gets the tap on the shade from
+    // light-dismiss.ts. A finger swipe to the left, on the drawer or on the
+    // shade (whose pointer events land on the dialog itself), closes it. A
+    // mostly vertical move is a scroll, and a mouse drag is a text selection;
+    // neither counts.
     let start: { x: number; y: number } | null = null;
     menu.addEventListener("pointerdown", (e) => {
-      pressedOutside = outside(e);
       start = e.pointerType === "touch" ? { x: e.clientX, y: e.clientY } : null;
     });
     menu.addEventListener("pointerup", (e) => {
-      if (lightDismiss && pressedOutside && outside(e)) close();
       if (start) {
         const dx = start.x - e.clientX;
         const dy = Math.abs(start.y - e.clientY);

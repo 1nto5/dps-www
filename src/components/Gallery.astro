@@ -49,7 +49,7 @@ const items = await Promise.all(
     }
   </ul>
 
-  <dialog class="lightbox" aria-label="Powiększone zdjęcie">
+  <dialog class="lightbox" aria-label="Powiększone zdjęcie" closedby="any">
     {/* The <img> is built by the script on the first open: an image element
         with nothing to show yet would have to ship without a `src`. */}
     <div class="lightbox-bar">
@@ -61,15 +61,13 @@ const items = await Promise.all(
 </div>
 
 <script>
+  // `closedby="any"` closes the dialog on a click on the backdrop; this adds
+  // it where the browser lacks it.
+  import "../lib/light-dismiss";
+
   document.addEventListener("click", (event) => {
     const target = event.target instanceof Element ? event.target : null;
     if (!target) return;
-
-    // A click on the backdrop lands on the dialog itself, never on its contents.
-    if (target instanceof HTMLDialogElement && target.closest("[data-gallery]")) {
-      target.close();
-      return;
-    }
 
     const close = target.closest("[data-lightbox-close]");
     if (close) {

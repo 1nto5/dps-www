@@ -2,10 +2,12 @@
 /**
  * The reader's settings — text size and contrast — in a modal <dialog> the
  * „Dostępność" button in the header opens. Escape, the „Zamknij" button and a
- * click on the backdrop close it; the script in Header binds all three.
+ * click on the backdrop close it: the browser handles Escape, `closedby="any"`
+ * the backdrop (light-dismiss.ts where the browser lacks it), and the script
+ * in Header binds the button.
  */
 ---
-<dialog class="settings" data-settings aria-labelledby="settings-title">
+<dialog class="settings" data-settings aria-labelledby="settings-title" closedby="any">
   <div class="settings-body">
     <h2 id="settings-title" class="settings-title">Dostępność</h2>
     <div class="settings-group">
