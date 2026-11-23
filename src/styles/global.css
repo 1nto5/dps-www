@@ -852,6 +852,11 @@ figcaption {
   outline: 3px solid var(--color-pine);
   outline-offset: -3px;
 }
+.gallery-caption {
+  margin: 0.5rem 0 0;
+  font-size: var(--text-sm);
+  color: var(--color-ink-soft);
+}
 
 .lightbox {
   width: min(64rem, 92vw);
