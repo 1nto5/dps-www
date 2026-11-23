@@ -7,17 +7,21 @@
  */
 import { getImage } from "astro:assets";
 import photo from "../assets/media/1377-1-1.jpg";
-import offer from "../assets/media/1188-2012-07-25-at-10-18-46-1-1.jpg";
+import offer from "../assets/photos-2026/common-room.jpg";
 
 export const hero = {
   photo,
   alt: "Budynek Domu Pomocy Społecznej w Szczytnie z czerwonym dachem, widziany zza kwitnących hortensji",
 };
 
-/** The common room: the „Oferta" tile and the „Oferta" page itself. */
+/**
+ * The common room: the „Oferta" tile and the „Oferta" page itself. The caption
+ * is the Dom's own title for the photo; the tile shows only the picture.
+ */
 export const offerPhoto = {
   photo: offer,
-  alt: "Mieszkańcy i terapeutka przy wspólnym stole w świetlicy, w tle regały z książkami.",
+  alt: "Kilkanaście osób przy długich stołach w świetlicy, na ścianie ekran z wyświetlanym obrazem.",
+  caption: "Zajęcia świetlicowe",
 };
 
 // The hero photo cropped to the 1200×630 social-preview shape every platform

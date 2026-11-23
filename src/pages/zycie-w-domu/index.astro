@@ -3,6 +3,12 @@
  * The section page that carries the production site's `/oferta/` page: the
  * numbers, the three lists of services and nothing else. Every sentence here
  * is a sentence the Dom published.
+ *
+ * The photographs with a caption are the ones the Dom took for the new site in
+ * October 2026: three stand in for the 2012 photos of the same places, the rest
+ * make up „Z życia Domu". Each caption is the Dom's own title for the photo (its
+ * file name), with only typos and punctuation corrected; the alt text is ours.
+ * The treatment room and the dining room have no newer photo yet.
  */
 import Base from "../../layouts/Base.astro";
 import PageHeader from "../../components/PageHeader.astro";
@@ -12,17 +18,138 @@ import { childrenOf, navLabel } from "../../data/nav";
 import Toc from "../../components/Toc.astro";
 import Figure from "../../components/Figure.astro";
 import PageList from "../../components/PageList.astro";
+import Gallery from "../../components/Gallery.astro";
 import { offerPhoto } from "../../data/hero";
 
 import treatmentRoom from "../../assets/media/1182-2012-07-25-at-10-20-35.jpg";
-import twinRoom from "../../assets/media/1185-2012-07-25-at-10-40-40.jpg";
-import singleRoom from "../../assets/media/1186-2012-07-25-at-10-43-511.jpg";
 import diningRoom from "../../assets/media/1187-2012-07-25-at-10-46-26.jpg";
+
+import craftsWorkshop from "../../assets/photos-2026/crafts-workshop.jpg";
+import sewing from "../../assets/photos-2026/sewing.jpg";
+import craftsTogether from "../../assets/photos-2026/crafts-together.jpg";
+import cooking from "../../assets/photos-2026/occupational-therapy-cooking.jpg";
+import socialActivation from "../../assets/photos-2026/social-activation-workshop.jpg";
+import computerRoom from "../../assets/photos-2026/computer-room.jpg";
+import artTherapy from "../../assets/photos-2026/art-therapy-workshop.jpg";
+import library from "../../assets/photos-2026/library.jpg";
+import reading from "../../assets/photos-2026/reading.jpg";
+import chapel from "../../assets/photos-2026/chapel.jpg";
+import psychologist from "../../assets/photos-2026/psychologist.jpg";
+import physiotherapy from "../../assets/photos-2026/physiotherapy.jpg";
+import rehabilitation from "../../assets/photos-2026/rehabilitation.jpg";
+import gym from "../../assets/photos-2026/gym.jpg";
+import fineMotorSkills from "../../assets/photos-2026/fine-motor-skills.jpg";
+import musicTherapy from "../../assets/photos-2026/music-therapy.jpg";
+import activeLeisure from "../../assets/photos-2026/active-leisure.jpg";
+import billiards from "../../assets/photos-2026/billiards.jpg";
+import homelyRoom from "../../assets/photos-2026/homely-room.jpg";
+import residentRoom from "../../assets/photos-2026/resident-room.jpg";
+import karaoke from "../../assets/photos-2026/karaoke-review.jpg";
 
 const toc = [
   { id: "wspomagajace", label: "Usługi wspomagające" },
   { id: "bytowe", label: "Potrzeby bytowe" },
+  { id: "z-zycia-domu", label: "Z życia Domu" },
   { id: "wiecej", label: "Więcej o życiu w Domu" },
+];
+
+/** In the order of the text above: workshops, therapy, then free time. */
+const photos = [
+  {
+    src: craftsWorkshop,
+    caption: "Pracownia rękodzieła artystycznego",
+    alt: "Kilka osób przy wspólnym stole w pracowni maluje pędzlami gipsowe figurki.",
+  },
+  {
+    src: sewing,
+    caption: "Rękodzieło rozwija wszystkie pasje Mieszkańców",
+    alt: "Starsza kobieta szyje na maszynie czerwoną tkaninę.",
+  },
+  {
+    src: craftsTogether,
+    caption: "Wspólnie tworzymy piękne rzeczy",
+    alt: "Pracownia na poddaszu: kobieta przy maszynie do szycia, w głębi kilka osób maluje przy stole.",
+  },
+  {
+    src: cooking,
+    caption: "Ergoterapia i zajęcia kulinarne",
+    alt: "Kilka osób w rękawiczkach kroi warzywa przy wspólnym stole zastawionym pomidorami i ogórkami.",
+  },
+  {
+    src: socialActivation,
+    caption: "Pracownia aktywizacji społecznej",
+    alt: "Dwie osoby grają w warcaby przy stoliku, trzecia przygląda się z uśmiechem.",
+  },
+  {
+    src: computerRoom,
+    caption: "Pracownia komputerowa",
+    alt: "Trzy osoby przy komputerach, dwie z nich w słuchawkach.",
+  },
+  {
+    src: artTherapy,
+    caption: "Pracownia Arteterapii",
+    alt: "Mężczyzna maluje farbami dużą planszę z napisem „Myśl pozytywnie”, w tle dwie osoby przy stole.",
+  },
+  {
+    src: library,
+    caption: "Biblioteka",
+    alt: "Dwie kobiety wybierają książki z drewnianych regałów biblioteki.",
+  },
+  {
+    src: reading,
+    caption: "Czas na chwilę dla książki",
+    alt: "Dwóch mężczyzn czyta książki w fotelach przy oknie.",
+  },
+  {
+    src: chapel,
+    caption: "Kaplica naszego Domu",
+    alt: "Wnętrze kaplicy: drewniane ławki, ołtarz z krzyżem, figury świętych i żyrandole.",
+  },
+  {
+    src: psychologist,
+    caption: "Profesjonalna pomoc psychologiczna",
+    alt: "Mężczyzna rozmawia z kobietą siedzącą za biurkiem w gabinecie.",
+  },
+  {
+    src: physiotherapy,
+    caption: "Fizjoterapia",
+    alt: "Fizjoterapeutka przy mężczyźnie, który leży na stole z nogami podwieszonymi na linkach.",
+  },
+  {
+    src: rehabilitation,
+    caption: "Rehabilitacja",
+    alt: "Kilka osób ćwiczy na rowerkach stacjonarnych i bieżni.",
+  },
+  {
+    src: gym,
+    caption: "Nasza sala gimnastyczna, aby dbać o kondycję fizyczną",
+    alt: "Mężczyzna ćwiczy na atlasie w sali gimnastycznej.",
+  },
+  {
+    src: fineMotorSkills,
+    caption: "Zajęcia poprawiające motorykę małą",
+    alt: "Terapeutka i starsza kobieta przy stole z kolorowymi drewnianymi pomocami do ćwiczeń dłoni.",
+  },
+  {
+    src: musicTherapy,
+    caption: "Zajęcia z muzykoterapii i rytmiki",
+    alt: "Kilkanaście osób siedzi w kręgu w sali z drabinkami i gra na instrumentach.",
+  },
+  {
+    src: activeLeisure,
+    caption: "Aktywne spędzanie czasu wolnego",
+    alt: "Kobieta w zielonej chustce zwija włóczkę w kłębek.",
+  },
+  {
+    src: billiards,
+    caption: "Gry towarzyskie",
+    alt: "Dwóch mężczyzn gra w bilard.",
+  },
+  {
+    src: karaoke,
+    caption: "Coroczny Wojewódzki Przegląd Karaoke Osób z Niepełnosprawnościami",
+    alt: "Zespół w strojach ludowych śpiewa na scenie udekorowanej czerwonymi sercami, obok postać w kostiumie białego misia.",
+  },
 ];
 
 
@@ -164,11 +291,7 @@ const podstrony = [
         organizowanie uroczystości kościelnych.
       </p>
 
-      <Figure src={offerPhoto.photo} alt={offerPhoto.alt} />
-      <Figure
-        src={twinRoom}
-        alt="Dwie Mieszkanki siedzą w fotelach przy stoliku w swoim pokoju."
-      />
+      <Figure src={offerPhoto.photo} alt={offerPhoto.alt} caption={offerPhoto.caption} />
 
       <h2 id="bytowe">Zaspokajamy potrzeby bytowe</h2>
       <ul>
@@ -184,14 +307,28 @@ const podstrony = [
       </ul>
 
       <Figure
-        src={singleRoom}
-        alt="Mieszkaniec siedzi na tapczanie w swoim pokoju jednoosobowym; przy oknie telewizor i stolik."
+        src={homelyRoom}
+        alt="Pokój mieszkalny: osoba w fotelu przy oknie z tabletem, na stoliku radio, kubki i ciasto, obok łóżko."
+        caption="Domowa atmosfera"
+      />
+      <Figure
+        src={residentRoom}
+        alt="Starsza kobieta siedzi w fotelu w pokoju na poddaszu, obok telewizor i pluszowy miś."
+        caption="Wypoczywamy jak lubimy"
       />
       <Figure
         src={diningRoom}
         alt="Jadalnia Domu z drewnianymi stołami nakrytymi kolorowymi obrusami."
       />
 
+      <h2 id="z-zycia-domu">Z życia Domu</h2>
+    </div>
+
+    <div class="mt-8">
+      <Gallery photos={photos} />
+    </div>
+
+    <div class="prose mt-16">
       <h2 id="wiecej">Więcej o życiu w Domu</h2>
       <PageList items={podstrony} />
     </div>
