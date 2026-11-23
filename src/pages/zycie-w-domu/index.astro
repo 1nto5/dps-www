@@ -4,9 +4,11 @@
  * numbers, the three lists of services and nothing else. Every sentence here
  * is a sentence the Dom published.
  *
- * „Z życia Domu" is the set of photographs the Dom took for the new site in
- * October 2026. Each caption is the Dom's own title for the photo (its file
- * name), with only typos and punctuation corrected; the alt text is ours.
+ * The photographs with a caption are the ones the Dom took for the new site in
+ * October 2026: three stand in for the 2012 photos of the same places, the rest
+ * make up „Z życia Domu". Each caption is the Dom's own title for the photo (its
+ * file name), with only typos and punctuation corrected; the alt text is ours.
+ * The treatment room and the dining room have no newer photo yet.
  */
 import Base from "../../layouts/Base.astro";
 import PageHeader from "../../components/PageHeader.astro";
@@ -20,8 +22,6 @@ import Gallery from "../../components/Gallery.astro";
 import { offerPhoto } from "../../data/hero";
 
 import treatmentRoom from "../../assets/media/1182-2012-07-25-at-10-20-35.jpg";
-import twinRoom from "../../assets/media/1185-2012-07-25-at-10-40-40.jpg";
-import singleRoom from "../../assets/media/1186-2012-07-25-at-10-43-511.jpg";
 import diningRoom from "../../assets/media/1187-2012-07-25-at-10-46-26.jpg";
 
 import craftsWorkshop from "../../assets/photos-2026/crafts-workshop.jpg";
@@ -40,7 +40,6 @@ import rehabilitation from "../../assets/photos-2026/rehabilitation.jpg";
 import gym from "../../assets/photos-2026/gym.jpg";
 import fineMotorSkills from "../../assets/photos-2026/fine-motor-skills.jpg";
 import musicTherapy from "../../assets/photos-2026/music-therapy.jpg";
-import commonRoom from "../../assets/photos-2026/common-room.jpg";
 import activeLeisure from "../../assets/photos-2026/active-leisure.jpg";
 import billiards from "../../assets/photos-2026/billiards.jpg";
 import homelyRoom from "../../assets/photos-2026/homely-room.jpg";
@@ -137,11 +136,6 @@ const photos = [
     alt: "Kilkanaście osób siedzi w kręgu w sali z drabinkami i gra na instrumentach.",
   },
   {
-    src: commonRoom,
-    caption: "Zajęcia świetlicowe",
-    alt: "Kilkanaście osób przy długich stołach w świetlicy, na ścianie ekran z wyświetlanym obrazem.",
-  },
-  {
     src: activeLeisure,
     caption: "Aktywne spędzanie czasu wolnego",
     alt: "Kobieta w zielonej chustce zwija włóczkę w kłębek.",
@@ -150,16 +144,6 @@ const photos = [
     src: billiards,
     caption: "Gry towarzyskie",
     alt: "Dwóch mężczyzn gra w bilard.",
-  },
-  {
-    src: homelyRoom,
-    caption: "Domowa atmosfera",
-    alt: "Pokój mieszkalny: osoba w fotelu przy oknie z tabletem, na stoliku radio, kubki i ciasto, obok łóżko.",
-  },
-  {
-    src: residentRoom,
-    caption: "Wypoczywamy jak lubimy",
-    alt: "Starsza kobieta siedzi w fotelu w pokoju na poddaszu, obok telewizor i pluszowy miś.",
   },
   {
     src: karaoke,
@@ -307,11 +291,7 @@ const podstrony = [
         organizowanie uroczystości kościelnych.
       </p>
 
-      <Figure src={offerPhoto.photo} alt={offerPhoto.alt} />
-      <Figure
-        src={twinRoom}
-        alt="Dwie Mieszkanki siedzą w fotelach przy stoliku w swoim pokoju."
-      />
+      <Figure src={offerPhoto.photo} alt={offerPhoto.alt} caption={offerPhoto.caption} />
 
       <h2 id="bytowe">Zaspokajamy potrzeby bytowe</h2>
       <ul>
@@ -327,8 +307,14 @@ const podstrony = [
       </ul>
 
       <Figure
-        src={singleRoom}
-        alt="Mieszkaniec siedzi na tapczanie w swoim pokoju jednoosobowym; przy oknie telewizor i stolik."
+        src={homelyRoom}
+        alt="Pokój mieszkalny: osoba w fotelu przy oknie z tabletem, na stoliku radio, kubki i ciasto, obok łóżko."
+        caption="Domowa atmosfera"
+      />
+      <Figure
+        src={residentRoom}
+        alt="Starsza kobieta siedzi w fotelu w pokoju na poddaszu, obok telewizor i pluszowy miś."
+        caption="Wypoczywamy jak lubimy"
       />
       <Figure
         src={diningRoom}
